@@ -1,0 +1,16 @@
+language: php # language 
+
+php:
+- 8.2
+- 8.3
+
+services:
+- mysql
+
+before_script:
+- cp .env.travis .env # copying .env.travis 
+- mysql -e 'create database loqui_backend;' # will run this command
+- composer self-update
+- composer install --no-interaction
+- php artisan key:generate
+- php artisan migrate --seed
