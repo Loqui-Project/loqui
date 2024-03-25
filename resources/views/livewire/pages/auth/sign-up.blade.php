@@ -59,11 +59,6 @@
                                 <div class="flex items-center justify-between">
                                     <label for="password"
                                         class="block text-sm font-medium leading-6 text-gray-900">Password</label>
-                                    <div class="text-sm">
-                                        <a href="#"
-                                            class="font-semibold transition-all duration-300 text-brand-dark hover:text-brand-main">Forgot
-                                            password?</a>
-                                    </div>
                                 </div>
                                 <div class="mt-2">
                                     <input wire:model="password" type="password" autocomplete="current-password"

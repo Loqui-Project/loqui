@@ -20,9 +20,7 @@ class Home extends Component
     {
         /* @var \App\Models\User $user */
         $user = Auth::user();
-
-        $messages = $user->messages()->latest()->get();
-
+        $messages = $user->messages()->whereHas('replay')->get();
         return view('livewire.pages.home', [
             'user' => $user,
             "messages" => $messages
