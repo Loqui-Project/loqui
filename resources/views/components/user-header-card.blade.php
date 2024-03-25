@@ -1,6 +1,6 @@
-<div x-data="{ open: true }" class="relative">
+<div x-data="{ open: false }" class="relative">
     <button @click="open = ! open"
-        class="flex flex-row justify-start items-center gap-4 cursor-pointer rounded-md bg-white dark:bg-black p-4">
+        class="flex flex-row justify-start items-center gap-4 cursor-pointer rounded-mdk p-4">
         <div>
             <img src="{{ URL::asset($user->mediaObject->media_path) }}" alt="avatar" class="w-8 h-8 rounded-full">
         </div>
@@ -11,22 +11,11 @@
         </div>
     </button>
     <div x-show="open" @click.outside="open = false" x-transition
-        class="absolute top-0 bg-white dark:bg-black  rounded-md shadow-lg  p-4">
-        <button
-            class="flex flex-row justify-start items-center gap-4 cursor-pointer pb-4 border-b border-b-black  dark:border-b-white mb-4 ">
-            <div>
-                <img src="{{ URL::asset($user->mediaObject->media_path) }}" alt="avatar" class="w-8 h-8 rounded-full">
-            </div>
-            <div class="flex flex-col items-start justify-start">
-                <span
-                    class="text-md capitalize text-left font-semibold text-gray-900  dark:text-white">{{ $user->name }}</span>
-                <p class="text-sm text-gray-400  dark:text-white">{{ $user->email }}</p>
-            </div>
-        </button>
+        class="absolute top-[76px] w-full bg-white dark:bg-black rounded-md shadow-lg  p-4">
         <nav class="border-b border-b-black  dark:border-b-white">
             <ul class="pb-4 flex flex-col justify-start space-y-4">
                 <li>
-                    <a class="flex items-center flex-row gap-2">
+                    <a href={{ route("profile.account") }} class="flex items-center flex-row gap-2">
                         <span>
                             <svg width="24" height="24" viewBox="0 0 24 24" class="dark:[&>path]:fill-gray-50"
                                 xmlns="http://www.w3.org/2000/svg">
