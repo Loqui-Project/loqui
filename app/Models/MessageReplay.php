@@ -12,7 +12,7 @@ class MessageReplay extends Model
     protected $fillable = [
         'message_id',
         'user_id',
-        'replay',
+        'text',
         'media_object_id',
     ];
 
