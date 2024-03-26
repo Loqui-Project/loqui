@@ -36,25 +36,22 @@
                                 @enderror
                             </div>
                         </div>
-
-
                     </div>
                 </div>
-
                 <div class="flex items-center justify-between">
                     <button type="submit"
                         class="flex transition-all duration-300 px-8 py-2 justify-center rounded-md bg-brand-dark text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">Send</button>
                     <div class="items center mt-3 flex">
                         <input type="checkbox" wire:model="anonymously" id="anonymously"
                             class="mt-1 rounded border-brand-dark bg-transparent text-brand-dark focus:ring-brand-dark"
-                            disabled={{ Auth::check() === false }}>
-                        <label for="anonymously" class="ml-2 text-brand-light">Anonymously</label>
+                            @disabled(Auth::check() == false)>
+                        <label for="anonymously" class="ml-2 text-brand-dark dark:text-brand-light">Anonymously</label>
                     </div>
                 </div>
             </form>
         </div>
         <div class="my-10">
-            <div class="grid grid-cols-2 gap-10">
+            <div class="grid grid-cols-2 gap-10 max-laptop:grid-cols-1">
                 @foreach ($messages as $message)
                     @livewire('component.message-with-replay', ['message' => $message], key($message->id))
                 @endforeach

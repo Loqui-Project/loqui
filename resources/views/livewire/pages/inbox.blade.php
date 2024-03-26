@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="w-full max-w-screen-laptop overflow-hidden rounded-lg mx-auto my-10">
-            <div class="grid grid-cols-2 gap-10">
+            <div class="grid grid-cols-2 gap-10 max-laptop:grid-cols-1">
                 @foreach ($messages as $message)
                     @livewire('component.message-without-replay', ['message' => $message], key($message->id))
                 @endforeach
