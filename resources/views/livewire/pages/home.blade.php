@@ -13,8 +13,8 @@
 
             </div>
         </div>
-        <div class="w-full max-w-lg overflow-hidden rounded-lg mx-auto my-10">
-            <div class="flex flex-col items-start gap-10">
+        <div class="w-full max-w-screen-laptop overflow-hidden rounded-lg mx-auto my-10">
+            <div class="grid grid-cols-2 gap-10">
                 @foreach ($messages as $message)
                     @livewire('component.message-with-replay', ['message' => $message], key($message->id))
                 @endforeach
