@@ -14,7 +14,7 @@ class MessageWithReplay extends Component
 
 
     public Message $message;
-    public User $user;
+    public User|null $user;
     public int $likes = 0;
     public bool $liked = false;
     public int $favorites = 0;
@@ -25,9 +25,11 @@ class MessageWithReplay extends Component
         $this->message = $message;
         $this->user = Auth::user();
         $this->likes =  $this->message->likes->count();
-        $this->liked = $this->message->likes->contains("user_id", $this->user->id);
+        if (Auth::check()) {
+            $this->liked = $this->message->likes->contains("user_id", $this->user->id);
+            $this->favorited = $this->message->favorites->contains("user_id", $this->user->id);
+        }
         $this->favorites = $this->message->favorites->count();
-        $this->favorited = $this->message->favorites->contains("user_id", $this->user->id);
     }
 
     #[On('add-like')]
@@ -55,7 +57,7 @@ class MessageWithReplay extends Component
             "user_id" => $this->user->id
         ]);
         $this->dispatch('add-like');
-        return;    
+        return;
     }
 
     public function addFavorite()
@@ -69,7 +71,7 @@ class MessageWithReplay extends Component
             "user_id" => $this->user->id
         ]);
         $this->dispatch('add-favorite');
-        return;  
+        return;
     }
 
 
