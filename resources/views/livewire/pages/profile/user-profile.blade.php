@@ -28,7 +28,7 @@
                     <div class="mt-2 w-full">
                         <div class="mb-4">
                             <div class="mt-2">
-                                <textarea wire:model="message" rows="3" placeholder="Send a message"
+                                <textarea wire:model="content" rows="3" placeholder="Send a message"
                                     class="block w-full rounded-md border-0 py-1.5 shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 dark:placeholder:text-white"></textarea>
                             </div>
                             <div class="text-danger">

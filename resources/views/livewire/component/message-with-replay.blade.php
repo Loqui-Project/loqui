@@ -6,21 +6,29 @@
         </div>
         <div class="flex items-center gap-4 flex-row w-full  border-b pb-4">
             <div class="w-12 h-12 flex justify-center items-center">
-                <img src="{{ $message->sender->mediaObject->media_path }}" alt="{{ $message->sender->name }}"
-                    class="w-10 h-10 rounded-full">
+                @if ($message->sender == null || !!$message->is_anon == true)
+                    <img src="{{ asset('images/default-avatar.png') }}" alt="default-avatar"
+                        class="w-10 h-10 rounded-full">
+                @else
+                    <img src="{{ $message->sender->mediaObject->media_path }}" alt="{{ $message->sender->name }}"
+                        class="w-10 h-10 rounded-full">
+                @endif
             </div>
             <div class="flex flex-col w-full">
                 <div class="flex justify-between w-full">
                     <span class="font-bold">
-                        {{ $message->sender->name }}
+                        {{ $message->sender == null || !!$message->is_anon == true ? 'Anonymous ' : optional($message->sender)->name }}
                     </span>
                     <span class="text-gray-400">
                         {{ $message->created_at->diffForHumans() }}
                     </span>
                 </div>
-                <div>
-                    <span class="text-gray-400">{{ '@' . $message->sender->username }}</span>
-                </div>
+                @if ($message->sender !== null && !!$message->is_anon == false)
+                    <div>
+                        <span class="text-gray-400">{{ '@' . $message->sender->username }}</span>
+                    </div>
+                @endif
+
             </div>
         </div>
         <div class="bg-brand-main/50 backdrop-blur-md w-full p-4 rounded-md">

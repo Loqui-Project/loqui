@@ -1,24 +1,31 @@
-<div class="col-span-1  flex flex-col items-start justify-start w-full gap-4 bg-white/60 dark:bg-white/100 p-6 shadow-lg rounded-lg">
+<div
+    class="col-span-1  flex flex-col items-start justify-start w-full gap-4 bg-white/60 dark:bg-white/100 p-6 shadow-lg rounded-lg">
     <div>
         <p class="font-bold text-md font-rubik">{{ $message->message }}</p>
     </div>
     <div class="flex items-center gap-4 flex-row w-full  border-b pb-4">
         <div class="w-12 h-12 flex justify-center items-center">
-            <img src="{{ $message->sender->mediaObject->media_path }}" alt="{{ $message->sender->name }}"
-                class="w-10 h-10 rounded-full">
+            @if ($message->sender == null || !!$message->is_anon == true)
+                <img src="{{ URL::asset('images/AnonImage.png') }}" alt="default-avatar" class="w-10 h-10 rounded-full">
+            @else
+                <img src="{{ $message->sender->mediaObject->media_path }}" alt="{{ $message->sender->name }}"
+                    class="w-10 h-10 rounded-full">
+            @endif
         </div>
         <div class="flex flex-col w-full">
             <div class="flex justify-between w-full">
                 <span class="font-bold">
-                    {{ $message->sender->name }}
+                    {{ $message->sender == null || !!$message->is_anon == true ? 'Anonymous ' : optional($message->sender)->name }}
                 </span>
                 <span class="text-gray-400">
                     {{ $message->created_at->diffForHumans() }}
                 </span>
             </div>
+            @if ($message->sender !== null && !!$message->is_anon == false)
             <div>
-                <span class="text-gray-400">{{ '@' . $message->sender->username }}</span>
-            </div>
+                    <span class="text-gray-400">{{ '@' . optional($message->sender)->username }}</span>
+                </div>
+            @endif
         </div>
     </div>
     <div class="w-full">
@@ -37,7 +44,7 @@
                             @enderror
                         </div>
                     </div>
-                  
+
 
                 </div>
             </div>
