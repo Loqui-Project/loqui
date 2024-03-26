@@ -1,4 +1,4 @@
-<header x-data="{ openMenu: true }"
+<header x-data="{ openMenu: false }"
     class="sticky inset-x-0 top-2 z-50 m-6 shadow-surface-glass max-laptop:py-4 backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
     <div class="container">
         <nav class="flex items-center justify-between laptop:px-8 " aria-label="Main navbar">
