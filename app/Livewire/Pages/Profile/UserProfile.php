@@ -3,24 +3,23 @@
 namespace App\Livewire\Pages\Profile;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class UserProfile extends Component
 {
-
-
     public $user;
     public bool $isFollowing = false;
     public bool $anonymously = false;
-
-    public Collection $messages;
-
-    #[Validate("required|string|min:2")]
-    public string $message = "";
-
+    public  $messages;
+    public string $content = "";
+    public function rules()
+    {
+        return [
+            'content' => 'required|min:5|max:255|string',
+        ];
+    }
     public function mount($username)
     {
         $this->user = User::where("username", $username)->first();
@@ -30,17 +29,17 @@ class UserProfile extends Component
             $this->isFollowing = false;
             $this->anonymously = true;
         }
-        $this->messages = $this->user->messages()->whereHas('replay')->get();
+        $this->messages = collect([]);
     }
     public function sendMessage()
     {
-        $this->validate();
         $this->user->messages()->create([
-            "message" => $this->message,
-            "user_id" => Auth::id(),
+            "message" => $this->content,
+            "user_id" => $this->user->id,
+            "sender_id" => null,
             "is_anon" => $this->anonymously
         ]);
-        $this->message = "";
+        $this->content = "";
     }
 
     public function follow()

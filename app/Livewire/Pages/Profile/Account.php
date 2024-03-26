@@ -44,7 +44,8 @@ class Account extends Component
         $this->username = $this->user->username;
     }
 
-    public function updateProfile() {
+    public function updateProfile()
+    {
         $this->validate();
 
         $this->user->name = $this->name;

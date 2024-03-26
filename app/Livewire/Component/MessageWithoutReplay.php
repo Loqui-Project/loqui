@@ -19,7 +19,6 @@ class MessageWithoutReplay extends Component
     public function mount(Message $message)
     {
         $this->message = $message;
-
     }
 
     public function addReplay()
