@@ -1,3 +1,4 @@
+@section('title', $user->name)
 <div class="container">
     <div class="max-w-screen-laptop mx-auto mt-10">
         <div
