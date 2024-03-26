@@ -25,6 +25,7 @@ Route::prefix("/auth")->name("auth.")->group(function () {
 
 
 Route::middleware("auth")->group(function () {
+    Route::redirect('/', '/home');
     Route::get('/home', Home::class)->name('home');
     Route::get('/inbox', Inbox::class)->name('inbox');
     Route::get('/search', Search::class)->name("search");
