@@ -17,13 +17,15 @@
     <meta name="robots" content="noindex,nofollow"/>
     <meta property="og:image" content="{{ URL::asset("default-image.png") }}" />
     @livewireStyles
-    @vite('resources/css/app.css')
+    @stack('styles')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="bg-white dark:bg-black">
     <x-header />
     @yield('content')
     @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>
