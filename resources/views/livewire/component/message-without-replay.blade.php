@@ -1,4 +1,4 @@
-<div class="flex flex-col items-start justify-start w-full gap-4 bg-white/60 dark:bg-white/100 p-6 shadow-lg rounded-lg">
+<div class="col-span-1  flex flex-col items-start justify-start w-full gap-4 bg-white/60 dark:bg-white/100 p-6 shadow-lg rounded-lg">
     <div>
         <p class="font-bold text-md font-rubik">{{ $message->message }}</p>
     </div>
