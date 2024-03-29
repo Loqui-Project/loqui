@@ -1,9 +1,8 @@
 <?php
 
-use App\Providers\RepositoryServiceProvider;
-
 return [
     App\Providers\AppServiceProvider::class,
+    App\Providers\RepositoryServiceProvider::class,
+    App\Providers\TelescopeServiceProvider::class,
     Intervention\Image\ImageServiceProvider::class,
-    RepositoryServiceProvider::class,
 ];
