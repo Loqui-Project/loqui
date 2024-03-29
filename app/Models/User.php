@@ -80,4 +80,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Message::class, 'liked_messages', 'user_id', 'message_id');
     }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'user_id');
+    }
 }
