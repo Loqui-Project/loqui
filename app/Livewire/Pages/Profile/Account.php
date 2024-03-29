@@ -4,6 +4,7 @@ namespace App\Livewire\Pages\Profile;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Intervention\Image\Facades\Image;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -52,7 +53,19 @@ class Account extends Component
         $this->user->email = $this->email;
         $this->user->username = $this->username;
 
+        if ($this->photo) {
+            $placeHolderImage = Image::make($this->photo);
+            // move image to storage
+            $placeHolderImage->save(public_path('storage/'.$placeHolderImage->basename));
+            $mediaObjectData = [
+                'media_path' => 'storage/'.$placeHolderImage->basename,
+            ];
+            $mediaObject = \App\Models\MediaObject::create($mediaObjectData);
+            $this->user->media_object_id = $mediaObject->id;
+        }
+
         if ($this->password) {
+
             $this->user->password = Hash::make($this->password);
         }
 
