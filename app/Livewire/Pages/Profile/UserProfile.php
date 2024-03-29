@@ -19,7 +19,7 @@ class UserProfile extends Component
     public Collection $userMessages;
 
 
-    public string $content;
+    public string $content ="";
 
     public function mount($username)
     {
