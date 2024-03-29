@@ -32,7 +32,7 @@
                                     class="block w-full rounded-md border-0 py-1.5 shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 dark:placeholder:text-white"></textarea>
                             </div>
                             <div class="text-danger">
-                                @error('message')
+                                @error('content')
                                     {{ $message }}
                                 @enderror
                             </div>
@@ -53,7 +53,7 @@
         </div>
         <div class="my-10">
             <div class="grid grid-cols-2 gap-10 max-laptop:grid-cols-1">
-                @foreach ($messages as $message)
+                @foreach ($userMessages as $message)
                     @livewire('component.message-with-replay', ['message' => $message], key($message->id))
                 @endforeach
             </div>

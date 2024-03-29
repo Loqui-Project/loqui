@@ -6,7 +6,7 @@
     <div class="flex items-center gap-4 flex-row w-full  border-b pb-4">
         <div class="w-12 h-12 flex justify-center items-center">
             @if ($message->sender == null || !!$message->is_anon == true)
-                <img src="{{ URL::asset('images/AnonImage.png') }}" alt="default-avatar" class="w-10 h-10 rounded-full">
+                <img src="{{ URL::asset('images/default-avatar.png') }}" alt="default-avatar" class="w-10 h-10 rounded-full">
             @else
                 <img src="{{ $message->sender->mediaObject->media_path }}" alt="{{ $message->sender->name }}"
                     class="w-10 h-10 rounded-full">
