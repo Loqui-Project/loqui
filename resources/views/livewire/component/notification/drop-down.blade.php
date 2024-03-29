@@ -1,4 +1,4 @@
-<div x-data="{ open: true }" class="relative">
+<div x-data="{ open: false }" class="relative">
     <button @click="open = ! open"
         class="text-sm font-semibold leading-6 flex flex-row gap-4 items-center text-gray-900 dark:text-white">
         <span>
@@ -21,9 +21,8 @@
                 @endforeach
             </ul>
         </nav>
-
-        <div class="flex flex-row items-center pt-4 gap-2">
-            <a href="/auth/sign-out" class="text-md font-bold leading-none text-danger">View all notifications</a>
+        <div class="flex flex-row items-center justify-center pt-4 gap-2">
+            <a href="#" class="text-md font-medium leading-none text-brand-dark dark:text-white">View all notifications</a>
         </div>
     </div>
 </div>

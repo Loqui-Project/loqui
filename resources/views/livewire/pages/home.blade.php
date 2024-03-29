@@ -16,7 +16,9 @@
         <div class="w-full max-w-screen-laptop overflow-hidden rounded-lg mx-auto my-10">
             <div class="grid grid-cols-2 gap-10 max-laptop:grid-cols-1">
                 @foreach ($messages as $message)
-                    @livewire('component.message-with-replay', ['message' => $message], key($message->id))
+                    <a href="{{ route("message.show", ["message" => $message]) }}">
+                        @livewire('component.message-with-replay', ['message' => $message], key($message->id))
+                    </a>
                 @endforeach
             </div>
         </div>

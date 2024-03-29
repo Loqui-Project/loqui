@@ -9,7 +9,8 @@
         </div>
         <div class="mx-auto max-w-2xl py-4 ">
             <div class="text-center">
-                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl dark:text-white">Welcome, {{ $user->name }}</h1>
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl dark:text-white">Welcome,
+                    {{ $user->name }}</h1>
                 <p class="mt-4 text-gray-400  dark:text-white">
                     You have {{ $messages->count() }} messages
                 </p>
@@ -18,7 +19,9 @@
         <div class="w-full max-w-screen-laptop overflow-hidden rounded-lg mx-auto my-10">
             <div class="grid grid-cols-2 gap-10 max-laptop:grid-cols-1">
                 @foreach ($messages as $message)
-                    @livewire('component.message-without-replay', ['message' => $message], key($message->id))
+                    <a href="{{ route('message.show', ['message' => $message]) }}">
+                        @livewire('component.message-without-replay', ['message' => $message], key($message->id))
+                    </a>
                 @endforeach
             </div>
         </div>

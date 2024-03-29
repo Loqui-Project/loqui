@@ -9,9 +9,12 @@ class MessageShow extends Component
 {
     public Message $message;
 
+    public $hasReplay = false;
+
     public function mount(Message $message)
     {
         $this->message = $message;
+        $this->hasReplay = $message->replay()->exists();
     }
 
     public function render()

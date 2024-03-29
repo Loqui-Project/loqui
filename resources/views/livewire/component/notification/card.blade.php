@@ -6,15 +6,15 @@
         <div class="flex flex-col  w-full">
             <p>
                 @if ($senderUsername == null)
-                    <span class="text-sm">{!! $senderName !!}</span>
+                    <span class="text-sm text-black dark:text-white">{!! $senderName !!}</span>
                 @else
-                    <a class="text-sm" href="{{ route('profile.user', ['username' => $senderUsername]) }}">
+                    <a class="text-sm text-black dark:text-white" href="{{ route('profile.user', ['username' => $senderUsername]) }}">
                         {!! $senderName !!}
                     </a>
                 @endif
             </p>
 
-            <time class="text-sm" datetime="{{ $notification->created_at }}">{{ $created_at }}</time>
+            <time class="text-sm text-black dark:text-white" datetime="{{ $notification->created_at }}">{{ $created_at }}</time>
         </div>
     </a>
     @if ($notification->read_at == null)
