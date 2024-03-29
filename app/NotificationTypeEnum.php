@@ -5,6 +5,7 @@ namespace App;
 enum NotificationTypeEnum: string
 {
     case NEW_MESSAGE = 'new_message';
+    case NEW_LIKE = 'new_like';
 
     public static function values(): array
     {
