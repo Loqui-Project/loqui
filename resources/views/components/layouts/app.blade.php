@@ -22,7 +22,7 @@
 </head>
 
 <body class="bg-white dark:bg-black">
-    <x-header />
+    @livewire("component.header")
     @yield('content')
     @livewireScripts
     @stack('scripts')
