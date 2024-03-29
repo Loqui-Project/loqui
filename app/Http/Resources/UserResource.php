@@ -25,19 +25,20 @@ class UserResource extends JsonResource
             'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            "following" => $this->following->count(),
-            "followers" => $this->follower->count(),
-            "messages" => $this->messages->count(),
-            "is_following" => $this->follower->contains($request->user()),
-            "mutual_friends" =>  $this->whenLoaded('follower', function () use ($request) {
+            'following' => $this->following->count(),
+            'followers' => $this->follower->count(),
+            'messages' => $this->messages->count(),
+            'is_following' => $this->follower->contains($request->user()),
+            'mutual_friends' => $this->whenLoaded('follower', function () use ($request) {
                 $mutual_friends = collect($this->follower->intersect($request->user()->follower))->map(function ($user) {
                     return [
-                        "id" => $user->id,
+                        'id' => $user->id,
                         'name' => $user->name,
-                        "username" => $user->username,
-                        "profile_image" => $user->mediaObject ? new MediaObjectResource($user->mediaObject) : null,
+                        'username' => $user->username,
+                        'profile_image' => $user->mediaObject ? new MediaObjectResource($user->mediaObject) : null,
                     ];
                 });
+
                 return $mutual_friends;
             }),
         ];

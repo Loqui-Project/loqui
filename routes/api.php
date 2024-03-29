@@ -31,8 +31,8 @@ Route::prefix('/user')->name('user.')->middleware('auth:api')->controller(UserCo
     Route::get('/profile', 'getMyProfile');
     Route::get('/profile/followers', 'getMyFollowers');
     Route::get('/profile/followings', 'getMyFollowings');
-    Route::post("/profile/update", "updateUserInformation");
-    Route::get("/profile/{username}", "getUserProfile");
+    Route::post('/profile/update', 'updateUserInformation');
+    Route::get('/profile/{username}', 'getUserProfile');
     Route::prefix('/following')->name('following.')->controller(UserController::class)->group(function () {
         Route::get('/list', 'getFollowingList');
         Route::post('/add', 'addUserToFollowingList');
@@ -56,5 +56,5 @@ Route::prefix('/messages')->name('messages.')->middleware('auth:api')->controlle
     Route::post('/favorite', 'favoriteMessage');
 });
 Route::middleware('auth:api')->controller(GeneralController::class)->group(function () {
-    Route::get('/search', "search");
+    Route::get('/search', 'search');
 });

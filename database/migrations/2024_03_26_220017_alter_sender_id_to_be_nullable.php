@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('messages', function (Blueprint $table) {
             $table->foreignId('user_id')->change();
             $table->foreignId('sender_id')->nullable()->change();
-        
+
         });
     }
 

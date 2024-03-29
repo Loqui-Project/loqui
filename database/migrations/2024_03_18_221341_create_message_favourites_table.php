@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('message_favourites', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained("users")->cascadeOnDelete();
-            $table->foreignId('message_id')->constrained("messages")->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('message_id')->constrained('messages')->cascadeOnDelete();
             $table->timestamps();
         });
     }

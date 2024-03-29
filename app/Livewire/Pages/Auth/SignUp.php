@@ -11,7 +11,6 @@ use Livewire\Component;
 
 class SignUp extends Component
 {
-
     #[Validate('required|min:3')]
     public string $name;
 
@@ -27,20 +26,20 @@ class SignUp extends Component
     #[Validate('required|min:6')]
     public string $password_confirmation;
 
-
     public function signUp()
     {
         $this->validate();
         try {
-            $defaultImage= MediaObject::first();
+            $defaultImage = MediaObject::first();
             $user = User::create([
                 'name' => $this->name,
                 'username' => $this->username,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
-                'media_object_id' =>  $defaultImage->id,
+                'media_object_id' => $defaultImage->id,
             ]);
             Auth::login($user);
+
             return redirect()->route('home');
         } catch (\Throwable $th) {
             $this->addError('email', $th->getMessage());

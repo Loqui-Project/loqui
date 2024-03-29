@@ -17,7 +17,8 @@ class MessageFactory extends Factory
     public function definition(): array
     {
         $user = \App\Models\User::inRandomOrder()->first();
-        $sender = \App\Models\User::inRandomOrder()->where("id", "!=", $user->id)->first();
+        $sender = \App\Models\User::inRandomOrder()->where('id', '!=', $user->id)->first();
+
         return [
             'user_id' => $user->id,
             'sender_id' => $sender->id,

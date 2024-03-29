@@ -13,5 +13,6 @@ Broadcast::channel('channel_for_everyone', function ($user) {
 
 Broadcast::channel('message.{userId}', function ($userId) {
     dd($userId);
+
     return Auth::check() && $userId == Auth::id();
 });

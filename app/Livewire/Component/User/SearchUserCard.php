@@ -9,7 +9,6 @@ use Livewire\Component;
 
 class SearchUserCard extends Component
 {
-
     public User $user;
 
     public bool $isFollowing = false;
@@ -19,6 +18,7 @@ class SearchUserCard extends Component
         $this->user = $user;
         $this->isFollowing = Auth::user()->following->contains($user);
     }
+
     public function follow($id)
     {
         $user = User::find($id);
@@ -27,15 +27,15 @@ class SearchUserCard extends Component
         $currentUser = Auth::user();
         if ($this->isFollowing) {
             UserFollow::where([
-                "follower_id" => $currentUser->id,
-                "following_id" => $user->id
+                'follower_id' => $currentUser->id,
+                'following_id' => $user->id,
             ])->delete();
             $this->isFollowing = false;
         } else {
 
             UserFollow::create([
-                "follower_id" => $currentUser->id,
-                "following_id" => $user->id
+                'follower_id' => $currentUser->id,
+                'following_id' => $user->id,
             ]);
             $this->isFollowing = true;
         }
@@ -45,8 +45,8 @@ class SearchUserCard extends Component
     public function render()
     {
         return view('livewire.component.user.search-user-card', [
-            "user" => $this->user,
-            "isFollowing" => $this->isFollowing
+            'user' => $this->user,
+            'isFollowing' => $this->isFollowing,
         ]);
     }
 }

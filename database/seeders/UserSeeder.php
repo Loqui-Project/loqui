@@ -16,12 +16,12 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $defaultImage = public_path("images/default-avatar.png");
+        $defaultImage = public_path('images/default-avatar.png');
         $placeHolderImage = Image::make($defaultImage);
         // move image to storage
         $placeHolderImage->save(public_path('storage/'.$placeHolderImage->basename));
         $mediaObjectData = [
-            'media_path' => 'storage/' .$placeHolderImage->basename,
+            'media_path' => 'storage/'.$placeHolderImage->basename,
         ];
         \App\Models\MediaObject::create($mediaObjectData);
         User::factory()->create([

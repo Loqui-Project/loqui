@@ -6,7 +6,6 @@ use App\Models\MediaObject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
@@ -20,7 +19,8 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $defaultImage= MediaObject::first();
+        $defaultImage = MediaObject::first();
+
         return [
             'username' => fake()->userName(),
             'name' => fake()->name(),
@@ -28,7 +28,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => Hash::make('password'), // password
             'remember_token' => Str::random(10),
-            'media_object_id' =>  $defaultImage->id,
+            'media_object_id' => $defaultImage->id,
         ];
     }
 

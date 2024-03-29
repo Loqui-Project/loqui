@@ -22,7 +22,7 @@ class UserHeaderCard extends Component
     public function render(): View|Closure|string
     {
         return view('components.user-header-card', [
-            'user' => Auth::user()
+            'user' => Auth::user(),
         ]);
     }
 }

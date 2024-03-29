@@ -52,7 +52,7 @@ class User extends Authenticatable
 
     public function following(): HasManyThrough
     {
-        return $this->hasManyThrough(User::class, UserFollow::class, "follower_id", "id", "id", "following_id");
+        return $this->hasManyThrough(User::class, UserFollow::class, 'follower_id', 'id', 'id', 'following_id');
     }
 
     public function follower(): HasManyThrough
@@ -60,8 +60,7 @@ class User extends Authenticatable
         return $this->hasManyThrough(User::class, UserFollow::class, 'following_id', 'id', 'id', 'follower_id');
     }
 
-    
-    public function messages() : HasMany
+    public function messages(): HasMany
     {
         return $this->hasMany(Message::class, 'user_id');
     }

@@ -29,11 +29,12 @@ class UserController extends Handler
      */
     public function getMyProfile(Request $request): JsonResponse
     {
-        $currentUser = $request->user("api");
+        $currentUser = $request->user('api');
 
-        $userCache = Cache::store('redis')->remember('user:' . $currentUser->id . ":profile", 3600, function () use ($currentUser) {
+        $userCache = Cache::store('redis')->remember('user:'.$currentUser->id.':profile', 3600, function () use ($currentUser) {
             return $this->userRepository->getUserById($currentUser->id);
         });
+
         return $this->responseSuccess(new UserResource($userCache));
     }
 
@@ -42,33 +43,33 @@ class UserController extends Handler
      */
     public function getFollowingList(Request $request): JsonResponse
     {
-        $currentUser = $request->user("api");
-        $userFollowingList = Cache::store('redis')->remember('user:' . $currentUser->id . ":profile:following_list", 3600, function () use ($currentUser) {
+        $currentUser = $request->user('api');
+        $userFollowingList = Cache::store('redis')->remember('user:'.$currentUser->id.':profile:following_list', 3600, function () use ($currentUser) {
             return $this->userFollowingRepository->getAllFollowingUsers($currentUser->id);
         });
+
         return $this->responseSuccess(UserResource::collection($userFollowingList));
     }
 
     /**
      * Add user to following list
-     *
-     * @param  AddUserToFollowingList  $request
      */
     public function addUserToFollowingList(AddUserToFollowingList $request)
     {
         try {
-            $currentUser = $request->user("api");
+            $currentUser = $request->user('api');
             $actionStatus = $this->userFollowingRepository->addFollowingUser($currentUser->id, $request->follow_id);
             if ($actionStatus) {
-                Cache::store('redis')->forget('user:' . $currentUser->id . ":profile:following_list");
+                Cache::store('redis')->forget('user:'.$currentUser->id.':profile:following_list');
                 $followUser = $this->userRepository->getUserById($request->follow_id);
                 $followUser->notify(new NewFollowerNotification($currentUser, $followUser));
+
                 return $this->responseSuccess(null, 201);
             } else {
                 return $this->responseError('User is already following', 400);
             }
         } catch (\Throwable $th) {
-            return $this->responseError('Error' . $th->getMessage(), 500);
+            return $this->responseError('Error'.$th->getMessage(), 500);
         }
     }
 
@@ -80,42 +81,35 @@ class UserController extends Handler
     public function removeUserFromFollowingList(RemoveUserFromFollowingList $request): JsonResponse
     {
         try {
-            $currentUser = $request->user("api");
+            $currentUser = $request->user('api');
             $res = $this->userFollowingRepository->removeFollowingUser($currentUser->id, $request->follow_id);
             if ($res) {
-                Cache::store('redis')->forget('user:' . $currentUser->id . ":profile:following_list");
+                Cache::store('redis')->forget('user:'.$currentUser->id.':profile:following_list');
+
                 return $this->responseSuccess(null, 201);
             } else {
                 return $this->responseError('User is not following', 400);
             }
         } catch (\Throwable $th) {
-            return $this->responseError('Error' . $th->getMessage(), 500);
+            return $this->responseError('Error'.$th->getMessage(), 500);
         }
     }
 
     /**
      * Get user followers list
-     *
-     * @param Request $request
-     *
-     * @return JsonResponse
      */
     public function getFollowersList(Request $request): JsonResponse
     {
         $currentUser = $request->user();
-        $users = Cache::store('redis')->remember('user:' . $currentUser->id . ":profile:followers_list", 3600, function () use ($currentUser) {
-            return  $this->userFollowerRepository->getAllFollowerUsers($currentUser->id);
+        $users = Cache::store('redis')->remember('user:'.$currentUser->id.':profile:followers_list', 3600, function () use ($currentUser) {
+            return $this->userFollowerRepository->getAllFollowerUsers($currentUser->id);
         });
+
         return $this->responseSuccess(UserResource::collection($users));
     }
 
-
     /**
      * Add user to following list
-     *
-     * @param  AddUserToFollowersList  $request
-     *
-     * @return JsonResponse
      */
     public function addUserToFollowersList(AddUserToFollowersList $request): JsonResponse
     {
@@ -123,23 +117,19 @@ class UserController extends Handler
             $currentUser = $request->user();
             $actionStatus = $this->userFollowerRepository->addFollowerUser($currentUser->id, $request->follow_id);
             if ($actionStatus) {
-                Cache::store('redis')->forget('user:' . $currentUser->id . ":profile:followers_list");
+                Cache::store('redis')->forget('user:'.$currentUser->id.':profile:followers_list');
 
                 return $this->responseSuccess(null, 201);
             } else {
-                return $this->responseSuccess("You already follow this user", 400);
+                return $this->responseSuccess('You already follow this user', 400);
             }
         } catch (\Throwable $th) {
-            return $this->responseError('Error' . $th->getMessage(), 500);
+            return $this->responseError('Error'.$th->getMessage(), 500);
         }
     }
 
     /**
      * Remove user to following list
-     *
-     * @param  RemoveUserFromFollowersList  $request
-     *
-     *
      */
     public function removeUserFromFollowersList(RemoveUserFromFollowersList $request): JsonResponse
     {
@@ -147,47 +137,45 @@ class UserController extends Handler
             $currentUser = $request->user();
             $res = $this->userFollowerRepository->removeFollowerUser($currentUser->id, $request->follow_id);
             if ($res) {
-                Cache::store('redis')->forget('user:' . $currentUser->id . ":profile:followers_list");
+                Cache::store('redis')->forget('user:'.$currentUser->id.':profile:followers_list');
+
                 return $this->responseSuccess(null, 201);
             } else {
                 return $this->responseError('User is not follow you', 400);
             }
         } catch (\Throwable $th) {
-            return $this->responseError('Error' . $th->getMessage(), 500);
+            return $this->responseError('Error'.$th->getMessage(), 500);
         }
     }
 
-
     /**
      * Update user information
-     *
-     * @param  ProfileUpdateRequest  $request
-     *
-     * @return JsonResponse
      */
     public function updateUserInformation(ProfileUpdateRequest $request): JsonResponse
     {
         try {
             $currentUser = $request->user();
             $this->userRepository->updateUser($currentUser->id, $request->getInput());
+
             return $this->responseSuccess([
-                'message' => "User information updated successfully."
+                'message' => 'User information updated successfully.',
             ], 201);
         } catch (\Throwable $th) {
-            return $this->responseError('' . $th->getMessage(), 500);
+            return $this->responseError(''.$th->getMessage(), 500);
         }
     }
 
     public function getUserProfile(string $username): JsonResponse|string
     {
         try {
-            $user  = User::where('username', $username)->first();
-            if (!$user) {
+            $user = User::where('username', $username)->first();
+            if (! $user) {
                 return $this->responseError('User not found', 404);
             }
+
             return $this->responseSuccess(new UserResource($user));
         } catch (\Throwable $th) {
-            return $this->responseError('' . $th->getMessage(), 500);
+            return $this->responseError(''.$th->getMessage(), 500);
         }
     }
 }

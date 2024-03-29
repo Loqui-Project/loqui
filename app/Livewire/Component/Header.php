@@ -2,16 +2,13 @@
 
 namespace App\Livewire\Component;
 
-use App\Models\Message;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Header extends Component
 {
-
-    public User|null $user;
+    public ?User $user;
 
     public function mount()
     {

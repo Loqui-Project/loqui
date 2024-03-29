@@ -5,7 +5,6 @@ namespace App\Repositories;
 use App\Interfaces\UserFollowingRepositoryInterface;
 use App\Interfaces\UserRepositoryInterface;
 use App\Models\UserFollow;
-use App\Models\UserFollowing;
 use Illuminate\Database\Eloquent\Collection;
 
 class UserFollowingRepository implements UserFollowingRepositoryInterface
@@ -24,6 +23,7 @@ class UserFollowingRepository implements UserFollowingRepositoryInterface
     {
         $user = $this->userRepository->getUserById($id);
         $userFollowerList = $user->following()->get();
+
         return $userFollowerList;
     }
 
@@ -38,9 +38,10 @@ class UserFollowingRepository implements UserFollowingRepositoryInterface
         }
 
         $userFollowing = new UserFollow([
-            'follower_id' =>  $userId,
+            'follower_id' => $userId,
             'following_id' => $followId,
         ]);
+
         return $userFollowing->save();
     }
 
@@ -53,6 +54,7 @@ class UserFollowingRepository implements UserFollowingRepositoryInterface
         if ($checkIfUserFollowing->exists()) {
             return $checkIfUserFollowing->delete();
         }
+
         return false;
     }
 }

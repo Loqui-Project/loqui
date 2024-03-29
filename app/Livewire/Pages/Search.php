@@ -8,39 +8,33 @@ use Livewire\Component;
 
 class Search extends Component
 {
-
-    public $search = "";
+    public $search = '';
 
     public $users;
 
-
-
     public function mount()
     {
-        $this->users = User::withCount(["messages" => function ($query) {
-            $query->whereHas("replay");
-        }])->where("id", "!=", Auth::user()->id)->get();
+        $this->users = User::withCount(['messages' => function ($query) {
+            $query->whereHas('replay');
+        }])->where('id', '!=', Auth::user()->id)->get();
     }
 
     public function updatedSearch()
     {
         $this->users = User::whereAny(
-            ["name", "email", "username"],
-            "LIKE",
+            ['name', 'email', 'username'],
+            'LIKE',
             "%{$this->search}%"
         )
-            ->withCount(["messages" => function ($query) {
-                $query->whereHas("replay");
+            ->withCount(['messages' => function ($query) {
+                $query->whereHas('replay');
             }])->get();
     }
-
-
-
 
     public function render()
     {
         return view('livewire.pages.search', [
-            "users" => $this->users
+            'users' => $this->users,
         ])->extends('components.layouts.app');
     }
 }

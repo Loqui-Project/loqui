@@ -31,11 +31,11 @@ class MessageResource extends JsonResource
             }),
             'created_at' => Carbon::parse($this->created_at)->format('D-M-Y'),
             'is_new' => $is_newest,
-            "likes" => $this->likes->count(),
-            "liked" => $this->likes->contains("user_id", $request->user()->id),
-            "favorites" => $this->favorites->count(),
-            "favorited" => $this->favorites->contains("user_id", $request->user()->id),
-            
+            'likes' => $this->likes->count(),
+            'liked' => $this->likes->contains('user_id', $request->user()->id),
+            'favorites' => $this->favorites->count(),
+            'favorited' => $this->favorites->contains('user_id', $request->user()->id),
+
         ];
     }
 }
