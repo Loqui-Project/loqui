@@ -68,7 +68,7 @@ class AuthController extends Handler
         try {
             $credentials = $request->getInput();
             $credentials['password'] = Hash::make($credentials['password']);
-            $defaultImage = public_path("images/AnonImage.png");
+            $defaultImage = public_path("images/default-avatar.png");
             $placeHolderImage = Image::make($defaultImage);
             // move image to storage
             $placeHolderImage->save(public_path('storage/'.$placeHolderImage->basename));
