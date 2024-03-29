@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 use Livewire\WithFileUploads;
-use Livewire\Attributes\Validate;
 
 class Account extends Component
 {
@@ -30,12 +29,13 @@ class Account extends Component
     {
         return [
             'photo' => 'nullable|image|max:1024',
-            'username' => 'nullable|min:5|max:15|unique:users,username,' . $this->user->id,
+            'username' => 'nullable|min:5|max:15|unique:users,username,'.$this->user->id,
             'name' => 'required|min:5|max:50',
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
+            'email' => 'required|email|unique:users,email,'.$this->user->id,
             'password' => 'nullable|min:8|max:20|confirmed',
         ];
     }
+
     public function mount()
     {
         $this->user = Auth::user();
@@ -62,7 +62,7 @@ class Account extends Component
     public function render()
     {
         return view('livewire.pages.profile.account', [
-            'user' => $this->user
+            'user' => $this->user,
         ])->extends('components.layouts.app');
     }
 }

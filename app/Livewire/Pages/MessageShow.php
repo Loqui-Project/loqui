@@ -7,7 +7,6 @@ use Livewire\Component;
 
 class MessageShow extends Component
 {
-
     public Message $message;
 
     public function mount(Message $message)

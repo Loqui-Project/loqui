@@ -1,7 +1,5 @@
 <?php
 
-use App\Livewire\Component\Notification;
-use App\Models\NotificationTemplate;
 use App\NotificationTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;

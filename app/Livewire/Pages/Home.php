@@ -7,10 +7,9 @@ use Livewire\Component;
 
 class Home extends Component
 {
-
     public function mount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
 
@@ -21,9 +20,10 @@ class Home extends Component
         /* @var \App\Models\User $user */
         $user = Auth::user();
         $messages = $user->messages()->whereHas('replay')->get();
+
         return view('livewire.pages.home', [
             'user' => $user,
-            "messages" => $messages
+            'messages' => $messages,
         ])->extends('components.layouts.app');
     }
 }

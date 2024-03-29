@@ -14,7 +14,6 @@ class SignIn extends Component
     #[Validate('required|min:6')]
     public string $password = '';
 
-
     public function signIn()
     {
         $this->validate();

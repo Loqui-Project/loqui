@@ -20,10 +20,6 @@ class AuthController extends Handler
 
     /**
      * Sign in request
-     *
-     * @param SignInRequest $request
-     *
-     * @return JsonResponse
      */
     public function signIn(SignInRequest $request): JsonResponse
     {
@@ -59,21 +55,19 @@ class AuthController extends Handler
     /**
      * Sign Up Request
      *
-     * @param \App\Http\Requests\API\SignUpRequest $request
-     *
-     * @return \Illuminate\Http\JsonResponse
+     * @param  \App\Http\Requests\API\SignUpRequest  $request
      */
     public function signUp(SignUpRequest $request): JsonResponse
     {
         try {
             $credentials = $request->getInput();
             $credentials['password'] = Hash::make($credentials['password']);
-            $defaultImage = public_path("images/default-avatar.png");
+            $defaultImage = public_path('images/default-avatar.png');
             $placeHolderImage = Image::make($defaultImage);
             // move image to storage
             $placeHolderImage->save(public_path('storage/'.$placeHolderImage->basename));
             $mediaObjectData = [
-                'media_path' => 'storage/' .$placeHolderImage->basename,
+                'media_path' => 'storage/'.$placeHolderImage->basename,
             ];
             $image = \App\Models\MediaObject::create($mediaObjectData);
             $credentials['media_object_id'] = $image->id;
@@ -89,6 +83,7 @@ class AuthController extends Handler
                 'password' => $request->getInput()['password'],
                 'scope' => '',
             ]);
+
             return $this->responseSuccess([
                 'token' => $token,
                 'user' => new UserResource($user),
@@ -100,10 +95,6 @@ class AuthController extends Handler
 
     /**
      * Sign out request
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\JsonResponse
      */
     public function signOut(Request $request): JsonResponse
     {

@@ -9,17 +9,18 @@ use Illuminate\Support\Facades\Auth;
 class AddReplayToMessageRequest extends FormRequest
 {
     use FailedValidationTrait;
-    
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        $messageId = $this->only("message_id")["message_id"];
-        $message = $this->user()->messages()->where("id", $messageId)->first();
+        $messageId = $this->only('message_id')['message_id'];
+        $message = $this->user()->messages()->where('id', $messageId)->first();
         if ($message === null) {
             return false;
         }
+
         return Auth::check() && Auth::user()->id === $message->user_id;
     }
 
@@ -31,22 +32,21 @@ class AddReplayToMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "message_id" => "required|exists:messages,id",
-            "replay" => "required|string",
+            'message_id' => 'required|exists:messages,id',
+            'replay' => 'required|string',
         ];
     }
 
-
     public function getMessageId(): int
     {
-        return $this->only("message_id")["message_id"];
+        return $this->only('message_id')['message_id'];
     }
 
     public function getData(): array
     {
         return [
-            ...$this->except("message_id"),
-            "user_id" => Auth::id(),
+            ...$this->except('message_id'),
+            'user_id' => Auth::id(),
         ];
     }
 }

@@ -7,8 +7,8 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SignUpRequest extends FormRequest
 {
-
     use FailedValidationTrait;
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -38,6 +38,4 @@ class SignUpRequest extends FormRequest
     {
         return $this->only(['name', 'username', 'email', 'password']);
     }
-
-
 }

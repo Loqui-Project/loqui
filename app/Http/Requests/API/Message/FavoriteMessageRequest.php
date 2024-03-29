@@ -15,7 +15,7 @@ class FavoriteMessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return Auth::check() && Auth::user()->id === $this->only("user_id")["user_id"];
+        return Auth::check() && Auth::user()->id === $this->only('user_id')['user_id'];
     }
 
     /**
@@ -26,13 +26,13 @@ class FavoriteMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "message_id" => "required|exists:messages,id",
-            "user_id" => "required|exists:users,id",
+            'message_id' => 'required|exists:messages,id',
+            'user_id' => 'required|exists:users,id',
         ];
     }
 
     public function getMessageId(): int
     {
-        return $this->only("message_id")["message_id"];
+        return $this->only('message_id')['message_id'];
     }
 }

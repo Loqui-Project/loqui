@@ -10,11 +10,10 @@ use Livewire\Component;
 
 class MessageWithoutReplay extends Component
 {
-
     public Message $message;
 
     #[Validate('required|min:6')]
-    public string $replay = "";
+    public string $replay = '';
 
     public function mount(Message $message)
     {
@@ -26,7 +25,7 @@ class MessageWithoutReplay extends Component
         $this->validate();
         $this->message->replay()->create([
             'text' => $this->replay,
-            'user_id' => Auth::id()
+            'user_id' => Auth::id(),
         ]);
         $this->dispatch('add-replay')->to(Inbox::class);
     }

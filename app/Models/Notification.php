@@ -18,11 +18,10 @@ class Notification extends Model
         'read_at',
     ];
 
-
     protected $casts = [
         'data' => 'array',
         'read_at' => 'datetime',
-        "created_at" => 'datetime',
+        'created_at' => 'datetime',
     ];
 
     public function markAsRead()
@@ -44,7 +43,7 @@ class Notification extends Model
 
     public function isUnread(): bool
     {
-        return !$this->isRead();
+        return ! $this->isRead();
     }
 
     public function isType(string $type): bool
@@ -56,5 +55,4 @@ class Notification extends Model
     {
         return $this->whereNull('read_at');
     }
-
 }

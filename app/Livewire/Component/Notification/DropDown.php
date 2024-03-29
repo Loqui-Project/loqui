@@ -11,15 +11,16 @@ class DropDown extends Component
 {
     public Collection $notifications;
 
-    public User|null $user = null;
+    public ?User $user = null;
+
     public $count = 0;
+
     public function mount()
     {
         $this->user = Auth::user();
-        $this->notifications = $this->user->notifications()->orderBy("created_at", "desc")->limit(5)->get();
-        $this->count = $this->user->notifications()->whereNull("read_at")->count();
+        $this->notifications = $this->user->notifications()->orderBy('created_at', 'desc')->limit(5)->get();
+        $this->count = $this->user->notifications()->whereNull('read_at')->count();
     }
-
 
     public function getListeners()
     {
@@ -30,8 +31,8 @@ class DropDown extends Component
 
     public function refresh()
     {
-        $this->notifications = $this->user->notifications()->orderBy("created_at", "desc")->limit(5)->get();
-        $this->count = $this->user->notifications()->whereNull("read_at")->count();
+        $this->notifications = $this->user->notifications()->orderBy('created_at', 'desc')->limit(5)->get();
+        $this->count = $this->user->notifications()->whereNull('read_at')->count();
     }
 
     public function render()

@@ -11,13 +11,12 @@ use Livewire\Component;
 class Inbox extends Component
 {
     public Collection $messages;
+
     public User $user;
-
-
 
     public function mount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
         $this->user = Auth::user();
@@ -30,12 +29,11 @@ class Inbox extends Component
         $this->messages = $this->user->messages()->doesntHave('replay')->get();
     }
 
-
     public function render()
     {
         return view('livewire.pages.inbox', [
             'user' => $this->user,
-            "messages" => $this->messages
+            'messages' => $this->messages,
         ])->extends('components.layouts.app');
     }
 }
