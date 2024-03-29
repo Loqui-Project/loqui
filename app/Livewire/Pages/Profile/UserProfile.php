@@ -13,7 +13,7 @@ use Livewire\Component;
 class UserProfile extends Component
 {
     public User|null $user;
-    public User|null $authUser;
+    public User|null $authUser = null;
     public bool $isFollowing = false;
     public bool $anonymously = false;
     public Collection $userMessages;
