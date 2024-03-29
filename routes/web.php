@@ -4,6 +4,7 @@ use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Auth\SignIn;
 use App\Livewire\Pages\Auth\SignUp;
 use App\Livewire\Pages\Inbox;
+use App\Livewire\Pages\MessageShow;
 use App\Livewire\Pages\Profile\Account;
 use App\Livewire\Pages\Profile;
 use App\Livewire\Pages\Search;
@@ -35,3 +36,4 @@ Route::middleware("auth")->group(function () {
 });
 
 Route::get('/@{username}', Profile\UserProfile::class)->name("profile.user");
+Route::get('/message/{message}', MessageShow::class)->name("message.show");
