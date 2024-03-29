@@ -2,59 +2,65 @@
 
 namespace App\Livewire\Pages\Profile;
 
+use App\Events\NewMessageEvent;
+use App\Jobs\NewMessageJob;
+use App\Models\Message;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
-use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class UserProfile extends Component
 {
-    public $user;
+    public User|null $user;
+    public User|null $authUser;
     public bool $isFollowing = false;
     public bool $anonymously = false;
-    public  $messages;
-    public string $content = "";
-    public function rules()
-    {
-        return [
-            'content' => 'required|min:5|max:255|string',
-        ];
-    }
+    public Collection $userMessages;
+
+
+    public string $content;
+
     public function mount($username)
     {
         $this->user = User::where("username", $username)->first();
-        if (Auth::check()) {
-            $this->isFollowing = Auth::user()->following->contains($this->user);
+        $this->authUser = Auth::user();
+        if ($this->authUser) {
+            $this->isFollowing = $this->authUser->following->contains($this->user);
         } else {
             $this->isFollowing = false;
             $this->anonymously = true;
         }
-        $this->messages = collect([]);
+        $this->userMessages = $this->user->messages()->whereHas("replay")->latest()->get();
     }
     public function sendMessage()
     {
-        $this->user->messages()->create([
+        $this->validate([
+            "content" => "required|min:1"
+        ]);
+        $message = $this->user->messages()->create([
             "message" => $this->content,
             "user_id" => $this->user->id,
-            "sender_id" => null,
+            "sender_id" => $this->authUser ? $this->authUser->id : null,
             "is_anon" => $this->anonymously
         ]);
+        NewMessageJob::dispatch($message);
         $this->content = "";
     }
 
     public function follow()
     {
-        if (Auth::check() == false) {
+        if (!$this->authUser) {
             $this->dispatch('not-auth-for-follow');
             return;
         }
 
         if ($this->isFollowing) {
-            Auth::user()->following()->detach($this->user);
+            $this->authUser->following()->detach($this->user);
             $this->isFollowing = false;
             return;
         }
-        Auth::user()->following()->attach($this->user);
+        $this->authUser->following()->attach($this->user);
         $this->isFollowing = true;
     }
 
