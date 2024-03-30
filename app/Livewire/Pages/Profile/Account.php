@@ -30,7 +30,7 @@ class Account extends Component
     {
         return [
             'photo' => 'nullable|image|max:1024',
-            'username' => 'nullable|min:5|max:15|unique:users,username,'.$this->user->id,
+            'username' => 'nullable|min:5|max:30|unique:users,username,'.$this->user->id,
             'name' => 'required|min:5|max:50',
             'email' => 'required|email|unique:users,email,'.$this->user->id,
             'password' => 'nullable|min:8|max:20|confirmed',

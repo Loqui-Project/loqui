@@ -1,4 +1,4 @@
-@section('title', "Account")
+@section('title', 'Account')
 
 <div class="container ">
     <div class="max-w-lg mx-auto py-4">
@@ -14,7 +14,10 @@
                         <div class="col-span-full">
                             <label for="photo"
                                 class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">Photo</label>
-                            <div class="mt-2 flex items-center gap-x-3 relative">
+                            <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true"
+                                x-on:livewire-upload-finish="uploading = false; progress = 0;"
+                                x-on:livewire-upload-progress="progress = $event.detail.progress"
+                                class="mt-2 flex items-center gap-x-3 relative">
                                 @if ($photo)
                                     <img src="{{ $photo->temporaryUrl() }}" alt="{{ $user->name }}"
                                         class="h-12 w-12 rounded-full">
@@ -29,6 +32,12 @@
                                     <button type="button"
                                         class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Change</button>
 
+                                </div>
+                                <div x-show="uploading" class="w-full">
+                                    <div class="w-full h-4 bg-slate-100 rounded-lg shadow-inner mt-3">
+                                        <div class="bg-green-500 h-4 rounded-lg" :style="{ width: `${progress}%` }">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     @error('photo')
@@ -62,7 +71,8 @@
                 <div class="border-b border-gray-900/10 pb-12">
                     <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Personal Information
                     </h2>
-                    <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-200">Use a permanent address where you can receive mail.
+                    <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-200">Use a permanent address where you
+                        can receive mail.
                     </p>
 
                     <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
@@ -103,7 +113,8 @@
 
                 <div class="border-b border-gray-900/10 pb-12">
                     <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Notifications</h2>
-                    <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-200">We'll always let you know about important changes,
+                    <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-200">We'll always let you know about
+                        important changes,
                         but
                         you pick what else you want to hear about.</p>
 
@@ -151,7 +162,8 @@
                             </div>
                         </fieldset>
                         <fieldset>
-                            <legend class="text-sm font-semibold leading-6 text-gray-900 dark:text-white">By Browser Notification
+                            <legend class="text-sm font-semibold leading-6 text-gray-900 dark:text-white">By Browser
+                                Notification
                             </legend>
                             <div class="mt-6 space-y-6">
                                 <div class="relative flex gap-x-3">
