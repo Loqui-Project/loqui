@@ -14,10 +14,10 @@ class NotificationTemplateSeeder extends Seeder
     public function run(): void
     {
         NotificationTemplate::create([
-            'type' => NotificationTypeEnum::NEW_MESSAGE,
-            'name' => 'New Message from :sender',
-            'subject' => 'New Message from :sender',
-            'body' => 'You have a new message from :sender',
+            'type' => NotificationTypeEnum::NEW_FOLLOWER,
+            'name' => ':sender followed you',
+            'subject' => ':sender followed you',
+            'body' => ':sender followed you',
         ]);
     }
 }
