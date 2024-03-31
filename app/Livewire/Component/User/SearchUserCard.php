@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Component\User;
 
+use App\Jobs\NewFollowerJob;
 use App\Models\User;
 use App\Models\UserFollow;
 use Illuminate\Support\Facades\Auth;
@@ -38,6 +39,7 @@ class SearchUserCard extends Component
                 'following_id' => $user->id,
             ]);
             $this->isFollowing = true;
+            NewFollowerJob::dispatch($user, $currentUser);
         }
         $this->user = $user;
     }

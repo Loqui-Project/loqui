@@ -4,6 +4,7 @@ namespace App\Livewire\Pages;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class Search extends Component
@@ -14,9 +15,11 @@ class Search extends Component
 
     public function mount()
     {
-        $this->users = User::withCount(['messages' => function ($query) {
-            $query->whereHas('replay');
-        }])->where('id', '!=', Auth::user()->id)->get();
+        $this->users = Cache::driver("redis")->remember('search', 60, function () {
+            return User::withCount(['messages' => function ($query) {
+                $query->whereHas('replay');
+            }])->where('id', '!=', Auth::user()->id)->get();
+        });
     }
 
     public function updatedSearch()
