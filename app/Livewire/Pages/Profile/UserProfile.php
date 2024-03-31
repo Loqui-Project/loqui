@@ -35,8 +35,8 @@ class UserProfile extends Component
             $this->isFollowing = false;
             $this->anonymously = true;
         }
-        $this->userMessages = Cache::driver("redis")->remember("user:{$this->user->id}:messages:with_replay", 60 * 60 * 24 * 1, function () {
-            return $this->user->messages()->whereHas("replay")->latest()->get();
+        $this->userMessages = Cache::driver('redis')->remember("user:{$this->user->id}:messages:with_replay", 60 * 60 * 24 * 1, function () {
+            return $this->user->messages()->whereHas('replay')->latest()->get();
         });
     }
 
@@ -57,7 +57,7 @@ class UserProfile extends Component
 
     public function follow()
     {
-        if (!$this->authUser) {
+        if (! $this->authUser) {
             $this->dispatch('not-auth-for-follow');
 
             return;
