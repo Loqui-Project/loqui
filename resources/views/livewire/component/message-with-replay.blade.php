@@ -50,7 +50,7 @@
             </div>
             <div>
                 <p>
-                    {{ $message->replay->first()->text }}
+                    {{ optional($message->replay->first())-> text }}
                 </p>
             </div>
         </div>

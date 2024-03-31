@@ -1,4 +1,4 @@
-<div class="relative">
+<div class="relative flex">
     <a href={{ $url }} class="flex items-start flex-row gap-2">
         <div class="w-10 h-10 flex justify-center items-center ">
             <img src="{{ $userImage }}" alt="default-avatar" class="w-8 h-8  rounded-full">
