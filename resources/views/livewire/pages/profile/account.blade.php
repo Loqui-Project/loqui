@@ -112,7 +112,7 @@
                 </div>
 
                 <div class="border-b border-gray-900/10 pb-12">
-                    <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Notifications</h2>
+                    <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Notifications <span class="text-gray-500">(Comming soon)</span></h2>
                     <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-200">We'll always let you know about
                         important changes,
                         but
@@ -125,7 +125,7 @@
                             <div class="mt-6 space-y-6">
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="replay" name="replay" type="checkbox"
+                                        <input id="replay" name="replay" type="checkbox" disabled
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
@@ -138,7 +138,7 @@
                                 </div>
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="candidates" name="candidates" type="checkbox"
+                                        <input id="candidates" name="candidates" type="checkbox" disabled
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="offers" name="offers" type="checkbox"
+                                        <input id="offers" name="offers" type="checkbox" disabled
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
@@ -163,12 +163,12 @@
                         </fieldset>
                         <fieldset>
                             <legend class="text-sm font-semibold leading-6 text-gray-900 dark:text-white">By Browser
-                                Notification
+                                Notification 
                             </legend>
                             <div class="mt-6 space-y-6">
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="replay" name="replay" type="checkbox"
+                                        <input id="replay" name="replay" type="checkbox" disabled
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
@@ -181,7 +181,7 @@
                                 </div>
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="candidates" name="candidates" type="checkbox"
+                                        <input id="candidates" name="candidates" type="checkbox" disabled
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
@@ -192,7 +192,7 @@
                                 </div>
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="offers" name="offers" type="checkbox"
+                                        <input id="offers" name="offers" type="checkbox" disabled
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
