@@ -8,8 +8,8 @@ use App\Models\User;
 use App\Models\UserSocialAuth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
 {
@@ -21,7 +21,6 @@ class SocialAuthController extends Controller
         return Socialite::driver('facebook')->redirect();
     }
 
-
     /**
      * Callback From Facebook
      */
@@ -31,10 +30,10 @@ class SocialAuthController extends Controller
             $user = Socialite::driver('facebook')->user();
             $checkIfAuthExist = UserSocialAuth::where('provider_id', $user->id)->first();
             $checkIfUserExist = User::where('email', $user->email)->first();
-            if (!!$checkIfAuthExist) {
+            if ((bool) $checkIfAuthExist) {
                 Auth::login($checkIfAuthExist->user);
             } else {
-                if (!!$checkIfUserExist) {
+                if ((bool) $checkIfUserExist) {
                     UserSocialAuth::create([
                         'user_id' => $checkIfUserExist->id,
                         'provider' => 'facebook',
@@ -47,7 +46,7 @@ class SocialAuthController extends Controller
                         'name' => $user->name,
                         'email' => $user->email,
                         'username' => Str::slug($user->name),
-                        'password' => Hash::make(Str::random(24) . time()),
+                        'password' => Hash::make(Str::random(24).time()),
                         'media_object_id' => $mediaObject->id,
                     ]);
                     UserSocialAuth::create([

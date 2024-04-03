@@ -10,9 +10,8 @@ class UserSocialAuth extends Model
 {
     use HasFactory, HasUser;
 
-
     protected $fillable = [
-        "user_id",
+        'user_id',
         'provider',
         'provider_id',
     ];
