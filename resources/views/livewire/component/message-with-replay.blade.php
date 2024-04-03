@@ -7,10 +7,10 @@
         <div class="flex items-center gap-4 flex-row w-full  border-b pb-4">
             <div class="w-12 h-12 flex justify-center items-center">
                 @if ($message->sender == null || !!$message->is_anon == true)
-                    <img src="{{ asset('images/default-avatar.png') }}" alt="default-avatar"
+                    <img src="{{ URL::asset('images/default-avatar.png') }}" alt="default-avatar"
                         class="w-10 h-10 rounded-full">
                 @else
-                    <img src="{{ $message->sender->mediaObject->media_path }}" alt="{{ $message->sender->name }}"
+                    <img src="{{ URL::asset($message->sender->mediaObject->media_path) }}" alt="{{ $message->sender->name }}"
                         class="w-10 h-10 rounded-full">
                 @endif
             </div>
@@ -34,7 +34,7 @@
         <div class="bg-brand-main/50 backdrop-blur-md w-full p-4 rounded-md">
             <div class="flex items-center gap-4 flex-row w-full pb-4">
                 <div class="w-12 h-12 flex justify-center items-center">
-                    <img src="{{ $message->user->mediaObject->media_path }}" alt="{{ $message->user->name }}"
+                    <img src="{{ URL::asset($message->user->mediaObject->media_path) }}" alt="{{ $message->user->name }}"
                         class="w-10 h-10 rounded-full">
                 </div>
                 <div class="flex flex-col w-full">

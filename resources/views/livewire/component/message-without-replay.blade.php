@@ -8,7 +8,7 @@
             @if ($message->sender == null || !!$message->is_anon == true)
                 <img src="{{ URL::asset('images/default-avatar.png') }}" alt="default-avatar" class="w-10 h-10 rounded-full">
             @else
-                <img src="{{ $message->sender->mediaObject->media_path }}" alt="{{ $message->sender->name }}"
+                <img src="{{ URL::asset($message->sender->mediaObject->media_path) }}" alt="{{ $message->sender->name }}"
                     class="w-10 h-10 rounded-full">
             @endif
         </div>
