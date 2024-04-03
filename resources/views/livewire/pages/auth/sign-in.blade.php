@@ -11,7 +11,7 @@
                         account</h2>
                 </div>
 
-                <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form class="space-y-6" wire:submit="signIn">
                         <div>
                             <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email
@@ -57,14 +57,19 @@
                         </div>
                     </form>
 
-                    <p class="mt-10 text-center text-sm text-gray-500">
-                        Not a member?
-                        <a href="/auth/sign-up"
-                            class="font-semibold leading-6 transition-all duration-300 text-brand-dark hover:text-brand-main">
-                            Sign up now
-                        </a>
-                    </p>
+
                 </div>
+                <span class="w-full h-[2px] bg-gray-200 mt-4"></span>
+                <div class="w-full flex items-center justify-center mt-4 bg-brand-dark py-2 rounded-md">
+                    <a href="{{ route('auth.facebook.login') }}" class="text-white font-medium">login via facebook</a>
+                </div>
+                <p class="mt-10 text-center text-sm text-gray-500">
+                    Not a member?
+                    <a href="/auth/sign-up"
+                        class="font-semibold leading-6 transition-all duration-300 text-brand-dark hover:text-brand-main">
+                        Sign up now
+                    </a>
+                </p>
             </div>
         </div>
     </div>
