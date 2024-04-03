@@ -17,21 +17,21 @@ class Inbox extends Component
 
     public function mount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
         $this->user = Auth::user();
-        $this->userMessages = Cache::driver("redis")->remember("user:{$this->user->id}:messages:without_replay", 60 * 60 * 24 * 1, function () {
-            return $this->user->messages()->doesntHave("replay")->latest()->get();
+        $this->userMessages = Cache::driver('redis')->remember("user:{$this->user->id}:messages:without_replay", 60 * 60 * 24 * 1, function () {
+            return $this->user->messages()->doesntHave('replay')->latest()->get();
         });
     }
 
     #[On('add-replay')]
     public function refreshMessages()
     {
-        Cache::driver("redis")->forget("user:{$this->user->id}:messages:without_replay");
-        $this->userMessages = Cache::driver("redis")->remember("user:{$this->user->id}:messages:without_replay", 60 * 60 * 24 * 1, function () {
-            return $this->user->messages()->doesntHave("replay")->latest()->get();
+        Cache::driver('redis')->forget("user:{$this->user->id}:messages:without_replay");
+        $this->userMessages = Cache::driver('redis')->remember("user:{$this->user->id}:messages:without_replay", 60 * 60 * 24 * 1, function () {
+            return $this->user->messages()->doesntHave('replay')->latest()->get();
         });
     }
 

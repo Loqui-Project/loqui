@@ -3,7 +3,6 @@
 namespace App\Livewire\Pages;
 
 use App\Models\User;
-use App\NotificationTypeEnum;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -11,10 +10,11 @@ use Livewire\Component;
 
 class NotificationPage extends Component
 {
-
     public User $authUser;
+
     public Collection $notifications;
-    public $notificationTypeEnum = "all";
+
+    public $notificationTypeEnum = 'all';
 
     public function mount()
     {

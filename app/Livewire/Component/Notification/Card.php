@@ -16,7 +16,7 @@ class Card extends Component
 
     public NotificationTemplate $notificationTemplate;
 
-    public string $url  = '#';
+    public string $url = '#';
 
     public string $userImage;
 
@@ -35,13 +35,11 @@ class Card extends Component
         $this->notificationTemplate = NotificationTemplate::where('type', $notification->type)->first();
 
         $this->url = match ($this->notification->type) {
-            NotificationTypeEnum::
-            NEW_MESSAGE->value => route('message.show', ['message' => $this->notification->data['message_id']]),
-            NotificationTypeEnum::
-            NEW_FOLLOWER->value => route("profile.user", ["username" => optional(User::where("id", $this->notification->data["follower_id"])->first())->username]),
+            NotificationTypeEnum::NEW_MESSAGE->value => route('message.show', ['message' => $this->notification->data['message_id']]),
+            NotificationTypeEnum::NEW_FOLLOWER->value => route('profile.user', ['username' => optional(User::where('id', $this->notification->data['follower_id'])->first())->username]),
             default => '#',
         };
-        if ($this->notification->type == NotificationTypeEnum:: NEW_MESSAGE->value) {
+        if ($this->notification->type == NotificationTypeEnum::NEW_MESSAGE->value) {
             if ($notification->data['sender_id'] == null) {
                 $this->userImage = asset('images/default-avatar.png');
                 $this->senderId = 0;
@@ -50,14 +48,14 @@ class Card extends Component
             } else {
                 $sender = User::where('id', $notification->data['sender_id'])->first();
                 $this->userImage = $sender->mediaObject->media_path;
-                $this->senderName = str_replace(':sender', ' <strong class="dark:text-white">' . $sender->name . '</strong>', $this->notificationTemplate->name);
+                $this->senderName = str_replace(':sender', ' <strong class="dark:text-white">'.$sender->name.'</strong>', $this->notificationTemplate->name);
                 $this->senderId = $sender->id;
                 $this->senderUsername = $sender->username;
             }
-        } else if ($this->notification->type == NotificationTypeEnum:: NEW_FOLLOWER->value) {
+        } elseif ($this->notification->type == NotificationTypeEnum::NEW_FOLLOWER->value) {
             $sender = User::where('id', $notification->data['follower_id'])->first();
             $this->userImage = $sender->mediaObject->media_path;
-            $this->senderName = str_replace(':sender', ' <strong class="dark:text-white">' . $sender->name . '</strong>', $this->notificationTemplate->name);
+            $this->senderName = str_replace(':sender', ' <strong class="dark:text-white">'.$sender->name.'</strong>', $this->notificationTemplate->name);
             $this->senderId = $sender->id;
             $this->senderUsername = $sender->username;
         }
