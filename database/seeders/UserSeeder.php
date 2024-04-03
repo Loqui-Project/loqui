@@ -25,9 +25,9 @@ class UserSeeder extends Seeder
         ];
         \App\Models\MediaObject::create($mediaObjectData);
         User::factory()->create([
-            'email' => 'me@yanalshoubaki.com',
-            'username' => 'yanalshoubaki',
-            'name' => 'Yanal Shoubaki',
+            'email' => 'admin@example.com',
+            'username' => 'admin',
+            'name' => 'admin',
         ]);
         User::factory()->count(10)->has(Message::factory(), 'messages')->create();
     }

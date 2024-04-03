@@ -19,5 +19,12 @@ class NotificationTemplateSeeder extends Seeder
             'subject' => ':sender followed you',
             'body' => ':sender followed you',
         ]);
+
+        NotificationTemplate::create([
+            'type' => NotificationTypeEnum::NEW_MESSAGE,
+            'name' => ':sender sent you a message',
+            'subject' => ':sender sent you a message',
+            'body' => ':sender sent you a message',
+        ]);
     }
 }
