@@ -1,6 +1,6 @@
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/yanalshoubaki/loqui/main/art/logo.svg" width="400" />
+    <img src="https://github.com/yanalshoubaki/loqui/blob/main/art/logo.png" width="400" />
 </p>
 
 <p align="center">
