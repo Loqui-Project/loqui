@@ -39,7 +39,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div>
+                                <div class="text-danger">
                                     @error('photo')
                                         {{ $message }}
                                     @enderror
@@ -59,7 +59,7 @@
                                         class="block w-full border-0 py-1.5 text-gray-900 dark:bg-white appearance-none !outline-none dark:text-black shadow-sm   placeholder:text-gray-400 sm:text-sm sm:leading-6"
                                         placeholder="janesmith">
                                 </div>
-                                <div>
+                                <div class="text-danger">
                                     @error('username')
                                         {{ $message }}
                                     @enderror
@@ -83,7 +83,7 @@
                                 <input type="text" wire:model="name" autocomplete="given-name"
                                     class="block w-full rounded-md border-gray-200 dark:border-0 py-1.5 appearance-none !ring-none  text-gray-900 dark:bg-white  dark:text-black shadow-sm   placeholder:text-gray-400  sm:text-sm sm:leading-6">
                             </div>
-                            <div>
+                            <div class="text-danger">
                                 @error('name')
                                     {{ $message }}
                                 @enderror
@@ -100,7 +100,7 @@
                                 <input id="email" wire:model="email" type="email" autocomplete="email"
                                     class="block w-full rounded-md border-gray-200 dark:border-0 py-1.5 appearance-none !ring-none text-gray-900 dark:bg-white  dark:text-black shadow-sm   placeholder:text-gray-400  sm:text-sm sm:leading-6">
                             </div>
-                            <div>
+                            <div class="text-danger">
                                 @error('email')
                                     {{ $message }}
                                 @enderror
@@ -112,7 +112,8 @@
                 </div>
 
                 <div class="border-b border-gray-900/10 pb-12">
-                    <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Notifications <span class="text-gray-500">(Comming soon)</span></h2>
+                    <h2 class="text-base font-semibold leading-7 text-gray-900 dark:text-white">Notifications <span
+                            class="text-gray-500">(Comming soon)</span></h2>
                     <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-200">We'll always let you know about
                         important changes,
                         but
@@ -163,7 +164,7 @@
                         </fieldset>
                         <fieldset>
                             <legend class="text-sm font-semibold leading-6 text-gray-900 dark:text-white">By Browser
-                                Notification 
+                                Notification
                             </legend>
                             <div class="mt-6 space-y-6">
                                 <div class="relative flex gap-x-3">

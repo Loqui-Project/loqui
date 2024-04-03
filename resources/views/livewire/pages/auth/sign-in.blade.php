@@ -1,4 +1,4 @@
-@section("title", "Sign In")
+@section('title', 'Sign In')
 <div class="min-h-screen flex justify-center items-center">
     <div class="container">
         <div class="max-w-xl mx-auto max-laptop:max-w-full">
@@ -19,7 +19,7 @@
                             <div class="mt-2">
                                 <input wire:model="email" type="email" autocomplete="email"
                                     class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
-                                <div>
+                                <div class="text-danger">
                                     @error('email')
                                         {{ $message }}
                                     @enderror
@@ -41,7 +41,7 @@
                             <div class="mt-2">
                                 <input wire:model="password" type="password" autocomplete="current-password"
                                     class="block w-full rounded-md border-0 py-1.5 transition-all duration-300 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
-                                <div>
+                                <div class="text-danger">
                                     @error('email')
                                         {{ $message }}
                                     @enderror
