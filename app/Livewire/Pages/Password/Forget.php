@@ -3,21 +3,19 @@
 namespace App\Livewire\Pages\Password;
 
 use Illuminate\Support\Facades\Password;
-use Livewire\Component;
 use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class Forget extends Component
 {
-
     #[Validate('required|min:6|email')]
-    public string $email = "";
+    public string $email = '';
 
     public bool $status = false;
 
-    public string $message = "";
+    public string $message = '';
 
     public bool $show = false;
-
 
     public function mount()
     {
@@ -30,18 +28,18 @@ class Forget extends Component
 
         $status = Password::sendResetLink(
             [
-                'email' => $this->email
+                'email' => $this->email,
             ]
         );
 
         if ($status === Password::RESET_LINK_SENT) {
             $this->show = true;
             $this->email = '';
-            $this->message = "Password reset link sent to your email";
+            $this->message = 'Password reset link sent to your email';
             $this->status = true;
         } else {
             $this->show = true;
-            $this->message = "Failed to send password reset link to your email";
+            $this->message = 'Failed to send password reset link to your email';
             $this->status = false;
         }
     }
