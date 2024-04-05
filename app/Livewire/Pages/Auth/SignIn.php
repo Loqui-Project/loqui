@@ -14,6 +14,18 @@ class SignIn extends Component
     #[Validate('required|min:6')]
     public string $password = '';
 
+    public bool $status = false;
+
+    public string $message = "";
+
+    public bool $show = false;
+
+    public function mount() {
+        $this->show = session("show") ?? false;
+        $this->status = session("status") ?? false;
+        $this->message = session("message") ?? "";
+    }
+
     public function signIn()
     {
         $this->validate();
