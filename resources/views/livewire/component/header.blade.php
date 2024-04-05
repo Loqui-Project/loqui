@@ -1,27 +1,12 @@
 <header x-data="{ openMenu: false }"
     class="sticky inset-x-0 top-2 z-50 m-6 shadow-surface-glass max-laptop:py-4 backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
     <div class="container">
-        <nav class="flex items-center justify-between laptop:px-8 " aria-label="Main navbar">
+        <nav class="flex items-center justify-between laptop:px-8 flex-wrap" aria-label="Main navbar">
             <div class="flex laptop:flex-1">
                 <a href="{{ route('home') }}">
                     <span class="sr-only">Loqui</span>
                     <img class="h-10 w-auto" src={{ URL::asset('images/logo.svg') }} alt="Loqui">
                 </a>
-            </div>
-            <div class="flex laptop:hidden">
-                <button type="button" @click="openMenu = !openMenu"
-                    class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-                    <span class="sr-only">Open main menu</span>
-                    <svg x-show="openMenu" class="h-6 w-6 dark:[&>path]:stroke-white" viewBox="0 0 24 24"
-                        stroke-width="1.5" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    <svg x-show="openMenu == false" class="h-6 w-6 dark:[&>path]:stroke-white" fill="none"
-                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                </button>
             </div>
             @if (Auth::check())
                 <div class="hidden laptop:flex laptop:gap-x-12">
@@ -62,12 +47,27 @@
                             </svg>
                         </span>
                         <span>
-                            Inbox 
+                            Inbox
                         </span>
                     </a>
-                    @livewire("component.notification.drop-down")
+                    @livewire('component.notification.drop-down')
                 </div>
-                <div class="hidden laptop:flex laptop:flex-1 laptop:justify-end">
+                <div class="flex laptop:flex-1 laptop:justify-end">
+                    <div class="max-laptop:flex hidden">
+                        <button type="button" @click="openMenu = !openMenu"
+                            class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                            <span class="sr-only">Open main menu</span>
+                            <svg x-show="openMenu" class="h-6 w-6 dark:[&>path]:stroke-white" viewBox="0 0 24 24"
+                                stroke-width="1.5" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <svg x-show="openMenu == false" class="h-6 w-6 dark:[&>path]:stroke-white" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            </svg>
+                        </button>
+                    </div>
                     <x-user-header-card />
                 </div>
             @else
@@ -130,10 +130,10 @@
                             </svg>
                         </span>
                         <span>
-                            Inbox 
+                            Inbox
                         </span>
                     </a>
-                    <a href="#"
+                    <a href="{{ route("notifications") }}"
                         class="text-sm font-semibold leading-6 transition-all duration-300 hover:pb-2  hover:border-b hover:border-white flex gap-4 items-center text-gray-900 dark:text-white">
                         <span>
                             <svg width="24" height="24" viewBox="0 0 24 24"
