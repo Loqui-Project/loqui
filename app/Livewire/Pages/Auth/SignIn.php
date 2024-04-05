@@ -16,14 +16,15 @@ class SignIn extends Component
 
     public bool $status = false;
 
-    public string $message = "";
+    public string $message = '';
 
     public bool $show = false;
 
-    public function mount() {
-        $this->show = session("show") ?? false;
-        $this->status = session("status") ?? false;
-        $this->message = session("message") ?? "";
+    public function mount()
+    {
+        $this->show = session('show') ?? false;
+        $this->status = session('status') ?? false;
+        $this->message = session('message') ?? '';
     }
 
     public function signIn()
