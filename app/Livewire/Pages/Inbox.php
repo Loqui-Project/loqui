@@ -32,7 +32,6 @@ class Inbox extends Component
         Cache::driver('redis')->forget("user:{$id}:messages:without_replay");
     }
 
-    #[On('load-more')]
     public function loadMore()
     {
         $this->perPage = $this->perPage + 10;
