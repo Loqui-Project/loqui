@@ -12,16 +12,32 @@
                 <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl dark:text-white">Welcome,
                     {{ $user->name }}</h1>
                 <p class="mt-4 text-gray-400  dark:text-white">
-                    You have {{ $messages->count() }} messages
+                    You have {{ $messageCount }} messages
                 </p>
             </div>
         </div>
         <div class="w-full max-w-screen-laptop overflow-hidden rounded-lg mx-auto my-10">
             <div class="grid grid-cols-2 gap-10 max-laptop:grid-cols-1">
-                @foreach ($messages as $message)
-                    @livewire('component.message-without-replay', ['message' => $message], key($message->id))
-                @endforeach
+                @forelse ($userMessages as $userMessage)
+                    @livewire('component.message-without-replay', ['message' => $userMessage], key($userMessage->id))
+                @empty
+                    <div
+                        class="col-span-2 flex flex-col items-center justify-center w-full gap-4 bg-white/60 dark:bg-white/100 p-6 shadow-lg rounded-lg">
+                        <div>
+                            <p class="font-bold text-md font-rubik">No messages found</p>
+                        </div>
+                    </div>
+                @endforelse
             </div>
+            @if ($userMessages->hasMorePages())
+                <div class="mt-10 w-full flex justify-center items-center">
+                    <button wire:click="loadMore"
+                        class="inline-flex min-w-[200px] transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">
+                        Load more
+                    </button>
+                </div>
+            @endif
+
         </div>
         <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
             aria-hidden="true">
