@@ -17,15 +17,14 @@ class Home extends Component
 
     public function mount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
         $this->authUser = Auth::user();
         $this->userMessages = Cache::driver('redis')->remember("user:{$this->authUser->id}:messages:with_replay", 60 * 60 * 24 * 1, function () {
-            return Message::whereIn('user_id', $this->authUser->following->pluck('id'))->whereHas('replay')->with(["replay", "user.mediaObject", "sender.mediaObject", "likes", "favorites"])->latest()->get();
+            return Message::whereIn('user_id', $this->authUser->following->pluck('id'))->whereHas('replay')->with(['replay', 'user.mediaObject', 'sender.mediaObject', 'likes', 'favorites'])->latest()->get();
         });
     }
-
 
     public function render()
     {
