@@ -13,13 +13,13 @@ use Livewire\WithPagination;
 
 class Inbox extends Component
 {
-    use WithPagination, WithoutUrlPagination;
+    use WithoutUrlPagination, WithPagination;
 
     public int $perPage = 10;
 
     public function mount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
         $this->perPage = 10;
@@ -41,8 +41,9 @@ class Inbox extends Component
     #[Computed]
     public function userMessages()
     {
-        $key = "user:" . auth()->id() . ":messages:without_replay:{$this->perPage}";
+        $key = 'user:'.auth()->id().":messages:without_replay:{$this->perPage}";
         $seconds = 3600 * 6; // 1 hour...
+
         return Cache::remember(
             $key,
             $seconds,
@@ -56,12 +57,12 @@ class Inbox extends Component
         );
     }
 
-
     #[Computed]
     public function userMessagesCount()
     {
-        $key = "user:" . auth()->id() . ":messages:without_replay:count";
+        $key = 'user:'.auth()->id().':messages:without_replay:count';
         $seconds = 3600 * 6; // 1 hour...
+
         return Cache::remember(
             $key,
             $seconds,
@@ -73,14 +74,14 @@ class Inbox extends Component
         );
     }
 
-
     public function render()
     {
         $user = Auth::user();
+
         return view('livewire.pages.inbox', [
             'userMessages' => $this->userMessages(),
             'messageCount' => $this->userMessagesCount(),
-            "user" => $user
+            'user' => $user,
         ])->extends('components.layouts.app');
     }
 }
