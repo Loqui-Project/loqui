@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages;
 
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -17,12 +18,12 @@ class Inbox extends Component
 
     public function mount()
     {
-        if (! Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
         $this->user = Auth::user();
         $this->userMessages = Cache::driver('redis')->remember("user:{$this->user->id}:messages:without_replay", 60 * 60 * 24 * 1, function () {
-            return $this->user->messages()->doesntHave('replay')->latest()->get();
+            return Message::where('user_id', $this->user->id)->doesntHave('replay')->with(["user.mediaObject", "sender.mediaObject"])->latest()->get();
         });
     }
 
@@ -30,9 +31,6 @@ class Inbox extends Component
     public function refreshMessages()
     {
         Cache::driver('redis')->forget("user:{$this->user->id}:messages:without_replay");
-        $this->userMessages = Cache::driver('redis')->remember("user:{$this->user->id}:messages:without_replay", 60 * 60 * 24 * 1, function () {
-            return $this->user->messages()->doesntHave('replay')->latest()->get();
-        });
     }
 
     public function render()

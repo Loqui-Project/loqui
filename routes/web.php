@@ -44,7 +44,9 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/@{username}', Profile\UserProfile::class)->name('profile.user');
 Route::get('/message/{message}', MessageShow::class)->name('message.show');
-Route::get('/notifications', NotificationPage::class)->name('notifications');
+Route::middleware('auth')->group(function () {
+    Route::get('/notifications', NotificationPage::class)->name('notifications');
+});
 
 Route::name('password.')->prefix('password')->group(function () {
     Route::get('forget', Forget::class)->name('forget');

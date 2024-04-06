@@ -5,10 +5,13 @@ namespace App\Livewire\Component\Notification;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class DropDown extends Component
 {
+
+
     public Collection $notifications;
 
     public ?User $user = null;
@@ -18,8 +21,11 @@ class DropDown extends Component
     public function mount()
     {
         $this->user = Auth::user();
-        $this->notifications = $this->user->notifications()->orderBy('created_at', 'desc')->limit(5)->get();
-        $this->count = $this->user->notifications()->whereNull('read_at')->count();
+        Cache::driver("redis")->remember("notifications.{$this->user->id}", 60 * 60 * 60, function () {
+            $notifications = $this->user->notifications()->with(["user"]);
+            $this->notifications = $notifications->orderBy('created_at', 'desc')->limit(5)->get();
+            $this->count = $this->notifications->filter(fn ($notification) => $notification->unread())->count();
+        });
     }
 
     public function getListeners()
@@ -31,12 +37,14 @@ class DropDown extends Component
 
     public function refresh()
     {
-        $this->notifications = $this->user->notifications()->orderBy('created_at', 'desc')->limit(5)->get();
-        $this->count = $this->user->notifications()->whereNull('read_at')->count();
+        Cache::driver("redis")->forget("notifications.{$this->user->id}");
     }
 
     public function render()
     {
-        return view('livewire.component.notification.drop-down');
+        return view('livewire.component.notification.drop-down', [
+            'notifications' => $this->notifications,
+            'count' => $this->count,
+        ]);
     }
 }

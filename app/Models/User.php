@@ -81,7 +81,7 @@ class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
         return $this->belongsToMany(Message::class, 'liked_messages', 'user_id', 'message_id');
     }
 
-    public function notifications()
+    public function notifications() : HasMany
     {
         return $this->hasMany(Notification::class, 'user_id');
     }
