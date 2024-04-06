@@ -10,8 +10,8 @@
                     <img src="{{ URL::asset('images/default-avatar.png') }}" alt="default-avatar"
                         class="w-10 h-10 rounded-full">
                 @else
-                    <img src="{{ URL::asset($message->sender->mediaObject->media_path) }}" alt="{{ $message->sender->name }}"
-                        class="w-10 h-10 rounded-full">
+                    <img src="{{ URL::asset($message->sender->mediaObject->media_path) }}"
+                        alt="{{ $message->sender->name }}" class="w-10 h-10 rounded-full">
                 @endif
             </div>
             <div class="flex flex-col w-full">
@@ -25,7 +25,8 @@
                 </div>
                 @if ($message->sender !== null && !!$message->is_anon == false)
                     <div>
-                        <span class="text-gray-400">{{ '@' . $message->sender->username }}</span>
+                        <a href={{ route('profile.user', ['username' => $message->sender->username]) }}
+                            class="text-gray-400">{{ '@' . $message->sender->username }}</a>
                     </div>
                 @endif
 
@@ -34,8 +35,8 @@
         <div class="bg-brand-main/50 backdrop-blur-md w-full p-4 rounded-md">
             <div class="flex items-center gap-4 flex-row w-full pb-4">
                 <div class="w-12 h-12 flex justify-center items-center">
-                    <img src="{{ URL::asset($message->user->mediaObject->media_path) }}" alt="{{ $message->user->name }}"
-                        class="w-10 h-10 rounded-full">
+                    <img src="{{ URL::asset($message->user->mediaObject->media_path) }}"
+                        alt="{{ $message->user->name }}" class="w-10 h-10 rounded-full">
                 </div>
                 <div class="flex flex-col w-full">
                     <div class="flex justify-between w-full">
@@ -44,13 +45,14 @@
                         </span>
                     </div>
                     <div>
-                        <span class="text-gray-600">{{ '@' . $message->user->username }}</span>
+                        <a href={{ route('profile.user', ['username' => $message->user->username]) }}
+                            class="text-gray-600">{{ '@' . $message->user->username }}</a>
                     </div>
                 </div>
             </div>
             <div>
                 <p>
-                    {{ optional($message->replay->first())-> text }}
+                    {{ optional($message->replay->first())->text }}
                 </p>
             </div>
         </div>

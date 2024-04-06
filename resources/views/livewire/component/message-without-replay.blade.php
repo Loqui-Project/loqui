@@ -6,7 +6,8 @@
     <div class="flex items-center gap-4 flex-row w-full  border-b pb-4">
         <div class="w-12 h-12 flex justify-center items-center">
             @if ($message->sender == null || !!$message->is_anon == true)
-                <img src="{{ URL::asset('images/default-avatar.png') }}" alt="default-avatar" class="w-10 h-10 rounded-full">
+                <img src="{{ URL::asset('images/default-avatar.png') }}" alt="default-avatar"
+                    class="w-10 h-10 rounded-full">
             @else
                 <img src="{{ URL::asset($message->sender->mediaObject->media_path) }}" alt="{{ $message->sender->name }}"
                     class="w-10 h-10 rounded-full">
@@ -22,8 +23,9 @@
                 </span>
             </div>
             @if ($message->sender !== null && !!$message->is_anon == false)
-            <div>
-                    <span class="text-gray-400">{{ '@' . optional($message->sender)->username }}</span>
+                <div>
+                    <a href={{ route('profile.user', ['username' => $message->sender->username]) }}
+                        class="text-gray-400">{{ '@' . $message->sender->username }}</a>
                 </div>
             @endif
         </div>
