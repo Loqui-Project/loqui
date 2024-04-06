@@ -10,8 +10,6 @@ use Livewire\Component;
 
 class DropDown extends Component
 {
-
-
     public Collection $notifications;
 
     public ?User $user = null;
@@ -21,8 +19,8 @@ class DropDown extends Component
     public function mount()
     {
         $this->user = Auth::user();
-        Cache::driver("redis")->remember("notifications.{$this->user->id}", 60 * 60 * 60, function () {
-            $notifications = $this->user->notifications()->with(["user"]);
+        Cache::driver('redis')->remember("notifications.{$this->user->id}", 60 * 60 * 60, function () {
+            $notifications = $this->user->notifications()->with(['user']);
             $this->notifications = $notifications->orderBy('created_at', 'desc')->limit(5)->get();
             $this->count = $this->notifications->filter(fn ($notification) => $notification->unread())->count();
         });
@@ -37,7 +35,7 @@ class DropDown extends Component
 
     public function refresh()
     {
-        Cache::driver("redis")->forget("notifications.{$this->user->id}");
+        Cache::driver('redis')->forget("notifications.{$this->user->id}");
     }
 
     public function render()
