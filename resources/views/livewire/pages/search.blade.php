@@ -32,9 +32,29 @@
                 </form>
             </div>
             <div class="grid grid-cols-1 gap-6">
-                @foreach ($users as $user)
+                @forelse ($users as $user)
                     @livewire('component.user.search-user-card', ['user' => $user], key($user->id))
-                @endforeach
+                @empty
+                    <div
+                        class="flex justify-between max-laptop:flex-col max-laptop:justify-start max-laptop:items-start gap-4 hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  items-center shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6 px-4">
+                        <div class="flex items-center gap-x-6">
+                            <div>
+                                <h3
+                                    class="text-base font-semibold leading-7 tracking-tight text-gray-900 dark:text-white">
+                                    There is no users with {{ $search }}</h3>
+                            </div>
+                        </div>
+
+                    </div>
+                @endforelse
+               @if ($users->hasMorePages())
+                <div class="mt-10 w-full flex justify-center items-center">
+                    <button wire:click="loadMore"
+                        class="inline-flex min-w-[200px] transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">
+                        Load more
+                    </button>
+                </div>
+            @endif
             </div>
         </div>
         <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"

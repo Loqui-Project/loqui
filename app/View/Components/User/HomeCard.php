@@ -49,7 +49,7 @@ class HomeCard extends Component
             "user:{$this->user->id}:messages_count",
             3600 * 6,
             function () {
-                return $this->user->messages()->count();
+                return $this->user->messages()->whereHas('replay')->count();
             }
         );
     }
