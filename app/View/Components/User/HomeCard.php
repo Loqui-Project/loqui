@@ -11,7 +11,6 @@ use Illuminate\View\Component;
 
 class HomeCard extends Component
 {
-
     protected $shareData = [];
 
     /**
@@ -60,9 +59,10 @@ class HomeCard extends Component
      */
     public function render(): View|Closure|string
     {
-        $this->shareData["url"] = route('profile.user', $this->user->username);
-        $this->shareData["avatar"] = URL::asset($this->user->mediaObject->media_path);
-        $this->shareData["name"] = $this->user->name;
+        $this->shareData['url'] = route('profile.user', $this->user->username);
+        $this->shareData['avatar'] = URL::asset($this->user->mediaObject->media_path);
+        $this->shareData['name'] = $this->user->name;
+
         return view('components.user.home-card', [
             'user' => $this->user,
             'followersCount' => $this->getFollowersCountProperty(),
