@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Livewire\Pages\Auth\SignIn;
 use App\Livewire\Pages\Auth\SignUp;
+use App\Livewire\Pages\Changelog;
 use App\Livewire\Pages\Home;
 use App\Livewire\Pages\Inbox;
 use App\Livewire\Pages\MessageShow;
@@ -11,6 +12,7 @@ use App\Livewire\Pages\Password\Forget;
 use App\Livewire\Pages\Password\Reset;
 use App\Livewire\Pages\Profile;
 use App\Livewire\Pages\Profile\Account;
+use App\Livewire\Pages\Releases;
 use App\Livewire\Pages\Search;
 use Illuminate\Support\Facades\Route;
 
@@ -52,3 +54,6 @@ Route::name('password.')->prefix('password')->group(function () {
     Route::get('forget', Forget::class)->name('forget');
     Route::get('reset', Reset::class)->name('reset');
 });
+
+
+Route::get("/changelog", Changelog::class)->name("changelog");
