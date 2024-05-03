@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\User;
-use App\Module\Logger\LoggerServiceProvider;
 use App\View\Components\Component\Modal;
 use App\View\Components\Component\ModalBody;
 use App\View\Components\Component\ModalButton;
