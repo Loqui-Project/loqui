@@ -1,14 +1,14 @@
 export default () => ({
-    share: async (user) => {
+    share: (user) => {
         try {
             if (
-                await navigator.canShare({
+                navigator.canShare({
                     url: user.url,
                     title: user.name,
                     text: user.name,
                 })
             ) {
-                await navigator.share({
+                navigator.share({
                     url: user.url,
                     title: user.name,
                     text: user.name,
