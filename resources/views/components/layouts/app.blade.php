@@ -55,7 +55,11 @@
 
 <body class="bg-white dark:bg-black">
     @livewire('component.header')
-    @yield('content')
+    <main class="min-h-screen">
+        @yield('content')
+    </main>
+    @livewire('layout.footer')
+
     @livewireScripts
     @stack('scripts')
 </body>
