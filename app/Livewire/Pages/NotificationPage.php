@@ -3,7 +3,6 @@
 namespace App\Livewire\Pages;
 
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Computed;
@@ -13,10 +12,12 @@ use Livewire\WithPagination;
 
 class NotificationPage extends Component
 {
-    use WithPagination, WithoutUrlPagination;
+    use WithoutUrlPagination, WithPagination;
 
     public User $authUser;
+
     public $notificationTypeEnum = 'all';
+
     public int $perPage = 5;
 
     public function mount()
