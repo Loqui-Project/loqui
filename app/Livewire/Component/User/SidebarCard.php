@@ -26,7 +26,11 @@ class SidebarCard extends Component
         $this->user = $user;
         $this->type = $type;
         $this->currentUser = Auth::user();
-        $this->isContains = $this->currentUser->isFollowing($user);
+        if ($this->currentUser === null) {
+            $this->isContains = false;
+        } else {
+            $this->isContains = $this->currentUser->isFollowing($user);
+        }
     }
 
     public function follow($id)

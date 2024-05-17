@@ -39,7 +39,7 @@ class Search extends Component
                 )->withCount(['messages' => function ($query) {
                     $query->whereHas('replay');
                 }])
-                    ->orderBy('created_at', 'desc')
+                    ->orderBy('messages_count', 'desc')
                     ->paginate($this->perPage);
             }
         );

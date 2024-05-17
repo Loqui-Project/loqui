@@ -13,7 +13,7 @@
                     </p>
                 </div>
             </div>
-            @if (Auth::check() || optional(Auth::user())->id !== $user->id)
+            @if (Auth::check() && optional(Auth::user())->id !== $user->id)
                 <div>
                     <button wire:click="follow({{ $user->id }})"
                         class="{{ $isFollowing ? 'bg-brand-dark text-brand-100 border-brand-dark' : 'text-brand-dark border-brand-dark hover:bg-brand-dark hover:text-brand-light hover:border-brand-dark dark:border-brand-main dark:hover:bg-brand-main dark:hover:text-brand-dark' }} border-2  transition-all duration-300 rounded-md px-6 py-2 dark:text-brand-main font-semibold font-rubik">
