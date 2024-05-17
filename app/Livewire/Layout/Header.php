@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Component;
+namespace App\Livewire\Layout;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -19,6 +19,6 @@ class Header extends Component
 
     public function render()
     {
-        return view('livewire.component.header');
+        return view('livewire.layout.header');
     }
 }

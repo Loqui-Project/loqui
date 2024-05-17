@@ -1,5 +1,5 @@
 <header x-data="{ openMenu: false }"
-    class="sticky inset-x-0 top-2 z-50 m-6 shadow-surface-glass max-laptop:py-4 backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
+    class="sticky z-[2] inset-x-0 top-2 m-6 shadow-surface-glass max-laptop:py-4 backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
     <div class="container">
         <nav class="flex items-center justify-between laptop:px-8 flex-wrap" aria-label="Main navbar">
             <div class="flex laptop:flex-1">
@@ -20,7 +20,7 @@
                             </svg>
                         </span>
                         <span>
-                            Home
+                            {{ __("Home") }}
                         </span>
                     </a>
                     <a href={{ route('search') }}
@@ -34,7 +34,7 @@
 
                         </span>
                         <span>
-                            Search
+                            {{ __("Search") }}
                         </span>
                     </a>
                     <a href={{ route('inbox') }}
@@ -47,10 +47,9 @@
                             </svg>
                         </span>
                         <span>
-                            Inbox
+                            {{ __("Inbox") }}
                         </span>
                     </a>
-                    @livewire('component.notification.drop-down')
                 </div>
                 <div class="flex laptop:flex-1 laptop:justify-end">
                     <div class="max-laptop:flex hidden">
@@ -75,13 +74,13 @@
                     <a href={{ route('auth.sign-in') }}
                         class="text-sm font-semibold leading-6 flex gap-4 items-center text-gray-900 dark:text-white">
                         <span>
-                            Sign in
+                            {{ __("Sign in") }}
                         </span>
                     </a>
                     <a href={{ route('auth.sign-out') }}
                         class="text-sm bg-brand-dark text-white px-8 py-2 rounded-md hover:bg-brand-dark/90 transition-all duration-300 font-semibold leading-6 flex gap-4 items-center  ">
                         <span>
-                            Sign up
+                            {{ __("Sign up") }}
                         </span>
                     </a>
 
@@ -103,7 +102,7 @@
                             </svg>
                         </span>
                         <span>
-                            Home
+                            {{ __("Home") }}
                         </span>
                     </a>
                     <a href={{ route('search') }}
@@ -117,7 +116,7 @@
 
                         </span>
                         <span>
-                            Search
+                            {{ __("Search") }}
                         </span>
                     </a>
                     <a href={{ route('inbox') }}
@@ -130,7 +129,7 @@
                             </svg>
                         </span>
                         <span>
-                            Inbox
+                            {{ __("Inbox") }}
                         </span>
                     </a>
                     <a href="{{ route("notifications") }}"
@@ -143,7 +142,7 @@
                             </svg>
                         </span>
                         <span>
-                            Notification
+                            {{ __("Notification") }}
                         </span>
                     </a>
                 </div>

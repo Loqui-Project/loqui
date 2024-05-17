@@ -23,15 +23,15 @@ class Home extends Component
             return redirect()->route('auth.sign-in');
         }
 
-        $this->authUser = Auth::user()->load('follower', 'following', 'messages');
+        $this->authUser = Auth::user()->load('followers', 'following', 'messages');
         $this->userMessages = Cache::driver('redis')->remember("user:{$this->authUser->id}:messages:with_replay", 60 * 60 * 24 * 1, function () {
             return Message::whereIn('user_id', $this->authUser->following->pluck('id'))->whereHas('replay')->with(['replay', 'user.mediaObject', 'sender.mediaObject', 'likes', 'favorites'])->latest()->get();
         });
         $this->userData = Cache::driver('redis')->remember("user:{$this->authUser->id}:data", 60 * 60 * 24 * 1, function () {
             return [
                 'followers' => [
-                    'count' => $this->authUser->follower->count(),
-                    'data' => $this->authUser->follower->take(5),
+                    'count' => $this->authUser->followers->count(),
+                    'data' => $this->authUser->followers->take(5),
                 ],
                 'following' => [
                     'count' => $this->authUser->following->count(),
