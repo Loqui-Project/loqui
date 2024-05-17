@@ -8,16 +8,14 @@
             </div>
         </div>
         <div class="container">
-            <div class="grid grid-cols-12 justify-between gap-4">
-                <div class="col-start-1 col-end-4 max-laptop:col-span-12">
+            <div class="grid grid-cols-12 justify-between gap-4 mb-10">
+                <div class="col-start-1 col-end-5 max-laptop:col-span-12">
                     <livewire:user::home-card :user="$user">
                 </div>
-                <div class="col-start-5 col-span-12 max-laptop:col-span-12">
-                    <div id="messages" class="flex flex-col">
+                <div class="col-start-6 col-span-12 max-laptop:col-span-12">
+                    <div id="messages" class="flex flex-col gap-4">
                         @foreach ($messages as $message)
-                        <a href="{{ route('message.show', ['message' => $message]) }}">
                             @livewire('component.message-with-replay', ['message' => $message], key($message->id))
-                        </a>
                         @endforeach
                     </div>
                 </div>

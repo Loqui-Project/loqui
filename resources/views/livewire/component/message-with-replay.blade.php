@@ -38,17 +38,16 @@
                     <img src="{{ URL::asset($message->user->mediaObject->media_path) }}"
                         alt="{{ $message->user->name }}" class="w-10 h-10 rounded-full">
                 </div>
-                <div class="flex flex-col w-full">
+                <a class="flex flex-col w-full" href="{{ route('profile.user', ['username' => $message->user->username]) }}">
                     <div class="flex justify-between w-full">
                         <span class="font-bold">
                             {{ $message->user->name }}
                         </span>
                     </div>
                     <div>
-                        <a href={{ route('profile.user', ['username' => $message->user->username]) }}
-                            class="text-gray-600">{{ '@' . $message->user->username }}</a>
+                        <span class="text-gray-600">{{ '@' . $message->user->username }}</span>
                     </div>
-                </div>
+                </a>
             </div>
             <div>
                 <p>
