@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Contracts\FollowUserInterface;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
+class User extends Authenticatable implements CanResetPassword, FollowUserInterface, MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -56,7 +57,7 @@ class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
         return $this->hasManyThrough(User::class, UserFollow::class, 'follower_id', 'id', 'id', 'following_id');
     }
 
-    public function follower(): HasManyThrough
+    public function followers(): HasManyThrough
     {
         return $this->hasManyThrough(User::class, UserFollow::class, 'following_id', 'id', 'id', 'follower_id');
     }
@@ -84,5 +85,25 @@ class User extends Authenticatable implements CanResetPassword, MustVerifyEmail
     public function notifications(): HasMany
     {
         return $this->hasMany(Notification::class, 'user_id');
+    }
+
+    public function isFollowing(User $user)
+    {
+        return $this->following()->where('following_id', $user->id)->exists();
+    }
+
+    public function followUser(User $user, User $currentUser)
+    {
+        if (! $this->isFollowing($user)) {
+            UserFollow::create([
+                'follower_id' => $currentUser->id,
+                'following_id' => $user->id,
+            ]);
+        }
+    }
+
+    public function unfollowUser(User $user, User $currentUser)
+    {
+        return UserFollow::where('follower_id', $currentUser->id)->where('following_id', $user->id)->delete();
     }
 }

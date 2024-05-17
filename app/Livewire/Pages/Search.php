@@ -11,14 +11,17 @@ use Livewire\WithPagination;
 
 class Search extends Component
 {
-    use WithPagination, WithoutUrlPagination;
+    use WithoutUrlPagination, WithPagination;
+
     public $search = '';
+
     public int $perPage = 5;
 
     public function loadMore()
     {
         $this->perPage = $this->perPage + 5;
     }
+
     #[Computed]
     public function userMessages()
     {
