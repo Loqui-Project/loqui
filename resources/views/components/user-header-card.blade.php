@@ -14,7 +14,7 @@
         <nav class="border-b border-b-black  dark:border-b-white">
             <ul class="pb-4 flex flex-col justify-start space-y-4">
                 <li>
-                    <a href={{ route('profile.account') }} class="flex items-center flex-row gap-2">
+                    <a href="{{ route('profile.account') }}" class="flex items-center flex-row gap-2">
                         <span>
                             <svg width="24" height="24" viewBox="0 0 24 24" class="dark:[&>path]:fill-gray-50"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -25,7 +25,7 @@
 
                         </span>
                         <span class="dark:text-white">
-                            Account
+                            {{__("Account")}}
                         </span>
                     </a>
                 </li>
@@ -47,39 +47,14 @@
 
                         </span>
                         <span class="dark:text-white">
-                            Help
+                            {{__("Help")}}
                         </span>
                     </a>
                 </li>
 
             </ul>
         </nav>
-        <div class="border-b border-b-black dark:border-b-white py-2">
-            <div class="flex items-center justify-between">
-                <div>
-                    <span class="text-black dark:text-white">Dark mode</span>
-                </div>
-                <div>
-                    <div x-data="{ value: darkMode }">
-                        <div class="flex items-center m-2 cursor-pointer"
-                            x-on:click="value = value == 'light' ? 'dark' : 'light'; darkMode = value">
-
-                            <div class="rounded-full w-14 h-6 p-0.5 bg-gray-300"
-                                :class="{
-                                    'bg-gray-300': value == 'light',
-                                    'bg-brand-dark dark:bg-brand-main ': value ==
-                                        'dark'
-                                }">
-                                <div class="rounded-full w-5 h-5 bg-white transform mx-auto duration-300 ease-in-out"
-                                    :class="{ '-translate-x-4': value == 'light', 'translate-x-4': value == 'dark' }">
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
         <div class="flex flex-row items-center pt-4 gap-2">
             <div>
                 <svg width="24" height="24" viewBox="0 0 24 24" class="fill-danger"
@@ -92,7 +67,7 @@
 
             </div>
             <div>
-                <a href="/auth/sign-out" class="text-md font-bold leading-none text-danger">Sign out</a>
+                <a href="/auth/sign-out" class="text-md font-bold leading-none text-danger">{{__("Sign out")}}</a>
             </div>
         </div>
     </div>

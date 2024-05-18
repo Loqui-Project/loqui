@@ -36,7 +36,7 @@
                             @if ($users != null)
                             <div class="flex flex-col gap-4">
                                 @forelse($users as $user)
-                                    @livewire('component.user.sidebar-card', ['user' => $user, 'type' => $type], key($user->id))
+                                    @livewire('component.user.sidebar-card', ['user' => $user, 'type' => $type, 'authUser' => $authUser], key($user->id))
                                 @empty
                             <p>No users</p>
                             @endforelse

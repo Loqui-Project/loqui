@@ -29,7 +29,7 @@ class Inbox extends Component
     public function refreshMessages()
     {
         $id = Auth::id();
-        Cache::driver('redis')->forget("user:{$id}:messages:without_replay");
+        Cache::forget("user:{$id}:messages:without_replay");
     }
 
     public function loadMore()

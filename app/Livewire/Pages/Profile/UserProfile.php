@@ -35,7 +35,7 @@ class UserProfile extends Component
             $this->isFollowing = false;
             $this->anonymously = true;
         }
-        $this->userMessages = Cache::driver('redis')->remember("user:{$this->user->id}:messages:with_replay", 60 * 60 * 24 * 1, function () {
+        $this->userMessages = Cache::remember("user:{$this->user->id}:messages:with_replay", now()->addHours(4), function () {
             return $this->user->messages()->whereHas('replay')->latest()->get();
         });
     }
