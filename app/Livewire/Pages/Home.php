@@ -23,11 +23,13 @@ class Home extends Component
             return redirect()->route('auth.sign-in');
         }
 
-        $this->authUser = Auth::user()->load('followers', 'following', 'messages');
-        $this->userMessages = Cache::driver('redis')->remember("user:{$this->authUser->id}:messages:with_replay", 60 * 60 * 24 * 1, function () {
-            return Message::whereIn('user_id', $this->authUser->following->pluck('id'))->whereHas('replay')->with(['replay', 'user.mediaObject', 'sender.mediaObject', 'likes', 'favorites'])->latest()->get();
+        $this->authUser = Cache::get('user:'.Auth::id(), function () {
+            return User::find(Auth::id());
         });
-        $this->userData = Cache::driver('redis')->remember("user:{$this->authUser->id}:data", 60 * 60 * 24 * 1, function () {
+        $this->userMessages = Cache::remember("user:{$this->authUser->id}:messages:with_replay", now()->addHours(4), function () {
+            return Message::whereIn('user_id', $this->authUser->following->pluck('id'))->whereHas('replay')->with(['replay', 'user.mediaObject', 'sender.mediaObject', 'likes.user', 'favorites'])->latest()->get();
+        });
+        $this->userData = Cache::remember("user:{$this->authUser->id}:data", now()->addHours(4), function () {
             return [
                 'followers' => [
                     'count' => $this->authUser->followers->count(),

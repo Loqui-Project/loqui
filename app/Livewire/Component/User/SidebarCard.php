@@ -6,7 +6,6 @@ use App\Jobs\NewFollowerJob;
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -15,21 +14,21 @@ class SidebarCard extends Component
 {
     public User $user;
 
-    public ?Authenticatable $currentUser = null;
+    public ?Authenticatable $authUser = null;
 
     public string $type;
 
     public bool $isContains = false;
 
-    public function mount(User $user, string $type)
+    public function mount(User $user, string $type, ?User $authUser = null)
     {
         $this->user = $user;
         $this->type = $type;
-        $this->currentUser = Auth::user();
-        if ($this->currentUser === null) {
+        $this->authUser = $authUser;
+        if ($this->authUser === null) {
             $this->isContains = false;
         } else {
-            $this->isContains = $this->currentUser->isFollowing($user);
+            $this->isContains = $this->authUser->isFollowing($user);
         }
     }
 
@@ -38,12 +37,12 @@ class SidebarCard extends Component
         $user = User::find($id);
         $column_id = Str::singular($this->type).'_id';
         if ($this->isContains) {
-            $this->currentUser->unfollowUser($user, $this->currentUser);
+            $this->authUser->unfollowUser($user, $this->authUser);
             $this->isContains = false;
         } else {
-            $this->currentUser->followUser($user, $this->currentUser);
+            $this->authUser->followUser($user, $this->authUser);
             $this->isContains = true;
-            NewFollowerJob::dispatch($user, $this->currentUser);
+            NewFollowerJob::dispatch($user, $this->authUser);
         }
         $this->user = $user;
         Cache::forget("users:$this->type");

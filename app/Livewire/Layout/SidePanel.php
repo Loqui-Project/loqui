@@ -12,10 +12,13 @@ class SidePanel extends Component
 {
     public $users;
 
+    public ?User $authUser = null;
+
     public string $type = 'following';
 
     public function mount()
     {
+        $this->authUser = Auth::user();
         $this->users = $this->showUsers();
     }
 
@@ -29,9 +32,9 @@ class SidePanel extends Component
     public function showUsers($type = 'following')
     {
         $this->type = $type;
-        $username = Auth::check() ? Auth::user()->username : request('username');
-        $this->users = Cache::remember("users:$type", 60, function () use ($username, $type) {
-            return User::where('username', $username)->first()->{$type};
+        $username = $this->authUser ? $this->authUser->username : request('username');
+        $this->users = Cache::remember("users:{$this->authUser->id}:$type", 60, function () use ($username, $type) {
+            return User::where('username', $username)->with(['mediaObject', "{$type}.mediaObject"])->first()->{$type};
         });
 
         return $this->users;
@@ -42,6 +45,7 @@ class SidePanel extends Component
         return view('livewire.layout.side-panel', [
             'users' => $this->users,
             'type' => $this->type,
+            'currentUser' => $this->authUser,
         ]);
     }
 }
