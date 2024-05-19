@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@ryangjchandler/alpine-clipboard':
+        specifier: ^2.3.0
+        version: 2.3.0
       alpinejs:
         specifier: ^3.13.10
         version: 3.13.10
@@ -319,6 +322,9 @@ packages:
     resolution: {integrity: sha512-TGGO7v7qOq4CYmSBVEYpI1Y5xDuCEnbVC5Vth8mOsW0gDSzxNrVERPc790IGHsrT2dQSimgMr9Ub3Y1Jci5/8w==}
     cpu: [x64]
     os: [win32]
+
+  '@ryangjchandler/alpine-clipboard@2.3.0':
+    resolution: {integrity: sha512-r1YL/LL851vSemjgcca+M6Yz9SNtA9ATul8nJ0n0sAS1W3V1GUWvH0Od2XdQF1r36YJF+/4sUc0eHF/Zexw7dA==}
 
   '@savvywombat/tailwindcss-grid-areas@4.0.0':
     resolution: {integrity: sha512-gjEGTltsGfy+AJQqhkuQKQGp/SB0XzXT3ZNmrOfuwPGF5DLg5GsN5XHiaYhudMvmBwRp+9k6wrZhHBM0lhEgJA==}
@@ -1059,6 +1065,8 @@ snapshots:
 
   '@rollup/rollup-win32-x64-msvc@4.17.2':
     optional: true
+
+  '@ryangjchandler/alpine-clipboard@2.3.0': {}
 
   '@savvywombat/tailwindcss-grid-areas@4.0.0(tailwindcss@3.4.3)':
     dependencies:

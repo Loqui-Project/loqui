@@ -5,7 +5,6 @@ namespace App\Livewire\Component\User;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\URL;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
@@ -83,15 +82,14 @@ class HomeCard extends Component
     {
 
         $this->shareData['url'] = route('profile.user', $this->user->username);
-        $this->shareData['avatar'] = URL::asset($this->user->mediaObject->media_path);
-        $this->shareData['name'] = $this->user->name;
+        $this->shareData['title'] = $this->user->name;
 
         return view('livewire.component.user.home-card', [
             'user' => $this->user,
             'followersCount' => $this->getFollowersCountProperty(),
             'followingCount' => $this->getFollowingCountProperty(),
             'messagesCount' => $this->getMessagesCountProperty(),
-            'shareData' => json_encode($this->shareData),
+            'share_data' => $this->shareData,
             'users' => $this->users,
         ]);
     }
