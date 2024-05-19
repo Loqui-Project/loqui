@@ -30,6 +30,8 @@ class MessageWithReplay extends Component
 
     public $usersLike;
 
+    public $messageDetails = [];
+
     public function mount(Message $message)
     {
         $this->message = $message;
@@ -48,6 +50,10 @@ class MessageWithReplay extends Component
             $this->liked = $this->message->likes->contains('user_id', $this->authUser->id);
             $this->favorited = $this->message->favorites->contains('user_id', $this->authUser->id);
         }
+        $this->messageDetails = [
+            'title' => $this->message->message,
+            'url' => route('message.show', ['message' => $this->message]),
+        ];
     }
 
     #[On('add-like')]
@@ -106,6 +112,7 @@ class MessageWithReplay extends Component
             'favorited' => $this->favorited,
             'likes_count' => $this->likes_count,
             'favorites_count' => $this->favorites_count,
+            'message_details' => $this->messageDetails,
         ]);
     }
 }
