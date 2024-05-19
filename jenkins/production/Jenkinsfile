@@ -1,0 +1,22 @@
+def GITHUB_REPO = 'git@github.com:Loqui-Project/loqui.git'
+
+pipeline {
+    agent any
+    stages {
+        stage('Deploy Staging') {
+            steps {
+                git GITHUB_REPO
+                sh 'composer install'
+                sh 'cp .env.example .env'
+                sh 'php artisan key:generate'
+                sh 'pnpm i'
+                sh 'pnpm run build'
+                sh 'php artisan storage:link'
+            }
+        }
+    }
+    options {
+        // Only keep the 10 most recent builds
+        buildDiscarder(logRotator(numToKeepStr:'10'))
+    }
+}
