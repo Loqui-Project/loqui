@@ -21,10 +21,12 @@ class Sessions extends Component
             $result = new Parser($session->user_agent);
             // get latest activity in diffHuman format
             $session->last_activity = Carbon::parse($session->last_activity)->diffForHumans();
-            $ipInfo = Cache::remember("user:{$currentUser->id}:ip:79.173.245.138", 3600, function () use ($session) {
+            $ipInfo = Cache::remember("user:{$currentUser->id}:ip:79.173.245.138", 3600, function () {
                 $token = env('IP_INFO_TOKEN');
+
                 return json_decode(file_get_contents("http://ipinfo.io/79.173.245.138?token={$token}"));
             });
+
             return [
                 'id' => $session->id,
                 'last_activity' => $session->last_activity,
@@ -36,7 +38,7 @@ class Sessions extends Component
                 'region' => $ipInfo->region,
                 'country' => $ipInfo->country,
                 'loc' => explode(',', $ipInfo->loc),
-                "current" => $session->id === session()->getId(),
+                'current' => $session->id === session()->getId(),
             ];
         });
     }
