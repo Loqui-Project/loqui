@@ -30,7 +30,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Blade::component('layout-app', App::class);
         Livewire::component('user::home-card', UserHomeCard::class);
-
         Blade::component('layout-guest', Guest::class);
         Blade::component('user-header-card', UserHeaderCard::class);
         Gate::define('viewPulse', function (User $user) {
