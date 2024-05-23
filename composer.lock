@@ -4,11 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
-    "content-hash": "f73146365f2d6c17e0a24578728ef9d0",
-=======
-    "content-hash": "e322a955c8dfa2cd147d3d9814a0c8de",
->>>>>>> 17277247b60b6b8a2fddceaa6bfa85716c1da093
+    "content-hash": "58eeeb4f70da00d0395527c4424232bb",
     "packages": [
         {
             "name": "brick/math",
@@ -1650,16 +1646,16 @@
         },
         {
             "name": "laravel/pulse",
-            "version": "v1.2.0",
+            "version": "v1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pulse.git",
-                "reference": "37fcc8e77dc437c01ee1a73ba58fd70615c84855"
+                "reference": "657c354973f0a38d12c177674873d9468768077d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pulse/zipball/37fcc8e77dc437c01ee1a73ba58fd70615c84855",
-                "reference": "37fcc8e77dc437c01ee1a73ba58fd70615c84855",
+                "url": "https://api.github.com/repos/laravel/pulse/zipball/657c354973f0a38d12c177674873d9468768077d",
+                "reference": "657c354973f0a38d12c177674873d9468768077d",
                 "shasum": ""
             },
             "require": {
@@ -1733,7 +1729,7 @@
                 "issues": "https://github.com/laravel/pulse/issues",
                 "source": "https://github.com/laravel/pulse"
             },
-            "time": "2024-05-17T16:22:20+00:00"
+            "time": "2024-05-22T15:58:00+00:00"
         },
         {
             "name": "laravel/sanctum",
