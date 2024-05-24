@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Livewire\Component\User\HomeCard as UserHomeCard;
+use App\Livewire\Layout\SidePanel;
 use App\Models\User;
 use App\View\Components\Layouts\App;
 use App\View\Components\Layouts\Guest;
@@ -30,6 +31,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Blade::component('layout-app', App::class);
         Livewire::component('user::home-card', UserHomeCard::class);
+        Livewire::component('layout::side-panel', SidePanel::class);
+
         Blade::component('layout-guest', Guest::class);
         Blade::component('user-header-card', UserHeaderCard::class);
         Gate::define('viewPulse', function (User $user) {
