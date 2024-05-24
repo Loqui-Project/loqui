@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages;
 
 use App\Models\User;
+use Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -26,7 +27,7 @@ class Search extends Component
     public function userMessages()
     {
         $key = "search:{$this->search}:{$this->perPage}";
-        $seconds = 3600 * 6; // 1 hour...
+        $seconds = now()->addHours(4); // 1 hour...
 
         return Cache::remember(
             $key,
@@ -38,8 +39,8 @@ class Search extends Component
                     "%{$this->search}%"
                 )->withCount(['messages' => function ($query) {
                     $query->whereHas('replay');
-                }])
-                    ->orderBy('created_at', 'desc')
+                }])->where('id', '!=', Auth::id())
+                    ->orderBy('messages_count', 'desc')
                     ->paginate($this->perPage);
             }
         );

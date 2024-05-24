@@ -4,7 +4,9 @@ namespace App\Livewire\Component;
 
 use App\Models\Message;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -12,70 +14,92 @@ class MessageWithReplay extends Component
 {
     public Message $message;
 
-    public ?User $user;
+    public ?User $authUser = null;
 
-    public int $likes = 0;
+    public Collection $likes;
+
+    public Collection $favorites;
+
+    public int $likes_count = 0;
 
     public bool $liked = false;
 
-    public int $favorites = 0;
+    public int $favorites_count = 0;
 
     public bool $favorited = false;
+
+    public $usersLike;
+
+    public $messageDetails = [];
 
     public function mount(Message $message)
     {
         $this->message = $message;
-        $this->user = Auth::user();
-        $this->likes = $this->message->likes->count();
-        if (Auth::check()) {
-            $this->liked = $this->message->likes->contains('user_id', $this->user->id);
-            $this->favorited = $this->message->favorites->contains('user_id', $this->user->id);
+        $this->authUser = Cache::tags(['user', 'user:'.Auth::id()])->remember('user:'.Auth::id(), now()->addHours(4), function () {
+            return Auth::user();
+        });
+        $this->likes = Cache::tags(['message', "message:{$message->id}", "message:{$message->id}:likes"])->remember("message:{$message->id}:likes", now()->addHours(4), function () {
+            return $this->message->likes;
+        });
+        $this->favorites = Cache::tags(['message', "message:{$message->id}", "message:{$message->id}:favorites"])->remember("message:{$message->id}:favorites", now()->addHours(4), function () {
+            return $this->message->favorites;
+        });
+        $this->likes_count = $this->likes->count();
+        $this->favorites_count = $this->favorites->count();
+        if ($this->authUser) {
+            $this->liked = $this->message->likes->contains('user_id', $this->authUser->id);
+            $this->favorited = $this->message->favorites->contains('user_id', $this->authUser->id);
         }
-        $this->favorites = $this->message->favorites->count();
+        $this->messageDetails = [
+            'title' => $this->message->message,
+            'url' => route('message.show', ['message' => $this->message]),
+        ];
     }
 
     #[On('add-like')]
     public function refreshLikes()
     {
-        $this->likes = $this->message->likes->count();
-        $this->liked = $this->message->likes->contains('user_id', $this->user->id);
+        Cache::tags("message:{$this->message->id}:likes")->flush();
+        $this->liked = $this->message->likes->contains('user_id', $this->authUser->id);
+        $this->likes_count = $this->likes->count();
+
     }
 
     #[On('add-favorite')]
     public function refreshFavorites()
     {
-        $this->favorites = $this->message->favorites->count();
-        $this->favorited = $this->message->favorites->contains('user_id', $this->user->id);
+        Cache::tags("message:{$this->message->id}:favorites")->flush();
+        $this->favorited = $this->message->favorites->contains('user_id', $this->authUser->id);
+        $this->favorites_count = $this->favorites->count();
+
     }
 
     public function addLike()
     {
         if ($this->liked) {
-            $this->message->likes()->where('user_id', $this->user->id)->delete();
+            $this->message->likes()->where('user_id', $this->authUser->id)->delete();
             $this->dispatch('add-like');
 
             return;
         }
         $this->message->likes()->create([
-            'user_id' => $this->user->id,
+            'user_id' => $this->authUser->id,
         ]);
         $this->dispatch('add-like');
-
     }
 
     public function addFavorite()
     {
         if ($this->favorited) {
-            $this->message->favorites()->where('user_id', $this->user->id)->delete();
+            $this->message->favorites()->where('user_id', $this->authUser->id)->delete();
             $this->dispatch('add-favorite');
 
             return;
         }
         $this->message->favorites()->create([
-            'user_id' => $this->user->id,
+            'user_id' => $this->authUser->id,
         ]);
         $this->dispatch('add-favorite');
-
     }
 
     public function render()
@@ -86,6 +110,9 @@ class MessageWithReplay extends Component
             'liked' => $this->liked,
             'favorites' => $this->favorites,
             'favorited' => $this->favorited,
+            'likes_count' => $this->likes_count,
+            'favorites_count' => $this->favorites_count,
+            'message_details' => $this->messageDetails,
         ]);
     }
 }

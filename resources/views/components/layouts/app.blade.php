@@ -1,12 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" x-data="{
-    darkMode: localStorage.getItem('darkMode') ||
-        localStorage.setItem('darkMode', 'system')
-}" x-init="$watch('darkMode', val => localStorage.setItem('darkMode', val))"
-    x-bind:class="{
-        'dark': darkMode === 'dark' || (darkMode === 'system' && window.matchMedia('(prefers-color-scheme: dark)')
-            .matches)
-    }">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
 <head>
     <meta charset="UTF-8" />
@@ -38,10 +31,10 @@
     <title>@yield('title') / Loqui</title>
     <meta property="og:type" content="profile" data-rh="true" />
     @if (Auth::check())
-        <meta property="profile:username" content="{{ Auth::user()->username }}" data-rh="true" />
-        <meta property="og:image" content="{{ URL::asset(Auth::user()->mediaObject->media_path) }}" data-rh="true" />
+    <meta property="profile:username" content="{{ Auth::user()->username }}" data-rh="true" />
+    <meta property="og:image" content="{{ URL::asset(Auth::user()->mediaObject->media_path) }}" data-rh="true" />
     @else
-        <meta property="og:image" content="{{ URL::asset('/images/logo.svg') }}" data-rh="true" />
+    <meta property="og:image" content="{{ URL::asset('/images/logo.svg') }}" data-rh="true" />
     @endif
     <meta property="og:title" content="@yield('title') / Loqui" data-rh="true" />
     <meta property="og:description"
@@ -53,13 +46,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-white dark:bg-black">
-    @livewire('component.header')
+<body class="bg-white dark:bg-black" >
+    @livewire('layout.header')
     <main class="min-h-screen">
         @yield('content')
     </main>
     @livewire('layout.footer')
-
+    @livewire("layout.side-panel")
     @livewireScripts
     @stack('scripts')
 </body>

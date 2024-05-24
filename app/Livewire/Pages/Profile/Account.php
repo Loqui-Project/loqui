@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Pages\Profile;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\Laravel\Facades\Image;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -29,7 +30,7 @@ class Account extends Component
     public function rules()
     {
         return [
-            'photo' => 'nullable|image|max:1024',
+            'photo' => 'nullable|image',
             'username' => 'nullable|min:5|max:30|unique:users,username,'.$this->user->id,
             'name' => 'required|min:5|max:50',
             'email' => 'required|email|unique:users,email,'.$this->user->id,
@@ -54,11 +55,14 @@ class Account extends Component
         $this->user->username = $this->username;
 
         if ($this->photo) {
-            $placeHolderImage = Image::make($this->photo);
+            $hashedImageName = 'image_'.Carbon::now()->timestamp.'.'.$this->photo->getClientOriginalExtension();
+            $placeHolderImage = $this->photo->storePubliclyAs('photos', $hashedImageName, [
+                'disk' => 'public',
+            ]);
             // move image to storage
-            $placeHolderImage->save(public_path('storage/'.$placeHolderImage->basename));
+
             $mediaObjectData = [
-                'media_path' => 'storage/'.$placeHolderImage->basename,
+                'media_path' => 'storage/'.$placeHolderImage,
             ];
             $mediaObject = \App\Models\MediaObject::create($mediaObjectData);
             $this->user->media_object_id = $mediaObject->id;

@@ -8,17 +8,15 @@
             </div>
         </div>
         <div class="container">
-            <div class="grid grid-cols-12 justify-between gap-4">
+            <div class="grid grid-cols-12 justify-between gap-4 mb-10">
                 <div class="col-start-1 col-end-4 max-laptop:col-span-12">
-                    <x-user::home-card :user="$user" />
+                    <livewire:user::home-card :user="$user">
                 </div>
                 <div class="col-start-5 col-span-12 max-laptop:col-span-12">
-                    <div id="messages" class="flex flex-col" >
-                            @foreach ($messages as $message)
-                                <a href="{{ route('message.show', ['message' => $message]) }}">
-                                    @livewire('component.message-with-replay', ['message' => $message], key($message->id))
-                                </a>
-                            @endforeach
+                    <div id="messages" class="grid grid-cols-2 gap-6">
+                        @foreach ($messages as $message)
+                            @livewire('component.message-with-replay', ['message' => $message], key($message->id))
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -30,5 +28,6 @@
                 style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)">
             </div>
         </div>
+
     </div>
 </div>

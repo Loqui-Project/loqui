@@ -6,47 +6,54 @@ use App\Jobs\NewFollowerJob;
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
-class SearchUserCard extends Component
+class SidebarCard extends Component
 {
     public User $user;
 
     public ?Authenticatable $authUser = null;
 
-    public bool $isFollowing = false;
+    public string $type;
 
-    public function mount(User $user)
+    public bool $isContains = false;
+
+    public function mount(User $user, string $type, ?User $authUser = null)
     {
         $this->user = $user;
-
-        $this->authUser = Auth::user();
-        $this->isFollowing = $this->authUser->isFollowing($user);
+        $this->type = $type;
+        $this->authUser = $authUser;
+        if ($this->authUser === null) {
+            $this->isContains = false;
+        } else {
+            $this->isContains = $this->authUser->isFollowing($user);
+        }
     }
 
     public function follow($id)
     {
         $user = User::find($id);
-        if ($this->isFollowing) {
+        $column_id = Str::singular($this->type).'_id';
+        if ($this->isContains) {
             $this->authUser->unfollowUser($user, $this->authUser);
-            $this->isFollowing = false;
+            $this->isContains = false;
         } else {
             $this->authUser->followUser($user, $this->authUser);
-            $this->isFollowing = true;
+            $this->isContains = true;
             NewFollowerJob::dispatch($user, $this->authUser);
         }
         $this->user = $user;
-        Cache::forget('users:following');
+        Cache::forget("users:$this->type");
         $this->dispatch('update-users')->to(SidePanel::class);
     }
 
     public function render()
     {
-        return view('livewire.component.user.search-user-card', [
+        return view('livewire.component.user.sidebar-card', [
             'user' => $this->user,
-            'isFollowing' => $this->isFollowing,
+            'isContains' => $this->isContains,
         ]);
     }
 }

@@ -1,27 +1,12 @@
 <header x-data="{ openMenu: false }"
-    class="sticky inset-x-0 top-2 z-50 m-6 shadow-surface-glass max-laptop:py-4 backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
+    class="sticky z-[2] inset-x-0 top-2 m-6 shadow-surface-glass max-laptop:py-4 backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
     <div class="container">
-        <nav class="flex items-center justify-between laptop:px-8 " aria-label="Main navbar">
+        <nav class="flex items-center justify-between laptop:px-8 flex-wrap" aria-label="Main navbar">
             <div class="flex laptop:flex-1">
                 <a href="{{ route('home') }}">
                     <span class="sr-only">Loqui</span>
                     <img class="h-10 w-auto" src={{ URL::asset('images/logo.svg') }} alt="Loqui">
                 </a>
-            </div>
-            <div class="flex laptop:hidden">
-                <button type="button" @click="openMenu = !openMenu"
-                    class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-                    <span class="sr-only">Open main menu</span>
-                    <svg  x-show="openMenu"  class="h-6 w-6 dark:[&>path]:stroke-white" viewBox="0 0 24 24" stroke-width="1.5"
-                         aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    <svg x-show="openMenu == false"  class="h-6 w-6 dark:[&>path]:stroke-white" fill="none" viewBox="0 0 24 24"
-                        stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                    </svg>
-                </button>
             </div>
             @if (Auth::check())
                 <div class="hidden laptop:flex laptop:gap-x-12">
@@ -35,7 +20,7 @@
                             </svg>
                         </span>
                         <span>
-                            Home
+                            {{ __("Home") }}
                         </span>
                     </a>
                     <a href={{ route('search') }}
@@ -49,7 +34,7 @@
 
                         </span>
                         <span>
-                            Search
+                            {{ __("Search") }}
                         </span>
                     </a>
                     <a href={{ route('inbox') }}
@@ -62,24 +47,26 @@
                             </svg>
                         </span>
                         <span>
-                            Inbox
-                        </span>
-                    </a>
-                    <a href="#"
-                        class="text-sm font-semibold leading-6 flex gap-4 items-center text-gray-900 dark:text-white">
-                        <span>
-                            <svg width="24" height="24" viewBox="0 0 24 24"
-                                class="w-6 h-6 fill-black dark:fill-white" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M12 1C8.31847 1 5 3.56545 5 7V11.5389C5 12.1805 4.81008 12.8078 4.45416 13.3417L2.25488 16.6406C2.08869 16.8899 2 17.1828 2 17.4824C2 18.3206 2.67945 19 3.51759 19H8.5C8.5 20.933 10.067 22.5 12 22.5C13.933 22.5 15.5 20.933 15.5 19H20.4824C21.3206 19 22 18.3206 22 17.4824C22 17.1828 21.9113 16.8899 21.7451 16.6406L19.5458 13.3417C19.1899 12.8078 19 12.1805 19 11.5389V7C19 3.56545 15.6815 1 12 1ZM6.5 7C6.5 4.63556 8.88254 2.5 12 2.5C15.1175 2.5 17.5 4.63556 17.5 7V11.5389C17.5 12.4767 17.7776 13.3935 18.2978 14.1737L20.497 17.4726C20.499 17.4755 20.5 17.4789 20.5 17.4824C20.5 17.4862 20.4989 17.489 20.4989 17.489C20.4989 17.489 20.497 17.4927 20.4948 17.4948C20.4927 17.497 20.489 17.4989 20.489 17.4989C20.489 17.4989 20.4862 17.5 20.4824 17.5H3.51759C3.51378 17.5 3.51097 17.4989 3.51097 17.4989C3.51097 17.4989 3.50729 17.497 3.50515 17.4948C3.50302 17.4927 3.50107 17.489 3.50107 17.489C3.50107 17.489 3.5 17.4862 3.5 17.4824C3.5 17.4789 3.50103 17.4755 3.50295 17.4726L5.70224 14.1737C6.22242 13.3935 6.5 12.4767 6.5 11.5389V7ZM14 19H10C10 20.1046 10.8954 21 12 21C13.1046 21 14 20.1046 14 19Z" />
-                            </svg>
-                        </span>
-                        <span>
-                            Notification
+                            {{ __("Inbox") }}
                         </span>
                     </a>
                 </div>
-                <div class="hidden laptop:flex laptop:flex-1 laptop:justify-end">
+                <div class="flex laptop:flex-1 laptop:justify-end">
+                    <div class="max-laptop:flex hidden">
+                        <button type="button" @click="openMenu = !openMenu"
+                            class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+                            <span class="sr-only">Open main menu</span>
+                            <svg x-show="openMenu" class="h-6 w-6 dark:[&>path]:stroke-white" viewBox="0 0 24 24"
+                                stroke-width="1.5" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            <svg x-show="openMenu == false" class="h-6 w-6 dark:[&>path]:stroke-white" fill="none"
+                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                            </svg>
+                        </button>
+                    </div>
                     <x-user-header-card />
                 </div>
             @else
@@ -87,13 +74,13 @@
                     <a href={{ route('auth.sign-in') }}
                         class="text-sm font-semibold leading-6 flex gap-4 items-center text-gray-900 dark:text-white">
                         <span>
-                            Sign in
+                            {{ __("Sign in") }}
                         </span>
                     </a>
                     <a href={{ route('auth.sign-out') }}
                         class="text-sm bg-brand-dark text-white px-8 py-2 rounded-md hover:bg-brand-dark/90 transition-all duration-300 font-semibold leading-6 flex gap-4 items-center  ">
                         <span>
-                            Sign up
+                            {{ __("Sign up") }}
                         </span>
                     </a>
 
@@ -115,7 +102,7 @@
                             </svg>
                         </span>
                         <span>
-                            Home
+                            {{ __("Home") }}
                         </span>
                     </a>
                     <a href={{ route('search') }}
@@ -129,7 +116,7 @@
 
                         </span>
                         <span>
-                            Search
+                            {{ __("Search") }}
                         </span>
                     </a>
                     <a href={{ route('inbox') }}
@@ -142,10 +129,10 @@
                             </svg>
                         </span>
                         <span>
-                            Inbox
+                            {{ __("Inbox") }}
                         </span>
                     </a>
-                    <a href="#"
+                    <a href="{{ route("notifications") }}"
                         class="text-sm font-semibold leading-6 transition-all duration-300 hover:pb-2  hover:border-b hover:border-white flex gap-4 items-center text-gray-900 dark:text-white">
                         <span>
                             <svg width="24" height="24" viewBox="0 0 24 24"
@@ -155,7 +142,7 @@
                             </svg>
                         </span>
                         <span>
-                            Notification
+                            {{ __("Notification") }}
                         </span>
                     </a>
                 </div>

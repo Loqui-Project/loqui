@@ -1,21 +1,23 @@
 export default () => ({
-    share: (user) => {
+    type: 'button',
+    '@click'(title, url) {
+        this.share()
+    },
+    share() {
         try {
             if (
                 navigator.canShare({
-                    url: user.url,
-                    title: user.name,
-                    text: user.name,
+                    url: "#",
+                    title: "#",
                 })
             ) {
                 navigator.share({
-                    url: user.url,
-                    title: user.name,
-                    text: user.name,
+                    url: "#",
+                    title: "#",
                 });
             }
         } catch (error) {
             console.error("Error sharing", error);
         }
-    },
-});
+    }
+})

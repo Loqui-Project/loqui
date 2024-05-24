@@ -1,14 +1,14 @@
 
 <p align="center">
-    <img src="https://github.com/yanalshoubaki/loqui/blob/main/art/logo.svg" width="400" />
+    <img src="https://github.com/Loqui-Project/loqui/blob/main/art/logo.svg" width="400" />
 </p>
 
 <p align="center">
-    <a href="https://github.com/yanalshoubaki/loqui/actions?query=workflow%3ATests">
-        <img src="https://github.com/yanalshoubaki/loqui/workflows/Tests/badge.svg" alt="Tests" />
+    <a href="https://github.com/Loqui-Project/loqui/actions?query=workflow%3ATests">
+        <img src="https://github.com/Loqui-Project/loqui/workflows/Tests/badge.svg" alt="Tests" />
     </a>
-    <a href="https://github.com/yanalshoubaki/loqui/actions/workflows/coding-standards.yml">
-        <img src="https://github.com/yanalshoubaki/loqui/actions/workflows/coding-standards.yml/badge.svg" alt="Coding Standards" />
+    <a href="https://github.com/Loqui-Project/loqui/actions/workflows/coding-standards.yml">
+        <img src="https://github.com/Loqui-Project/loqui/actions/workflows/coding-standards.yml/badge.svg" alt="Coding Standards" />
     </a>
 </p>
 
@@ -30,7 +30,7 @@ The following tools are required in order to start the installation.
 ## Installation
 
 
-1. Clone this repository with `git clone git@github.com:yanalshoubaki/loqui.git`
+1. Clone this repository with `git clone git@github.com:Loqui-Project/loqui.git`
 2. Run `composer install` to install the PHP dependencies
 3. Set up a local database called `loqui_backend`
 4. Run `composer setup` to setup the application
