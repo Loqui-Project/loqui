@@ -74,7 +74,7 @@ class Changelog extends Component
                     'generator' => function ($mention) {
                         // Immediately return if not passed the supported Mention object.
                         // This is an example of the types of manual checks you'll need to perform if not using type hints
-                        if (!($mention instanceof Mention)) {
+                        if (! ($mention instanceof Mention)) {
                             return;
                         }
 
@@ -99,7 +99,7 @@ class Changelog extends Component
             function () {
                 $request = Http::withHeaders([
                     'Accept' => 'application/vnd.github.v3+json',
-                    'Authorization' => 'Bearer ' . env("GITHUB_TOKEN"),
+                    'Authorization' => 'Bearer '.env('GITHUB_TOKEN'),
                 ])->get('https://api.github.com/repos/Loqui-Project/loqui/releases');
 
                 return $request->json();
