@@ -22,6 +22,7 @@ class MessageReplayFactory extends Factory
             $mediaObject = MediaObject::factory()->create();
         }
         $message = \App\Models\Message::inRandomOrder()->first();
+
         return [
             'message_id' => $message->id,
             'user_id' => $message->user_id,

@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
-use Nette\Utils\FileSystem;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MediaObject>
@@ -21,15 +20,16 @@ class MediaObjectFactory extends Factory
     public function definition(): array
     {
         $defaultImage = public_path('images/default-avatar.png');
-        $image = (new UploadedFile($defaultImage, "default-avatar.png"));
-        $hashedImageName = 'image_' . Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
+        $image = (new UploadedFile($defaultImage, 'default-avatar.png'));
+        $hashedImageName = 'image_'.Carbon::now()->timestamp.'.'.$image->getClientOriginalExtension();
 
         // move image to storage
-        $placeHolderImage =  $image->storePubliclyAs('photos', $hashedImageName, [
+        $placeHolderImage = $image->storePubliclyAs('photos', $hashedImageName, [
             'disk' => 'public',
         ]);
+
         return [
-            'media_path' => 'storage/' . $placeHolderImage,
+            'media_path' => 'storage/'.$placeHolderImage,
         ];
     }
 }
