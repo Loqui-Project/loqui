@@ -5,7 +5,6 @@ namespace App\Livewire\Pages\Profile;
 use App\Jobs\NewFollowerJob;
 use App\Jobs\NewMessageJob;
 use App\Models\User;
-use App\Models\UserFollow;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -30,7 +29,7 @@ class UserProfile extends Component
         $this->user = User::where('username', $username)->first();
         $this->authUser = Auth::user();
         if ($this->authUser) {
-            $this->isFollowing = $this->authUser->following->contains($this->user);
+            $this->isFollowing = $this->authUser->isFollowing($this->user);
         } else {
             $this->isFollowing = false;
             $this->anonymously = true;
@@ -63,17 +62,10 @@ class UserProfile extends Component
             return;
         }
         if ($this->isFollowing) {
-            UserFollow::where([
-                'follower_id' => $this->authUser->id,
-                'following_id' => $this->user->id,
-            ])->delete();
+            $this->authUser->unfollowUser($this->user, $this->authUser);
             $this->isFollowing = false;
         } else {
-
-            UserFollow::create([
-                'follower_id' => $this->authUser->id,
-                'following_id' => $this->user->id,
-            ]);
+            $this->authUser->followUser($this->user, $this->authUser);
             $this->isFollowing = true;
             NewFollowerJob::dispatch($this->user, $this->authUser);
         }

@@ -14,31 +14,28 @@ class SearchUserCard extends Component
 {
     public User $user;
 
-    public ?Authenticatable $currentUser = null;
+    public ?Authenticatable $authUser = null;
 
     public bool $isFollowing = false;
 
     public function mount(User $user)
     {
         $this->user = $user;
-        $this->currentUser = Auth::user();
-        if ($this->currentUser === null) {
-            $this->isFollowing = false;
-        } else {
-            $this->isFollowing = $this->currentUser->isFollowing($user);
-        }
+
+        $this->authUser = Auth::user();
+        $this->isFollowing = $this->authUser->isFollowing($user);
     }
 
     public function follow($id)
     {
         $user = User::find($id);
         if ($this->isFollowing) {
-            $this->currentUser->unfollowUser($user, $this->currentUser);
+            $this->authUser->unfollowUser($user, $this->authUser);
             $this->isFollowing = false;
         } else {
-            $this->currentUser->followUser($user, $this->currentUser);
+            $this->authUser->followUser($user, $this->authUser);
             $this->isFollowing = true;
-            NewFollowerJob::dispatch($user, $this->currentUser);
+            NewFollowerJob::dispatch($user, $this->authUser);
         }
         $this->user = $user;
         Cache::forget('users:following');
