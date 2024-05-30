@@ -42,7 +42,7 @@ devDependencies:
     version: 1.16.1
   laravel-vite-plugin:
     specifier: ^1.0.3
-    version: 1.0.4(vite@5.2.11)
+    version: 1.0.4(vite@5.2.12)
   postcss:
     specifier: ^8.4.38
     version: 8.4.38
@@ -57,7 +57,7 @@ devDependencies:
     version: 3.4.3
   vite:
     specifier: ^5.2.11
-    version: 5.2.11(sass@1.77.2)
+    version: 5.2.12(sass@1.77.2)
 
 packages:
 
@@ -911,7 +911,7 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /laravel-vite-plugin@1.0.4(vite@5.2.11):
+  /laravel-vite-plugin@1.0.4(vite@5.2.12):
     resolution: {integrity: sha512-dEj8Q/Fsn0kKbOQ55bl/NmyJL+dD6OxnVaM/nNByw5XV4b00ky6FzXKVuHLDr4BvSJKH1y6oaOcEG5wKpCZ5+A==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -919,7 +919,7 @@ packages:
       vite: ^5.0.0
     dependencies:
       picocolors: 1.0.1
-      vite: 5.2.11(sass@1.77.2)
+      vite: 5.2.12(sass@1.77.2)
       vite-plugin-full-reload: 1.1.0
     dev: true
 
@@ -1392,8 +1392,8 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /vite@5.2.11(sass@1.77.2):
-    resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==}
+  /vite@5.2.12(sass@1.77.2):
+    resolution: {integrity: sha512-/gC8GxzxMK5ntBwb48pR32GGhENnjtY30G4A0jemunsBkiEZFw60s8InGpN8gkhHEkjnRK1aSAxeQgwvFhUHAA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
