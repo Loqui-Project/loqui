@@ -15,7 +15,7 @@
                 <div class="flex flex-col w-full">
                     <div class="flex justify-between w-full">
                         <span class="font-bold text-white ">
-                            {{ $message->sender == null || !!$message->is_anon == true ? 'Anonymous ' : optional($message->sender)->name }}
+                            {{ $message->sender == null || !!$message->is_anon == true ? __("Anonymous") : optional($message->sender)->name }}
                         </span>
                         <span class="text-white text-sm">
                             {{ $message->created_at->diffForHumans() }}
@@ -67,7 +67,7 @@
                         @endif
                     </span>
                     <span class="text-brand-light">
-                        {{ $likes_count }} <span>like</span>
+                        {{ $likes_count }} <span>{{__("like")}}</span>
                     </span>
                 </button>
                 <button wire:click="addFavorite" class="flex items-center gap-2">
@@ -83,7 +83,7 @@
                         @endif
                     </span>
                     <span class="text-brand-light">
-                        {{ $favorites_count }} <span>Favorites</span>
+                        {{ $favorites_count }} <span>{{__("Favorites")}}</span>
                     </span>
                 </button>
             </div>
