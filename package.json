@@ -22,6 +22,7 @@
     },
     "dependencies": {
         "@ryangjchandler/alpine-clipboard": "^2.3.0",
+        "@sentry/browser": "^7.40.0",
         "alpinejs": "^3.13.10",
         "sass": "^1.77.2",
         "sweetalert2": "^11.11.0"

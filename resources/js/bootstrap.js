@@ -3,7 +3,7 @@ import Swal from 'sweetalert2'
 import 'sweetalert2/src/sweetalert2.scss'
 import showSidebar from "./show-sidebar"
 import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
-
+import * as Sentry from "@sentry/browser";
 import Clipboard from '@ryangjchandler/alpine-clipboard' // Import it
 Alpine.plugin(Clipboard) // Register the plugin
 Alpine.store("showSidebar", showSidebar);
@@ -32,6 +32,10 @@ Livewire.start()
 window.Swal = Swal;
 window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN_PUBLIC,
+});
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
