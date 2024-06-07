@@ -6,7 +6,6 @@ use App\Livewire\Layout\SidePanel;
 use App\Models\User;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 use Livewire\Component;
 
 class SidebarCard extends Component

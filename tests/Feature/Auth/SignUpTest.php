@@ -5,8 +5,7 @@ use App\Models\MediaObject;
 use App\Models\User;
 use Livewire\Livewire;
 
-
-describe("Sign Up Tests", function () {
+describe('Sign Up Tests', function () {
     it('Has auth/sign-up page', function () {
         $this->get(route('auth.sign-up'))
             ->assertSeeLivewire(SignUp::class);
