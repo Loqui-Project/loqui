@@ -17,7 +17,7 @@
                         <span class="font-bold text-white ">
                             {{ $message->sender == null || !!$message->is_anon == true ? 'Anonymous ' : optional($message->sender)->name }}
                         </span>
-                        <span class="text-white">
+                        <span class="text-white text-sm">
                             {{ $message->created_at->diffForHumans() }}
                         </span>
                     </div>
@@ -45,7 +45,7 @@
                     </a>
                 </div>
                 <div>
-                    <p text-white>
+                    <p class="text-white">
                         {{ optional($message->replay->first())->text }}
                     </p>
                 </div>
