@@ -19,12 +19,12 @@ class Home extends Component
 
     public function mount()
     {
-        if (! Auth::check()) {
+        if (!Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
 
-        $this->authUser = Cache::get('user:'.Auth::id(), function () {
-            return User::find(Auth::id());
+        $this->authUser = Cache::get('user:' . Auth::id(), function () {
+            return Auth::user();
         });
         $this->userMessages = Cache::remember("user:{$this->authUser->id}:messages:with_replay", now()->addHours(4), function () {
             return Message::whereIn('user_id', $this->authUser->following->pluck('id'))->whereHas('replay')->with(['replay', 'user.mediaObject', 'sender.mediaObject', 'likes.user', 'favorites'])->latest()->get();
