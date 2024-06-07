@@ -15,39 +15,43 @@ class Inbox extends Component
 {
     use WithoutUrlPagination, WithPagination;
 
-    public int $perPage = 10;
+    public int $perPage = 4;
+
+    public $authUser;
 
     public function mount()
     {
-        if (! Auth::check()) {
+        $this->authUser = Auth::user();
+        if (! $this->authUser) {
             return redirect()->route('auth.sign-in');
         }
-        $this->perPage = 10;
+        $this->perPage = 4;
     }
 
     #[On('add-replay')]
     public function refreshMessages()
     {
-        $id = Auth::id();
-        Cache::forget("user:{$id}:messages:without_replay");
+        Cache::tags(["user:{$this->authUser->id}:messages:without_replay"])->flush();
+        $this->userMessages();
     }
 
     public function loadMore()
     {
-        $this->perPage = $this->perPage + 10;
+        $this->perPage = $this->perPage + 4;
     }
 
     #[Computed]
     public function userMessages()
     {
-        $key = 'user:'.auth()->id().':messages:without_replay';
+
+        $key = "user:{$this->authUser->id}:messages:without_replay:{$this->perPage}";
         $seconds = 3600 * 6; // 1 hour...
 
-        return Cache::remember(
+        return Cache::tags(["user:{$this->authUser->id}:messages:without_replay"])->remember(
             $key,
             $seconds,
             function () {
-                return Message::where('user_id', Auth::id())
+                return Message::where('user_id', $this->authUser->id)
                     ->doesntHave('replay')
                     ->with('replay')
                     ->orderBy('created_at', 'desc')
@@ -59,14 +63,14 @@ class Inbox extends Component
     #[Computed]
     public function userMessagesCount()
     {
-        $key = 'user:'.auth()->id().':messages:without_replay:count';
+        $key = "user:{$this->authUser->id}:messages:without_replay:count";
         $seconds = 3600 * 6; // 1 hour...
 
         return Cache::remember(
             $key,
             $seconds,
             function () {
-                return Message::where('user_id', Auth::id())
+                return Message::where('user_id', $this->authUser->id)
                     ->doesntHave('replay')
                     ->count();
             }
@@ -75,12 +79,10 @@ class Inbox extends Component
 
     public function render()
     {
-        $user = Auth::user();
-
         return view('livewire.pages.inbox', [
             'userMessages' => $this->userMessages(),
             'messageCount' => $this->userMessagesCount(),
-            'user' => $user,
+            'user' => $this->authUser,
         ])->extends('components.layouts.app');
     }
 }

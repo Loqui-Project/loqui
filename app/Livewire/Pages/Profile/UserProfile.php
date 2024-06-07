@@ -56,7 +56,7 @@ class UserProfile extends Component
 
     public function follow()
     {
-        if (!$this->authUser) {
+        if (! $this->authUser) {
             $this->dispatch('not-auth-for-follow');
 
             return;
