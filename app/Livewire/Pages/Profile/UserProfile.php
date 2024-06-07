@@ -25,6 +25,9 @@ class UserProfile extends Component
     public function mount($username)
     {
         $this->user = User::where('username', $username)->first();
+        if ($this->user === null) {
+            abort(404);
+        }
         $this->authUser = Auth::user();
         if ($this->authUser) {
             $this->isFollowing = $this->authUser->isFollowing($this->user);
@@ -53,7 +56,7 @@ class UserProfile extends Component
 
     public function follow()
     {
-        if (! $this->authUser) {
+        if (!$this->authUser) {
             $this->dispatch('not-auth-for-follow');
 
             return;
