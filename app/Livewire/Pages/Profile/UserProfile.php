@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Pages\Profile;
 
-use App\Jobs\NewFollowerJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +53,7 @@ class UserProfile extends Component
 
     public function follow()
     {
-        if (!$this->authUser) {
+        if (! $this->authUser) {
             $this->dispatch('not-auth-for-follow');
 
             return;

@@ -19,7 +19,7 @@ class Inbox extends Component
 
     public function mount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
         $this->perPage = 10;
@@ -40,7 +40,7 @@ class Inbox extends Component
     #[Computed]
     public function userMessages()
     {
-        $key = 'user:' . auth()->id() . ":messages:without_replay";
+        $key = 'user:'.auth()->id().':messages:without_replay';
         $seconds = 3600 * 6; // 1 hour...
 
         return Cache::remember(
@@ -59,7 +59,7 @@ class Inbox extends Component
     #[Computed]
     public function userMessagesCount()
     {
-        $key = 'user:' . auth()->id() . ':messages:without_replay:count';
+        $key = 'user:'.auth()->id().':messages:without_replay:count';
         $seconds = 3600 * 6; // 1 hour...
 
         return Cache::remember(

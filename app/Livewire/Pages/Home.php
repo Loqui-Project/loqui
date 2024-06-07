@@ -19,11 +19,11 @@ class Home extends Component
 
     public function mount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
 
-        $this->authUser = Cache::get('user:' . Auth::id(), function () {
+        $this->authUser = Cache::get('user:'.Auth::id(), function () {
             return User::find(Auth::id());
         });
         $this->userMessages = Cache::remember("user:{$this->authUser->id}:messages:with_replay", now()->addHours(4), function () {
