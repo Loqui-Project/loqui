@@ -2,8 +2,6 @@
 
 namespace App\Livewire\Pages\Profile;
 
-use App\Jobs\NewFollowerJob;
-use App\Jobs\NewMessageJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -44,13 +42,12 @@ class UserProfile extends Component
         $this->validate([
             'content' => 'required|min:1',
         ]);
-        $message = $this->user->messages()->create([
+        $this->user->messages()->create([
             'message' => $this->content,
             'user_id' => $this->user->id,
             'sender_id' => $this->authUser ? $this->authUser->id : null,
             'is_anon' => $this->anonymously,
         ]);
-        NewMessageJob::dispatch($message);
         $this->content = '';
     }
 
@@ -67,7 +64,6 @@ class UserProfile extends Component
         } else {
             $this->authUser->followUser($this->user, $this->authUser);
             $this->isFollowing = true;
-            NewFollowerJob::dispatch($this->user, $this->authUser);
         }
     }
 

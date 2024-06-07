@@ -40,7 +40,7 @@ class Inbox extends Component
     #[Computed]
     public function userMessages()
     {
-        $key = 'user:'.auth()->id().":messages:without_replay:{$this->perPage}";
+        $key = 'user:'.auth()->id().':messages:without_replay';
         $seconds = 3600 * 6; // 1 hour...
 
         return Cache::remember(

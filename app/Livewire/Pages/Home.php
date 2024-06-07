@@ -27,7 +27,7 @@ class Home extends Component
             return User::find(Auth::id());
         });
         $this->userMessages = Cache::remember("user:{$this->authUser->id}:messages:with_replay", now()->addHours(4), function () {
-            return Message::whereIn('user_id', $this->authUser->following->pluck('id'))->whereHas('replay')->with(['replay', 'user.mediaObject', 'sender.mediaObject', 'likes.user', 'favorites'])->latest()->get();
+            return Message::whereIn('user_id', collect([$this->authUser->id])->merge($this->authUser->following->pluck('id')))->whereHas('replay')->with(['replay', 'user.mediaObject', 'sender.mediaObject', 'likes.user', 'favorites'])->latest()->get();
         });
         $this->userData = Cache::remember("user:{$this->authUser->id}:data", now()->addHours(4), function () {
             return [

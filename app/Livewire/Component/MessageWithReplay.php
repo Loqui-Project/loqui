@@ -35,14 +35,14 @@ class MessageWithReplay extends Component
     public function mount(Message $message)
     {
         $this->message = $message;
-        $this->authUser = Cache::tags(['user', 'user:'.Auth::id()])->remember('user:'.Auth::id(), now()->addHours(4), function () {
+        $this->authUser = Cache::remember('user:'.Auth::id(), now()->addHours(4), function () {
             return Auth::user();
         });
-        $this->likes = Cache::tags(['message', "message:{$message->id}", "message:{$message->id}:likes"])->remember("message:{$message->id}:likes", now()->addHours(4), function () {
-            return $this->message->likes;
+        $this->likes = Cache::remember("message:{$message->id}:likes", now()->addHours(4), function () {
+            return $this->message->likes()->get();
         });
-        $this->favorites = Cache::tags(['message', "message:{$message->id}", "message:{$message->id}:favorites"])->remember("message:{$message->id}:favorites", now()->addHours(4), function () {
-            return $this->message->favorites;
+        $this->favorites = Cache::remember("message:{$message->id}:favorites", now()->addHours(4), function () {
+            return $this->message->favorites()->get();
         });
         $this->likes_count = $this->likes->count();
         $this->favorites_count = $this->favorites->count();
@@ -59,19 +59,25 @@ class MessageWithReplay extends Component
     #[On('add-like')]
     public function refreshLikes()
     {
-        Cache::tags("message:{$this->message->id}:likes")->flush();
-        $this->liked = $this->message->likes->contains('user_id', $this->authUser->id);
-        $this->likes_count = $this->likes->count();
+        Cache::forget("message:{$this->message->id}:likes");
 
+        $this->likes = Cache::remember("message:{$this->message->id}:likes", now()->addHours(4), function () {
+            return $this->message->likes()->get();
+        });
+
+        $this->liked = $this->likes->contains('user_id', $this->authUser->id);
+        $this->likes_count = $this->likes->count();
     }
 
     #[On('add-favorite')]
     public function refreshFavorites()
     {
-        Cache::tags("message:{$this->message->id}:favorites")->flush();
-        $this->favorited = $this->message->favorites->contains('user_id', $this->authUser->id);
+        Cache::forget("message:{$this->message->id}:favorites");
+        $this->favorites = Cache::remember("message:{$this->message->id}:favorites", now()->addHours(4), function () {
+            return $this->message->favorites()->get();
+        });
+        $this->favorited = $this->favorites->contains('user_id', $this->authUser->id);
         $this->favorites_count = $this->favorites->count();
-
     }
 
     public function addLike()
