@@ -6,7 +6,6 @@ use App\Models\Message;
 use App\Models\MessageReplay;
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Intervention\Image\Facades\Image;
 
 class UserSeeder extends Seeder
 {

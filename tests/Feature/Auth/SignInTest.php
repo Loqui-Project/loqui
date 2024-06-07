@@ -6,12 +6,12 @@ use App\Models\MediaObject;
 use App\Models\User;
 use Livewire\Livewire;
 
-describe("Sign In Tests", function () {
+describe('Sign In Tests', function () {
     it('Access Home without sign in', function () {
         Livewire::test(Home::class)->assertRedirect(SignIn::class);
     });
     it('Has auth/signin page', function () {
-        $this->get(route("auth.sign-in"))
+        $this->get(route('auth.sign-in'))
             ->assertSeeLivewire(SignIn::class);
     });
     it('Email field required', function () {
