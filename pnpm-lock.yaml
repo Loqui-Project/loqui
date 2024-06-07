@@ -13,10 +13,10 @@ dependencies:
     version: 3.14.0
   sass:
     specifier: ^1.77.2
-    version: 1.77.2
+    version: 1.77.4
   sweetalert2:
     specifier: ^11.11.0
-    version: 11.11.0
+    version: 11.11.1
 
 devDependencies:
   '@savvywombat/tailwindcss-grid-areas':
@@ -42,7 +42,7 @@ devDependencies:
     version: 1.16.1
   laravel-vite-plugin:
     specifier: ^1.0.3
-    version: 1.0.4(vite@5.2.11)
+    version: 1.0.4(vite@5.2.12)
   postcss:
     specifier: ^8.4.38
     version: 8.4.38
@@ -57,7 +57,7 @@ devDependencies:
     version: 3.4.3
   vite:
     specifier: ^5.2.11
-    version: 5.2.11(sass@1.77.2)
+    version: 5.2.12(sass@1.77.4)
 
 packages:
 
@@ -911,7 +911,7 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /laravel-vite-plugin@1.0.4(vite@5.2.11):
+  /laravel-vite-plugin@1.0.4(vite@5.2.12):
     resolution: {integrity: sha512-dEj8Q/Fsn0kKbOQ55bl/NmyJL+dD6OxnVaM/nNByw5XV4b00ky6FzXKVuHLDr4BvSJKH1y6oaOcEG5wKpCZ5+A==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
@@ -919,7 +919,7 @@ packages:
       vite: ^5.0.0
     dependencies:
       picocolors: 1.0.1
-      vite: 5.2.11(sass@1.77.2)
+      vite: 5.2.12(sass@1.77.4)
       vite-plugin-full-reload: 1.1.0
     dev: true
 
@@ -1218,8 +1218,8 @@ packages:
       queue-microtask: 1.2.3
     dev: true
 
-  /sass@1.77.2:
-    resolution: {integrity: sha512-eb4GZt1C3avsX3heBNlrc7I09nyT00IUuo4eFhAbeXWU2fvA7oXI53SxODVAA+zgZCk9aunAZgO+losjR3fAwA==}
+  /sass@1.77.4:
+    resolution: {integrity: sha512-vcF3Ckow6g939GMA4PeU7b2K/9FALXk2KF9J87txdHzXbUF9XRQRwSxcAs/fGaTnJeBFd7UoV22j3lzMLdM0Pw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -1299,8 +1299,8 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /sweetalert2@11.11.0:
-    resolution: {integrity: sha512-wKCTtoE6lQVDKaJ5FFq+znk/YykJmJlD8RnLZps8C7DyivctCoRlVeeOwnKfgwKS+QJYon7s++3dmNi3/am1tw==}
+  /sweetalert2@11.11.1:
+    resolution: {integrity: sha512-7jumu0I0/QdRa5R7K1mh05ZdhmsMV6rZOVtjpratZGidxyJD4Sn7rDSA+zmKHzvMef9hVTwPmDU3VxnvhVQMNg==}
     dev: false
 
   /tailwind-scrollbar@3.1.0(tailwindcss@3.4.3):
@@ -1392,8 +1392,8 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /vite@5.2.11(sass@1.77.2):
-    resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==}
+  /vite@5.2.12(sass@1.77.4):
+    resolution: {integrity: sha512-/gC8GxzxMK5ntBwb48pR32GGhENnjtY30G4A0jemunsBkiEZFw60s8InGpN8gkhHEkjnRK1aSAxeQgwvFhUHAA==}
     engines: {node: ^18.0.0 || >=20.0.0}
     hasBin: true
     peerDependencies:
@@ -1423,7 +1423,7 @@ packages:
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.18.0
-      sass: 1.77.2
+      sass: 1.77.4
     optionalDependencies:
       fsevents: 2.3.3
     dev: true
