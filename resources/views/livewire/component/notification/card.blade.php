@@ -6,11 +6,11 @@
         <div class="flex flex-col  w-full">
             <p>
                 @if ($senderUsername == null)
-                    <span class="text-sm text-black dark:text-white">{!! $senderName !!}</span>
+                <span class="text-sm text-black dark:text-white">{!! $senderName !!}</span>
                 @else
-                    <a class="text-sm text-black dark:text-white" href="{{ route('profile.user', ['username' => $senderUsername]) }}">
-                        {!! $senderName !!}
-                    </a>
+                <a class="text-sm text-black dark:text-white" href="{{ route('profile.user', ['username' => $senderUsername]) }}">
+                    {!! $senderName !!}
+                </a>
                 @endif
             </p>
 
@@ -18,6 +18,6 @@
         </div>
     </a>
     @if ($notification->read_at == null)
-        <button wire:click="markAsRead" class="absolute top-[10px] right-0 w-2 h-2 bg-brand-dark rounded-full"></button>
+    <button aria-label="Mark As Read" wire:click="markAsRead" class="absolute top-[10px] right-0 w-2 h-2 bg-brand-dark rounded-full"></button>
     @endif
 </div>

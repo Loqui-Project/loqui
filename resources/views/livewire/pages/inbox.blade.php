@@ -29,7 +29,7 @@
             </div>
             @if ($userMessages->hasMorePages())
             <div class="mt-10 w-full flex justify-center items-center">
-                <button wire:click="loadMore" class="inline-flex min-w-[200px] transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">
+                <button aria-label="Load more" wire:click="loadMore" class="inline-flex min-w-[200px] transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">
                     Load more
                 </button>
             </div>

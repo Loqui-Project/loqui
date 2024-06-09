@@ -1,7 +1,7 @@
 <div x-data="{ open: false }" class="relative">
-    <button @click="open = ! open" class="flex flex-row justify-start items-center gap-4 cursor-pointer rounded-mdk p-4">
+    <button @click="open = ! open" class="flex flex-row justify-start items-center gap-4 cursor-pointer rounded-mdk p-4" aria-label="Open User Menu">
         <div>
-            <img src="{{ URL::asset($user->mediaObject->media_path) }}" alt="avatar" class="w-8 h-8 rounded-full">
+            <img src="{{ URL::asset($user->mediaObject->media_path) }}" alt="{{ $user->name }}" class="w-8 h-8 rounded-full">
         </div>
         <div class="flex flex-col items-start justify-start">
             <span class="text-md capitalize text-left font-semibold text-gray-900  dark:text-white">{{ $user->name }}</span>
@@ -36,7 +36,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="flex items-center flex-row gap-2">
+                    <div class="flex items-center flex-row gap-2">
                         <span>
                             <svg width="24" height="24" viewBox="0 0 24 24" class="dark:[&>path]:fill-gray-50" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M10.9708 8.26466C10.751 8.41117 10.5951 8.61188 10.4834 8.83541C10.2981 9.20589 9.84762 9.35606 9.47713 9.17082C9.10665 8.98558 8.95648 8.53507 9.14172 8.16459C9.34246 7.76312 9.65534 7.33883 10.1387 7.01659C10.6268 6.69121 11.2438 6.5 12 6.5C12.6578 6.5 13.369 6.69469 13.9344 7.11875C14.5199 7.55783 14.9375 8.2399 14.9375 9.125C14.9375 10.1584 14.4248 10.8447 13.9108 11.3404C13.7216 11.5229 13.5124 11.6976 13.332 11.8483C13.2804 11.8914 13.2309 11.9328 13.1852 11.9715C13.0026 12.1263 12.86 12.256 12.75 12.38V13.75C12.75 14.1642 12.4143 14.5 12 14.5C11.5858 14.5 11.25 14.1642 11.25 13.75V12.2765C11.25 12.0403 11.3169 11.7726 11.4973 11.5413C11.7162 11.2607 11.9827 11.0245 12.2152 10.8274C12.2788 10.7734 12.3395 10.7227 12.398 10.6738L12.399 10.673C12.5706 10.5295 12.7225 10.4025 12.8695 10.2608C13.2369 9.90641 13.4375 9.58472 13.4375 9.125C13.4375 8.76009 13.2823 8.50467 13.0344 8.31875C12.7665 8.11781 12.384 8 12 8C11.5063 8 11.1858 8.12129 10.9708 8.26466Z" fill="#1F2328" />
@@ -47,7 +47,7 @@
                         <span class="dark:text-white">
                             {{__("Help")}}
                         </span>
-                    </a>
+                    </div>
                 </li>
             </ul>
         </nav>

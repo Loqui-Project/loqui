@@ -54,7 +54,7 @@
         @if (Auth::check())
         <div class="flex flex-row items-center justify-between gap-4 relative w-full">
             <div class="flex gap-4">
-                <button wire:click="addLike" class="flex items-center gap-2">
+                <button wire:click="addLike" class="flex items-center gap-2" aria-label="Add like">
                     <span>
                         @if ($liked)
                         <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-brand-light">
@@ -70,7 +70,7 @@
                         {{ $likes_count }} <span>{{__("like")}}</span>
                     </span>
                 </button>
-                <button wire:click="addFavorite" class="flex items-center gap-2">
+                <button wire:click="addFavorite" class="flex items-center gap-2" aria-label="Add to favorite">
                     <span>
                         @if ($favorited)
                         <svg width="24" height="24" viewBox="0 0 24 24" class="w-6 h-6 fill-brand-light" xmlns="http://www.w3.org/2000/svg">
@@ -87,7 +87,7 @@
                     </span>
                 </button>
             </div>
-            <button x-bind="shareButton('{{ $message_details['title'] }}', '{{ $message_details['url'] }}')" class="inline-flex items-center justify-center">
+            <button aria-label="Share The Message" x-bind="shareButton('{{ $message_details['title'] }}', '{{ $message_details['url'] }}')" class="inline-flex items-center justify-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-brand-light">
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M12.53 1.22C12.3894 1.07955 12.1988 1.00066 12 1.00066C11.8012 1.00066 11.6106 1.07955 11.47 1.22L8.22 4.47C8.08752 4.61217 8.0154 4.80022 8.01882 4.99452C8.02225 5.18882 8.10097 5.37421 8.23838 5.51162C8.37579 5.64903 8.56118 5.72774 8.75548 5.73117C8.94978 5.7346 9.13783 5.66248 9.28 5.53L11.25 3.56V14.25C11.25 14.4489 11.329 14.6397 11.4697 14.7803C11.6103 14.921 11.8011 15 12 15C12.1989 15 12.3897 14.921 12.5303 14.7803C12.671 14.6397 12.75 14.4489 12.75 14.25V3.56L14.72 5.53C14.7887 5.60368 14.8715 5.66279 14.9635 5.70378C15.0555 5.74477 15.1548 5.76681 15.2555 5.76859C15.3562 5.77036 15.4562 5.75184 15.5496 5.71412C15.643 5.6764 15.7278 5.62025 15.799 5.54903C15.8703 5.47782 15.9264 5.39298 15.9641 5.29959C16.0018 5.20621 16.0204 5.10618 16.0186 5.00547C16.0168 4.90477 15.9948 4.80546 15.9538 4.71346C15.9128 4.62146 15.8537 4.53866 15.78 4.47L12.53 1.22ZM5.5 9.75C5.5 9.68369 5.52634 9.6201 5.57322 9.57322C5.62011 9.52633 5.6837 9.5 5.75 9.5H8.25C8.44891 9.5 8.63968 9.42098 8.78033 9.28033C8.92098 9.13967 9 8.94891 9 8.75C9 8.55108 8.92098 8.36032 8.78033 8.21967C8.63968 8.07901 8.44891 8 8.25 8H5.75C5.28587 8 4.84075 8.18437 4.51256 8.51256C4.18437 8.84075 4 9.28587 4 9.75V20.25C4 21.216 4.784 22 5.75 22H18.25C18.7141 22 19.1592 21.8156 19.4874 21.4874C19.8156 21.1592 20 20.7141 20 20.25V9.75C20 9.28587 19.8156 8.84075 19.4874 8.51256C19.1592 8.18437 18.7141 8 18.25 8H15.75C15.5511 8 15.3603 8.07901 15.2197 8.21967C15.079 8.36032 15 8.55108 15 8.75C15 8.94891 15.079 9.13967 15.2197 9.28033C15.3603 9.42098 15.5511 9.5 15.75 9.5H18.25C18.3163 9.5 18.3799 9.52633 18.4268 9.57322C18.4737 9.6201 18.5 9.68369 18.5 9.75V20.25C18.5 20.3163 18.4737 20.3799 18.4268 20.4268C18.3799 20.4737 18.3163 20.5 18.25 20.5H5.75C5.6837 20.5 5.62011 20.4737 5.57322 20.4268C5.52634 20.3799 5.5 20.3163 5.5 20.25V9.75Z" />
                 </svg>

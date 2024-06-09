@@ -28,7 +28,7 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <button wire:click="closeSession('{{ $session['id'] }}')" class="border-2 text-brand-light border-brand-main hover:bg-brand-main hover:text-brand-dark transition-all duration-300 rounded-md px-6 py-2  font-semibold font-rubik">
+                                    <button aria-label="Close Session" wire:click="closeSession('{{ $session['id'] }}')" class="border-2 text-brand-light border-brand-main hover:bg-brand-main hover:text-brand-dark transition-all duration-300 rounded-md px-6 py-2  font-semibold font-rubik">
                                         Close Session
                                     </button>
                                 </div>
