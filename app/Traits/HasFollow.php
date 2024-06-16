@@ -13,10 +13,10 @@ trait HasFollow
         return $this->hasManyThrough(
             User::class,
             UserFollow::class,
-            "follower_id",
-            "id",
-            "id",
-            "following_id",
+            'follower_id',
+            'id',
+            'id',
+            'following_id',
         );
     }
 
@@ -25,32 +25,32 @@ trait HasFollow
         return $this->hasManyThrough(
             User::class,
             UserFollow::class,
-            "following_id",
-            "id",
-            "id",
-            "follower_id",
+            'following_id',
+            'id',
+            'id',
+            'follower_id',
         );
     }
 
     public function isFollowing(User $user)
     {
-        return $this->following->contains("following_id", $user->id);
+        return $this->following->contains('following_id', $user->id);
     }
 
     public function followUser(User $user, User $currentUser)
     {
-        if (!$this->isFollowing($user)) {
+        if (! $this->isFollowing($user)) {
             UserFollow::create([
-                "follower_id" => $currentUser->id,
-                "following_id" => $user->id,
+                'follower_id' => $currentUser->id,
+                'following_id' => $user->id,
             ]);
         }
     }
 
     public function unfollowUser(User $user, User $currentUser)
     {
-        return UserFollow::where("follower_id", $currentUser->id)
-            ->where("following_id", $user->id)
+        return UserFollow::where('follower_id', $currentUser->id)
+            ->where('following_id', $user->id)
             ->delete();
     }
 }
