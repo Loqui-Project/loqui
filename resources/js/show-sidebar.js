@@ -1,15 +1,13 @@
-
-
 const showSidebar = {
     init() {
-        this.show = false
+        this.show = false;
     },
 
     show: false,
 
     toggle() {
-        this.show = !this.show
-    }
-}
+        this.show = !this.show;
+    },
+};
 
-export default showSidebar
+export default showSidebar;

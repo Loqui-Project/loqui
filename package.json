@@ -3,7 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "format": "npx prettier --write resources/"
   },
   "devDependencies": {
     "@savvywombat/tailwindcss-grid-areas": "^4.0.0",
@@ -24,8 +25,10 @@
     "vite-plugin-compression": "^0.5.1"
   },
   "dependencies": {
+    "@prettier/plugin-php": "^0.22.2",
     "@ryangjchandler/alpine-clipboard": "^2.3.0",
     "@sentry/browser": "^7.40.0",
+    "@shufo/prettier-plugin-blade": "^1.14.1",
     "@vitejs/plugin-legacy": "^5.4.1",
     "alpinejs": "^3.13.10",
     "sass": "^1.77.2",

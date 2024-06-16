@@ -16,8 +16,6 @@ class HomeCard extends Component
 
     public Collection $users;
 
-    public bool $showSidebar = false;
-
     public function mount(User $user)
     {
         $this->user = $user;
@@ -75,7 +73,6 @@ class HomeCard extends Component
     public function activeTab($type = 'following')
     {
         $this->users = $this->getUsersByType($type);
-        $this->showSidebar = true;
     }
 
     public function render()

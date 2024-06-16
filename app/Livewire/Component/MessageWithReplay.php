@@ -32,17 +32,15 @@ class MessageWithReplay extends Component
 
     public $messageDetails = [];
 
-    public function mount(Message $message)
+    public function mount(Message $message, User $user)
     {
         $this->message = $message;
-        $this->authUser = Cache::remember('user:' . Auth::id(), now()->addHours(4), function () {
-            return Auth::user();
+        $this->authUser = $user;
+        $this->likes = Cache::remember("message:{$this->message->id}:likes", now()->addHours(4), function () {
+            return $this->message->likes;
         });
-        $this->likes = Cache::remember("message:{$message->id}:likes", now()->addHours(4), function () {
-            return $this->message->likes()->get();
-        });
-        $this->favorites = Cache::remember("message:{$message->id}:favorites", now()->addHours(4), function () {
-            return $this->message->favorites()->get();
+        $this->favorites = Cache::remember("message:{$this->message->id}:favorites", now()->addHours(4), function () {
+            return $this->message->favorites;
         });
         $this->likes_count = $this->likes->count();
         $this->favorites_count = $this->favorites->count();
