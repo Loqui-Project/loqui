@@ -5,9 +5,7 @@ namespace App\Livewire\Component\User;
 use App\Jobs\NewFollowerJob;
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 use Livewire\Component;
 
 class SidebarCard extends Component
@@ -45,14 +43,14 @@ class SidebarCard extends Component
         }
         $this->user = $user;
         Cache::forget("users:$this->type");
-        $this->dispatch("update-users")->to(SidePanel::class);
+        $this->dispatch('update-users')->to(SidePanel::class);
     }
 
     public function render()
     {
-        return view("livewire.component.user.sidebar-card", [
-            "user" => $this->user,
-            "isContains" => $this->isContains,
+        return view('livewire.component.user.sidebar-card', [
+            'user' => $this->user,
+            'isContains' => $this->isContains,
         ]);
     }
 }
