@@ -19,6 +19,7 @@
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.4",
         "predis/predis": "^2.2",
+        "pusher/pusher-php-server": "^7.2",
         "sentry/sentry": "^4.8",
         "sentry/sentry-laravel": "^4.5",
         "whichbrowser/parser": "^2.1"
