@@ -35,15 +35,14 @@ class Account extends Component
     public function rules()
     {
         return [
-            "photo" => "nullable|image",
-            "username" =>
-                "nullable|min:5|max:30|unique:users,username," .
+            'photo' => 'nullable|image',
+            'username' => 'nullable|min:5|max:30|unique:users,username,'.
                 $this->user->id,
-            "name" => "required|min:5|max:50",
-            "email" => "required|email|unique:users,email," . $this->user->id,
-            "password" => "nullable|min:8|max:20|confirmed",
-            "mail.*" => "boolean",
-            "browser.*" => "boolean",
+            'name' => 'required|min:5|max:50',
+            'email' => 'required|email|unique:users,email,'.$this->user->id,
+            'password' => 'nullable|min:8|max:20|confirmed',
+            'mail.*' => 'boolean',
+            'browser.*' => 'boolean',
         ];
     }
 
@@ -58,19 +57,19 @@ class Account extends Component
             ->get()
             ->map(function ($item) {
                 return [
-                    "type" => $item->type,
-                    "key" => $item->key,
-                    "value" => (bool) $item->value,
+                    'type' => $item->type,
+                    'key' => $item->key,
+                    'value' => (bool) $item->value,
                 ];
             });
         $this->mail = $notificationSettings
-            ->where("type", "mail")
-            ->pluck("value", "key")
+            ->where('type', 'mail')
+            ->pluck('value', 'key')
             ->toArray();
 
         $this->browser = $notificationSettings
-            ->where("type", "browser")
-            ->pluck("value", "key")
+            ->where('type', 'browser')
+            ->pluck('value', 'key')
             ->toArray();
     }
 
@@ -83,21 +82,21 @@ class Account extends Component
 
         if ($this->photo) {
             $hashedImageName =
-                "image_" .
-                Carbon::now()->timestamp .
-                "." .
+                'image_'.
+                Carbon::now()->timestamp.
+                '.'.
                 $this->photo->getClientOriginalExtension();
             $placeHolderImage = $this->photo->storePubliclyAs(
-                "photos",
+                'photos',
                 $hashedImageName,
                 [
-                    "disk" => "public",
+                    'disk' => 'public',
                 ],
             );
             // move image to storage
 
             $mediaObjectData = [
-                "media_path" => "storage/" . $placeHolderImage,
+                'media_path' => 'storage/'.$placeHolderImage,
             ];
             $mediaObject = \App\Models\MediaObject::create($mediaObjectData);
             $this->user->media_object_id = $mediaObject->id;
@@ -111,22 +110,22 @@ class Account extends Component
         foreach ($this->mail as $key => $value) {
             $this->user->notificationSettings()->updateOrCreate(
                 [
-                    "type" => "mail",
-                    "key" => $key,
+                    'type' => 'mail',
+                    'key' => $key,
                 ],
                 [
-                    "value" => (bool) $value,
+                    'value' => (bool) $value,
                 ],
             );
         }
         foreach ($this->browser as $key => $value) {
             $this->user->notificationSettings()->updateOrCreate(
                 [
-                    "type" => "browser",
-                    "key" => $key,
+                    'type' => 'browser',
+                    'key' => $key,
                 ],
                 [
-                    "value" => (bool) $value,
+                    'value' => (bool) $value,
                 ],
             );
         }
@@ -134,8 +133,8 @@ class Account extends Component
 
     public function render()
     {
-        return view("livewire.pages.profile.account", [
-            "user" => $this->user,
-        ])->extends("components.layouts.app");
+        return view('livewire.pages.profile.account', [
+            'user' => $this->user,
+        ])->extends('components.layouts.app');
     }
 }

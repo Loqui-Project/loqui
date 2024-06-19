@@ -14,7 +14,7 @@ class Search extends Component
 {
     use WithoutUrlPagination, WithPagination;
 
-    public $search = "";
+    public $search = '';
 
     public int $perPage = 5;
 
@@ -31,26 +31,26 @@ class Search extends Component
 
         return Cache::remember($key, $seconds, function () {
             return User::whereAny(
-                ["name", "email", "username"],
-                "LIKE",
+                ['name', 'email', 'username'],
+                'LIKE',
                 "%{$this->search}%",
             )
-                ->with("mediaObject")
+                ->with('mediaObject')
                 ->withCount([
-                    "messages" => function ($query) {
-                        $query->whereHas("replay");
+                    'messages' => function ($query) {
+                        $query->whereHas('replay');
                     },
                 ])
-                ->where("id", "!=", Auth::id())
-                ->orderBy("messages_count", "desc")
+                ->where('id', '!=', Auth::id())
+                ->orderBy('messages_count', 'desc')
                 ->paginate($this->perPage);
         });
     }
 
     public function render()
     {
-        return view("livewire.pages.search", [
-            "users" => $this->userMessages(),
-        ])->extends("components.layouts.app");
+        return view('livewire.pages.search', [
+            'users' => $this->userMessages(),
+        ])->extends('components.layouts.app');
     }
 }

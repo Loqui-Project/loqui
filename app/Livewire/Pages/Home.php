@@ -2,9 +2,7 @@
 
 namespace App\Livewire\Pages;
 
-use App\Models\Message;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Computed;
@@ -14,11 +12,9 @@ use Livewire\WithPagination;
 
 class Home extends Component
 {
-
     use WithoutUrlPagination, WithPagination;
 
     public int $perPage = 4;
-
 
     public User $authUser;
 
@@ -26,18 +22,18 @@ class Home extends Component
 
     public function mount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
 
-        $this->authUser = Cache::tags(['user:' . Auth::id()])->remember('user:' . Auth::id(), now()->addHours(5), function () {
-            return   User::where('id', Auth::id())->with(['followers', 'following', 'messages', 'mediaObject'])->withCount([
+        $this->authUser = Cache::tags(['user:'.Auth::id()])->remember('user:'.Auth::id(), now()->addHours(5), function () {
+            return User::where('id', Auth::id())->with(['followers', 'following', 'messages', 'mediaObject'])->withCount([
                 'followers',
                 'following',
-                'messages'
+                'messages',
             ])->first();
         });
-        $this->userData = Cache::remember('user_data' . Auth::id(), now()->addHours(5), function () {
+        $this->userData = Cache::remember('user_data'.Auth::id(), now()->addHours(5), function () {
             return [
                 'followers' => [
                     'count' => $this->authUser->followers_count,
@@ -72,7 +68,6 @@ class Home extends Component
             }
         );
     }
-
 
     public function render()
     {

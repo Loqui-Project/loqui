@@ -22,13 +22,13 @@ class Inbox extends Component
     public function mount()
     {
         $this->authUser = Auth::user();
-        if (!$this->authUser) {
-            return redirect()->route("auth.sign-in");
+        if (! $this->authUser) {
+            return redirect()->route('auth.sign-in');
         }
         $this->perPage = 4;
     }
 
-    #[On("add-replay")]
+    #[On('add-replay')]
     public function refreshMessages()
     {
         Cache::tags([
@@ -46,10 +46,10 @@ class Inbox extends Component
         return Cache::tags([
             "user:{$this->authUser->id}:messages:without_replay",
         ])->remember($key, $seconds, function () {
-            return Message::where("user_id", $this->authUser->id)
-                ->doesntHave("replay")
-                ->with(["user.mediaObject", "sender.mediaObject"])
-                ->orderBy("created_at", "desc")
+            return Message::where('user_id', $this->authUser->id)
+                ->doesntHave('replay')
+                ->with(['user.mediaObject', 'sender.mediaObject'])
+                ->orderBy('created_at', 'desc')
                 ->paginate($this->perPage);
         });
     }
@@ -61,18 +61,18 @@ class Inbox extends Component
         $seconds = 3600 * 6; // 1 hour...
 
         return Cache::remember($key, $seconds, function () {
-            return Message::where("user_id", $this->authUser->id)
-                ->doesntHave("replay")
+            return Message::where('user_id', $this->authUser->id)
+                ->doesntHave('replay')
                 ->count();
         });
     }
 
     public function render()
     {
-        return view("livewire.pages.inbox", [
-            "userMessages" => $this->userMessages(),
-            "messageCount" => $this->userMessagesCount(),
-            "user" => $this->authUser,
-        ])->extends("components.layouts.app");
+        return view('livewire.pages.inbox', [
+            'userMessages' => $this->userMessages(),
+            'messageCount' => $this->userMessagesCount(),
+            'user' => $this->authUser,
+        ])->extends('components.layouts.app');
     }
 }

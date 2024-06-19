@@ -31,16 +31,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Blade::component("layout-app", App::class);
-        Livewire::component("user::home-card", UserHomeCard::class);
-        Blade::component("layout-guest", Guest::class);
-        Blade::component("user-header-card", UserHeaderCard::class);
+        Blade::component('layout-app', App::class);
+        Livewire::component('user::home-card', UserHomeCard::class);
+        Blade::component('layout-guest', Guest::class);
+        Blade::component('user-header-card', UserHeaderCard::class);
         Livewire::component(
-            "notification::dropdown",
+            'notification::dropdown',
             NotificationDropDown::class,
         );
-        Gate::define("viewPulse", function (User $user) {
-            return str_contains($user->email, "@yanalshoubaki.com");
+        Gate::define('viewPulse', function (User $user) {
+            return str_contains($user->email, '@yanalshoubaki.com');
         });
     }
 }

@@ -10,5 +10,5 @@ class NotificationSettings extends Model
 {
     use HasFactory, HasUser;
 
-    protected $fillable = ["user_id", "type", "key", "value"];
+    protected $fillable = ['user_id', 'type', 'key', 'value'];
 }

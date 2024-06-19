@@ -22,11 +22,11 @@ class UserProfile extends Component
 
     public Collection $userMessages;
 
-    public string $content = "";
+    public string $content = '';
 
     public function mount($username)
     {
-        $this->user = User::where("username", $username)->first();
+        $this->user = User::where('username', $username)->first();
         if ($this->user === null) {
             abort(404);
         }
@@ -43,7 +43,7 @@ class UserProfile extends Component
             function () {
                 return $this->user
                     ->messages()
-                    ->whereHas("replay")
+                    ->whereHas('replay')
                     ->latest()
                     ->get();
             },
@@ -53,22 +53,22 @@ class UserProfile extends Component
     public function sendMessage()
     {
         $this->validate([
-            "content" => "required|min:1",
+            'content' => 'required|min:1',
         ]);
         $message = $this->user->messages()->create([
-            "message" => $this->content,
-            "user_id" => $this->user->id,
-            "sender_id" => $this->authUser ? $this->authUser->id : null,
-            "is_anon" => $this->anonymously,
+            'message' => $this->content,
+            'user_id' => $this->user->id,
+            'sender_id' => $this->authUser ? $this->authUser->id : null,
+            'is_anon' => $this->anonymously,
         ]);
         NewMessageJob::dispatch($this->user, $this->authUser, $message);
-        $this->content = "";
+        $this->content = '';
     }
 
     public function follow()
     {
-        if (!$this->authUser) {
-            $this->dispatch("not-auth-for-follow");
+        if (! $this->authUser) {
+            $this->dispatch('not-auth-for-follow');
 
             return;
         }
@@ -85,8 +85,8 @@ class UserProfile extends Component
 
     public function render()
     {
-        return view("livewire.pages.profile.user-profile")->extends(
-            "components.layouts.app",
+        return view('livewire.pages.profile.user-profile')->extends(
+            'components.layouts.app',
         );
     }
 }
