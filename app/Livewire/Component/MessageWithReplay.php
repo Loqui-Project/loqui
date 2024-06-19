@@ -53,23 +53,23 @@ class MessageWithReplay extends Component
         $this->favorites_count = $this->favorites->count();
         if ($this->authUser) {
             $this->liked = $this->likes->contains(
-                "user_id",
+                'user_id',
                 $this->authUser->id,
             );
             $this->favorited = $this->favorites->contains(
-                "user_id",
+                'user_id',
                 $this->authUser->id,
             );
         }
         $this->messageDetails = [
-            "title" => trim($this->message->message, " \t\n\r\0\x0B"),
-            "url" => route("message.show", [
-                "id" => $this->message->id,
+            'title' => trim($this->message->message, " \t\n\r\0\x0B"),
+            'url' => route('message.show', [
+                'id' => $this->message->id,
             ]),
         ];
     }
 
-    #[On("add-like")]
+    #[On('add-like')]
     public function refreshLikes()
     {
         Cache::forget("message:{$this->message->id}:likes");
@@ -82,11 +82,11 @@ class MessageWithReplay extends Component
             },
         );
 
-        $this->liked = $this->likes->contains("user_id", $this->authUser->id);
+        $this->liked = $this->likes->contains('user_id', $this->authUser->id);
         $this->likes_count = $this->likes->count();
     }
 
-    #[On("add-favorite")]
+    #[On('add-favorite')]
     public function refreshFavorites()
     {
         Cache::forget("message:{$this->message->id}:favorites");
@@ -98,7 +98,7 @@ class MessageWithReplay extends Component
             },
         );
         $this->favorited = $this->favorites->contains(
-            "user_id",
+            'user_id',
             $this->authUser->id,
         );
         $this->favorites_count = $this->favorites->count();
@@ -109,16 +109,16 @@ class MessageWithReplay extends Component
         if ($this->liked) {
             $this->message
                 ->likes()
-                ->where("user_id", $this->authUser->id)
+                ->where('user_id', $this->authUser->id)
                 ->delete();
-            $this->dispatch("add-like");
+            $this->dispatch('add-like');
 
             return;
         }
         $this->message->likes()->create([
-            "user_id" => $this->authUser->id,
+            'user_id' => $this->authUser->id,
         ]);
-        $this->dispatch("add-like");
+        $this->dispatch('add-like');
     }
 
     public function addFavorite()
@@ -126,29 +126,29 @@ class MessageWithReplay extends Component
         if ($this->favorited) {
             $this->message
                 ->favorites()
-                ->where("user_id", $this->authUser->id)
+                ->where('user_id', $this->authUser->id)
                 ->delete();
-            $this->dispatch("add-favorite");
+            $this->dispatch('add-favorite');
 
             return;
         }
         $this->message->favorites()->create([
-            "user_id" => $this->authUser->id,
+            'user_id' => $this->authUser->id,
         ]);
-        $this->dispatch("add-favorite");
+        $this->dispatch('add-favorite');
     }
 
     public function render()
     {
-        return view("livewire.component.message-with-replay", [
-            "message" => $this->message,
-            "likes" => $this->likes,
-            "liked" => $this->liked,
-            "favorites" => $this->favorites,
-            "favorited" => $this->favorited,
-            "likes_count" => $this->likes_count,
-            "favorites_count" => $this->favorites_count,
-            "message_details" => $this->messageDetails,
+        return view('livewire.component.message-with-replay', [
+            'message' => $this->message,
+            'likes' => $this->likes,
+            'liked' => $this->liked,
+            'favorites' => $this->favorites,
+            'favorited' => $this->favorited,
+            'likes_count' => $this->likes_count,
+            'favorites_count' => $this->favorites_count,
+            'message_details' => $this->messageDetails,
         ]);
     }
 }

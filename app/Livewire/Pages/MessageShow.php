@@ -24,8 +24,8 @@ class MessageShow extends Component
 
     public function render()
     {
-        return view("livewire.pages.message-show")->extends(
-            "components.layouts.app",
+        return view('livewire.pages.message-show')->extends(
+            'components.layouts.app',
         );
     }
 }
