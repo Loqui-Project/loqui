@@ -7,14 +7,16 @@ use Sentry\Laravel\Integration;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__.'/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
-        health: '/up',
+        web: __DIR__ . "/../routes/web.php",
+        commands: __DIR__ . "/../routes/console.php",
+        health: "/up",
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web();
-        $middleware->redirectGuestsTo(fn () => route('auth.sign-in'));
+        $middleware->redirectGuestsTo(fn() => route("auth.sign-in"));
     })
+    ->withBroadcasting(channels: __DIR__ . "/../routes/channels.php")
     ->withExceptions(function (Exceptions $exceptions) {
         Integration::handles($exceptions);
-    })->create();
+    })
+    ->create();
