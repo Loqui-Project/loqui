@@ -14,7 +14,7 @@ class SidebarCard extends Component
 {
     public User $user;
 
-    public ?Authenticatable $authUser = null;
+    public ?User $authUser = null;
 
     public string $type;
 
@@ -35,7 +35,6 @@ class SidebarCard extends Component
     public function follow($id)
     {
         $user = User::find($id);
-        $column_id = Str::singular($this->type).'_id';
         if ($this->isContains) {
             $this->authUser->unfollowUser($user, $this->authUser);
             $this->isContains = false;
@@ -46,14 +45,14 @@ class SidebarCard extends Component
         }
         $this->user = $user;
         Cache::forget("users:$this->type");
-        $this->dispatch('update-users')->to(SidePanel::class);
+        $this->dispatch("update-users")->to(SidePanel::class);
     }
 
     public function render()
     {
-        return view('livewire.component.user.sidebar-card', [
-            'user' => $this->user,
-            'isContains' => $this->isContains,
+        return view("livewire.component.user.sidebar-card", [
+            "user" => $this->user,
+            "isContains" => $this->isContains,
         ]);
     }
 }
