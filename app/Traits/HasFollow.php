@@ -34,7 +34,7 @@ trait HasFollow
 
     public function isFollowing(User $user)
     {
-        return $this->following->contains("following_id", $user->id);
+        return $this->following->contains("id", $user->id);
     }
 
     public function followUser(User $user, User $currentUser)
