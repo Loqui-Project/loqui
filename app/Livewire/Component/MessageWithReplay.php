@@ -64,7 +64,9 @@ class MessageWithReplay extends Component
         }
         $this->messageDetails = [
             "title" => trim($this->message->message, " \t\n\r\0\x0B"),
-            "url" => route("message.show", ["message" => $this->message]),
+            "url" => route("message.show", [
+                "id" => $this->message->id,
+            ]),
         ];
     }
 

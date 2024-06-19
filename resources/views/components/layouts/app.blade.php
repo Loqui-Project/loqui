@@ -60,6 +60,14 @@
     @endauth
     @livewireScripts
     @stack('scripts')
+    <script>
+        window.Laravel = {!! json_encode([
+            'csrfToken' => csrf_token(),
+        ]) !!};
+        window.App = {!! json_encode([
+            'user' => $user ? $user->id : null,
+        ]) !!};
+    </script>
 </body>
 
 </html>

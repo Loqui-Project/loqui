@@ -1,4 +1,4 @@
-@section('title', 'Inbox')
+@section('title', 'Message')
 <div class="bg-white dark:bg-black">
     <div class="relative isolate px-6 pt-14 laptop:px-8">
         <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
@@ -9,9 +9,9 @@
         </div>
 
         <div class="w-full max-w-screen-laptop overflow-hidden rounded-lg mx-auto my-10">
-            <div class="flex items-center">
+            <div class="grid grid-cols-1 max-laptop:grid-cols-12">
                 @if ($hasReplay)
-                    @livewire('component.message-with-replay', ['message' => $message])
+                    @livewire('component.message-with-replay', ['message' => $message, 'user' => $user])
                 @else
                     @livewire('component.message-without-replay', ['message' => $message])
                 @endif

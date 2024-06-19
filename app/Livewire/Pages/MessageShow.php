@@ -3,6 +3,8 @@
 namespace App\Livewire\Pages;
 
 use App\Models\Message;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class MessageShow extends Component
@@ -11,14 +13,19 @@ class MessageShow extends Component
 
     public $hasReplay = false;
 
-    public function mount(Message $message)
+    public User $user;
+
+    public function mount(int $id)
     {
-        $this->message = $message;
-        $this->hasReplay = $message->replay()->exists();
+        $this->message = Message::findOrFail($id);
+        $this->hasReplay = $this->message->replay()->exists();
+        $this->user = Auth::user();
     }
 
     public function render()
     {
-        return view('livewire.pages.message-show')->extends('components.layouts.app');
+        return view("livewire.pages.message-show")->extends(
+            "components.layouts.app",
+        );
     }
 }

@@ -46,7 +46,7 @@ class SidePanel extends Component
                 "users:{$username}:{$type}",
                 60,
                 function () use ($type) {
-                    $this->authUser->{$type};
+                    return $this->authUser->{$type};
                 },
             );
         } else {
