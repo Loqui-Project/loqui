@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Livewire\Component\Notification\DropDown as NotificationDropDown;
 use App\Livewire\Component\User\HomeCard as UserHomeCard;
 use App\Models\User;
 use App\View\Components\Layouts\App;
@@ -19,7 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+        $this->app->register(
+            \Laravel\Telescope\TelescopeServiceProvider::class,
+        );
         $this->app->register(TelescopeServiceProvider::class);
     }
 
@@ -28,12 +31,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Blade::component('layout-app', App::class);
-        Livewire::component('user::home-card', UserHomeCard::class);
-        Blade::component('layout-guest', Guest::class);
-        Blade::component('user-header-card', UserHeaderCard::class);
-        Gate::define('viewPulse', function (User $user) {
-            return str_contains($user->email, '@yanalshoubaki.com');
+        Blade::component("layout-app", App::class);
+        Livewire::component("user::home-card", UserHomeCard::class);
+        Blade::component("layout-guest", Guest::class);
+        Blade::component("user-header-card", UserHeaderCard::class);
+        Livewire::component(
+            "notification::dropdown",
+            NotificationDropDown::class,
+        );
+        Gate::define("viewPulse", function (User $user) {
+            return str_contains($user->email, "@yanalshoubaki.com");
         });
     }
 }
