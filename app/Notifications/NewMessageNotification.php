@@ -17,7 +17,7 @@ use Illuminate\Queue\SerializesModels;
 
 class NewMessageNotification extends Notification implements ShouldBroadcast
 {
-    use Queueable, Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, Queueable, SerializesModels;
 
     /**
      * Create a new notification instance.
@@ -40,22 +40,23 @@ class NewMessageNotification extends Notification implements ShouldBroadcast
         $viaArray = [];
         $userNotificationSettings = $this->user->notificationSettings();
         $browser = $userNotificationSettings
-            ->where("type", "browser")
+            ->where('type', 'browser')
             ->get()
-            ->pluck("key")
+            ->pluck('key')
             ->toArray();
         $mail = $userNotificationSettings
-            ->where("type", "mail")
+            ->where('type', 'mail')
             ->get()
-            ->pluck("key")
+            ->pluck('key')
             ->toArray();
-        if ($browser && in_array("message", $browser)) {
-            $viaArray[] = "broadcast";
-            $viaArray[] = "database";
+        if ($browser && in_array('message', $browser)) {
+            $viaArray[] = 'broadcast';
+            $viaArray[] = 'database';
         }
-        if ($mail && in_array("message", $mail)) {
-            $viaArray[] = "mail";
+        if ($mail && in_array('message', $mail)) {
+            $viaArray[] = 'mail';
         }
+
         return $viaArray;
     }
 
@@ -64,16 +65,17 @@ class NewMessageNotification extends Notification implements ShouldBroadcast
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->greeting("Hello {$this->user->name}!")
             ->line("You have a new message from {$this->currentUser->name}.")
             ->action(
-                "View message",
-                route("message.show", [
-                    "id" => $this->message->id,
+                'View message',
+                route('message.show', [
+                    'id' => $this->message->id,
                 ]),
             );
     }
+
     /**
      * Get the channels the event should broadcast on.
      *
@@ -83,6 +85,7 @@ class NewMessageNotification extends Notification implements ShouldBroadcast
     {
         return [new PrivateChannel("user.{$this->user->id}")];
     }
+
     /**
      * Get the data to broadcast.
      *
@@ -91,14 +94,14 @@ class NewMessageNotification extends Notification implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            "type" => "new-message",
-            "user" => new UserResource($this->user),
-            "currentUser" => new UserResource($this->currentUser),
-            "message" => new MessageResource($this->message),
-            "url" => route("message.show", [
-                "id" => $this->message->id,
+            'type' => 'new-message',
+            'user' => new UserResource($this->user),
+            'currentUser' => new UserResource($this->currentUser),
+            'message' => new MessageResource($this->message),
+            'url' => route('message.show', [
+                'id' => $this->message->id,
             ]),
-            "title" => "{$this->currentUser->name} send you a new message.",
+            'title' => "{$this->currentUser->name} send you a new message.",
         ];
     }
 
@@ -110,19 +113,18 @@ class NewMessageNotification extends Notification implements ShouldBroadcast
     public function toArray(object $notifiable): array
     {
         return [
-            "current_user_id" => $this->currentUser->id,
-            "message_id" => $this->message->id,
-            "title" => "{$this->currentUser->name} send you a new message.",
+            'current_user_id' => $this->currentUser->id,
+            'message_id' => $this->message->id,
+            'title' => "{$this->currentUser->name} send you a new message.",
         ];
     }
+
     /**
      * Get the notification's database type.
-     *
-     * @return string
      */
     public function databaseType(object $notifiable): string
     {
-        return "new-message";
+        return 'new-message';
     }
 
     /**
@@ -130,6 +132,6 @@ class NewMessageNotification extends Notification implements ShouldBroadcast
      */
     public function broadcastType(): string
     {
-        return "new-message";
+        return 'new-message';
     }
 }

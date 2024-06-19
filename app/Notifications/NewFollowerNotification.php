@@ -15,7 +15,7 @@ use Illuminate\Queue\SerializesModels;
 
 class NewFollowerNotification extends Notification implements ShouldBroadcast
 {
-    use Queueable, Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable, InteractsWithSockets, Queueable, SerializesModels;
 
     /**
      * Create a new notification instance.
@@ -35,23 +35,24 @@ class NewFollowerNotification extends Notification implements ShouldBroadcast
         $viaArray = [];
         $userNotificationSettings = $this->user->notificationSettings();
         $browser = $userNotificationSettings
-            ->where("type", "browser")
+            ->where('type', 'browser')
 
             ->get()
-            ->pluck("key")
+            ->pluck('key')
             ->toArray();
         $mail = $userNotificationSettings
-            ->where("type", "mail")
+            ->where('type', 'mail')
             ->get()
-            ->pluck("key")
+            ->pluck('key')
             ->toArray();
-        if ($browser && in_array("follow", $browser)) {
-            $viaArray[] = "broadcast";
-            $viaArray[] = "database";
+        if ($browser && in_array('follow', $browser)) {
+            $viaArray[] = 'broadcast';
+            $viaArray[] = 'database';
         }
-        if ($mail && in_array("follow", $mail)) {
-            $viaArray[] = "mail";
+        if ($mail && in_array('follow', $mail)) {
+            $viaArray[] = 'mail';
         }
+
         return $viaArray;
     }
 
@@ -60,17 +61,18 @@ class NewFollowerNotification extends Notification implements ShouldBroadcast
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage())
+        return (new MailMessage)
             ->greeting("Hello {$this->user->name}!")
-            ->line("You have a new follower.")
+            ->line('You have a new follower.')
             ->line("{$this->currentUser->name} started following you.")
             ->action(
-                "View his profile",
-                route("profile.user", [
-                    "username" => $this->currentUser->username,
+                'View his profile',
+                route('profile.user', [
+                    'username' => $this->currentUser->username,
                 ]),
             );
     }
+
     /**
      * Get the channels the event should broadcast on.
      *
@@ -80,6 +82,7 @@ class NewFollowerNotification extends Notification implements ShouldBroadcast
     {
         return [new PrivateChannel("user.{$this->user->id}")];
     }
+
     /**
      * Get the data to broadcast.
      *
@@ -88,10 +91,10 @@ class NewFollowerNotification extends Notification implements ShouldBroadcast
     public function broadcastWith(): array
     {
         return [
-            "user" => new UserResource($this->user),
-            "currentUser" => new UserResource($this->currentUser),
-            "url" => route("profile.user", $this->currentUser->username),
-            "title" => "{$this->currentUser->name} started following you.",
+            'user' => new UserResource($this->user),
+            'currentUser' => new UserResource($this->currentUser),
+            'url' => route('profile.user', $this->currentUser->username),
+            'title' => "{$this->currentUser->name} started following you.",
         ];
     }
 
@@ -103,19 +106,17 @@ class NewFollowerNotification extends Notification implements ShouldBroadcast
     public function toArray(object $notifiable): array
     {
         return [
-            "current_user_id" => $this->currentUser->id,
-            "title" => "{$this->currentUser->name} started following you.",
+            'current_user_id' => $this->currentUser->id,
+            'title' => "{$this->currentUser->name} started following you.",
         ];
     }
 
     /**
      * Get the notification's database type.
-     *
-     * @return string
      */
     public function databaseType(object $notifiable): string
     {
-        return "new-follow";
+        return 'new-follow';
     }
 
     /**
@@ -123,6 +124,6 @@ class NewFollowerNotification extends Notification implements ShouldBroadcast
      */
     public function broadcastType(): string
     {
-        return "new-follow";
+        return 'new-follow';
     }
 }

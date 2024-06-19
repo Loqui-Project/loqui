@@ -17,7 +17,7 @@ class App extends Component
      */
     public function __construct()
     {
-        $this->user =  User::where('id', Auth::id())->first() ?? null;
+        $this->user = User::where('id', Auth::id())->first() ?? null;
         dd($this->user);
     }
 
@@ -27,6 +27,7 @@ class App extends Component
     public function render(): View|Closure|string
     {
         dd($this->user);
+
         return view('components.layouts.app');
     }
 }

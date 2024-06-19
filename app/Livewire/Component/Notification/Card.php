@@ -2,10 +2,7 @@
 
 namespace App\Livewire\Component\Notification;
 
-use App\Models\Notification;
-use App\Models\NotificationTemplate;
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Notifications\DatabaseNotification;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -18,31 +15,31 @@ class Card extends Component
 
     public User $fromUser;
 
-    public $type = "";
+    public $type = '';
 
-    public $url = "";
+    public $url = '';
 
     public function mount(DatabaseNotification $notification)
     {
         $this->notification = $notification;
-        $this->user = User::where("id", $notification->notifiable_id)->first();
+        $this->user = User::where('id', $notification->notifiable_id)->first();
         $this->fromUser = User::where(
-            "id",
-            $notification->data["current_user_id"],
+            'id',
+            $notification->data['current_user_id'],
         )->first();
         $this->type = $notification->type;
-        if ($this->type === "new-message") {
-            $this->url = route("message.show", [
-                "id" => $notification->data["message_id"],
+        if ($this->type === 'new-message') {
+            $this->url = route('message.show', [
+                'id' => $notification->data['message_id'],
             ]);
-        } elseif ($this->type === "new-follow") {
-            $this->url = route("profile.user", [
-                "username" => $this->fromUser->username,
+        } elseif ($this->type === 'new-follow') {
+            $this->url = route('profile.user', [
+                'username' => $this->fromUser->username,
             ]);
         }
     }
 
-    #[On("save")]
+    #[On('save')]
     public function refresh()
     {
         $this->mount($this->notification);
@@ -51,11 +48,11 @@ class Card extends Component
     public function markAsRead()
     {
         $this->notification->markAsRead();
-        $this->dispatch("save");
+        $this->dispatch('save');
     }
 
     public function render()
     {
-        return view("livewire.component.notification.card");
+        return view('livewire.component.notification.card');
     }
 }

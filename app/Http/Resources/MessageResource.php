@@ -15,12 +15,11 @@ class MessageResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            "id" => $this->id,
-            "sender" =>
-                $this->sender == null ? null : new UserResource($this->sender),
-            "user" => new UserResource($this->user),
-            "url" => route("message.show", [
-                "id" => $this->id,
+            'id' => $this->id,
+            'sender' => $this->sender == null ? null : new UserResource($this->sender),
+            'user' => new UserResource($this->user),
+            'url' => route('message.show', [
+                'id' => $this->id,
             ]),
         ];
     }
