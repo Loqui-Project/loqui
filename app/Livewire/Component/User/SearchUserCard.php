@@ -37,15 +37,15 @@ class SearchUserCard extends Component
             NewFollowerJob::dispatch($user, $this->authUser);
         }
         $this->user = $user;
-        Cache::forget("users:following");
-        $this->dispatch("update-users")->to(SidePanel::class);
+        Cache::forget('users:following');
+        $this->dispatch('update-users')->to(SidePanel::class);
     }
 
     public function render()
     {
-        return view("livewire.component.user.search-user-card", [
-            "user" => $this->user,
-            "isFollowing" => $this->isFollowing,
+        return view('livewire.component.user.search-user-card', [
+            'user' => $this->user,
+            'isFollowing' => $this->isFollowing,
         ]);
     }
 }
