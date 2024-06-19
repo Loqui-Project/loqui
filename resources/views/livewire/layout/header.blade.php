@@ -50,6 +50,8 @@
                             {{ __('Inbox') }}
                         </span>
                     </a>
+                    <livewire:notification::dropdown />
+
                 </div>
                 <div class="flex laptop:flex-1 laptop:justify-end">
                     <div class="max-laptop:flex hidden">
