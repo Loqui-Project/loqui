@@ -8,16 +8,12 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements
-    CanResetPassword,
-    FollowUserInterface,
-    MustVerifyEmail
+class User extends Authenticatable implements CanResetPassword, FollowUserInterface, MustVerifyEmail
 {
-    use HasFactory, Notifiable, HasFollow;
+    use HasFactory, HasFollow, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -25,12 +21,12 @@ class User extends Authenticatable implements
      * @var array<int, string>
      */
     protected $fillable = [
-        "name",
-        "username",
-        "media_object_id",
-        "email",
-        "status",
-        "password",
+        'name',
+        'username',
+        'media_object_id',
+        'email',
+        'status',
+        'password',
     ];
 
     /**
@@ -38,7 +34,7 @@ class User extends Authenticatable implements
      *
      * @var array<int, string>
      */
-    protected $hidden = ["password", "remember_token"];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * Get the attributes that should be cast.
@@ -48,28 +44,28 @@ class User extends Authenticatable implements
     protected function casts(): array
     {
         return [
-            "email_verified_at" => "datetime",
-            "password" => "hashed",
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
         ];
     }
 
     public function messages(): HasMany
     {
-        return $this->hasMany(Message::class, "user_id");
+        return $this->hasMany(Message::class, 'user_id');
     }
 
     public function mediaObject()
     {
-        return $this->belongsTo(MediaObject::class, "media_object_id", "id");
+        return $this->belongsTo(MediaObject::class, 'media_object_id', 'id');
     }
 
     public function favoriteMessages()
     {
         return $this->belongsToMany(
             Message::class,
-            "favorite_messages",
-            "user_id",
-            "message_id",
+            'favorite_messages',
+            'user_id',
+            'message_id',
         );
     }
 
@@ -77,14 +73,14 @@ class User extends Authenticatable implements
     {
         return $this->belongsToMany(
             Message::class,
-            "liked_messages",
-            "user_id",
-            "message_id",
+            'liked_messages',
+            'user_id',
+            'message_id',
         );
     }
 
     public function notifications(): HasMany
     {
-        return $this->hasMany(Notification::class, "user_id");
+        return $this->hasMany(Notification::class, 'user_id');
     }
 }
