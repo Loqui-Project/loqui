@@ -30,21 +30,30 @@ class NotificationPage extends Component
         $this->perPage = $this->perPage + 5;
     }
 
-    #[Computed()]
+    public function getListeners()
+    {
+        return [
+            "echo-notification:user.{$this->authUser->id}" => 'refresh',
+        ];
+    }
+
+    public function refresh()
+    {
+        Cache::forget("user:{$this->authUser->id}:notifications");
+    }
+
+    #[Computed]
     public function notifications()
     {
         $key = "user:{$this->authUser->id}:notifications";
         $seconds = 3600 * 6;
 
-        return Cache::remember(
-            $key,
-            $seconds,
-            function () {
-                return $this->authUser->notifications()
-                    ->orderBy('created_at', 'desc')
-                    ->paginate($this->perPage);
-            }
-        );
+        return Cache::remember($key, $seconds, function () {
+            return $this->authUser
+                ->notifications()
+                ->orderBy('created_at', 'desc')
+                ->paginate($this->perPage);
+        });
     }
 
     public function render()

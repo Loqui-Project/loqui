@@ -22,9 +22,7 @@ class SidePanel extends Component
     }
 
     #[On('update-users')]
-    public function updateUsers()
-    {
-    }
+    public function updateUsers() {}
 
     #[On('showUsers')]
     public function showUsers($type = 'following')

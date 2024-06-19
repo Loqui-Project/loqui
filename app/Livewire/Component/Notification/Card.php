@@ -2,64 +2,41 @@
 
 namespace App\Livewire\Component\Notification;
 
-use App\Models\Notification;
-use App\Models\NotificationTemplate;
 use App\Models\User;
-use App\NotificationTypeEnum;
-use Carbon\Carbon;
+use Illuminate\Notifications\DatabaseNotification;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Card extends Component
 {
-    public Notification $notification;
+    public $notification;
 
-    public NotificationTemplate $notificationTemplate;
+    public User $user;
 
-    public string $url = '#';
+    public User $fromUser;
 
-    public string $userImage;
+    public $type = '';
 
-    public string $senderName;
+    public $url = '';
 
-    public int $senderId;
-
-    public ?string $senderUsername;
-
-    public string $created_at;
-
-    public function mount(Notification $notification)
+    public function mount(DatabaseNotification $notification)
     {
-
         $this->notification = $notification;
-        $this->notificationTemplate = NotificationTemplate::where('type', $notification->type)->first();
-
-        $this->url = match ($this->notification->type) {
-            NotificationTypeEnum::NEW_MESSAGE->value => route('message.show', ['message' => $this->notification->data['message_id']]),
-            NotificationTypeEnum::NEW_FOLLOWER->value => route('profile.user', ['username' => optional(User::where('id', $this->notification->data['follower_id'])->first())->username]),
-            default => '#',
-        };
-        if ($this->notification->type == NotificationTypeEnum::NEW_MESSAGE->value) {
-            if ($notification->data['sender_id'] == null) {
-                $this->userImage = asset('images/default-avatar.png');
-                $this->senderId = 0;
-                $this->senderName = str_replace(':sender', ' <strong class="dark:text-white">Anonymous</strong>', $this->notificationTemplate->name);
-                $this->senderUsername = null;
-            } else {
-                $sender = User::where('id', $notification->data['sender_id'])->first();
-                $this->userImage = $sender->mediaObject->media_path;
-                $this->senderName = str_replace(':sender', ' <strong class="dark:text-white">'.$sender->name.'</strong>', $this->notificationTemplate->name);
-                $this->senderId = $sender->id;
-                $this->senderUsername = $sender->username;
-            }
-        } elseif ($this->notification->type == NotificationTypeEnum::NEW_FOLLOWER->value) {
-            $sender = User::where('id', $notification->data['follower_id'])->first();
-            $this->userImage = $sender->mediaObject->media_path;
-            $this->senderName = str_replace(':sender', ' <strong class="dark:text-white">'.$sender->name.'</strong>', $this->notificationTemplate->name);
-            $this->senderId = $sender->id;
-            $this->senderUsername = $sender->username;
+        $this->user = User::where('id', $notification->notifiable_id)->first();
+        $this->fromUser = User::where(
+            'id',
+            $notification->data['current_user_id'],
+        )->first();
+        $this->type = $notification->type;
+        if ($this->type === 'new-message') {
+            $this->url = route('message.show', [
+                'id' => $notification->data['message_id'],
+            ]);
+        } elseif ($this->type === 'new-follow') {
+            $this->url = route('profile.user', [
+                'username' => $this->fromUser->username,
+            ]);
         }
-        $this->created_at = Carbon::parse($this->notification->created_at)->diffForHumans();
     }
 
     #[On('save')]

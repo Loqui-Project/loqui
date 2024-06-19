@@ -124,7 +124,7 @@
                             <div class="mt-6 space-y-6">
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="replay" name="replay" type="checkbox" disabled
+                                        <input id="replay" wire:model="mail.replay" type="checkbox"
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
@@ -137,25 +137,36 @@
                                 </div>
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="candidates" name="candidates" type="checkbox" disabled
+                                        <input id="message" wire:model="mail.message" type="checkbox"
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
-                                        <label for="candidates"
+                                        <label for="message"
                                             class="font-medium text-gray-900 dark:text-white">Message</label>
                                         <p class="text-gray-500">Get notified when a user send a message to you.</p>
                                     </div>
                                 </div>
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="offers" name="offers" type="checkbox" disabled
+                                        <input id="likes" wire:model="mail.likes" type="checkbox"
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
-                                        <label for="offers"
+                                        <label for="likes"
                                             class="font-medium text-gray-900 dark:text-white">Likes</label>
                                         <p class="text-gray-500">Get notified when a user add like to your replay.
                                         </p>
+                                    </div>
+                                </div>
+                                <div class="relative flex gap-x-3">
+                                    <div class="flex h-6 items-center">
+                                        <input id="follow" wire:model="mail.follow" type="checkbox"
+                                            class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
+                                    </div>
+                                    <div class="text-sm leading-6">
+                                        <label for="follow"
+                                            class="font-medium text-gray-900 dark:text-white">Follow</label>
+                                        <p class="text-gray-500">Get notified when a user follows you.</p>
                                     </div>
                                 </div>
                             </div>
@@ -167,7 +178,7 @@
                             <div class="mt-6 space-y-6">
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="replay" name="replay" type="checkbox" disabled
+                                        <input id="replay" wire:model="browser.replay" type="checkbox"
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
@@ -180,25 +191,36 @@
                                 </div>
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="candidates" name="candidates" type="checkbox" disabled
+                                        <input id="message" wire:model="browser.message" type="checkbox"
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
-                                        <label for="candidates"
+                                        <label for="message"
                                             class="font-medium text-gray-900 dark:text-white">Message</label>
                                         <p class="text-gray-500">Get notified when a user send a message to you.</p>
                                     </div>
                                 </div>
                                 <div class="relative flex gap-x-3">
                                     <div class="flex h-6 items-center">
-                                        <input id="offers" name="offers" type="checkbox" disabled
+                                        <input id="likes" wire:model="browser.likes" type="checkbox"
                                             class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
-                                        <label for="offers"
+                                        <label for="likes"
                                             class="font-medium text-gray-900 dark:text-white">Likes</label>
                                         <p class="text-gray-500">Get notified when a user add like to your replay.
                                         </p>
+                                    </div>
+                                </div>
+                                <div class="relative flex gap-x-3">
+                                    <div class="flex h-6 items-center">
+                                        <input id="follow" wire:model="browser.follow" type="checkbox"
+                                            class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
+                                    </div>
+                                    <div class="text-sm leading-6">
+                                        <label for="follow"
+                                            class="font-medium text-gray-900 dark:text-white">Follow</label>
+                                        <p class="text-gray-500">Get notified when a user follows you.</p>
                                     </div>
                                 </div>
                             </div>

@@ -79,8 +79,14 @@ class User extends Authenticatable implements CanResetPassword, FollowUserInterf
         );
     }
 
-    public function notifications(): HasMany
+    public function notificationSettings(): HasMany
     {
-        return $this->hasMany(Notification::class, 'user_id');
+        return $this->hasMany(NotificationSettings::class, 'user_id');
+    }
+
+    public function receivesBroadcastNotificationsOn(
+        object $notification,
+    ): string {
+        return "user.{$this->id}";
     }
 }
