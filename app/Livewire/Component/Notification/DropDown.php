@@ -19,30 +19,37 @@ class DropDown extends Component
     public function mount()
     {
         $this->user = Auth::user();
-        Cache::driver('redis')->remember("notifications.{$this->user->id}", 60 * 60 * 60, function () {
-            $notifications = $this->user->notifications()->with(['user']);
-            $this->notifications = $notifications->orderBy('created_at', 'desc')->limit(5)->get();
-            $this->count = $this->notifications->filter(fn ($notification) => $notification->unread())->count();
-        });
+
+        $notifications = $this->user->notifications();
+        $this->notifications = $notifications
+            ->orderBy("created_at", "desc")
+            ->limit(5)
+            ->get();
+        $this->count = $this->user->unreadNotifications()->count();
     }
 
     public function getListeners()
     {
         return [
-            "echo-private:App.Models.User.{$this->user->id},NewMessageEvent" => 'refresh',
+            "echo-notification:user.{$this->user->id}" => "refresh",
         ];
     }
 
     public function refresh()
     {
-        Cache::driver('redis')->forget("notifications.{$this->user->id}");
+        $this->notifications = $this->user
+            ->notifications()
+            ->orderBy("created_at", "desc")
+            ->limit(5)
+            ->get();
+        $this->count = $this->user->unreadNotifications()->count();
     }
 
     public function render()
     {
-        return view('livewire.component.notification.drop-down', [
-            'notifications' => $this->notifications,
-            'count' => $this->count,
+        return view("livewire.component.notification.drop-down", [
+            "notifications" => $this->notifications,
+            "count" => $this->count,
         ]);
     }
 }
