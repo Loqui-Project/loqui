@@ -114,3 +114,21 @@
         @endif
     </div>
 </div>
+@script
+    <script>
+        $wire.on('not-auth-for-action', (message) => {
+            window.Swal.fire({
+                title: 'Not Authenticated',
+                text: message,
+                icon: 'error',
+                showCancelButton: true,
+                confirmButtonText: "Sign in ?",
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    window.location.href = "{{ route('auth.sign-in') }}?redirect={{ url()->current() }}";
+                }
+            })
+        });
+    </script>
+@endscript

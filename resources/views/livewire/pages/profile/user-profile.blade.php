@@ -55,7 +55,7 @@
         <div class="my-10">
             <div class="grid grid-cols-2 gap-10 max-laptop:grid-cols-1">
                 @foreach ($userMessages as $message)
-                    @livewire('component.message-with-replay', ['message' => $message], key($message->id))
+                    @livewire('component.message-with-replay', ['message' => $message, 'user' => $user], key($message->id))
                 @endforeach
             </div>
         </div>
