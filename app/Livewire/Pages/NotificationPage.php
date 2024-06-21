@@ -16,9 +16,9 @@ class NotificationPage extends Component
 
     public User $authUser;
 
-    public $notificationTypeEnum = 'all';
+    public $notificationTypeEnum = "all";
 
-    public int $perPage = 5;
+    public int $perPage = 10;
 
     public function mount()
     {
@@ -27,13 +27,13 @@ class NotificationPage extends Component
 
     public function loadMore()
     {
-        $this->perPage = $this->perPage + 5;
+        $this->perPage = $this->perPage + 10;
     }
 
     public function getListeners()
     {
         return [
-            "echo-notification:user.{$this->authUser->id}" => 'refresh',
+            "echo-notification:user.{$this->authUser->id}" => "refresh",
         ];
     }
 
@@ -45,21 +45,21 @@ class NotificationPage extends Component
     #[Computed]
     public function notifications()
     {
-        $key = "user:{$this->authUser->id}:notifications";
-        $seconds = 3600 * 6;
+        $key = "user:{$this->authUser->id}:messages:with_replay:{$this->perPage}";
+        $seconds = now()->addHours(5); // 1 hour...
 
         return Cache::remember($key, $seconds, function () {
             return $this->authUser
                 ->notifications()
-                ->orderBy('created_at', 'desc')
+                ->orderBy("created_at", "desc")
                 ->paginate($this->perPage);
         });
     }
 
     public function render()
     {
-        return view('livewire.pages.notification-page', [
-            'notifications' => $this->notifications(),
-        ])->extends('components.layouts.app');
+        return view("livewire.pages.notification-page", [
+            "notifications" => $this->notifications(),
+        ])->extends("components.layouts.app");
     }
 }

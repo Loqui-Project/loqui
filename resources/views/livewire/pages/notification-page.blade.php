@@ -10,13 +10,28 @@
         </div>
         <div class="w-full max-w-screen-laptop overflow-hidden rounded-lg mx-auto my-10">
             <ul class="pb-4 flex flex-col justify-start space-y-4">
-                @foreach ($notifications as $notification)
+                @forelse ($notifications as $notification)
                     <div
                         class="flex justify-between max-laptop:flex-col max-laptop:justify-start max-laptop:items-start gap-4 hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  items-center shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6 px-4">
                         @livewire('component.notification.card', ['notification' => $notification], key($notification->id))
+                </div> @empty
+                    <div
+                        class="col-span-2 hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6 px-4">
+                        <div>
+                            <p class="font-bold text-md font-rubik text-white">No notification found</p>
+                        </div>
                     </div>
-                @endforeach
+                @endforelse
             </ul>
+            @if ($notifications->hasMorePages())
+                <div class="mt-10 w-full flex justify-center items-center">
+                    <button aria-label="Load more" wire:click="loadMore"
+                        class="inline-flex min-w-[200px] transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">
+                        Load more
+                    </button>
+                </div>
+            @endif
+
         </div>
         <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
             aria-hidden="true">

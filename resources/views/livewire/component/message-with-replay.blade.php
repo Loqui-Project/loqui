@@ -26,7 +26,7 @@
                     </div>
                     @if ($message->sender !== null && !!$message->is_anon == false)
                         <div>
-                            <a href="{{ route('profile.user', ['username' => $message->sender->username]) }}"
+                            <a href="{{ route('profile.user', ['user' => $message->sender->username]) }}"
                                 class="text-white text-sm italic">{{ '@' . $message->sender->username }}</a>
                         </div>
                     @endif
@@ -39,7 +39,7 @@
                             alt="{{ $message->user->name }}" class="w-10 h-10 rounded-full">
                     </div>
                     <a class="flex flex-col w-full"
-                        href="{{ route('profile.user', ['username' => $message->user->username]) }}">
+                        href="{{ route('profile.user', ['user' => $message->user->username]) }}">
                         <div class="flex justify-between w-full">
                             <span class="font-bold text-white">
                                 {{ $message->user->name }}

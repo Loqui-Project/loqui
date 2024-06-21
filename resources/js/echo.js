@@ -9,7 +9,6 @@ window.Echo = new Echo({
     forceTLS: true,
 });
 
-
 /**
  * 
  * @param {string} title 

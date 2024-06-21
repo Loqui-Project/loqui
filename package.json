@@ -12,26 +12,26 @@
     "@tailwindcss/typography": "^0.5.13",
     "@todesktop/tailwind-variants": "^1.0.1",
     "autoprefixer": "^10.4.19",
-    "axios": "^1.6.8",
+    "axios": "^1.7.2",
     "laravel-echo": "^1.16.1",
-    "laravel-vite-plugin": "^1.0.3",
+    "laravel-vite-plugin": "^1.0.4",
     "postcss": "^8.4.38",
-    "prettier": "^3.3.1",
-    "prettier-plugin-tailwindcss": "^0.6.2",
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.5",
     "pusher-js": "^8.4.0-rc2",
     "tailwind-scrollbar": "^3.1.0",
-    "tailwindcss": "^3.4.3",
-    "vite": "^5.2.11",
+    "tailwindcss": "^3.4.4",
+    "vite": "^5.3.1",
     "vite-plugin-compression": "^0.5.1"
   },
   "dependencies": {
     "@prettier/plugin-php": "^0.22.2",
     "@ryangjchandler/alpine-clipboard": "^2.3.0",
-    "@sentry/browser": "^7.40.0",
+    "@sentry/browser": "^7.118.0",
     "@shufo/prettier-plugin-blade": "^1.14.1",
     "@vitejs/plugin-legacy": "^5.4.1",
-    "alpinejs": "^3.13.10",
-    "sass": "^1.77.2",
-    "sweetalert2": "^11.11.0"
+    "alpinejs": "^3.14.1",
+    "sass": "^1.77.6",
+    "sweetalert2": "^11.12.0"
   }
 }

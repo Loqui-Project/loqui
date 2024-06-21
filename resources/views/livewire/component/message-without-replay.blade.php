@@ -26,7 +26,7 @@
                     </div>
                     @if ($message->sender !== null && !!$message->is_anon == false)
                         <div>
-                            <a href="{{ route('profile.user', ['username' => $message->sender->username]) }}"
+                            <a href="{{ route('profile.user', ['user' => $message->sender->username]) }}"
                                 class="text-white text-sm italic">{{ '@' . $message->sender->username }}</a>
                         </div>
                     @endif
@@ -54,7 +54,7 @@
                 <div>
                     <button aria-label="Add replay" type="submit"
                         class="flex w-full transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">{{ __("Add
-                                                                                                                                                                                                                        replay") }}</button>
+                                                                                                                                                                                                                                                replay") }}</button>
                 </div>
             </form>
         </div>
