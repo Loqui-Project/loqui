@@ -23,7 +23,7 @@ class HomeCard extends Component
     }
 
     #[Computed]
-    public function getUsersByType($type = "following"): Collection
+    public function getUsersByType($type = 'following'): Collection
     {
         return Cache::remember(
             "user:{$this->user->id}:{$type}",
@@ -53,7 +53,7 @@ class HomeCard extends Component
             "user:{$this->user->id}:messages_count",
             3600 * 6,
             function () {
-                return $this->user->messages()->whereHas("replay")->count();
+                return $this->user->messages()->whereHas('replay')->count();
             },
         );
     }
@@ -70,25 +70,25 @@ class HomeCard extends Component
         );
     }
 
-    public function activeTab($type = "following")
+    public function activeTab($type = 'following')
     {
         $this->users = $this->getUsersByType($type);
     }
 
     public function render()
     {
-        $this->shareData["url"] = route("profile.user", [
-            "user" => $this->user->username,
+        $this->shareData['url'] = route('profile.user', [
+            'user' => $this->user->username,
         ]);
-        $this->shareData["title"] = $this->user->name;
+        $this->shareData['title'] = $this->user->name;
 
-        return view("livewire.component.user.home-card", [
-            "user" => $this->user,
-            "followersCount" => $this->getFollowersCountProperty(),
-            "followingCount" => $this->getFollowingCountProperty(),
-            "messagesCount" => $this->getMessagesCountProperty(),
-            "share_data" => $this->shareData,
-            "users" => $this->users,
+        return view('livewire.component.user.home-card', [
+            'user' => $this->user,
+            'followersCount' => $this->getFollowersCountProperty(),
+            'followingCount' => $this->getFollowingCountProperty(),
+            'messagesCount' => $this->getMessagesCountProperty(),
+            'share_data' => $this->shareData,
+            'users' => $this->users,
         ]);
     }
 }

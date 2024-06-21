@@ -13,7 +13,7 @@ class MessageShow extends Component
 
     public $hasReplay = false;
 
-    public User|null $user = null;
+    public ?User $user = null;
 
     public function mount(int $id)
     {
@@ -24,8 +24,8 @@ class MessageShow extends Component
 
     public function render()
     {
-        return view("livewire.pages.message-show")->extends(
-            "components.layouts.app",
+        return view('livewire.pages.message-show')->extends(
+            'components.layouts.app',
         );
     }
 }

@@ -11,10 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements
-    CanResetPassword,
-    FollowUserInterface,
-    MustVerifyEmail
+class User extends Authenticatable implements CanResetPassword, FollowUserInterface, MustVerifyEmail
 {
     use HasFactory, HasFollow, Notifiable;
 
@@ -24,12 +21,12 @@ class User extends Authenticatable implements
      * @var array<int, string>
      */
     protected $fillable = [
-        "name",
-        "username",
-        "media_object_id",
-        "email",
-        "status",
-        "password",
+        'name',
+        'username',
+        'media_object_id',
+        'email',
+        'status',
+        'password',
     ];
 
     /**
@@ -37,7 +34,7 @@ class User extends Authenticatable implements
      *
      * @var array<int, string>
      */
-    protected $hidden = ["password", "remember_token"];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * Get the attributes that should be cast.
@@ -47,28 +44,28 @@ class User extends Authenticatable implements
     protected function casts(): array
     {
         return [
-            "email_verified_at" => "datetime",
-            "password" => "hashed",
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
         ];
     }
 
     public function messages(): HasMany
     {
-        return $this->hasMany(Message::class, "user_id");
+        return $this->hasMany(Message::class, 'user_id');
     }
 
     public function mediaObject()
     {
-        return $this->belongsTo(MediaObject::class, "media_object_id", "id");
+        return $this->belongsTo(MediaObject::class, 'media_object_id', 'id');
     }
 
     public function favoriteMessages()
     {
         return $this->belongsToMany(
             Message::class,
-            "favorite_messages",
-            "user_id",
-            "message_id",
+            'favorite_messages',
+            'user_id',
+            'message_id',
         );
     }
 
@@ -76,15 +73,15 @@ class User extends Authenticatable implements
     {
         return $this->belongsToMany(
             Message::class,
-            "liked_messages",
-            "user_id",
-            "message_id",
+            'liked_messages',
+            'user_id',
+            'message_id',
         );
     }
 
     public function notificationSettings(): HasMany
     {
-        return $this->hasMany(NotificationSettings::class, "user_id");
+        return $this->hasMany(NotificationSettings::class, 'user_id');
     }
 
     public function receivesBroadcastNotificationsOn(
@@ -95,6 +92,6 @@ class User extends Authenticatable implements
 
     public function getRouteKeyName(): string
     {
-        return "username";
+        return 'username';
     }
 }
