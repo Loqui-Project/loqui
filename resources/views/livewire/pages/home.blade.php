@@ -13,7 +13,6 @@
                     <livewire:user::home-card :user="$user">
                 </div>
                 <div class="col-start-5 col-span-12 max-desktop:col-span-12">
-
                     <div id="messages" class="grid grid-cols-2 gap-10 max-laptop:grid-cols-1">
                         @forelse ($messages as $userMessage)
                             @livewire('component.message-with-replay', ['message' => $userMessage, 'user' => $user], key($userMessage->id))
