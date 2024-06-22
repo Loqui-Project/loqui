@@ -64,10 +64,12 @@ class User extends Authenticatable implements
 
     public function favoriteMessages()
     {
-        return $this->belongsToMany(
+        return $this->hasManyThrough(
             Message::class,
-            "favorite_messages",
+            MessageFavourite::class,
             "user_id",
+            "id",
+            "id",
             "message_id",
         );
     }
