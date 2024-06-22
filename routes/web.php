@@ -11,8 +11,6 @@ use App\Livewire\Pages\NotificationPage;
 use App\Livewire\Pages\Password\Forget;
 use App\Livewire\Pages\Password\Reset;
 use App\Livewire\Pages\Profile;
-use App\Livewire\Pages\Profile\Account;
-use App\Livewire\Pages\Profile\Sessions;
 use App\Livewire\Pages\Search;
 use Illuminate\Support\Facades\Route;
 
@@ -52,21 +50,21 @@ Route::middleware("auth")->group(function () {
     Route::prefix("/profile")
         ->name("profile.")
         ->group(function () {
-            Route::get("/account", Account::class)->name("account");
-            Route::get("/sessions", Sessions::class)->name("sessions");
+            Route::get("/account", Profile\Account::class)->name("account");
+            Route::get("/sessions", Profile\Sessions::class)->name("sessions");
+            Route::get("/favorites", Profile\Favorite::class)->name(
+                "favorites",
+            );
         });
+    Route::get("/notifications", NotificationPage::class)->name(
+        "notifications",
+    );
 });
 
 Route::get("/@{user:username}", Profile\UserProfile::class)->name(
     "profile.user",
 );
 Route::get("/message/{id}", MessageShow::class)->name("message.show");
-Route::middleware("auth")->group(function () {
-    Route::get("/notifications", NotificationPage::class)->name(
-        "notifications",
-    );
-});
-
 Route::name("password.")
     ->prefix("password")
     ->group(function () {
