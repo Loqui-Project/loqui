@@ -8,7 +8,7 @@
         <div class="flex flex-col items-start justify-start">
             <span
                 class="text-md capitalize text-left font-semibold text-gray-900  dark:text-white">{{ $user->name }}</span>
-            <p class="text-sm text-gray-400  dark:text-white">{{ $user->email }}</p>
+            <span class="text-sm text-gray-400 italic dark:text-white">{{ '@' . $user->username }}</span>
         </div>
     </button>
     <div x-show="open" @click.outside="open = false" x-transition
