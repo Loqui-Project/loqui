@@ -9,7 +9,7 @@
                     <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-white">
                         {{ __('This information will be displayed publicly so be careful what you share.') }}
                     </p>
-                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 laptop:grid-cols-6">
+                    <div class="mt-10 grid grid-cols-1 gap-y-8">
                         <div class="col-span-full">
                             <label for="photo" class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ __('Photo') }}</label>
                             <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false; progress = 0;" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mt-2 flex items-center gap-x-3 relative">
@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="sm:col-span-4">
+                        <div class="col-span-full">
                             <label for="username" class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ __('Username') }}</label>
                             <div class="mt-2">
                                 <div class="flex rounded-md overflow-hidden shadow-sm border-gray-200 border sm:max-w-md">
@@ -59,8 +59,8 @@
                     <p class="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-200">
                         {{ __('Use a permanent address where you can receive mail.') }}
                     </p>
-                    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 laptop:grid-cols-6">
-                        <div class="sm:col-span-3">
+                    <div class="mt-10 grid grid-cols-1 gap-y-8">
+                        <div class="col-span-full">
                             <label for="name" class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ __('Name') }}</label>
                             <div class="mt-2">
                                 <input type="text" wire:model="name" autocomplete="given-name" class="block w-full rounded-md border-gray-200 dark:border-0 py-1.5 appearance-none !ring-none  text-gray-900 dark:bg-white  dark:text-black shadow-sm   placeholder:text-gray-400  sm:text-sm sm:leading-6">
@@ -71,7 +71,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="sm:col-span-4">
+                        <div class="col-span-full">
                             <label for="email" class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ __('Email address') }}</label>
                             <div class="mt-2">
                                 <input id="email" wire:model="email" type="email" autocomplete="email" class="block w-full rounded-md border-gray-200 dark:border-0 py-1.5 appearance-none !ring-none text-gray-900 dark:bg-white  dark:text-black shadow-sm   placeholder:text-gray-400  sm:text-sm sm:leading-6">
