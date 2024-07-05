@@ -6,7 +6,6 @@ use App\Jobs\NewReplayJob;
 use App\Livewire\Pages\Inbox;
 use App\Models\Message;
 use App\Models\User;
-use App\Notifications\NewReplayNotification;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;

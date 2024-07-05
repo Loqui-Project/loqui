@@ -107,7 +107,7 @@ class MessageWithReplay extends Component
 
     public function addLike()
     {
-        if (!$this->authUser->id) {
+        if (! $this->authUser->id) {
             $this->dispatch(
                 'not-auth-for-action',
                 'You need to login to like this message.',
@@ -121,6 +121,7 @@ class MessageWithReplay extends Component
                     ->where('user_id', $this->authUser->id)
                     ->delete();
                 $this->dispatch('add-like');
+
                 return;
             }
             $this->message->likes()->create([
@@ -135,7 +136,7 @@ class MessageWithReplay extends Component
 
     public function addFavorite()
     {
-        if (!$this->authUser->id) {
+        if (! $this->authUser->id) {
             $this->dispatch(
                 'not-auth-for-action',
                 'You need to login to favorite this message.',

@@ -15,7 +15,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 
-class NewReplayNotification extends Notification  implements ShouldBroadcast
+class NewReplayNotification extends Notification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, Queueable, SerializesModels;
 
@@ -75,6 +75,7 @@ class NewReplayNotification extends Notification  implements ShouldBroadcast
                 ]),
             );
     }
+
     /**
      * Get the channels the event should broadcast on.
      *
