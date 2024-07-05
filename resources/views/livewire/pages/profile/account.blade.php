@@ -13,15 +13,16 @@
                         <div class="col-span-full">
                             <label for="photo" class="block text-sm font-medium leading-6 text-gray-900 dark:text-white">{{ __('Photo') }}</label>
                             <div x-data="{ uploading: false, progress: 0 }" x-on:livewire-upload-start="uploading = true" x-on:livewire-upload-finish="uploading = false; progress = 0;" x-on:livewire-upload-progress="progress = $event.detail.progress" class="mt-2 flex items-center gap-x-3 relative">
-                                @if ($photo)
-                                <img src="{{ $photo->temporaryUrl() }}" alt="{{ $user->name }}" class="h-12 w-12 rounded-full">
-                                @else
-                                <img src="{{ URL::asset($user->mediaObject->media_path) }}" alt="{{ $user->name }}" class="h-12 w-12 rounded-full">
-                                @endif
+                                <div class="h-12 w-12 relative">
+                                    @if ($photo)
+                                    <img src="{{ $photo->temporaryUrl() }}" alt="{{ $user->name }}" class="absolute inset-0 rounded-full">
+                                    @else
+                                    <img src="{{ URL::asset($user->mediaObject->media_path) }}" alt="{{ $user->name }}" class=" absolute inset-0 rounded-full">
+                                    @endif
+                                </div>
                                 <div class="relative">
                                     <input type="file" wire:model="photo" class="absolute opacity-0 inset-0" />
                                     <button aria-label="Upload Image" type="button" class="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">Change</button>
-
                                 </div>
                                 <div x-show="uploading" class="w-full">
                                     <div class="w-full h-4 bg-slate-100 rounded-lg shadow-inner mt-3">

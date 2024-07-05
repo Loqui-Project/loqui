@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Component;
 
+use App\Jobs\NewLikeJob;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
@@ -106,7 +107,7 @@ class MessageWithReplay extends Component
 
     public function addLike()
     {
-        if (! $this->authUser->id) {
+        if (!$this->authUser->id) {
             $this->dispatch(
                 'not-auth-for-action',
                 'You need to login to like this message.',
@@ -120,19 +121,21 @@ class MessageWithReplay extends Component
                     ->where('user_id', $this->authUser->id)
                     ->delete();
                 $this->dispatch('add-like');
-
                 return;
             }
             $this->message->likes()->create([
                 'user_id' => $this->authUser->id,
             ]);
+            if ($this->message->sender != null) {
+                NewLikeJob::dispatch($this->message->sender, $this->authUser, $this->message);
+            }
             $this->dispatch('add-like');
         }
     }
 
     public function addFavorite()
     {
-        if (! $this->authUser->id) {
+        if (!$this->authUser->id) {
             $this->dispatch(
                 'not-auth-for-action',
                 'You need to login to favorite this message.',
