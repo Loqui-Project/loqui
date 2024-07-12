@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use App\Traits\HasUser;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    use HasFactory;
-    use HasUser;
+    use HasFactory, HasUser, Cachable;
 
     protected $fillable = [
         'user_id',
@@ -18,10 +18,6 @@ class Message extends Model
         'is_anon',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     public function sender()
     {
