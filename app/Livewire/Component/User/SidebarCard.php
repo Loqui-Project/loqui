@@ -5,7 +5,6 @@ namespace App\Livewire\Component\User;
 use App\Jobs\NewFollowerJob;
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class SidebarCard extends Component
@@ -42,7 +41,6 @@ class SidebarCard extends Component
             NewFollowerJob::dispatch($user, $this->authUser);
         }
         $this->user = $user;
-        Cache::forget("users:$this->type");
         $this->dispatch('update-users')->to(SidePanel::class);
     }
 

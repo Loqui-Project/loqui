@@ -6,7 +6,6 @@ use App\Jobs\NewLikeJob;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -36,20 +35,8 @@ class MessageWithReplay extends Component
     {
         $this->message = $message;
         $this->authUser = $user;
-        $this->likes = Cache::remember(
-            "message:{$this->message->id}:likes",
-            now()->addHours(4),
-            function () {
-                return $this->message->likes;
-            },
-        );
-        $this->favorites = Cache::remember(
-            "message:{$this->message->id}:favorites",
-            now()->addHours(4),
-            function () {
-                return $this->message->favorites;
-            },
-        );
+        $this->likes = $this->message->likes;
+        $this->favorites = $this->message->favorites;
         $this->likes_count = $this->likes->count();
         $this->favorites_count = $this->favorites->count();
         if ($this->authUser) {
@@ -73,16 +60,7 @@ class MessageWithReplay extends Component
     #[On('add-like')]
     public function refreshLikes()
     {
-        Cache::forget("message:{$this->message->id}:likes");
-
-        $this->likes = Cache::remember(
-            "message:{$this->message->id}:likes",
-            now()->addHours(4),
-            function () {
-                return $this->message->likes()->get();
-            },
-        );
-
+        $this->likes = $this->message->likes()->get();
         $this->liked = $this->likes->contains('user_id', $this->authUser->id);
         $this->likes_count = $this->likes->count();
     }
@@ -90,14 +68,7 @@ class MessageWithReplay extends Component
     #[On('add-favorite')]
     public function refreshFavorites()
     {
-        Cache::forget("message:{$this->message->id}:favorites");
-        $this->favorites = Cache::remember(
-            "message:{$this->message->id}:favorites",
-            now()->addHours(4),
-            function () {
-                return $this->message->favorites()->get();
-            },
-        );
+        $this->favorites = $this->message->favorites()->get();
         $this->favorited = $this->favorites->contains(
             'user_id',
             $this->authUser->id,
