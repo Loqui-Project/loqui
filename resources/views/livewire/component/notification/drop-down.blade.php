@@ -50,7 +50,7 @@
             </ul>
         </nav>
         <div class="flex flex-row items-center justify-center pb-2">
-            <a href="{{ route('notifications') }}" class="text-md font-medium leading-none text-brand-dark dark:text-white">{{__("View all notifications")}}</a>
+            <a wire:navigate href="{{ route('notifications') }}" class="text-md font-medium leading-none text-brand-dark dark:text-white">{{__("View all notifications")}}</a>
         </div>
     </div>
 </div>

@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@prettier/plugin-php": "^0.22.2",
+    "@pusher/push-notifications-web": "^1.1.0",
     "@ryangjchandler/alpine-clipboard": "^2.3.0",
     "@sentry/browser": "^7.118.0",
     "@shufo/prettier-plugin-blade": "^1.14.1",

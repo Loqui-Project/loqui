@@ -34,7 +34,7 @@
 
                 @if (Auth::id() == $user->id)
                 <div class="flex flex-row items-center justify-between gap-4 w-full mt-4">
-                    <a href="{{ route('profile.account') }}" class="flex flex-row items-center justify-center  w-full text-base py-2 px-2 text-white bg-brand-dark rounded-md">
+                    <a wire:navigate href="{{ route('profile.account') }}" class="flex flex-row items-center justify-center  w-full text-base py-2 px-2 text-white bg-brand-dark rounded-md">
                         {{ __('Edit Profile') }}
                     </a>
                     <button aria-label="Share Profile" x-bind="shareButton('{{ $share_data['title'] }}', '{{ $share_data['url'] }}')" class="flex flex-row items-center justify-center w-full text-base py-2 px-2 text-white bg-brand-dark rounded-md">

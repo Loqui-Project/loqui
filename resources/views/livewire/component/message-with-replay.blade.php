@@ -23,7 +23,7 @@
                     </div>
                     @if ($message->sender !== null && !!$message->is_anon == false)
                     <div>
-                        <a href="{{ route('profile.user', ['user' => $message->sender->username]) }}" class="text-white text-sm italic">{{ '@' . $message->sender->username }}</a>
+                        <a wire:navigate href="{{ route('profile.user', ['user' => $message->sender->username]) }}" class="text-white text-sm italic">{{ '@' . $message->sender->username }}</a>
                     </div>
                     @endif
                 </div>
