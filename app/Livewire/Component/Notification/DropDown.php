@@ -19,7 +19,7 @@ class DropDown extends Component
 
     public array $notification_type = [];
 
-    public string $activeTab = "all";
+    public string $activeTab = 'all';
 
     public function mount()
     {
@@ -27,8 +27,8 @@ class DropDown extends Component
 
         $notifications = $this->user->notifications();
         $this->notifications = $notifications
-            ->when($this->activeTab != "all", function ($query) {
-                return $query->where('type',  "$this->activeTab");
+            ->when($this->activeTab != 'all', function ($query) {
+                return $query->where('type', "$this->activeTab");
             })
             ->orderBy('created_at', 'desc')
             ->limit(5)
@@ -37,7 +37,7 @@ class DropDown extends Component
         $this->notification_type = array_map(function ($key) {
             return [
                 'key' => $key,
-                'name' => strtolower(str_replace("new-", '', $key))
+                'name' => strtolower(str_replace('new-', '', $key)),
             ];
         }, NotificationTypeEnum::values());
     }
@@ -49,11 +49,10 @@ class DropDown extends Component
         ];
     }
 
-
     public function makeAllRead()
     {
-        $this->user->notifications()->where("read_at", null)->update([
-            'read_at' =>  Date::now()
+        $this->user->notifications()->where('read_at', null)->update([
+            'read_at' => Date::now(),
         ]);
         $this->refresh();
     }
@@ -64,13 +63,12 @@ class DropDown extends Component
         $this->refresh();
     }
 
-
     public function refresh()
     {
         $this->notifications = $this->user
             ->notifications()
-            ->when($this->activeTab != "all", function ($query) {
-                return $query->where('type',  "$this->activeTab");
+            ->when($this->activeTab != 'all', function ($query) {
+                return $query->where('type', "$this->activeTab");
             })
             ->orderBy('created_at', 'desc')
             ->limit(5)
