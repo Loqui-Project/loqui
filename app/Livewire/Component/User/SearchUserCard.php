@@ -37,7 +37,6 @@ class SearchUserCard extends Component
             NewFollowerJob::dispatch($user, $this->authUser);
         }
         $this->user = $user;
-        Cache::forget('users:following');
         $this->dispatch('update-users')->to(SidePanel::class);
     }
 

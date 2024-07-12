@@ -42,7 +42,6 @@ class SidebarCard extends Component
             NewFollowerJob::dispatch($user, $this->authUser);
         }
         $this->user = $user;
-        Cache::forget("users:$this->type");
         $this->dispatch('update-users')->to(SidePanel::class);
     }
 

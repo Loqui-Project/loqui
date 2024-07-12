@@ -22,7 +22,9 @@ class SidePanel extends Component
     }
 
     #[On('update-users')]
-    public function updateUsers() {}
+    public function updateUsers()
+    {
+    }
 
     #[On('showUsers')]
     public function showUsers($type = 'following')
@@ -31,7 +33,7 @@ class SidePanel extends Component
         $requestUsername = request('username');
         $authUsername = $this->authUser->username;
         $isSameAuth = false;
-        if ($authUsername == $requestUsername || ! $requestUsername) {
+        if ($authUsername == $requestUsername || !$requestUsername) {
             $username = $authUsername;
             $isSameAuth = true;
         } else {
@@ -39,23 +41,11 @@ class SidePanel extends Component
         }
 
         if ($isSameAuth) {
-            $this->users = Cache::remember(
-                "users:{$username}:{$type}",
-                60,
-                function () use ($type) {
-                    return $this->authUser->{$type};
-                },
-            );
+            $this->users = $this->authUser->{$type};
         } else {
-            $this->users = Cache::remember(
-                "users:{$username}:{$type}",
-                60,
-                function () use ($username, $type) {
-                    return User::where('username', $username)
-                        ->with(['mediaObject', "{$type}.mediaObject"])
-                        ->first()->{$type};
-                },
-            );
+            $this->users = User::where('username', $username)
+                ->with(['mediaObject', "{$type}.mediaObject"])
+                ->first()->{$type};
         }
 
         return $this->users;
