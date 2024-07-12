@@ -28,7 +28,7 @@
     "@prettier/plugin-php": "^0.22.2",
     "@pusher/push-notifications-web": "^1.1.0",
     "@ryangjchandler/alpine-clipboard": "^2.3.0",
-    "@sentry/browser": "^7.118.0",
+    "@sentry/browser": "^8.17.0",
     "@shufo/prettier-plugin-blade": "^1.14.1",
     "@vitejs/plugin-legacy": "^5.4.1",
     "alpinejs": "^3.14.1",
