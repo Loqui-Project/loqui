@@ -8,7 +8,7 @@
         <div class="container">
             <div class="grid grid-cols-12 justify-between laptop:gap-x-4 mb-10 max-laptop:gap-y-4">
                 <div class="col-start-1 col-end-4 max-desktop:col-span-12">
-                    <livewire:user::home-card :user="$user">
+                    <livewire:user::home-card :user="$user" :userData="$user_data">
                 </div>
                 <div class="col-start-5 col-span-12 max-desktop:col-span-12">
                     <div id="messages" class="grid grid-cols-2 laptop:gap-x-10 laptop:gap-y-10 max-laptop:grid-cols-1 max-laptop:gap-y-10">

@@ -6,7 +6,6 @@ use App\Jobs\NewFollowerJob;
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class SearchUserCard extends Component
@@ -37,7 +36,6 @@ class SearchUserCard extends Component
             NewFollowerJob::dispatch($user, $this->authUser);
         }
         $this->user = $user;
-        Cache::forget('users:following');
         $this->dispatch('update-users')->to(SidePanel::class);
     }
 

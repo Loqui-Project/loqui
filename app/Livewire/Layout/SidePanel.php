@@ -3,7 +3,6 @@
 namespace App\Livewire\Layout;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -39,23 +38,11 @@ class SidePanel extends Component
         }
 
         if ($isSameAuth) {
-            $this->users = Cache::remember(
-                "users:{$username}:{$type}",
-                60,
-                function () use ($type) {
-                    return $this->authUser->{$type};
-                },
-            );
+            $this->users = $this->authUser->{$type};
         } else {
-            $this->users = Cache::remember(
-                "users:{$username}:{$type}",
-                60,
-                function () use ($username, $type) {
-                    return User::where('username', $username)
-                        ->with(['mediaObject', "{$type}.mediaObject"])
-                        ->first()->{$type};
-                },
-            );
+            $this->users = User::where('username', $username)
+                ->with(['mediaObject', "{$type}.mediaObject"])
+                ->first()->{$type};
         }
 
         return $this->users;
