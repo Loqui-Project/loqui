@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MessageFavourite extends Model
 {
-    use HasFactory, Cachable, HasUser;
+    use Cachable, HasFactory, HasUser;
 
     protected $fillable = [
         'user_id',

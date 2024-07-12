@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MessageReplay extends Model
 {
-    use HasFactory, Cachable;
+    use Cachable, HasFactory;
 
     protected $fillable = [
         'message_id',

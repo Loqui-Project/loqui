@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MessageLike extends Model
 {
-    use HasFactory, Cachable, HasUser;
+    use Cachable, HasFactory, HasUser;
+
     protected $fillable = [
         'user_id',
         'message_id',

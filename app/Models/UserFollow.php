@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserFollow extends Model
 {
-    use HasFactory, Cachable;
+    use Cachable, HasFactory;
 
     protected $fillable = [
         'follower_id',

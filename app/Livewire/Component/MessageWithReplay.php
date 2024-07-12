@@ -6,7 +6,6 @@ use App\Jobs\NewLikeJob;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -79,7 +78,7 @@ class MessageWithReplay extends Component
 
     public function addLike()
     {
-        if (!$this->authUser->id) {
+        if (! $this->authUser->id) {
             $this->dispatch(
                 'not-auth-for-action',
                 'You need to login to like this message.',
@@ -108,7 +107,7 @@ class MessageWithReplay extends Component
 
     public function addFavorite()
     {
-        if (!$this->authUser->id) {
+        if (! $this->authUser->id) {
             $this->dispatch(
                 'not-auth-for-action',
                 'You need to login to favorite this message.',

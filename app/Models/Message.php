@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
-    use HasFactory, HasUser, Cachable;
+    use Cachable, HasFactory, HasUser;
 
     protected $fillable = [
         'user_id',
@@ -17,7 +17,6 @@ class Message extends Model
         'message',
         'is_anon',
     ];
-
 
     public function sender()
     {

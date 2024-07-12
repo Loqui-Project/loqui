@@ -3,7 +3,6 @@
 namespace App\Livewire\Layout;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -22,9 +21,7 @@ class SidePanel extends Component
     }
 
     #[On('update-users')]
-    public function updateUsers()
-    {
-    }
+    public function updateUsers() {}
 
     #[On('showUsers')]
     public function showUsers($type = 'following')
@@ -33,7 +30,7 @@ class SidePanel extends Component
         $requestUsername = request('username');
         $authUsername = $this->authUser->username;
         $isSameAuth = false;
-        if ($authUsername == $requestUsername || !$requestUsername) {
+        if ($authUsername == $requestUsername || ! $requestUsername) {
             $username = $authUsername;
             $isSameAuth = true;
         } else {

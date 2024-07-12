@@ -4,8 +4,6 @@ namespace App\Livewire\Pages;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-use Livewire\Attributes\Computed;
 use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
@@ -22,7 +20,7 @@ class Home extends Component
 
     public function mount()
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
 
@@ -31,7 +29,7 @@ class Home extends Component
             'following',
             'messages',
         ])->first();
-        $this->userData =  [
+        $this->userData = [
             'followers' => [
                 'count' => $this->authUser->followers_count,
                 'data' => $this->authUser->followers->take(5),
@@ -59,7 +57,7 @@ class Home extends Component
         return view('livewire.pages.home', [
             'user' => $this->authUser,
             'messages' => $this->userMessages(),
-            'user_data' => $this->userData
+            'user_data' => $this->userData,
         ])->extends('components.layouts.app');
     }
 }

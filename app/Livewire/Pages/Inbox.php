@@ -22,7 +22,7 @@ class Inbox extends Component
     public function mount()
     {
         $this->authUser = Auth::user();
-        if (!$this->authUser) {
+        if (! $this->authUser) {
             return redirect()->route('auth.sign-in');
         }
         $this->perPage = 4;

@@ -14,10 +14,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements CanResetPassword, FollowUserInterface, MustVerifyEmail, FilamentUser
+class User extends Authenticatable implements CanResetPassword, FilamentUser, FollowUserInterface, MustVerifyEmail
 {
-    use HasFactory, HasFollow, Notifiable, Cachable;
-    protected $cachePrefix = "user:";
+    use Cachable, HasFactory, HasFollow, Notifiable;
+
+    protected $cachePrefix = 'user:';
 
     protected $cacheCooldownSeconds = 3600 * 6;
 

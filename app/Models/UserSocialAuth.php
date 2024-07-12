@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserSocialAuth extends Model
 {
-    use HasFactory, HasUser, Cachable;
+    use Cachable, HasFactory, HasUser;
 
     protected $fillable = [
         'user_id',
