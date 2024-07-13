@@ -4,14 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Forms\Components\Fieldset;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 
@@ -42,15 +42,15 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->searchable()->sortable(),
-                Tables\Columns\ImageColumn::make('media_path')->label("Image")->getStateUsing(fn ($record) => URL::asset($record->mediaObject->media_path) ?: 'Jordan')->circular(),
+                Tables\Columns\ImageColumn::make('media_path')->label('Image')->getStateUsing(fn ($record) => URL::asset($record->mediaObject->media_path) ?: 'Jordan')->circular(),
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('username')->searchable(),
                 TextColumn::make('email')->searchable(),
-                TextColumn::make('created_at')->label("Created")->searchable()->sortable()->since()
+                TextColumn::make('created_at')->label('Created')->searchable()->sortable()->since(),
             ])
             ->filters([
                 Tables\Filters\Filter::make('verified')
-                    ->query(fn (Builder $query): Builder => $query->whereNotNull('email_verified_at'))
+                    ->query(fn (Builder $query): Builder => $query->whereNotNull('email_verified_at')),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
