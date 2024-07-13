@@ -6,7 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "filament/filament": "^3.2",
+        "filament/filament": "^3.2.71",
         "genealabs/laravel-model-caching": "^11.0",
         "intervention/image": "^3.6",
         "intervention/image-laravel": "^1.2",
@@ -24,7 +24,6 @@
         "whichbrowser/parser": "^2.1"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.23",
         "laravel/pint": "^1.15",
         "laravel/sail": "^1.26",
