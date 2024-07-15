@@ -9,8 +9,7 @@ beforeAll(function () {
     actingAs(User::factory()->create());
 });
 
-beforeEach(function () {
-});
+beforeEach(function () {});
 
 describe('Home page', function () {
     it('Has home page', function () {
