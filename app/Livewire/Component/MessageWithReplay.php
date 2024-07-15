@@ -60,6 +60,7 @@ class MessageWithReplay extends Component
     #[On('add-like')]
     public function refreshLikes()
     {
+
         $this->likes = $this->message->likes()->get();
         $this->liked = $this->likes->contains('user_id', $this->authUser->id);
         $this->likes_count = $this->likes->count();

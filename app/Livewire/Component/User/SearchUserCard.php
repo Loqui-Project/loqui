@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Component\User;
 
-use App\Jobs\NewFollowerJob;
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -33,7 +32,6 @@ class SearchUserCard extends Component
         } else {
             $this->authUser->followUser($user, $this->authUser);
             $this->isFollowing = true;
-            NewFollowerJob::dispatch($user, $this->authUser);
         }
         $this->user = $user;
         $this->dispatch('update-users')->to(SidePanel::class);

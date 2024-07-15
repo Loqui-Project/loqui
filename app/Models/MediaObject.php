@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MediaObject extends Model
 {
-    use Cachable;
 
+    use Cachable;
     /**
      * The attributes that are mass assignable.
      *

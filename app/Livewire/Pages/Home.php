@@ -23,7 +23,6 @@ class Home extends Component
         if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
-
         $this->authUser = User::where('id', Auth::id())->with(['followers', 'following', 'messages', 'mediaObject'])->withCount([
             'followers',
             'following',

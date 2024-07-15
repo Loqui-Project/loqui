@@ -43,6 +43,7 @@ $user = User::where('id', Auth::id())->with('mediaObject')->first();
     @vite('resources/css/app.css')
 </head>
 
+
 <body class="bg-white dark:bg-black test">
     @livewire('layout.header', ['user' => $user])
     <main class="min-h-screen">

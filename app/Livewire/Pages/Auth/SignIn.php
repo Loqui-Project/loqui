@@ -33,7 +33,7 @@ class SignIn extends Component
         if (Auth::attempt(['email' => $this->email, 'password' => $this->password])) {
             return redirect()->route('home');
         }
-        $this->addError('email', 'Invalid email or password t.');
+        $this->addError('email', 'Invalid email or password.');
     }
 
     public function render()
