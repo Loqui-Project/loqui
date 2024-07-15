@@ -1,6 +1,6 @@
 @use('App\Models\User')
 @php
-    $user = User::where('id', Auth::id())->with('mediaObject')->first();
+$user = User::where('id', Auth::id())->with('mediaObject')->first();
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
@@ -11,14 +11,10 @@
     <meta name="author" content="Loqui" />
     <meta name="google" content="notranslate" data-rh="true" />
     <meta name="robots" content="index, follow" data-rh="true" />
-    <meta name="description"
-        content="Loqui: Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging."
-        data-rh="true" />
+    <meta name="description" content="Loqui: Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging." data-rh="true" />
     <meta name="applicable-device" content="pc, mobile" data-rh="true" />
     <meta name="canonical" content="{{ URL::current() }}" data-rh="true" />
-    <meta name="keywords"
-        content="Loqui, loqui, links, link, cv, portfolio, aggregation, platform, social, media, profile, bio, tree"
-        data-rh="true" />
+    <meta name="keywords" content="Loqui, loqui, links, link, cv, portfolio, aggregation, platform, social, media, profile, bio, tree" data-rh="true" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Loqui" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -34,39 +30,42 @@
     <title>@yield('title') / Loqui</title>
     <meta property="og:type" content="profile" data-rh="true" />
     @if ($user)
-        <meta property="profile:username" content="{{ $user->username }}" data-rh="true" />
-        <meta property="og:image" content="{{ URL::asset($user->mediaObject->media_path) }}" data-rh="true" />
+    <meta property="profile:username" content="{{ $user->username }}" data-rh="true" />
+    <meta property="og:image" content="{{ URL::asset($user->mediaObject->media_path) }}" data-rh="true" />
     @else
-        <meta property="og:image" content="{{ URL::asset('/images/logo.svg') }}" data-rh="true" />
+    <meta property="og:image" content="{{ URL::asset('/images/logo.svg') }}" data-rh="true" />
     @endif
     <meta property="og:title" content="@yield('title') / Loqui" data-rh="true" />
-    <meta property="og:description"
-        content="Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging."
-        data-rh="true" />
+    <meta property="og:description" content="Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging." data-rh="true" />
 
-    @livewireStyles
+    @filamentStyles
     @stack('styles')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite('resources/css/app.css')
 </head>
 
-<body class="bg-white dark:bg-black">
+<body class="bg-white dark:bg-black test">
     @livewire('layout.header', ['user' => $user])
     <main class="min-h-screen">
         @yield('content')
     </main>
     @livewire('layout.footer')
     @auth
-        @livewire('layout.side-panel', ['user' => $user])
+    @livewire('layout.side-panel', ['user' => $user])
     @endauth
-    @livewireScripts
+    @filamentScripts
+    @vite('resources/js/app.js')
     @stack('scripts')
     <script>
-        window.Laravel = {!! json_encode([
-            'csrfToken' => csrf_token(),
-        ]) !!};
-        window.App = {!! json_encode([
-            'user' => $user ? $user->id : null,
-        ]) !!};
+        window.Laravel = {
+            !!json_encode([
+                'csrfToken' => csrf_token(),
+            ]) !!
+        };
+        window.App = {
+            !!json_encode([
+                'user' => $user ? $user - > id : null,
+            ]) !!
+        };
     </script>
 </body>
 

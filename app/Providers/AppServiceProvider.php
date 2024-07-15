@@ -10,6 +10,7 @@ use App\View\Components\Layouts\Guest;
 use App\View\Components\UserHeaderCard;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
@@ -41,6 +42,9 @@ class AppServiceProvider extends ServiceProvider
         );
         Gate::define('viewPulse', function (User $user) {
             return str_contains($user->email, '@yanalshoubaki.com');
+        });
+        Livewire::setScriptRoute(function ($handle) {
+            return Route::get('/vendor/livewire/livewire.js', $handle);
         });
     }
 }

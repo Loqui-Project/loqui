@@ -14,6 +14,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
+use Tapp\FilamentAuthenticationLog\RelationManagers\AuthenticationLogsRelationManager;
 
 class UserResource extends Resource
 {
@@ -70,7 +71,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            AuthenticationLogsRelationManager::class,
         ];
     }
 

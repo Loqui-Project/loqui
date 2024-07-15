@@ -13,10 +13,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 
 class User extends Authenticatable implements CanResetPassword, FilamentUser, FollowUserInterface, MustVerifyEmail
 {
-    use Cachable, HasFactory, HasFollow, Notifiable;
+    use AuthenticationLoggable, Cachable, HasFactory, HasFollow, Notifiable;
 
     protected $cachePrefix = 'user:';
 
@@ -105,6 +106,6 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser, Fo
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return str_ends_with($this->email, '@yanalshoubaki.com');
     }
 }
