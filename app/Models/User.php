@@ -105,6 +105,6 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser, Fo
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_ends_with($this->email, '@yanalshoubaki.com');
+        return true;
     }
 }
