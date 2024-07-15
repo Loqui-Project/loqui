@@ -1,14 +1,13 @@
 @section('title', 'Forget Password')
 <div class="min-h-screen flex justify-center items-center">
     <div class="container">
-        <div class="max-w-xl mx-auto max-laptop:max-w-full">
+    <div class="max-w-xl mx-auto hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-white shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark px-4">
             <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img class="mx-auto h-10 w-10" src={{ URL::asset('images/logo.svg') }}
+                    <img class="mx-auto h-14 w-14" src={{ URL::asset('images/logo.svg') }}
                         alt="Loqui - Social Media Platform">
-                    <h2 class="mt-10 text-left text-md font-normal leading-9 tracking-tight font-rubik text-black">
-                        Forgot your password? No problem. Just let us know your email address and we will email you a
-                        password reset link that will allow you to choose a new one.
+                    <h2 class="mt-10 text-left text-md font-normal leading-9 tracking-tight font-rubik text-white">
+                        {{__("Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.")}}
                     </h2>
                 </div>
                 @if ($show == true)
@@ -43,11 +42,10 @@
                 <div class="mt-4 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form class="space-y-6" wire:submit="forget">
                         <div>
-                            <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email
-                                address</label>
+                            <label for="email" class="block text-sm font-medium leading-6 text-white">{{__("Email address")}}</label>
                             <div class="mt-2">
                                 <input wire:model="email" type="email" autocomplete="email"
-                                    class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
+                                    class="block w-full rounded-md border-0 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
                                 <div class="text-danger">
                                     @error('email')
                                         {{ $message }}
@@ -57,8 +55,7 @@
                         </div>
                         <div>
                             <button aria-label="Forget password ?" type="submit"
-                                class="flex w-full transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">Email
-                                password reset link</button>
+                                class="flex w-full transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">{{__("Email password reset link")}}</button>
                         </div>
                     </form>
                 </div>
