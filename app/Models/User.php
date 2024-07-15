@@ -17,7 +17,7 @@ use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 
 class User extends Authenticatable implements CanResetPassword, FilamentUser, FollowUserInterface, MustVerifyEmail
 {
-    use Cachable, HasFactory, HasFollow, Notifiable, AuthenticationLoggable;
+    use AuthenticationLoggable, Cachable, HasFactory, HasFollow, Notifiable;
 
     protected $cachePrefix = 'user:';
 
@@ -106,6 +106,6 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser, Fo
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return str_ends_with($this->email, "@yanalshoubaki.com");
+        return str_ends_with($this->email, '@yanalshoubaki.com');
     }
 }

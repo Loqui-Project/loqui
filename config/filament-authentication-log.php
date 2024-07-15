@@ -11,7 +11,7 @@ return [
     ],
 
     'authenticatable' => [
-        'field-to-display' => "username",
+        'field-to-display' => 'username',
     ],
 
     'navigation' => [
