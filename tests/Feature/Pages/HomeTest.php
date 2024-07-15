@@ -1,11 +1,11 @@
 <?php
 
+use App\Livewire\Pages\Home;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
 
 beforeAll(function () {
-    // sign in
     actingAs(User::factory()->create());
 });
 
