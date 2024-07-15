@@ -26,7 +26,7 @@ $user = User::where('id', Auth::id())->with('mediaObject')->first();
 
     <meta content="Loqui" property="og:site_name" />
     <meta property="og:url" content="{{ URL::current() }}" data-rh="true" />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') / Loqui</title>
     <meta property="og:type" content="profile" data-rh="true" />
     @if ($user)
@@ -58,14 +58,12 @@ $user = User::where('id', Auth::id())->with('mediaObject')->first();
     @stack('scripts')
     <script>
         window.Laravel = {
-            !!json_encode([
-                'csrfToken' => csrf_token(),
-            ]) !!
-        };
-        window.App = {
-            !!json_encode([
-                'user' => $user ? $user - > id : null,
-            ]) !!
+            "csrfToken" :  document.querySelector('meta[name="csrf-token"]').attributes["content"].value,
+            "baseUrl" : "{{ URL::to('/') }}",
+            "user" : @json([
+                'id' => $user->id,
+                'username' => $user->username,
+            ])
         };
     </script>
 </body>

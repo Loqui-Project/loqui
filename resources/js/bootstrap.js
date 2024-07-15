@@ -4,13 +4,11 @@ import "sweetalert2/src/sweetalert2.scss";
 import showSidebar from "./show-sidebar";
 import * as Sentry from "@sentry/browser";
 import Clipboard from "@ryangjchandler/alpine-clipboard"; // Import it
-import * as PusherPushNotifications from "@pusher/push-notifications-web";
 window.Alpine.plugin(Clipboard); // Register the plugin
 window.Alpine.store("showSidebar", showSidebar);
 window.Alpine.bind("shareButton", (title, url) => ({
     type: "button",
     "@click"(e) {
-        console.log("tes2t", title, url);
         try {
             if (
                 navigator.canShare({
@@ -41,13 +39,3 @@ Sentry.init({
  */
 
 import './echo';
-
-
-const beamsClient = new PusherPushNotifications.Client({
-    instanceId: '0e90dbfa-7501-4d78-9baa-99068a18643a',
-});
-
-beamsClient.start()
-    .then(() => beamsClient.addDeviceInterest('hello'))
-    .then(() => console.log('Successfully registered and subscribed!'))
-    .catch(console.error);

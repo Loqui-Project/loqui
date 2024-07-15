@@ -33,7 +33,7 @@ function showNotification(title, notificationOptions) {
     }
     console.log(Notification.permission);
 }
-window.Echo.private(`user.${window.App.user}`).notification((notification) => {
+window.Echo.private(`user.${window.Laravel.user.id}`).notification((notification) => {
     console.log(notification);
     showNotification(notification.title, {
         icon: '/android-chrome-512x512.png',
