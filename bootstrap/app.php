@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Sentry\Laravel\Integration;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,6 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web();
         $middleware->redirectGuestsTo(fn () => route('auth.sign-in'));
     })
+    ->withBroadcasting(channels: __DIR__.'/../routes/channels.php')
     ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })->create();
+        Integration::handles($exceptions);
+    })
+    ->create();

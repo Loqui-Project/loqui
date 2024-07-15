@@ -22,9 +22,12 @@ class UserProfile extends Component
 
     public string $content = '';
 
-    public function mount($username)
+    public function mount(User $user)
     {
-        $this->user = User::where('username', $username)->first();
+        $this->user = $user;
+        if ($this->user === null) {
+            abort(404);
+        }
         $this->authUser = Auth::user();
         if ($this->authUser) {
             $this->isFollowing = $this->authUser->isFollowing($this->user);
@@ -32,9 +35,17 @@ class UserProfile extends Component
             $this->isFollowing = false;
             $this->anonymously = true;
         }
-        $this->userMessages = Cache::remember("user:{$this->user->id}:messages:with_replay", now()->addHours(4), function () {
-            return $this->user->messages()->whereHas('replay')->latest()->get();
-        });
+        $this->userMessages = Cache::remember(
+            "user:{$this->user->id}:messages:with_replay",
+            now()->addHours(4),
+            function () {
+                return $this->user
+                    ->messages()
+                    ->whereHas('replay')
+                    ->latest()
+                    ->get();
+            },
+        );
     }
 
     public function sendMessage()
@@ -48,6 +59,7 @@ class UserProfile extends Component
             'sender_id' => $this->authUser ? $this->authUser->id : null,
             'is_anon' => $this->anonymously,
         ]);
+        NewMessageJob::dispatch($this->user, $this->authUser, $message);
         $this->content = '';
     }
 
@@ -60,15 +72,19 @@ class UserProfile extends Component
         }
         if ($this->isFollowing) {
             $this->authUser->unfollowUser($this->user, $this->authUser);
+            NewFollowerJob::dispatch($this->user, $this->authUser);
             $this->isFollowing = false;
         } else {
             $this->authUser->followUser($this->user, $this->authUser);
+            NewFollowerJob::dispatch($this->user, $this->authUser);
             $this->isFollowing = true;
         }
     }
 
     public function render()
     {
-        return view('livewire.pages.profile.user-profile')->extends('components.layouts.app');
+        return view('livewire.pages.profile.user-profile')->extends(
+            'components.layouts.app',
+        );
     }
 }

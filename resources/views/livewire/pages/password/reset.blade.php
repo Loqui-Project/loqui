@@ -4,7 +4,8 @@
         <div class="max-w-xl mx-auto max-laptop:max-w-full">
             <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <img class="mx-auto h-10 w-auto" src={{ URL::asset('images/logo.svg') }} alt="Your Company">
+                    <img class="mx-auto h-10 w-10" src={{ URL::asset('images/logo.svg') }}
+                        alt="Loqui - Social Media Platform">
                     <h2 class="mt-10 text-left text-md font-normal leading-9 tracking-tight font-rubik text-black">
                         Forgot your password? No problem. Just let us know your email address and we will email you a
                         password reset link that will allow you to choose a new one.
@@ -68,8 +69,9 @@
                             </div>
                         </div>
                         <div>
-                            <button type="submit"
-                                class="flex w-full transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">Reset your password</button>
+                            <button aria-label="Reset password" type="submit"
+                                class="flex w-full transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">Reset
+                                your password</button>
                         </div>
                     </form>
                 </div>

@@ -2,18 +2,19 @@
 
 namespace App\Livewire\Pages;
 
-use App\Models\Message;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
+use Livewire\WithoutUrlPagination;
+use Livewire\WithPagination;
 
 class Home extends Component
 {
-    public User $authUser;
+    use WithoutUrlPagination, WithPagination;
 
-    public Collection $userMessages;
+    public int $perPage = 4;
+
+    public User $authUser;
 
     public array $userData = [];
 
@@ -22,33 +23,40 @@ class Home extends Component
         if (! Auth::check()) {
             return redirect()->route('auth.sign-in');
         }
+        $this->authUser = User::where('id', Auth::id())->with(['followers', 'following', 'messages', 'mediaObject'])->withCount([
+            'followers',
+            'following',
+            'messages',
+        ])->first();
+        $this->userData = [
+            'followers' => [
+                'count' => $this->authUser->followers_count,
+                'data' => $this->authUser->followers->take(5),
+            ],
+            'following' => [
+                'count' => $this->authUser->following_count,
+                'data' => $this->authUser->following->take(5),
+            ],
+            'messages' => $this->authUser->messages_count,
+        ];
+    }
 
-        $this->authUser = Cache::get('user:'.Auth::id(), function () {
-            return Auth::user();
-        });
-        $this->userMessages = Cache::remember("user:{$this->authUser->id}:messages:with_replay", now()->addHours(4), function () {
-            return Message::whereIn('user_id', $this->authUser->following->pluck('id'))->whereHas('replay')->with(['replay', 'user.mediaObject', 'sender.mediaObject', 'likes.user', 'favorites'])->latest()->get();
-        });
-        $this->userData = Cache::remember("user:{$this->authUser->id}:data", now()->addHours(4), function () {
-            return [
-                'followers' => [
-                    'count' => $this->authUser->followers->count(),
-                    'data' => $this->authUser->followers->take(5),
-                ],
-                'following' => [
-                    'count' => $this->authUser->following->count(),
-                    'data' => $this->authUser->following->take(5),
-                ],
-                'messages' => $this->authUser->messages->count(),
-            ];
-        });
+    public function loadMore()
+    {
+        $this->perPage = $this->perPage + 4;
+    }
+
+    public function userMessages()
+    {
+        return $this->authUser->messages()->whereHas('replay')->with(['replay', 'likes', 'favorites'])->whereIn('user_id', collect([$this->authUser->id])->merge($this->authUser->following->pluck('id')))->paginate($this->perPage);
     }
 
     public function render()
     {
         return view('livewire.pages.home', [
             'user' => $this->authUser,
-            'messages' => $this->userMessages,
+            'messages' => $this->userMessages(),
+            'user_data' => $this->userData,
         ])->extends('components.layouts.app');
     }
 }

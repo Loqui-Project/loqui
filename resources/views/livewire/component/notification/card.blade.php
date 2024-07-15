@@ -1,23 +1,39 @@
 <div class="relative flex">
-    <a href={{ $url }} class="flex items-start flex-row gap-2">
-        <div class="w-10 h-10 flex justify-center items-center ">
-            <img src="{{ $userImage }}" alt="default-avatar" class="w-8 h-8  rounded-full">
-        </div>
-        <div class="flex flex-col  w-full">
-            <p>
-                @if ($senderUsername == null)
-                    <span class="text-sm text-black dark:text-white">{!! $senderName !!}</span>
-                @else
-                    <a class="text-sm text-black dark:text-white" href="{{ route('profile.user', ['username' => $senderUsername]) }}">
-                        {!! $senderName !!}
-                    </a>
+    <a wire:navigate href="{{ $url }}" class="flex items-center flex-row flex-nowrap gap-6 pr-2">
+        <div class="w-14 h-14 flex justify-center items-center relative">
+            <img src="{{ URL::asset($fromUser->mediaObject->media_path) }}" alt="default-avatar" class="w-10 h-10  rounded-full">
+            <span class="absolute -right-4 top-[6px]">
+                @if ($notification->type == 'new-follow')
+                <svg width="16" height="16" class="w-6 h-6" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="8" cy="8" r="8" fill="#A6B1E1" />
+                    <path d="M12.1668 7.20839C12.2085 7.00006 12.0418 6.75006 11.8335 6.75006L9.4585 6.41672L8.37516 4.25006C8.3335 4.16672 8.29183 4.12506 8.2085 4.08339C8.00016 3.95839 7.75016 4.04172 7.62516 4.25006L6.5835 6.41672L4.2085 6.75006C4.0835 6.75006 4.00016 6.79172 3.9585 6.87506C3.79183 7.04172 3.79183 7.29172 3.9585 7.45839L5.66683 9.12506L5.25016 11.5001C5.25016 11.5834 5.25016 11.6667 5.29183 11.7501C5.41683 11.9584 5.66683 12.0417 5.87516 11.9167L8.00016 10.7917L10.1252 11.9167C10.1668 11.9584 10.2502 11.9584 10.3335 11.9584C10.3752 11.9584 10.3752 11.9584 10.4168 11.9584C10.6252 11.9167 10.7918 11.7084 10.7502 11.4584L10.3335 9.08339L12.0418 7.41672C12.1252 7.37506 12.1668 7.29172 12.1668 7.20839Z" fill="#424874" />
+                </svg>
+                @elseif($notification->type == 'new-message')
+                <svg width="16" height="16" class="w-6 h-6" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="8" cy="8" r="8" fill="#A6B1E1" />
+                    <g clip-path="url(#clip0_382_2893)">
+                        <path d="M10.0835 6.74992H5.91685C5.80635 6.74992 5.70037 6.79382 5.62223 6.87196C5.54409 6.9501 5.50019 7.05608 5.50019 7.16659C5.50019 7.27709 5.54409 7.38307 5.62223 7.46121C5.70037 7.53935 5.80635 7.58325 5.91685 7.58325H10.0835C10.194 7.58325 10.3 7.53935 10.3781 7.46121C10.4563 7.38307 10.5002 7.27709 10.5002 7.16659C10.5002 7.05608 10.4563 6.9501 10.3781 6.87196C10.3 6.79382 10.194 6.74992 10.0835 6.74992ZM8.41685 8.41659H5.91685C5.80635 8.41659 5.70037 8.46048 5.62223 8.53862C5.54409 8.61677 5.50019 8.72275 5.50019 8.83325C5.50019 8.94376 5.54409 9.04974 5.62223 9.12788C5.70037 9.20602 5.80635 9.24992 5.91685 9.24992H8.41685C8.52736 9.24992 8.63334 9.20602 8.71148 9.12788C8.78962 9.04974 8.83352 8.94376 8.83352 8.83325C8.83352 8.72275 8.78962 8.61677 8.71148 8.53862C8.63334 8.46048 8.52736 8.41659 8.41685 8.41659ZM8.00019 3.83325C7.45301 3.83325 6.9112 3.94103 6.40567 4.15042C5.90015 4.35982 5.44082 4.66673 5.05391 5.05364C4.27251 5.83504 3.83352 6.89485 3.83352 7.99992C3.82988 8.96206 4.16302 9.89514 4.77519 10.6374L3.94185 11.4708C3.88404 11.5293 3.84487 11.6038 3.8293 11.6846C3.81373 11.7654 3.82245 11.849 3.85435 11.9249C3.88896 11.9999 3.94507 12.0629 4.01554 12.1059C4.08602 12.1489 4.16769 12.1701 4.25019 12.1666H8.00019C9.10526 12.1666 10.1651 11.7276 10.9465 10.9462C11.7279 10.1648 12.1669 9.10499 12.1669 7.99992C12.1669 6.89485 11.7279 5.83504 10.9465 5.05364C10.1651 4.27224 9.10526 3.83325 8.00019 3.83325ZM8.00019 11.3333H5.25435L5.64186 10.9458C5.71946 10.8677 5.76302 10.7621 5.76302 10.652C5.76302 10.5419 5.71946 10.4363 5.64186 10.3583C5.09627 9.81327 4.75651 9.09598 4.68048 8.32858C4.60444 7.56119 4.79683 6.79117 5.22487 6.14972C5.6529 5.50827 6.2901 5.03507 7.0279 4.81074C7.7657 4.58641 8.55846 4.62484 9.27111 4.91947C9.98376 5.21409 10.5722 5.7467 10.9362 6.42654C11.3002 7.10638 11.4172 7.8914 11.2673 8.64784C11.1174 9.40428 10.7099 10.0854 10.1142 10.575C9.51842 11.0647 8.77134 11.3326 8.00019 11.3333Z" fill="#424874" />
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_382_2893">
+                            <rect width="10" height="10" fill="white" transform="translate(3 3)" />
+                        </clipPath>
+                    </defs>
+                </svg>
                 @endif
-            </p>
 
-            <time class="text-sm text-black dark:text-white" datetime="{{ $notification->created_at }}">{{ $created_at }}</time>
+            </span>
+
+        </div>
+        <div class="flex flex-col w-full">
+            <h3 class="text-white font-bold text-sm text-wrap">
+
+                {!! $notification->data['title'] !!}
+            </h3>
+            <time class="text-sm text-black dark:text-white text-wrap" datetime="{{ $notification->created_at }}">{{ $notification->created_at->diffForHumans() }}</time>
         </div>
     </a>
     @if ($notification->read_at == null)
-        <button wire:click="markAsRead" class="absolute top-[10px] right-0 w-2 h-2 bg-brand-dark rounded-full"></button>
+    <button aria-label="Mark As Read" wire:click="markAsRead" class="absolute top-[10px] right-0 w-2 h-2 bg-brand-dark rounded-full"></button>
     @endif
 </div>

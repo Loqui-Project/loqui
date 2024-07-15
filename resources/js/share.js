@@ -1,7 +1,7 @@
 export default () => ({
-    type: 'button',
-    '@click'(title, url) {
-        this.share()
+    type: "button",
+    "@click"(title, url) {
+        this.share();
     },
     share() {
         try {
@@ -19,5 +19,5 @@ export default () => ({
         } catch (error) {
             console.error("Error sharing", error);
         }
-    }
-})
+    },
+});

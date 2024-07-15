@@ -11,21 +11,20 @@
                         </h2>
                     </div>
                     <div>
-                        <span class="text-[#6A6A6A] text-sm font-normal  dark:text-gray-100">{{ '@' . $user->username
-                            }}</span>
+                        <span class="text-[#6A6A6A] text-sm font-normal  dark:text-gray-100">{{ '@' . $user->username }}</span>
                     </div>
                 </div>
             </div>
-            <div class="flex flex-row items-center justify-between gap-4 w-full" >
+            <div class="flex flex-row items-center justify-between gap-4 w-full">
                 <div class="flex flex-col gap-2 items-center justify-center">
                     <span class="font-bold text-xl dark:text-white">{{ $messagesCount }}</span>
                     <span class="dark:text-white">{{ __('Message') }}</span>
                 </div>
-                <button class="flex flex-col gap-2 items-center justify-center" wire:click="$dispatch('showUsers', { type: 'following' })">
+                <button aria-label="Show Following users" class="flex flex-col gap-2 items-center justify-center" wire:click="$dispatch('showUsers', { type: 'following' })">
                     <span class="font-bold text-xl dark:text-white">{{ $followingCount }}</span>
                     <span class="dark:text-white">{{ __('Following') }}</span>
                 </button>
-                <button class="flex flex-col gap-2 items-center justify-center"  wire:click="$dispatch('showUsers', { type: 'followers' })">
+                <button aria-label="Show Followers users" class="flex flex-col gap-2 items-center justify-center" wire:click="$dispatch('showUsers', { type: 'followers' })">
                     <span class="font-bold text-xl dark:text-white">{{ $followersCount }}</span>
                     <span class="dark:text-white">{{ __('Followers') }}</span>
                 </button>
@@ -33,12 +32,12 @@
             <div class="w-full">
                 <hr class="w-full h-[1px] bg-gray-200" />
 
-                @if (Auth::user()->id == $user->id)
-                <div class="flex flex-row items-center justify-between gap-4 w-full mt-4" >
-                    <a href="{{ route('profile.account') }}" class="flex flex-row items-center justify-center  w-full text-base py-2 px-2 text-white bg-brand-dark rounded-md">
+                @if (Auth::id() == $user->id)
+                <div class="flex flex-row items-center justify-between gap-4 w-full mt-4">
+                    <a wire:navigate href="{{ route('profile.account') }}" class="flex flex-row items-center justify-center  w-full text-base py-2 px-2 text-white bg-brand-dark rounded-md">
                         {{ __('Edit Profile') }}
                     </a>
-                    <button  x-bind="shareButton('{{ $share_data['title'] }}', '{{ $share_data['url'] }}')" class="flex flex-row items-center justify-center w-full text-base py-2 px-2 text-white bg-brand-dark rounded-md">
+                    <button aria-label="Share Profile" x-bind="shareButton('{{ $share_data['title'] }}', '{{ $share_data['url'] }}')" class="flex flex-row items-center justify-center w-full text-base py-2 px-2 text-white bg-brand-dark rounded-md">
                         {{ __('Share Profile') }}
                     </button>
                 </div>
@@ -50,7 +49,7 @@
             </div>
         </div>
     </div>
-   
+
     @script
     <script>
         $wire.on('showUsers', (type) => {

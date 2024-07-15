@@ -4,15 +4,13 @@ namespace App\Livewire\Component\User;
 
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class SidebarCard extends Component
 {
     public User $user;
 
-    public ?Authenticatable $authUser = null;
+    public ?User $authUser = null;
 
     public string $type;
 
@@ -41,7 +39,6 @@ class SidebarCard extends Component
             $this->isContains = true;
         }
         $this->user = $user;
-        Cache::forget("users:$this->type");
         $this->dispatch('update-users')->to(SidePanel::class);
     }
 

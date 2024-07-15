@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Model;
 
 class MediaObject extends Model
 {
-    use HasFactory;
 
+    use Cachable;
     /**
      * The attributes that are mass assignable.
      *

@@ -2,11 +2,10 @@
 
 namespace App\Livewire\Component;
 
+use App\Jobs\NewLikeJob;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -32,80 +31,105 @@ class MessageWithReplay extends Component
 
     public $messageDetails = [];
 
-    public function mount(Message $message)
+    public function mount(Message $message, User $user)
     {
         $this->message = $message;
-        $this->authUser = Cache::remember('user:'.Auth::id(), now()->addHours(4), function () {
-            return Auth::user();
-        });
-        $this->likes = Cache::remember("message:{$message->id}:likes", now()->addHours(4), function () {
-            return $this->message->likes;
-        });
-        $this->favorites = Cache::remember("message:{$message->id}:favorites", now()->addHours(4), function () {
-            return $this->message->favorites;
-        });
+        $this->authUser = $user;
+        $this->likes = $this->message->likes;
+        $this->favorites = $this->message->favorites;
         $this->likes_count = $this->likes->count();
         $this->favorites_count = $this->favorites->count();
         if ($this->authUser) {
-            $this->liked = $this->message->likes->contains('user_id', $this->authUser->id);
-            $this->favorited = $this->message->favorites->contains('user_id', $this->authUser->id);
+            $this->liked = $this->likes->contains(
+                'user_id',
+                $this->authUser->id,
+            );
+            $this->favorited = $this->favorites->contains(
+                'user_id',
+                $this->authUser->id,
+            );
         }
         $this->messageDetails = [
-            'title' => $this->message->message,
-            'url' => route('message.show', ['message' => $this->message]),
+            'title' => trim($this->message->message, " \t\n\r\0\x0B"),
+            'url' => route('message.show', [
+                'id' => $this->message->id,
+            ]),
         ];
     }
 
     #[On('add-like')]
     public function refreshLikes()
     {
-        Cache::forget("message:{$this->message->id}:likes");
 
-        $this->likes = Cache::remember("message:{$this->message->id}:likes", now()->addHours(4), function () {
-            return $this->message->likes;
-        });
-
-        $this->liked = $this->message->likes->contains('user_id', $this->authUser->id);
+        $this->likes = $this->message->likes()->get();
+        $this->liked = $this->likes->contains('user_id', $this->authUser->id);
         $this->likes_count = $this->likes->count();
     }
 
     #[On('add-favorite')]
     public function refreshFavorites()
     {
-        Cache::flush();
-        $this->favorites = Cache::remember("message:{$this->message->id}:favorites", now()->addHours(4), function () {
-            return $this->message->favorites;
-        });
-        $this->favorited = $this->message->favorites->contains('user_id', $this->authUser->id);
+        $this->favorites = $this->message->favorites()->get();
+        $this->favorited = $this->favorites->contains(
+            'user_id',
+            $this->authUser->id,
+        );
         $this->favorites_count = $this->favorites->count();
     }
 
     public function addLike()
     {
-        if ($this->liked) {
-            $this->message->likes()->where('user_id', $this->authUser->id)->delete();
-            $this->dispatch('add-like');
+        if (! $this->authUser->id) {
+            $this->dispatch(
+                'not-auth-for-action',
+                'You need to login to like this message.',
+            );
 
             return;
+        } else {
+            if ($this->liked) {
+                $this->message
+                    ->likes()
+                    ->where('user_id', $this->authUser->id)
+                    ->delete();
+                $this->dispatch('add-like');
+
+                return;
+            }
+            $this->message->likes()->create([
+                'user_id' => $this->authUser->id,
+            ]);
+            if ($this->message->sender != null) {
+                NewLikeJob::dispatch($this->message->sender, $this->authUser, $this->message);
+            }
+            $this->dispatch('add-like');
         }
-        $this->message->likes()->create([
-            'user_id' => $this->authUser->id,
-        ]);
-        $this->dispatch('add-like');
     }
 
     public function addFavorite()
     {
-        if ($this->favorited) {
-            $this->message->favorites()->where('user_id', $this->authUser->id)->delete();
-            $this->dispatch('add-favorite');
+        if (! $this->authUser->id) {
+            $this->dispatch(
+                'not-auth-for-action',
+                'You need to login to favorite this message.',
+            );
 
             return;
+        } else {
+            if ($this->favorited) {
+                $this->message
+                    ->favorites()
+                    ->where('user_id', $this->authUser->id)
+                    ->delete();
+                $this->dispatch('add-favorite');
+
+                return;
+            }
+            $this->message->favorites()->create([
+                'user_id' => $this->authUser->id,
+            ]);
+            $this->dispatch('add-favorite');
         }
-        $this->message->favorites()->create([
-            'user_id' => $this->authUser->id,
-        ]);
-        $this->dispatch('add-favorite');
     }
 
     public function render()

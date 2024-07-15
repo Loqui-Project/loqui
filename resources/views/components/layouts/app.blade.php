@@ -1,3 +1,7 @@
+@use('App\Models\User')
+@php
+$user = User::where('id', Auth::id())->with('mediaObject')->first();
+@endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
@@ -23,32 +27,47 @@
     <meta content="Loqui" property="og:site_name" />
     <meta property="og:url" content="{{ URL::current() }}" data-rh="true" />
 
-
     <title>@yield('title') / Loqui</title>
     <meta property="og:type" content="profile" data-rh="true" />
-    @if (Auth::check())
-    <meta property="profile:username" content="{{ Auth::user()->username }}" data-rh="true" />
-    <meta property="og:image" content="{{ URL::asset(Auth::user()->mediaObject->media_path) }}" data-rh="true" />
+    @if ($user)
+    <meta property="profile:username" content="{{ $user->username }}" data-rh="true" />
+    <meta property="og:image" content="{{ URL::asset($user->mediaObject->media_path) }}" data-rh="true" />
     @else
     <meta property="og:image" content="{{ URL::asset('/images/logo.svg') }}" data-rh="true" />
     @endif
     <meta property="og:title" content="@yield('title') / Loqui" data-rh="true" />
     <meta property="og:description" content="Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging." data-rh="true" />
 
-    @livewireStyles
+    @filamentStyles
     @stack('styles')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite('resources/css/app.css')
 </head>
 
-<body class="bg-white dark:bg-black">
-    @livewire('layout.header')
+
+<body class="bg-white dark:bg-black test">
+    @livewire('layout.header', ['user' => $user])
     <main class="min-h-screen">
         @yield('content')
     </main>
     @livewire('layout.footer')
-    <livewire:layout::side-panel />
-    @livewireScripts
+    @auth
+    @livewire('layout.side-panel', ['user' => $user])
+    @endauth
+    @filamentScripts
+    @vite('resources/js/app.js')
     @stack('scripts')
+    <script>
+        window.Laravel = {
+            !!json_encode([
+                'csrfToken' => csrf_token(),
+            ]) !!
+        };
+        window.App = {
+            !!json_encode([
+                'user' => $user ? $user - > id : null,
+            ]) !!
+        };
+    </script>
 </body>
 
 </html>

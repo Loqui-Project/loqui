@@ -100,6 +100,6 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', ''),
+    'prefix' => env('CACHE_PREFIX', 'loqui:'),
 
 ];

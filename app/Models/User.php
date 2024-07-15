@@ -3,17 +3,25 @@
 namespace App\Models;
 
 use App\Contracts\FollowUserInterface;
+use App\Traits\HasFollow;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 
-class User extends Authenticatable implements CanResetPassword, FollowUserInterface, MustVerifyEmail
+class User extends Authenticatable implements CanResetPassword, FilamentUser, FollowUserInterface, MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use AuthenticationLoggable, Cachable, HasFactory, HasFollow, Notifiable;
+
+    protected $cachePrefix = 'user:';
+
+    protected $cacheCooldownSeconds = 3600 * 6;
 
     /**
      * The attributes that are mass assignable.
@@ -34,10 +42,7 @@ class User extends Authenticatable implements CanResetPassword, FollowUserInterf
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * Get the attributes that should be cast.
@@ -52,16 +57,6 @@ class User extends Authenticatable implements CanResetPassword, FollowUserInterf
         ];
     }
 
-    public function following(): HasManyThrough
-    {
-        return $this->hasManyThrough(User::class, UserFollow::class, 'follower_id', 'id', 'id', 'following_id');
-    }
-
-    public function followers(): HasManyThrough
-    {
-        return $this->hasManyThrough(User::class, UserFollow::class, 'following_id', 'id', 'id', 'follower_id');
-    }
-
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class, 'user_id');
@@ -74,36 +69,43 @@ class User extends Authenticatable implements CanResetPassword, FollowUserInterf
 
     public function favoriteMessages()
     {
-        return $this->belongsToMany(Message::class, 'favorite_messages', 'user_id', 'message_id');
+        return $this->hasManyThrough(
+            Message::class,
+            MessageFavourite::class,
+            'user_id',
+            'id',
+            'id',
+            'message_id',
+        );
     }
 
     public function likedMessages()
     {
-        return $this->belongsToMany(Message::class, 'liked_messages', 'user_id', 'message_id');
+        return $this->belongsToMany(
+            Message::class,
+            'liked_messages',
+            'user_id',
+            'message_id',
+        );
     }
 
-    public function notifications(): HasMany
+    public function notificationSettings(): HasMany
     {
-        return $this->hasMany(Notification::class, 'user_id');
+        return $this->hasMany(NotificationSettings::class, 'user_id');
     }
 
-    public function isFollowing(User $user)
+    public function receivesBroadcastNotificationsOn(): string
     {
-        return $this->following()->where('following_id', $user->id)->exists();
+        return "user.{$this->id}";
     }
 
-    public function followUser(User $user, User $currentUser)
+    public function getRouteKeyName(): string
     {
-        if (! $this->isFollowing($user)) {
-            UserFollow::create([
-                'follower_id' => $currentUser->id,
-                'following_id' => $user->id,
-            ]);
-        }
+        return 'username';
     }
 
-    public function unfollowUser(User $user, User $currentUser)
+    public function canAccessPanel(Panel $panel): bool
     {
-        return UserFollow::where('follower_id', $currentUser->id)->where('following_id', $user->id)->delete();
+        return str_ends_with($this->email, '@yanalshoubaki.com');
     }
 }
