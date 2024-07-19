@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            MediaObjectSeeder::class,
             UserSeeder::class,
         ]);
     }

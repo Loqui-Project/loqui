@@ -6,7 +6,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Intervention\Image\Laravel\Facades\Image;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -93,13 +92,7 @@ class Account extends Component
                     'disk' => 'public',
                 ],
             );
-            // move image to storage
-
-            $mediaObjectData = [
-                'media_path' => 'storage/'.$placeHolderImage,
-            ];
-            $mediaObject = \App\Models\MediaObject::create($mediaObjectData);
-            $this->user->media_object_id = $mediaObject->id;
+            $this->user->image_url = 'storage/'.$placeHolderImage;
         }
 
         if ($this->password) {

@@ -1,7 +1,7 @@
 <div x-data="{ open: false }" class="relative">
     <button @click="open = ! open" class="flex flex-row justify-start items-center gap-4 cursor-pointer rounded-mdk p-4" aria-label="Open User Menu">
         <div>
-            <img src="{{ URL::asset($user->mediaObject->media_path) }}" alt="{{ $user->name }}" class="w-8 h-8 rounded-full">
+            <img src="{{ URL::asset($user->image_url) }}" alt="{{ $user->name }}" class="w-8 h-8 rounded-full">
         </div>
         <div class="flex flex-col items-start justify-start">
             <span class="text-md capitalize text-left font-semibold text-gray-900  dark:text-white">{{ $user->name }}</span>

@@ -17,7 +17,7 @@
                                     @if ($photo)
                                     <img src="{{ $photo->temporaryUrl() }}" alt="{{ $user->name }}" class="absolute inset-0 rounded-full">
                                     @else
-                                    <img src="{{ URL::asset($user->mediaObject->media_path) }}" alt="{{ $user->name }}" class=" absolute inset-0 rounded-full">
+                                    <img src="{{ URL::asset($user->image_url) }}" alt="{{ $user->name }}" class=" absolute inset-0 rounded-full">
                                     @endif
                                 </div>
                                 <div class="relative">

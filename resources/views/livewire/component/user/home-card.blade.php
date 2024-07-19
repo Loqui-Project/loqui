@@ -3,7 +3,7 @@
         <div class="flex flex-col justify-start items-start gap-6">
             <div class="flex flex-row items-center gap-4">
                 <div>
-                    <img src="{{ URL::asset($user->mediaObject->media_path) }}" alt="{{ $user->name }}" class="w-12 h-12 rounded-full">
+                    <img src="{{ URL::asset($user->image_url) }}" alt="{{ $user->name }}" class="w-12 h-12 rounded-full">
                 </div>
                 <div>
                     <div>

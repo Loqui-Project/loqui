@@ -3,7 +3,7 @@
     <div class="max-w-screen-laptop mx-auto mt-10">
         <div class="flex justify-between hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  items-center shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6 px-4">
             <div class="flex items-center gap-x-6">
-                <img src="{{ $user->mediaObject->media_path }}" alt="{{ $user->name }}" class="w-16 h-16 rounded-full">
+                <img src="{{ $user->image_url }}" alt="{{ $user->name }}" class="w-16 h-16 rounded-full">
                 <div>
                     <h3 class="text-base font-semibold leading-7 tracking-tight text-gray-900 dark:text-white">
                         {{ $user->name }}

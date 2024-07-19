@@ -2,7 +2,6 @@
 
 use App\Livewire\Pages\Auth\SignIn;
 use App\Livewire\Pages\Home;
-use App\Models\MediaObject;
 use App\Models\User;
 use Livewire\Livewire;
 
@@ -25,10 +24,8 @@ describe('Sign In Tests', function () {
             ->call('signIn')->assertHasErrors(['password']);
     });
     it('Can sign in', function () {
-        $media = MediaObject::factory()->create();
         User::factory()->create([
             'email' => 'testing@testing.com',
-            'media_object_id' => $media->id,
         ]);
         Livewire::test(SignIn::class)
             ->set('email', 'testing@testing.com')

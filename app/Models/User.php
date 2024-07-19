@@ -31,7 +31,7 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser, Fo
     protected $fillable = [
         'name',
         'username',
-        'media_object_id',
+        'image_url',
         'email',
         'status',
         'password',
@@ -60,11 +60,6 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser, Fo
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class, 'user_id');
-    }
-
-    public function mediaObject()
-    {
-        return $this->belongsTo(MediaObject::class, 'media_object_id', 'id');
     }
 
     public function favoriteMessages()
