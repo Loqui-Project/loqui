@@ -27,14 +27,14 @@ class Sessions extends Component
                     $session->last_activity,
                 )->diffForHumans();
                 $ipInfo = Cache::remember(
-                    "user:{$currentUser->id}:ip:79.173.245.138",
+                    "user:{$currentUser->id}:ip:{$session->ip_address}",
                     3600,
-                    function () {
+                    function () use ($session) {
                         $token = env('IP_INFO_TOKEN');
 
                         return json_decode(
                             file_get_contents(
-                                "http://ipinfo.io/79.173.245.138?token={$token}",
+                                "http://ipinfo.io/{$session->ip_address}?token={$token}",
                             ),
                         );
                     },
