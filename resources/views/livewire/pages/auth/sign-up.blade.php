@@ -1,7 +1,6 @@
 @section('title', 'Sign up')
 <div class="min-h-screen flex justify-center items-center">
-    <div class="container">
-    <div class="max-w-xl mx-auto hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-white shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark px-4">
+    <div class="max-w-xl max-laptop:max-w-full mx-auto hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-white shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark px-4">
             <div class="flex min-h-full flex-col justify-center px-6 py-8 lg:px-8">
                 <div class="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img class="mx-auto h-14 w-14" src={{ URL::asset('images/logo.svg') }} alt="Loqui - Social Media Platform">
@@ -12,7 +11,7 @@
                         <div>
                             <label for="name" class="block text-sm font-medium leading-6 text-white">{{__("Full name")}}</label>
                             <div class="mt-2">
-                                <input wire:model="name" type="name" autocomplete="name" class="block w-full rounded-md border-0 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
+                                <input wire:model="name" type="name" autocomplete="name" class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
                                 <div class="text-danger">
                                     @error('name')
                                     {{ $message }}
@@ -24,7 +23,7 @@
                         <div>
                             <label for="username" class="block text-sm font-medium leading-6 text-white">{{__("Username")}}</label>
                             <div class="mt-2">
-                                <input wire:model="username" type="username" autocomplete="username" class="block w-full rounded-md border-0 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
+                                <input wire:model="username" type="username" autocomplete="username" class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
                                 <div class="text-danger">
                                     @error('username')
                                     {{ $message }}
@@ -36,7 +35,7 @@
                         <div>
                             <label for="email" class="block text-sm font-medium leading-6 text-white">{{__("Email address")}}</label>
                             <div class="mt-2">
-                                <input wire:model="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
+                                <input wire:model="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
                                 <div class="text-danger">
                                     @error('email')
                                     {{ $message }}
@@ -51,7 +50,7 @@
                                 <label for="password" class="block text-sm font-medium leading-6 text-white">{{__("Password")}}</label>
                             </div>
                             <div class="mt-2">
-                                <input wire:model="password" type="password" autocomplete="current-password" class="block w-full rounded-md border-0 py-1.5 transition-all duration-300 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
+                                <input wire:model="password" type="password" autocomplete="current-password" class="block w-full rounded-md border-0 py-1.5 transition-all duration-300 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
                                 <div class="text-danger">
                                     @error('password')
                                     {{ $message }}
@@ -65,7 +64,7 @@
                                 <label for="password_confirmation" class="block text-sm font-medium leading-6 text-white">{{__("Confirm password")}}</label>
                             </div>
                             <div class="mt-2">
-                                <input wire:model="password_confirmation" type="password" autocomplete="current-password" class="block w-full rounded-md border-0 py-1.5 transition-all duration-300 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
+                                <input wire:model="password_confirmation" type="password" autocomplete="current-password" class="block w-full rounded-md border-0 py-1.5 transition-all duration-300 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
                                 <div class="text-danger">
                                     @error('password_confirmation')
                                     {{ $message }}
@@ -88,5 +87,4 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>

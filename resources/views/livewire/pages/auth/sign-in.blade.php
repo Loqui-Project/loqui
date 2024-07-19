@@ -1,7 +1,6 @@
 @section('title', 'Sign In')
 <div class="min-h-screen flex justify-center items-center ">
-    <div class="container">
-        <div class="max-w-xl mx-auto hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark px-4">
+        <div class="max-w-xl max-laptop:max-w-full mx-auto hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark px-4">
             <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
                 <div class="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img class="mx-auto h-14 w-14" src={{ URL::asset('images/logo.svg') }} alt="Loqui - Social Media Platform">
@@ -37,7 +36,7 @@
                         <div>
                             <label for="email" class="block text-sm font-medium leading-6 text-white">{{__("Email address")}}</label>
                             <div class="mt-2">
-                                <input wire:model="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
+                                <input wire:model="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-black shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
                                 <div class="text-danger">
                                     @error('email')
                                     {{ $message }}
@@ -83,5 +82,4 @@
                 </p>
             </div>
         </div>
-    </div>
 </div>

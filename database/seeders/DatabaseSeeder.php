@@ -17,9 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             MediaObjectSeeder::class,
-
             UserSeeder::class,
-            NotificationTemplateSeeder::class,
         ]);
     }
 }
