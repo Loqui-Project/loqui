@@ -1,7 +1,6 @@
 <?php
 
 use App\Livewire\Pages\Auth\SignUp;
-use App\Models\MediaObject;
 use App\Models\User;
 use Livewire\Livewire;
 
@@ -28,11 +27,9 @@ describe('Sign Up Tests', function () {
             ->call('signUp')->assertHasErrors(['username']);
     });
     it('"Username" field must be unique', function () {
-        $media = MediaObject::factory()->create();
         User::factory()->create([
             'username' => 'testing',
             'email' => 'testing@testing.com',
-            'media_object_id' => $media->id,
         ]);
         Livewire::test(SignUp::class)
             ->set('name', 'testing')
@@ -52,10 +49,8 @@ describe('Sign Up Tests', function () {
             ->call('signUp')->assertHasErrors(['email']);
     });
     it('"Email" field must be unique', function () {
-        $media = MediaObject::factory()->create();
         User::factory()->create([
             'email' => 'testing@testing.com',
-            'media_object_id' => $media->id,
         ]);
         Livewire::test(SignUp::class)
             ->set('name', 'testing')

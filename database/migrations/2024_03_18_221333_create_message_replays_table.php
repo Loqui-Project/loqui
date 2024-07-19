@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('message_id')->constrained('messages');
             $table->foreignId('user_id')->constrained('users');
             $table->longText('text');
-            $table->foreignId('media_object_id')->nullable()->constrained('media_objects');
             $table->timestamps();
         });
     }

@@ -14,7 +14,7 @@ class MessageReplay extends Model
         'message_id',
         'user_id',
         'text',
-        'media_object_id',
+        'image_url',
     ];
 
     public function message()
@@ -25,10 +25,5 @@ class MessageReplay extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function mediaObject()
-    {
-        return $this->belongsTo(MediaObject::class, 'image_id');
     }
 }

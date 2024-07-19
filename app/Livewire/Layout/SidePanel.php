@@ -41,7 +41,6 @@ class SidePanel extends Component
             $this->users = $this->authUser->{$type};
         } else {
             $this->users = User::where('username', $username)
-                ->with(['mediaObject', "{$type}.mediaObject"])
                 ->first()->{$type};
         }
 

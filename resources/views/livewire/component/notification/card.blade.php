@@ -1,7 +1,7 @@
 <div class="relative flex">
     <a wire:navigate href="{{ $url }}" class="flex items-center flex-row flex-nowrap gap-6 pr-2">
         <div class="w-14 h-14 flex justify-center items-center relative">
-            <img src="{{ URL::asset($fromUser->mediaObject->media_path) }}" alt="default-avatar" class="w-10 h-10  rounded-full">
+            <img src="{{ URL::asset($fromUser->image_url) }}" alt="default-avatar" class="w-10 h-10  rounded-full">
             <span class="absolute -right-4 top-[6px]">
                 @if ($notification->type == 'new-follow')
                 <svg width="16" height="16" class="w-6 h-6" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
