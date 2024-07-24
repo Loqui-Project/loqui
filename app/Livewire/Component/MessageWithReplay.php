@@ -85,6 +85,7 @@ class MessageWithReplay extends Component
                 'not-auth-for-action',
                 'You need to login to like this message.',
             );
+
             return;
         } else {
             if ($this->liked) {
