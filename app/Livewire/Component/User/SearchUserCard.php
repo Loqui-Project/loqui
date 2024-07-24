@@ -5,7 +5,6 @@ namespace App\Livewire\Component\User;
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class SearchUserCard extends Component
@@ -35,7 +34,6 @@ class SearchUserCard extends Component
             $this->isFollowing = true;
         }
         $this->user = $user;
-        Cache::forget('users:following');
         $this->dispatch('update-users')->to(SidePanel::class);
     }
 

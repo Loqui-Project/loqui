@@ -15,6 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web();
         $middleware->redirectGuestsTo(fn () => route('auth.sign-in'));
     })
+    ->withBroadcasting(channels: __DIR__.'/../routes/channels.php')
     ->withExceptions(function (Exceptions $exceptions) {
         Integration::handles($exceptions);
-    })->create();
+    })
+    ->create();

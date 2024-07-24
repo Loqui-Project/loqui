@@ -48,7 +48,7 @@ class Inbox extends Component
         ])->remember($key, $seconds, function () {
             return Message::where('user_id', $this->authUser->id)
                 ->doesntHave('replay')
-                ->with(['user.mediaObject', 'sender.mediaObject'])
+                ->with(['user', 'sender'])
                 ->orderBy('created_at', 'desc')
                 ->paginate($this->perPage);
         });

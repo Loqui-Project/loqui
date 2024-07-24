@@ -1,9 +1,11 @@
 @use('App\Models\User')
 @php
-    $user = User::where('id', Auth::id())->with('mediaObject')->first();
+$user = User::where('id', Auth::id())->first();
+$lang = str_replace('_', '-', app()->getLocale());
+$dir = $lang === 'ar' ? 'rtl' : 'ltr';
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ $lang }}" dir="{{ $dir }}" class="dark">
 
 <head>
     <meta charset="UTF-8" />
@@ -11,14 +13,10 @@
     <meta name="author" content="Loqui" />
     <meta name="google" content="notranslate" data-rh="true" />
     <meta name="robots" content="index, follow" data-rh="true" />
-    <meta name="description"
-        content="Loqui: Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging."
-        data-rh="true" />
+    <meta name="description" content="Loqui: Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging." data-rh="true" />
     <meta name="applicable-device" content="pc, mobile" data-rh="true" />
     <meta name="canonical" content="{{ URL::current() }}" data-rh="true" />
-    <meta name="keywords"
-        content="Loqui, loqui, links, link, cv, portfolio, aggregation, platform, social, media, profile, bio, tree"
-        data-rh="true" />
+    <meta name="keywords" content="Loqui, loqui, links, link, cv, portfolio, aggregation, platform, social, media, profile, bio, tree" data-rh="true" />
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-title" content="Loqui" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -30,36 +28,47 @@
 
     <meta content="Loqui" property="og:site_name" />
     <meta property="og:url" content="{{ URL::current() }}" data-rh="true" />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') / Loqui</title>
     <meta property="og:type" content="profile" data-rh="true" />
     @if ($user)
-        <meta property="profile:username" content="{{ $user->username }}" data-rh="true" />
-        <meta property="og:image" content="{{ URL::asset($user->mediaObject->media_path) }}" data-rh="true" />
+    <meta property="profile:username" content="{{ $user->username }}" data-rh="true" />
+    <meta property="og:image" content="{{ URL::asset($user->image_url) }}" data-rh="true" />
     @else
-        <meta property="og:image" content="{{ URL::asset('/images/logo.svg') }}" data-rh="true" />
+    <meta property="og:image" content="{{ URL::asset('/images/logo.svg') }}" data-rh="true" />
     @endif
     <meta property="og:title" content="@yield('title') / Loqui" data-rh="true" />
-    <meta property="og:description"
-        content="Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging."
-        data-rh="true" />
+    <meta property="og:description" content="Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging." data-rh="true" />
 
-    @livewireStyles
+    @filamentStyles
     @stack('styles')
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite('resources/css/app.css')
 </head>
 
-<body class="bg-white dark:bg-black">
+
+<body class="bg-white dark:bg-black test" x-data="{ 'isModalOpen': false }"  x-on:keydown.escape="isModalOpen = false">
     @livewire('layout.header', ['user' => $user])
     <main class="min-h-screen">
         @yield('content')
     </main>
     @livewire('layout.footer')
     @auth
-        @livewire('layout.side-panel', ['user' => $user])
+    @livewire('layout.side-panel', ['user' => $user])
     @endauth
-    @livewireScripts
+    @stack('extend-component')
+    @filamentScripts
+    @vite('resources/js/app.js')
     @stack('scripts')
+    <script>
+        window.Laravel = {
+            "csrfToken" :  document.querySelector('meta[name="csrf-token"]').attributes["content"].value,
+            "baseUrl" : "{{ URL::to('/') }}",
+            "user" : @json([
+                'id' => $user->id,
+                'username' => $user->username,
+            ])
+        };
+    </script>
 </body>
 
 </html>

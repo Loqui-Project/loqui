@@ -2,19 +2,15 @@
 
 namespace App\Livewire\Component\User;
 
-use App\Jobs\NewFollowerJob;
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Str;
 use Livewire\Component;
 
 class SidebarCard extends Component
 {
     public User $user;
 
-    public ?Authenticatable $authUser = null;
+    public ?User $authUser = null;
 
     public string $type;
 
@@ -35,17 +31,14 @@ class SidebarCard extends Component
     public function follow($id)
     {
         $user = User::find($id);
-        $column_id = Str::singular($this->type).'_id';
         if ($this->isContains) {
             $this->authUser->unfollowUser($user, $this->authUser);
             $this->isContains = false;
         } else {
             $this->authUser->followUser($user, $this->authUser);
             $this->isContains = true;
-            NewFollowerJob::dispatch($user, $this->authUser);
         }
         $this->user = $user;
-        Cache::forget("users:$this->type");
         $this->dispatch('update-users')->to(SidePanel::class);
     }
 

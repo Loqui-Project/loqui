@@ -2,15 +2,20 @@
 
 namespace App\Livewire\Pages\Profile;
 
+use App\Jobs\NewFollowerJob;
+use App\Jobs\NewMessageJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class UserProfile extends Component
 {
     public ?User $user;
+
+    public $isModalOpen = false;
 
     public ?User $authUser = null;
 
@@ -22,9 +27,9 @@ class UserProfile extends Component
 
     public string $content = '';
 
-    public function mount($username)
+    public function mount(User $user)
     {
-        $this->user = User::where('username', $username)->first();
+        $this->user = $user;
         if ($this->user === null) {
             abort(404);
         }
@@ -35,9 +40,24 @@ class UserProfile extends Component
             $this->isFollowing = false;
             $this->anonymously = true;
         }
-        $this->userMessages = Cache::remember("user:{$this->user->id}:messages:with_replay", now()->addHours(4), function () {
-            return $this->user->messages()->whereHas('replay')->latest()->get();
-        });
+        $this->userMessages = Cache::remember(
+            "user:{$this->user->id}:messages:with_replay",
+            now()->addHours(4),
+            function () {
+                return $this->user
+                    ->messages()
+                    ->whereHas('replay')
+                    ->latest()
+                    ->get();
+            },
+        );
+    }
+
+    #[On('fetch-following-users')]
+    public function fetchFollowing()
+    {
+        $this->isModalOpen = true;
+
     }
 
     public function sendMessage()
@@ -45,12 +65,13 @@ class UserProfile extends Component
         $this->validate([
             'content' => 'required|min:1',
         ]);
-        $this->user->messages()->create([
+        $message = $this->user->messages()->create([
             'message' => $this->content,
             'user_id' => $this->user->id,
             'sender_id' => $this->authUser ? $this->authUser->id : null,
             'is_anon' => $this->anonymously,
         ]);
+        NewMessageJob::dispatch($this->user, $this->authUser, $message);
         $this->content = '';
     }
 
@@ -61,17 +82,23 @@ class UserProfile extends Component
 
             return;
         }
-        if ($this->isFollowing) {
-            $this->authUser->unfollowUser($this->user, $this->authUser);
-            $this->isFollowing = false;
-        } else {
-            $this->authUser->followUser($this->user, $this->authUser);
-            $this->isFollowing = true;
-        }
+
+        $this->authUser->followUser($this->user, $this->authUser);
+        NewFollowerJob::dispatch($this->user, $this->authUser);
+        $this->isFollowing = true;
+    }
+
+    public function unfollow()
+    {
+        $this->authUser->unfollowUser($this->user, $this->authUser);
+        $this->isFollowing = false;
+        redirect()->route('profile.user', $this->user->username);
     }
 
     public function render()
     {
-        return view('livewire.pages.profile.user-profile')->extends('components.layouts.app');
+        return view('livewire.pages.profile.user-profile')->extends(
+            'components.layouts.app',
+        );
     }
 }

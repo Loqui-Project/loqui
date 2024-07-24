@@ -18,7 +18,7 @@ class NotificationPage extends Component
 
     public $notificationTypeEnum = 'all';
 
-    public int $perPage = 5;
+    public int $perPage = 10;
 
     public function mount()
     {
@@ -27,24 +27,33 @@ class NotificationPage extends Component
 
     public function loadMore()
     {
-        $this->perPage = $this->perPage + 5;
+        $this->perPage = $this->perPage + 10;
     }
 
-    #[Computed()]
+    public function getListeners()
+    {
+        return [
+            "echo-notification:user.{$this->authUser->id}" => 'refresh',
+        ];
+    }
+
+    public function refresh()
+    {
+        Cache::forget("user:{$this->authUser->id}:notifications");
+    }
+
+    #[Computed]
     public function notifications()
     {
-        $key = "user:{$this->authUser->id}:notifications";
-        $seconds = 3600 * 6;
+        $key = "user:{$this->authUser->id}:messages:with_replay:{$this->perPage}";
+        $seconds = now()->addHours(5); // 1 hour...
 
-        return Cache::remember(
-            $key,
-            $seconds,
-            function () {
-                return $this->authUser->notifications()
-                    ->orderBy('created_at', 'desc')
-                    ->paginate($this->perPage);
-            }
-        );
+        return Cache::remember($key, $seconds, function () {
+            return $this->authUser
+                ->notifications()
+                ->orderBy('created_at', 'desc')
+                ->paginate($this->perPage);
+        });
     }
 
     public function render()

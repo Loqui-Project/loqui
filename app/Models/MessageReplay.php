@@ -2,18 +2,19 @@
 
 namespace App\Models;
 
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class MessageReplay extends Model
 {
-    use HasFactory;
+    use Cachable, HasFactory;
 
     protected $fillable = [
         'message_id',
         'user_id',
         'text',
-        'media_object_id',
+        'image_url',
     ];
 
     public function message()
@@ -24,10 +25,5 @@ class MessageReplay extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function mediaObject()
-    {
-        return $this->belongsTo(MediaObject::class, 'image_id');
     }
 }

@@ -2,10 +2,11 @@
 
 namespace App\Livewire\Pages\Auth;
 
-use App\Models\MediaObject;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -30,19 +31,19 @@ class SignUp extends Component
     {
         $this->validate();
         try {
-            $defaultImage = MediaObject::first();
             $user = User::create([
                 'name' => $this->name,
                 'username' => $this->username,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
-                'media_object_id' => $defaultImage->id,
             ]);
             Auth::login($user);
 
             return redirect()->route('home');
-        } catch (\Throwable $th) {
+        } catch (ValidationException $th) {
             $this->addError('email', $th->getMessage());
+        } catch (Exception $e) {
+            $this->addError('email', $e->getMessage());
         }
     }
 
