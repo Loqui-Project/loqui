@@ -79,12 +79,12 @@ class MessageWithReplay extends Component
 
     public function addLike()
     {
+
         if (! $this->authUser->id) {
             $this->dispatch(
                 'not-auth-for-action',
                 'You need to login to like this message.',
             );
-
             return;
         } else {
             if ($this->liked) {
@@ -104,10 +104,12 @@ class MessageWithReplay extends Component
             }
             $this->dispatch('add-like');
         }
+
     }
 
     public function addFavorite()
     {
+
         if (! $this->authUser->id) {
             $this->dispatch(
                 'not-auth-for-action',
