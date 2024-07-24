@@ -15,7 +15,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 
-
 class User extends Authenticatable implements CanResetPassword, FilamentUser, FollowUserInterface, MustVerifyEmail
 {
     use AuthenticationLoggable, Cachable, HasFactory, HasFollow, Notifiable;
