@@ -4,7 +4,7 @@
             <div class="flex min-h-full flex-col justify-center px-6 py-8 lg:px-8">
                 <div class="sm:mx-auto sm:w-full sm:max-w-sm">
                     <img class="mx-auto h-14 w-14" src={{ URL::asset('images/logo.svg') }} alt="Loqui - Social Media Platform">
-                    <h2 class="mt-4 text-center text-2xl font-bold leading-9 tracking-tight font-cormorant-garamond text-white">{{__("Sign up to your account")}}</h2>
+                    <h2 class="mt-4 text-center text-2xl font-bold leading-9 tracking-tight font-cormorant-garamond text-white">{{__("Create new account")}}</h2>
                 </div>
                 <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form class="space-y-2" wire:submit="signUp">

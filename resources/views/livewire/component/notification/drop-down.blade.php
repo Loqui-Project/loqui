@@ -7,13 +7,13 @@
             <span class="text-[10px] font-normal absolute -top-[11px] -right-[12px] bg-brand-dark rounded-full w-6 h-6 text-center inline-flex items-center justify-center text-white">{{ $count > 99 ? "+99" : $count }}</span>
         </span>
         <span>
-            {{__("Notification")}}
+            {{__("Notifications")}}
         </span>
     </button>
     <div x-show="open" @click.outside="open = false" x-transition class="absolute top-10 w-full min-w-[450px] backdrop:blur-lg  bg-[#2E3357] rounded-md shadow-lg p-4 flex flex-col gap-4">
         <div class="flex justify-between border-b items-center border-b-brand-main pb-4">
             <div>
-                <h3 class="text-white text-xl font-bold">{{__("Your notification")}}</h3>
+                <h3 class="text-white text-xl font-bold">{{__("Your notifications")}}</h3>
             </div>
             <div>
                 <button class="flex items-center" wire:click="makeAllRead">

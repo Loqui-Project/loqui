@@ -8,11 +8,14 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class UserProfile extends Component
 {
     public ?User $user;
+
+    public $isModalOpen = false;
 
     public ?User $authUser = null;
 
@@ -50,6 +53,13 @@ class UserProfile extends Component
         );
     }
 
+    #[On('fetch-following-users')]
+    public function fetchFollowing()
+    {
+        $this->isModalOpen = true;
+
+    }
+
     public function sendMessage()
     {
         $this->validate([
@@ -72,15 +82,17 @@ class UserProfile extends Component
 
             return;
         }
-        if ($this->isFollowing) {
-            $this->authUser->unfollowUser($this->user, $this->authUser);
-            NewFollowerJob::dispatch($this->user, $this->authUser);
-            $this->isFollowing = false;
-        } else {
-            $this->authUser->followUser($this->user, $this->authUser);
-            NewFollowerJob::dispatch($this->user, $this->authUser);
-            $this->isFollowing = true;
-        }
+
+        $this->authUser->followUser($this->user, $this->authUser);
+        NewFollowerJob::dispatch($this->user, $this->authUser);
+        $this->isFollowing = true;
+    }
+
+    public function unfollow()
+    {
+        $this->authUser->unfollowUser($this->user, $this->authUser);
+        $this->isFollowing = false;
+        redirect()->route('profile.user', $this->user->username);
     }
 
     public function render()

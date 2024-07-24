@@ -56,9 +56,13 @@ Route::middleware('auth')->group(function () {
                 'favorites',
             );
         });
+    Route::prefix('/@{user:username}')->group(function () {
+        Route::get('/following', Profile\FollowingUsers::class)->name('profile.following');
+    });
     Route::get('/notifications', NotificationPage::class)->name(
         'notifications',
     );
+
 });
 
 Route::get('/@{user:username}', Profile\UserProfile::class)->name(

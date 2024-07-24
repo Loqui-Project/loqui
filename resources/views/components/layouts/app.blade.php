@@ -1,9 +1,11 @@
 @use('App\Models\User')
 @php
 $user = User::where('id', Auth::id())->first();
+$lang = str_replace('_', '-', app()->getLocale());
+$dir = $lang === 'ar' ? 'rtl' : 'ltr';
 @endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ $lang }}" dir="{{ $dir }}" class="dark">
 
 <head>
     <meta charset="UTF-8" />
@@ -44,7 +46,7 @@ $user = User::where('id', Auth::id())->first();
 </head>
 
 
-<body class="bg-white dark:bg-black test">
+<body class="bg-white dark:bg-black test" x-data="{ 'isModalOpen': false }"  x-on:keydown.escape="isModalOpen = false">
     @livewire('layout.header', ['user' => $user])
     <main class="min-h-screen">
         @yield('content')
@@ -53,6 +55,7 @@ $user = User::where('id', Auth::id())->first();
     @auth
     @livewire('layout.side-panel', ['user' => $user])
     @endauth
+    @stack('extend-component')
     @filamentScripts
     @vite('resources/js/app.js')
     @stack('scripts')

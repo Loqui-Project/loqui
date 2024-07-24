@@ -1,15 +1,16 @@
+@php
+$lang = str_replace('_', '-', app()->getLocale());
+$dir = $lang === 'ar' ? 'rtl' : 'ltr';
+@endphp
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
+<html lang="{{ $lang }}" dir="{{ $dir }}" class="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>@yield('title') - Loqui</title>
     @livewireStyles
     @vite('resources/css/app.css')
 </head>
-
 <body class="bg-black">
     <div class="relative isolate px-6 pt-14 laptop:px-8">
         <div class="absolute inset-x-0 bg-black -z-10 transform-gpu overflow-hidden blur-3xl"
@@ -30,5 +31,4 @@
     </div>
     @livewireScripts
 </body>
-
 </html>

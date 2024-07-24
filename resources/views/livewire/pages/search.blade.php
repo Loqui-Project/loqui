@@ -8,7 +8,7 @@
 
         <div class="w-full max-w-screen-laptop overflow-hidden rounded-lg mx-auto my-10">
             <div class="mb-4">
-                <h1 class="text-2xl font-bold font-rubik dark:text-white">Explore</h1>
+                <h1 class="text-2xl font-bold font-rubik dark:text-white">{{__("Explore")}}</h1>
             </div>
             <div>
                 <form class="w-full" wire:submit.prevent="search">
@@ -16,7 +16,7 @@
                         <div class="w-full">
                             <div class="mb-4">
                                 <div class="mt-2">
-                                    <input wire:model.live="search" type="text" placeholder="Search for users..." class="block text-brand-dark placeholder:text-brand-dark dark:text-white dark:placeholder:text-white shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4  shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
+                                    <input wire:model.live="search" type="text" placeholder="{{__("Search for users...")}}" class="block text-brand-dark placeholder:text-brand-dark dark:text-white dark:placeholder:text-white shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4  shadow-sm ring-1 ring-inset ring-brand-dark  focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
                                 </div>
                                 <div class="text-danger">
                                     @error('search')

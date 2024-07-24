@@ -37,7 +37,7 @@ class DropDown extends Component
         $this->notification_type = array_map(function ($key) {
             return [
                 'key' => $key,
-                'name' => strtolower(str_replace('new-', '', $key)),
+                'name' => __($key),
             ];
         }, NotificationTypeEnum::values());
     }

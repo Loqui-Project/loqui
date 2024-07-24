@@ -9,8 +9,8 @@
         </a>
     </div>
     <div>
-        <button aria-label="Follow" wire:click="follow({{ $user->id }})" class="{{ $isContains ? 'bg-brand-dark text-brand-100 border-brand-dark' : 'text-brand-dark border-brand-dark hover:bg-brand-dark hover:text-brand-light hover:border-brand-dark dark:border-brand-main dark:hover:bg-brand-main dark:hover:text-brand-dark' }} border-2  transition-all duration-300 rounded-md px-4 py-2 text-base dark:text-brand-main font-semibold font-rubik">
+        <a href="{{route("profile.following", ['user' => $user])}}" aria-label="Follow" x-on:click="isModalOpen = true" class="{{ $isContains ? 'bg-brand-dark text-brand-100 border-brand-dark' : 'text-brand-dark border-brand-dark hover:bg-brand-dark hover:text-brand-light hover:border-brand-dark dark:border-brand-main dark:hover:bg-brand-main dark:hover:text-brand-dark' }} border-2  transition-all duration-300 rounded-md px-4 py-2 text-base dark:text-brand-main font-semibold font-rubik">
             {{ $isContains ? 'Following' : 'Follow' }}
-        </button>
+        </a>
     </div>
 </div>
