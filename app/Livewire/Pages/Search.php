@@ -35,7 +35,6 @@ class Search extends Component
                 'LIKE',
                 "%{$this->search}%",
             )
-                ->with('mediaObject')
                 ->withCount([
                     'messages' => function ($query) {
                         $query->whereHas('replay');

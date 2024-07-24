@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->after('email', function (Blueprint $table) {
                 $table->string('username')->unique();
-                $table->foreignId('media_object_id')->nullable()->constrained('media_objects');
             });
         });
     }
@@ -26,8 +25,6 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('username');
-            $table->dropForeign(['media_object_id']);
-            $table->dropColumn('media_object_id');
         });
     }
 };

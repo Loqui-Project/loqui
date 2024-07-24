@@ -17,7 +17,7 @@
                                     @if ($photo)
                                     <img src="{{ $photo->temporaryUrl() }}" alt="{{ $user->name }}" class="absolute inset-0 rounded-full">
                                     @else
-                                    <img src="{{ URL::asset($user->mediaObject->media_path) }}" alt="{{ $user->name }}" class=" absolute inset-0 rounded-full">
+                                    <img src="{{ URL::asset($user->image_url) }}" alt="{{ $user->name }}" class=" absolute inset-0 rounded-full">
                                     @endif
                                 </div>
                                 <div class="relative">
@@ -114,7 +114,7 @@
                                         <input id="message" wire:model="mail.message" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
-                                        <label for="message" class="font-medium text-gray-900 dark:text-white">{{ __('Message') }}</label>
+                                        <label for="message" class="font-medium text-gray-900 dark:text-white">{{ __('Messages') }}</label>
                                         <p class="text-gray-500">
                                             {{ __('Get notified when a user send a message to you.') }}
                                         </p>
@@ -136,7 +136,7 @@
                                         <input id="follow" wire:model="mail.follow" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
-                                        <label for="follow" class="font-medium text-gray-900 dark:text-white">{{ __('Follow') }}</label>
+                                        <label for="follow" class="font-medium text-gray-900 dark:text-white">{{ __('Follows') }}</label>
                                         <p class="text-gray-500">{{ __('Get notified when a user follows you.') }}</p>
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                                         <input id="message" wire:model="browser.message" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
-                                        <label for="message" class="font-medium text-gray-900 dark:text-white">{{ __('Message') }}</label>
+                                        <label for="message" class="font-medium text-gray-900 dark:text-white">{{ __('Messages') }}</label>
                                         <p class="text-gray-500">
                                             {{ __('Get notified when a user send a message to you.') }}
                                         </p>
@@ -185,7 +185,7 @@
                                         <input id="follow" wire:model="browser.follow" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-brand-dark focus:ring-brand-dark">
                                     </div>
                                     <div class="text-sm leading-6">
-                                        <label for="follow" class="font-medium text-gray-900 dark:text-white">{{ __('Follow') }}</label>
+                                        <label for="follow" class="font-medium text-gray-900 dark:text-white">{{ __('Follows') }}</label>
                                         <p class="text-gray-500">{{ __('Get notified when a user follows you.') }}</p>
                                     </div>
                                 </div>

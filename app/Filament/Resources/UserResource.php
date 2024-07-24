@@ -43,7 +43,7 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->searchable()->sortable(),
-                Tables\Columns\ImageColumn::make('media_path')->label('Image')->getStateUsing(fn ($record) => URL::asset($record->mediaObject->media_path) ?: 'Jordan')->circular(),
+                Tables\Columns\ImageColumn::make('media_path')->label('Image')->getStateUsing(fn ($record) => URL::asset($record->image_url) ?: 'Jordan')->circular(),
                 TextColumn::make('name')->searchable(),
                 TextColumn::make('username')->searchable(),
                 TextColumn::make('email')->searchable(),
