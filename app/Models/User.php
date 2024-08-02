@@ -35,6 +35,7 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser, Fo
         'email',
         'status',
         'password',
+        'bio',
     ];
 
     /**
