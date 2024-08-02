@@ -122,5 +122,7 @@
     "Load more": "تحميل المزيد",
     "You have :count messages": "لديك :count رسالة",
     "Welcome, :name": "مرحبًا، :name",
-    "No notification found": "لم يتم العثور على إشعار"
+    "No notification found": "لم يتم العثور على إشعار",
+    "Write a few sentences about yourself.": "اكتب بضع جمل عن نفسك.",
+    "About": "حول"
 }

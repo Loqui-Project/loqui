@@ -6,6 +6,7 @@ use App\Jobs\NewLikeJob;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -34,7 +35,7 @@ class MessageWithReplay extends Component
     public function mount(Message $message, User $user)
     {
         $this->message = $message;
-        $this->authUser = $user;
+        $this->authUser = Auth::user();
         $this->likes = $this->message->likes;
         $this->favorites = $this->message->favorites;
         $this->likes_count = $this->likes->count();

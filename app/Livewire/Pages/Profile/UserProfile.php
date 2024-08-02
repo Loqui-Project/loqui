@@ -83,12 +83,12 @@ class UserProfile extends Component
     {
         $this->authUser->unfollowUser($this->user, $this->authUser);
         $this->isFollowing = false;
-        redirect()->route('profile.user', ['user' => $this->user]);
+        redirect()->route('profile.user', ['user' => $this->user->username]);
     }
 
     #[Layout('components.layouts.app')]
     public function render()
     {
-        return view('livewire.pages.profile.user-profile')->title($this->user);
+        return view('livewire.pages.profile.user-profile')->title($this->user->username);
     }
 }

@@ -23,7 +23,7 @@
                     </div>
                     @if ($message->sender !== null && !!$message->is_anon == false)
                     <div>
-                        <a wire:navigate href="{{ route('profile.user', ['user' => $message->sender]) }}" class="text-white text-sm italic">{{ '@' . $message->sender->username }}</a>
+                        <a wire:navigate href="{{ route('profile.user', ['user' => $message->sender->username]) }}" class="text-white text-sm italic">{{ '@' . $message->sender->username }}</a>
                     </div>
                     @endif
                 </div>
@@ -33,7 +33,7 @@
                     <div class="w-12 h-12 flex justify-center items-center">
                         <img src="{{ URL::asset($message->user->image_url) }}" alt="{{ $message->user->name }}" class="w-10 h-10 rounded-full">
                     </div>
-                    <a class="flex flex-col w-full" href="{{ route('profile.user', ['user' => $message->user]) }}">
+                    <a class="flex flex-col w-full" href="{{ route('profile.user', ['user' => $message->user->username]) }}">
                         <div class="flex justify-between w-full">
                             <span class="font-bold text-white">
                                 {{ $message->user->name }}
@@ -56,7 +56,7 @@
             <div class="flex gap-4">
                 <button wire:click="addLike" class="flex items-center gap-2  group/button relative" aria-label="Add like">
                     <div class="inline-flex items-center justify-center">
-                        <div class="absolute z-0 -left-[4px] w-8 h-8 rounded-full -top-[5px] bottom-0 group-hover/button:bg-brand-light/30 transition-all"></div>
+                        <div class="absolute z-0 ltr:-left-[4px] rtl:-right-[4px] w-8 h-8 rounded-full -top-[5px] bottom-0 group-hover/button:bg-brand-light/30 transition-all"></div>
                         <div class="relative z-10">
                             @if ($liked)
                             <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 fill-brand-light">
@@ -76,7 +76,7 @@
                 </button>
                 <button wire:click="addFavorite" class="flex items-center gap-2 group/button relative" aria-label="Add to favorite">
                     <div class="inline-flex items-center justify-center">
-                        <div class="absolute z-0 -left-[4px] w-8 h-8 rounded-full -top-[5px] bottom-0 group-hover/button:bg-brand-light/30 transition-all"></div>
+                        <div class="absolute z-0 ltr:-left-[4px] rtl:-right-[4px] w-8 h-8 rounded-full -top-[5px] bottom-0 group-hover/button:bg-brand-light/30 transition-all"></div>
                         <div class="relative z-10">
                             @if ($favorited)
                             <svg width="24" height="24" viewBox="0 0 24 24" class="w-6 h-6 fill-brand-light" xmlns="http://www.w3.org/2000/svg">

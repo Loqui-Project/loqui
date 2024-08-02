@@ -32,6 +32,8 @@ class Account extends Component
 
     public array $browser = [];
 
+    public string $bio;
+
     public function rules()
     {
         return [
@@ -43,6 +45,7 @@ class Account extends Component
             'password' => 'nullable|min:8|max:20|confirmed',
             'mail.*' => 'boolean',
             'browser.*' => 'boolean',
+            'bio' => 'nullable|min:5|max:255',
         ];
     }
 
@@ -79,7 +82,7 @@ class Account extends Component
         $this->user->name = $this->name;
         $this->user->email = $this->email;
         $this->user->username = $this->username;
-
+        $this->user->bio = $this->bio;
         if ($this->photo) {
             $hashedImageName =
                 'image_'.
