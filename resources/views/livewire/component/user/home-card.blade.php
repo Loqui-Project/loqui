@@ -16,15 +16,15 @@
                 </div>
             </div>
             <div class="flex flex-row items-center justify-between gap-4 w-full">
-                <div class="flex flex-col gap-2 items-center justify-center">
+                <div class="flex flex-row gap-2 items-center justify-center">
                     <span class="font-bold text-xl dark:text-white">{{ $messagesCount }}</span>
                     <span class="dark:text-white">{{ __('Message') }}</span>
                 </div>
-                <button aria-label="Show Following users" class="flex flex-col gap-2 items-center justify-center" wire:click="$dispatch('showUsers', { type: 'following' })">
+                <button aria-label="Show Following users" class="flex flex-row gap-2 items-center justify-center" wire:click="$dispatch('showUsers', { type: 'following' })">
                     <span class="font-bold text-xl dark:text-white">{{ $followingCount }}</span>
                     <span class="dark:text-white">{{ __('Following') }}</span>
                 </button>
-                <button aria-label="Show Followers users" class="flex flex-col gap-2 items-center justify-center" wire:click="$dispatch('showUsers', { type: 'followers' })">
+                <button aria-label="Show Followers users" class="flex flex-row gap-2 items-center justify-center" wire:click="$dispatch('showUsers', { type: 'followers' })">
                     <span class="font-bold text-xl dark:text-white">{{ $followersCount }}</span>
                     <span class="dark:text-white">{{ __('Followers') }}</span>
                 </button>

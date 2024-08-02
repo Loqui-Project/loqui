@@ -16,6 +16,8 @@ use League\CommonMark\Extension\TaskList\TaskListExtension;
 use League\CommonMark\MarkdownConverter;
 use League\CommonMark\Node\Inline\AbstractInline;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 
 class Changelog extends Component
@@ -107,6 +109,8 @@ class Changelog extends Component
         );
     }
 
+    #[Layout('components.layouts.app')]
+    #[Title('Changelog')]
     public function render()
     {
 
@@ -125,10 +129,9 @@ class Changelog extends Component
         // Instantiate the converter engine and start converting some Markdown!
         $converter = new MarkdownConverter($environment);
 
-        // dd($this->releases());
         return view('livewire.pages.changelog', [
             'releases' => $this->releases(),
             'converter' => $converter,
-        ])->extends('components.layouts.app');
+        ]);
     }
 }

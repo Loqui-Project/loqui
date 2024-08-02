@@ -7,7 +7,7 @@ use App\Jobs\NewMessageJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -30,9 +30,6 @@ class UserProfile extends Component
     public function mount(User $user)
     {
         $this->user = $user;
-        if ($this->user === null) {
-            abort(404);
-        }
         $this->authUser = Auth::user();
         if ($this->authUser) {
             $this->isFollowing = $this->authUser->isFollowing($this->user);
@@ -40,17 +37,11 @@ class UserProfile extends Component
             $this->isFollowing = false;
             $this->anonymously = true;
         }
-        $this->userMessages = Cache::remember(
-            "user:{$this->user->id}:messages:with_replay",
-            now()->addHours(4),
-            function () {
-                return $this->user
-                    ->messages()
-                    ->whereHas('replay')
-                    ->latest()
-                    ->get();
-            },
-        );
+        $this->userMessages = $this->user
+            ->messages()
+            ->whereHas('replay')
+            ->latest()
+            ->get();
     }
 
     #[On('fetch-following-users')]
@@ -92,13 +83,12 @@ class UserProfile extends Component
     {
         $this->authUser->unfollowUser($this->user, $this->authUser);
         $this->isFollowing = false;
-        redirect()->route('profile.user', $this->user->username);
+        redirect()->route('profile.user', ['user' => $this->user]);
     }
 
+    #[Layout('components.layouts.app')]
     public function render()
     {
-        return view('livewire.pages.profile.user-profile')->extends(
-            'components.layouts.app',
-        );
+        return view('livewire.pages.profile.user-profile')->title($this->user);
     }
 }

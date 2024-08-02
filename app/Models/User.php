@@ -94,11 +94,6 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser, Fo
         return "user.{$this->id}";
     }
 
-    public function getRouteKeyName(): string
-    {
-        return 'username';
-    }
-
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@yanalshoubaki.com');

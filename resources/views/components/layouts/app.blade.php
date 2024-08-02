@@ -29,7 +29,7 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
     <meta content="Loqui" property="og:site_name" />
     <meta property="og:url" content="{{ URL::current() }}" data-rh="true" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') / Loqui</title>
+    <title>{{__($title)}} / Loqui</title>
     <meta property="og:type" content="profile" data-rh="true" />
     @if ($user)
     <meta property="profile:username" content="{{ $user->username }}" data-rh="true" />
@@ -37,7 +37,7 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
     @else
     <meta property="og:image" content="{{ URL::asset('/images/logo.svg') }}" data-rh="true" />
     @endif
-    <meta property="og:title" content="@yield('title') / Loqui" data-rh="true" />
+    <meta property="og:title" content="{{__($title)}} / Loqui" data-rh="true" />
     <meta property="og:description" content="Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging." data-rh="true" />
 
     @filamentStyles
@@ -49,12 +49,9 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
 <body class="bg-white dark:bg-black test" x-data="{ 'isModalOpen': false }"  x-on:keydown.escape="isModalOpen = false">
     @livewire('layout.header', ['user' => $user])
     <main class="min-h-screen">
-        @yield('content')
+        {{$slot}}
     </main>
     @livewire('layout.footer')
-    @auth
-    @livewire('layout.side-panel', ['user' => $user])
-    @endauth
     @stack('extend-component')
     @filamentScripts
     @vite('resources/js/app.js')

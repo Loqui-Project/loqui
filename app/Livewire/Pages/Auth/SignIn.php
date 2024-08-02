@@ -3,6 +3,8 @@
 namespace App\Livewire\Pages\Auth;
 
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -36,8 +38,10 @@ class SignIn extends Component
         $this->addError('email', 'Invalid email or password.');
     }
 
+    #[Layout('components.layouts.guest')]
+    #[Title('Sign in')]
     public function render()
     {
-        return view('livewire.pages.auth.sign-in')->extends('components.layouts.guest');
+        return view('livewire.pages.auth.sign-in');
     }
 }

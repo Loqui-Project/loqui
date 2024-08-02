@@ -1,4 +1,3 @@
-@section('title', 'Message')
 <div class="bg-white dark:bg-black">
     <div class="relative isolate px-6 pt-14 laptop:px-8">
         <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">

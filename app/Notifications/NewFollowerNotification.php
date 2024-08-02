@@ -68,7 +68,7 @@ class NewFollowerNotification extends Notification implements ShouldBroadcast
             ->action(
                 'View his profile',
                 route('profile.user', [
-                    'user' => $this->currentUser->username,
+                    'user' => $this->currentUser,
                 ]),
             );
     }

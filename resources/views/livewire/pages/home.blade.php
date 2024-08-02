@@ -1,4 +1,3 @@
-@section('title', 'Home')
 <div class="bg-white dark:bg-black"  x-data="{ 'isModalOpen': false }" x-on:keydown.escape="isModalOpen = false">
     <div class="relative isolate px-6 pt-14 laptop:px-8">
         <div class="absolute inset-x-0 bg-white dark:bg-black -z-10 transform-gpu overflow-hidden blur-3xl" aria-hidden="true">
@@ -7,7 +6,7 @@
         </div>
         <div class="container">
             <div class="grid grid-cols-12 justify-between laptop:gap-x-4 mb-10 max-laptop:gap-y-4">
-                <div class="col-start-1 col-end-4 max-desktop:col-span-12">
+                <div class="col-start-1 col-end-5 max-desktop:col-span-12">
                     <livewire:user::home-card :user="$user" :userData="$user_data">
                 </div>
                 <div class="col-start-5 col-span-12 max-desktop:col-span-12">
@@ -25,7 +24,7 @@
                     @if ($messages->hasMorePages())
                     <div class="mt-10 w-full flex justify-center items-center">
                         <button aria-label="Load more" wire:click="loadMore" class="inline-flex min-w-[200px] transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">
-                            Load more
+                            {{__("Load more")}}
                         </button>
                     </div>
                     @endif

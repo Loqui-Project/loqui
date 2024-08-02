@@ -41,7 +41,12 @@ Route::prefix('/auth')
             })->name('sign-out');
         });
     });
-
+Route::prefix('/@{user}')->group(function () {
+    Route::get('/', Profile\UserProfile::class)->name(
+        'profile.user',
+    );
+    Route::middleware('auth')->get('/following', Profile\FollowingUsers::class)->name('profile.following');
+});
 Route::middleware('auth')->group(function () {
     Route::redirect('/', '/home');
     Route::get('/home', Home::class)->name('home');
@@ -56,18 +61,10 @@ Route::middleware('auth')->group(function () {
                 'favorites',
             );
         });
-    Route::prefix('/@{user:username}')->group(function () {
-        Route::get('/following', Profile\FollowingUsers::class)->name('profile.following');
-    });
     Route::get('/notifications', NotificationPage::class)->name(
         'notifications',
     );
-
 });
-
-Route::get('/@{user:username}', Profile\UserProfile::class)->name(
-    'profile.user',
-);
 Route::get('/message/{id}', MessageShow::class)->name('message.show');
 Route::name('password.')
     ->prefix('password')

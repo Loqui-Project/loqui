@@ -1,4 +1,3 @@
-@section('title', 'Inbox')
 <div class="bg-white dark:bg-black">
     <div class="relative isolate px-6 pt-14 laptop:px-8">
         <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
@@ -7,11 +6,10 @@
         </div>
         <div class="mx-auto max-w-2xl py-4 ">
             <div class="text-center">
-                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl dark:text-white">Welcome,
-                    {{ $user->name }}
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl dark:text-white">{{__("Welcome, :name", ['name' => $user->name])}}
                 </h1>
                 <p class="mt-4 text-gray-400  dark:text-white">
-                    You have {{ $messageCount }} messages
+                    {{__("You have :count messages", ["count" => $messageCount])}} 
                 </p>
             </div>
         </div>
@@ -30,7 +28,7 @@
             @if ($userMessages->hasMorePages())
             <div class="mt-10 w-full flex justify-center items-center">
                 <button aria-label="Load more" wire:click="loadMore" class="inline-flex min-w-[200px] transition-all duration-300 justify-center rounded-md bg-brand-dark px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-brand-main focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-dark">
-                    Load more
+                {{__("Load more")}}
                 </button>
             </div>
             @endif

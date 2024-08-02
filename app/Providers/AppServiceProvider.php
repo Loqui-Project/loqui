@@ -36,7 +36,9 @@ class AppServiceProvider extends ServiceProvider
         Blade::component('layout-app', App::class);
         Livewire::component('user::home-card', UserHomeCard::class);
         Livewire::component('layout::side-panel', SidePanel::class);
-
+        Route::bind('user', function (string $value) {
+            return User::where('username', $value)->firstOrFail();
+        });
         Blade::component('layout-guest', Guest::class);
         Blade::component('user-header-card', UserHeaderCard::class);
         Livewire::component(

@@ -3,6 +3,8 @@
 namespace App\Livewire\Pages\Password;
 
 use Illuminate\Support\Facades\Password;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -44,8 +46,10 @@ class Forget extends Component
         }
     }
 
+    #[Layout('components.layouts.guest')]
+    #[Title('Forget Password')]
     public function render()
     {
-        return view('livewire.pages.password.forget')->extends('components.layouts.guest');
+        return view('livewire.pages.password.forget');
     }
 }

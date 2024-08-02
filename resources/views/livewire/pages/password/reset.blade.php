@@ -1,4 +1,3 @@
-@section('title', 'Reset your password')
 <div class="min-h-screen flex justify-center items-center">
         <div class="max-w-xl max-laptop:max-w-full mx-auto">
             <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">

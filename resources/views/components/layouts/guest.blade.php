@@ -2,17 +2,18 @@
 $lang = str_replace('_', '-', app()->getLocale());
 $dir = $lang === 'ar' ? 'rtl' : 'ltr';
 @endphp
+
 <!DOCTYPE html>
 <html lang="{{ $lang }}" dir="{{ $dir }}" class="dark">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title') - Loqui</title>
+    <title>{{__($title)}} - Loqui</title>
     @livewireStyles
     @vite('resources/css/app.css')
 </head>
 <body class="bg-black">
-    <div class="relative isolate px-6 pt-14 laptop:px-8">
+    <div class="relative isolate px-6 h-screen overflow-hidden laptop:px-8">
         <div class="absolute inset-x-0 bg-black -z-10 transform-gpu overflow-hidden blur-3xl"
             aria-hidden="true">
             <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
@@ -20,7 +21,7 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
             </div>
         </div>
         <div class="container">
-            @yield('content')
+            {{$slot}}
         </div>
         <div class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
             aria-hidden="true">

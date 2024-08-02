@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -47,8 +49,10 @@ class SignUp extends Component
         }
     }
 
+    #[Title('Sign up')]
+    #[Layout('components.layouts.guest')]
     public function render()
     {
-        return view('livewire.pages.auth.sign-up')->extends('components.layouts.guest');
+        return view('livewire.pages.auth.sign-up');
     }
 }

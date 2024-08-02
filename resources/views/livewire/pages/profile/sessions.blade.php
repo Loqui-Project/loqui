@@ -1,14 +1,12 @@
-@section('title', 'Sessions')
-
 <div class="container">
     <div class="max-w-lg mx-auto py-4">
         <div class="mb-10 flex flex-row justify-between items-center">
             <h1 class="text-2xl font-bold text-white">
-                Sessions
+                {{__("Sessions")}}
             </h1>
             <button wire:click="endAllSessions"
                 class="border-2 text-brand-light border-brand-main hover:bg-brand-main hover:text-brand-dark transition-all duration-300 rounded-md px-6 py-2  font-semibold font-rubik">
-                End All Sessions
+                {{__("End All Sessions")}}
             </button>
         </div>
         <div class="flex flex-col gap-4">
@@ -31,9 +29,9 @@
                                     <div>
                                         <h2 class="text-white text-lg font-bold">{{ $session['ip_address'] }}</h2>
                                         @if ($session['current'])
-                                            <p class="text-white text-opacity-50">Current Session</p>
+                                            <p class="text-white text-opacity-50">{{__("Current Session")}}</p>
                                         @else
-                                            <p class="text-white text-opacity-50">Last Active:
+                                            <p class="text-white text-opacity-50">{{__("Last Active:")}}
                                                 {{ $session['last_activity'] }}</p>
                                         @endif
                                     </div>
@@ -41,14 +39,14 @@
                                         <button aria-label="Close Session"
                                             wire:click="closeSession('{{ $session['id'] }}')"
                                             class="border-2 text-brand-light border-brand-main hover:bg-brand-main hover:text-brand-dark transition-all duration-300 rounded-md px-6 py-2  font-semibold font-rubik">
-                                            Close Session
+                                            {{__("Close Session")}}
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <p class="text-white mt-2">
-                            Seen in {{ $session['country'] }}
+                            {{__("Seen in")}} {{ $session['country'] }}
                         </p>
                     </div>
                 </div>

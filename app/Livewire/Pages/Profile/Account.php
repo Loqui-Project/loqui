@@ -6,6 +6,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -124,10 +125,11 @@ class Account extends Component
         }
     }
 
+    #[Title('Account')]
     public function render()
     {
         return view('livewire.pages.profile.account', [
             'user' => $this->user,
-        ])->extends('components.layouts.app');
+        ]);
     }
 }

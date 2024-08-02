@@ -23,7 +23,7 @@
                     </div>
                     @if ($message->sender !== null && !!$message->is_anon == false)
                     <div>
-                        <a wire:navigate href="{{ route('profile.user', ['user' => $message->sender->username]) }}" class="text-white text-sm italic">{{ '@' . $message->sender->username }}</a>
+                        <a wire:navigate href="{{ route('profile.user', ['user' => $message->sender]) }}" class="text-white text-sm italic">{{ '@' . $message->sender->username }}</a>
                     </div>
                     @endif
                 </div>
@@ -33,7 +33,7 @@
                     <div class="w-12 h-12 flex justify-center items-center">
                         <img src="{{ URL::asset($message->user->image_url) }}" alt="{{ $message->user->name }}" class="w-10 h-10 rounded-full">
                     </div>
-                    <a class="flex flex-col w-full" href="{{ route('profile.user', ['user' => $message->user->username]) }}">
+                    <a class="flex flex-col w-full" href="{{ route('profile.user', ['user' => $message->user]) }}">
                         <div class="flex justify-between w-full">
                             <span class="font-bold text-white">
                                 {{ $message->user->name }}

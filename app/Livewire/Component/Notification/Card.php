@@ -34,7 +34,7 @@ class Card extends Component
             ]);
         } elseif ($this->type === 'new-follow') {
             $this->url = route('profile.user', [
-                'user' => $this->fromUser->username,
+                'user' => $this->fromUser,
             ]);
         }
     }

@@ -1,5 +1,3 @@
-@section('title', __('Account'))
-
 <div class="container">
     <div class="max-w-lg mx-auto py-4">
         <form wire:submit="updateProfile">

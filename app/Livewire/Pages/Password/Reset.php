@@ -7,6 +7,8 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Livewire\Attributes\Layout;
+use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -89,8 +91,10 @@ class Reset extends Component
         $this->password_confirmation = '';
     }
 
+    #[Layout('components.layouts.guest')]
+    #[Title('Reset Password')]
     public function render()
     {
-        return view('livewire.pages.password.reset')->extends('components.layouts.guest');
+        return view('livewire.pages.password.reset');
     }
 }

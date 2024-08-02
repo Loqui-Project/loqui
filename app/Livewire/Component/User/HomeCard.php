@@ -36,7 +36,7 @@ class HomeCard extends Component
     public function render()
     {
         $this->shareData['url'] = route('profile.user', [
-            'user' => $this->user->username,
+            'user' => $this->user,
         ]);
         $this->shareData['title'] = $this->user->name;
 
