@@ -51,12 +51,10 @@ function showNotification(title, notificationOptions) {
     }
 }
 window.Echo.private(`user.${window.Laravel.user.id}`).notification((notification) => {
-    console.log(notification);
     showNotification(notification.title, {
         icon: '/android-chrome-512x512.png',
-    })?.onclick = () => {
+    }).onclick = () => {
         window.location.href = notification.url;
     };
-
 });
 
