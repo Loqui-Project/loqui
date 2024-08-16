@@ -27,35 +27,40 @@ class SocialAuthController extends Controller
     {
         try {
             $user = Socialite::driver('facebook')->user();
-            $checkIfAuthExist = UserSocialAuth::where('provider_id', $user->id)->first();
-            $checkIfUserExist = User::where('email', $user->email)->first();
-            if ((bool) $checkIfAuthExist) {
-                Auth::login($checkIfAuthExist->user);
-            } else {
-                if ((bool) $checkIfUserExist) {
-                    UserSocialAuth::create([
-                        'user_id' => $checkIfUserExist->id,
-                        'provider' => 'facebook',
-                        'provider_id' => $user->id,
-                    ]);
-                    Auth::login($checkIfUserExist);
+            if ($user->getId()) {
+                $checkIfAuthExist = UserSocialAuth::where('provider_id', $user->getId())->first();
+                $checkIfUserExist = User::where('email', $user->getEmail())->first();
+                if ((bool) $checkIfAuthExist) {
+                    Auth::login($checkIfAuthExist->user);
                 } else {
-                    $newUser = User::create([
-                        'name' => $user->name,
-                        'email' => $user->email,
-                        'username' => Str::slug($user->name),
-                        'password' => Hash::make(Str::random(24).time()),
-                    ]);
-                    UserSocialAuth::create([
-                        'user_id' => $newUser->id,
-                        'provider' => 'facebook',
-                        'provider_id' => $user->id,
-                    ]);
-                    Auth::login($newUser);
+                    if ((bool) $checkIfUserExist) {
+                        UserSocialAuth::create([
+                            'user_id' => $checkIfUserExist->id,
+                            'provider' => 'facebook',
+                            'provider_id' => $user->getId(),
+                        ]);
+                        Auth::login($checkIfUserExist);
+                    } else {
+                        $newUser = User::create([
+                            'name' => $user->getName(),
+                            'email' => $user->getEmail(),
+                            'username' => Str::slug($user->getName()),
+                            'password' => Hash::make(Str::random(24).time()),
+                        ]);
+                        UserSocialAuth::create([
+                            'user_id' => $newUser->id,
+                            'provider' => 'facebook',
+                            'provider_id' => $user->getId(),
+                        ]);
+                        Auth::login($newUser);
+                    }
                 }
+
+                return redirect()->route('home');
+            } else {
+                return redirect()->route('login')->with('error', 'Failed to login via Facebook');
             }
 
-            return redirect()->route('home');
         } catch (\Throwable $th) {
             throw $th;
         }

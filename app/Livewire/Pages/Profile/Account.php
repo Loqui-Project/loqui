@@ -32,7 +32,7 @@ class Account extends Component
 
     public array $browser = [];
 
-    public string $bio;
+    public string $bio = '';
 
     public function rules()
     {

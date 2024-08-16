@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Livewire\Component\Notification\DropDown as NotificationDropDown;
+use App\Livewire\Component\User\FollowButton;
 use App\Livewire\Component\User\HomeCard as UserHomeCard;
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
@@ -35,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Blade::component('layout-app', App::class);
         Livewire::component('user::home-card', UserHomeCard::class);
+        Livewire::component('user::follow-button', FollowButton::class);
         Livewire::component('layout::side-panel', SidePanel::class);
         Route::bind('user', function (string $value) {
             return User::where('username', $value)->firstOrFail();

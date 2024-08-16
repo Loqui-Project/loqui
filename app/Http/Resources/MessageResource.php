@@ -2,15 +2,18 @@
 
 namespace App\Http\Resources;
 
+use AllowDynamicProperties;
+use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+#[AllowDynamicProperties]
 class MessageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
      *
-     * @return array<string, mixed>
+     * @return array<string, Message>
      */
     public function toArray(Request $request): array
     {

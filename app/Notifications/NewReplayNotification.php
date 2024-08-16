@@ -5,6 +5,7 @@ namespace App\Notifications;
 use App\Http\Resources\MessageResource;
 use App\Http\Resources\UserResource;
 use App\Models\Message;
+use App\Models\NotificationSettings;
 use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -38,15 +39,14 @@ class NewReplayNotification extends Notification implements ShouldBroadcast
     public function via(object $notifiable): array
     {
         $viaArray = [];
-        $userNotificationSettings = $this->user->notificationSettings();
+        /** @var NotificationSettings $userNotificationSettings */
+        $userNotificationSettings = $this->user->notificationSettings;
         $browser = $userNotificationSettings
             ->where('type', 'browser')
-            ->get()
             ->pluck('key')
             ->toArray();
         $mail = $userNotificationSettings
             ->where('type', 'mail')
-            ->get()
             ->pluck('key')
             ->toArray();
         if ($browser && in_array('replay', $browser)) {

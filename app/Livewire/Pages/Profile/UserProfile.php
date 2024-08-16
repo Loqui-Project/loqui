@@ -2,13 +2,11 @@
 
 namespace App\Livewire\Pages\Profile;
 
-use App\Jobs\NewFollowerJob;
 use App\Jobs\NewMessageJob;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
 class UserProfile extends Component
@@ -44,13 +42,6 @@ class UserProfile extends Component
             ->get();
     }
 
-    #[On('fetch-following-users')]
-    public function fetchFollowing()
-    {
-        $this->isModalOpen = true;
-
-    }
-
     public function sendMessage()
     {
         $this->validate([
@@ -64,26 +55,6 @@ class UserProfile extends Component
         ]);
         NewMessageJob::dispatch($this->user, $this->authUser, $message);
         $this->content = '';
-    }
-
-    public function follow()
-    {
-        if (! $this->authUser) {
-            $this->dispatch('not-auth-for-follow');
-
-            return;
-        }
-
-        $this->authUser->followUser($this->user, $this->authUser);
-        NewFollowerJob::dispatch($this->user, $this->authUser);
-        $this->isFollowing = true;
-    }
-
-    public function unfollow()
-    {
-        $this->authUser->unfollowUser($this->user, $this->authUser);
-        $this->isFollowing = false;
-        redirect()->route('profile.user', ['user' => $this->user->username]);
     }
 
     #[Layout('components.layouts.app')]

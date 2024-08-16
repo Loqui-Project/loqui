@@ -41,6 +41,7 @@ class AdminPanelProvider extends PanelProvider
                     '700' => '#575E91',
                     '800' => '#424874',
                     '900' => '#2E3357',
+                    '950' => '#2E3357',
                 ],
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')

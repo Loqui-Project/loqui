@@ -6,6 +6,7 @@ use App\Traits\HasUser;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Message extends Model
 {
@@ -23,7 +24,10 @@ class Message extends Model
         return $this->belongsTo(User::class, 'sender_id');
     }
 
-    public function replay()
+    /**
+     * Get the user that owns the Message
+     */
+    public function replay(): HasMany
     {
         return $this->hasMany(MessageReplay::class, 'message_id');
     }
