@@ -48,12 +48,13 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
 
 <body class="bg-white dark:bg-black test" x-data="{ 'isModalOpen': false }"  x-on:keydown.escape="isModalOpen = false">
     @livewire('layout.header', ['user' => $user])
-    <main class="min-h-screen">
+        <main class="min-h-screen">
         {{$slot}}
     </main>
     @livewire('layout.footer')
     @stack('extend-component')
     @filamentScripts
+
     @vite('resources/js/app.js')
     @stack('scripts')
     <script>

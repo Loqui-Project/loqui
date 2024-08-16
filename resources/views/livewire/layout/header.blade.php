@@ -1,4 +1,4 @@
-<header x-data="{ openMenu: false }" class="sticky z-[2] inset-x-0 top-2 m-6 shadow-surface-glass max-laptop:py-4 backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
+<header x-data="{ openMenu: false }" class="sticky backdrop-blur z-[2] inset-x-0 top-2 m-6 shadow-surface-glass max-laptop:py-4   [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
     <div class="container">
         <nav class="flex items-center justify-between laptop:px-8 flex-wrap" aria-label="Main navbar">
             <div class="flex laptop:flex-1">

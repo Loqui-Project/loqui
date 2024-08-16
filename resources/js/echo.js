@@ -8,7 +8,25 @@ window.Echo = new Echo({
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     forceTLS: true,
 });
-
+const registerServiceWorker = async () => {
+    if ("serviceWorker" in navigator) {
+        try {
+            const registration = await navigator.serviceWorker.register("/service-worker.js", {
+                scope: "/",
+            });
+            if (registration.installing) {
+                console.log("Service worker installing");
+            } else if (registration.waiting) {
+                console.log("Service worker installed");
+            } else if (registration.active) {
+                console.log("Service worker active");
+            }
+        } catch (error) {
+            console.error(`Registration failed with ${error}`);
+        }
+    }
+};
+registerServiceWorker();
 /**
  * 
  * @param {string} title 
@@ -31,14 +49,14 @@ function showNotification(title, notificationOptions) {
             }
         });
     }
-    console.log(Notification.permission);
 }
 window.Echo.private(`user.${window.Laravel.user.id}`).notification((notification) => {
     console.log(notification);
     showNotification(notification.title, {
         icon: '/android-chrome-512x512.png',
-    }).onclick = () => {
+    })?.onclick = () => {
         window.location.href = notification.url;
     };
 
 });
+

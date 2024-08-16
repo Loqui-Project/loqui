@@ -1,6 +1,6 @@
 @use(Illuminate\Support\Carbon, 'Carbon')
 
-<div class=" shadow-surface-glass max-laptop:py-4 backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
+<div class=" shadow-surface-glass max-laptop:py-4   [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
     <div class="w-full draggable">
         <div class="container flex flex-col mx-auto">
             <div class="flex flex-col items-center w-full my-20">

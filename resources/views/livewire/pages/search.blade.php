@@ -15,7 +15,7 @@
                         <div class="w-full">
                             <div class="mb-4">
                                 <div class="mt-2">
-                                    <input wire:model.live="search" type="text" placeholder="{{__("Search for users...")}}" class="block text-brand-dark placeholder:text-brand-dark dark:text-white dark:placeholder:text-white shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4  shadow-sm ring-1 ring-inset ring-brand-dark  focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
+                                    <input wire:model.live="search" type="text" placeholder="{{__("Search for users...")}}" class="block text-brand-dark placeholder:text-brand-dark dark:text-white dark:placeholder:text-white shadow-surface-glass   [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4  shadow-sm ring-1 ring-inset ring-brand-dark  focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6">
                                 </div>
                                 <div class="text-danger">
                                     @error('search')
@@ -31,7 +31,7 @@
                 @forelse ($users as $user)
                 @livewire('component.user.search-user-card', ['user' => $user], key($user->id))
                 @empty
-                <div class="flex justify-between max-laptop:flex-col max-laptop:justify-start max-laptop:items-start gap-4 hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  items-center shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6 px-4">
+                <div class="flex justify-between max-laptop:flex-col max-laptop:justify-start max-laptop:items-start gap-4 hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  items-center shadow-surface-glass   [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6 px-4">
                     <div class="flex items-center gap-x-6">
                         <div>
                             <h3 class="text-base font-semibold leading-7 tracking-tight text-gray-900 dark:text-white">

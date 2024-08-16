@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                                 <div
-                                    class="prose dark:prose-headings:text-white dark:prose-a:text-brand-main dark:prose-strong:text-white dark:prose-p:text-white  ml-14 text-white z-50 p-10 shadow-surface-glass max-laptop:py-4 backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
+                                    class="prose dark:prose-headings:text-white dark:prose-a:text-brand-main dark:prose-strong:text-white dark:prose-p:text-white  ml-14 text-white z-50 p-10 shadow-surface-glass max-laptop:py-4   [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
                                     {!! $converter->convert($release['body']) !!}
                                 </div>
                             </div>

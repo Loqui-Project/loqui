@@ -29,7 +29,7 @@
                     </div>
 
                     <div
-                        class="flex h-full flex-col overflow-y-auto  p-10 shadow-surface-glass max-laptop:py-4 backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] rounded-md bg-white/30 dark:bg-brand-dark/30 py-6 shadow-xl">
+                        class="flex h-full flex-col overflow-y-auto  p-10 shadow-surface-glass max-laptop:py-4   [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] rounded-md bg-white/30 dark:bg-brand-dark/30 py-6 shadow-xl">
                         <div class="border-b border-b-white py-4 mb-4">
                             <h2 class="text-lg capitalize font-semibold leading-6 text-white" id="slide-over-title">
                                 {{ $type }}

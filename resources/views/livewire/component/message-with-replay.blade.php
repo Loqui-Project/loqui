@@ -1,5 +1,5 @@
 <div class="col-span-1 max-laptop:col-span-12">
-    <div class="flex flex-col justify-between gap-10 items-start h-full hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  shadow-surface-glass backdrop-blur will-change-transform [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6 px-4">
+    <div class="flex flex-col justify-between gap-10 items-start h-full hover:[@supports(backdrop-filter:blur(15px))]:bg-brand-dark/50 transition-all duration-300  shadow-surface-glass  [@supports(backdrop-filter:blur(15px))]:bg-brand-dark/30 w-full rounded-lg border-0 py-4 text-gray-900 shadow-sm ring-1 ring-inset ring-brand-dark placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-brand-dark sm:text-sm sm:leading-6 px-4">
         <div class="flex flex-col items-start justify-start w-full gap-4">
             <div>
                 <p class="font-bold text-md font-rubik text-white">{{ $message->message }}</p>
@@ -28,7 +28,7 @@
                     @endif
                 </div>
             </div>
-            <div class="bg-brand-main/30 backdrop-blur-md w-full p-4 rounded-md">
+            <div class="bg-brand-main/30 -md w-full p-4 rounded-md">
                 <div class="flex items-center gap-4 flex-row w-full pb-4">
                     <div class="w-12 h-12 flex justify-center items-center">
                         <img src="{{ URL::asset($message->user->image_url) }}" alt="{{ $message->user->name }}" class="w-10 h-10 rounded-full">
