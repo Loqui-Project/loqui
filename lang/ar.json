@@ -124,5 +124,8 @@
     "Welcome, :name": "مرحبًا، :name",
     "No notification found": "لم يتم العثور على إشعار",
     "Write a few sentences about yourself.": "اكتب بضع جمل عن نفسك.",
-    "About": "حول"
+    "About": "حول",
+    "Anonymously": "مجهول",
+    "Send": "أرسل",
+    "Send a message": "أرسل رسالة"
 }
