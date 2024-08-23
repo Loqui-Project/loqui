@@ -48,6 +48,7 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
 
 <body class="bg-white dark:bg-black test" x-data="{ 'isModalOpen': false }"  x-on:keydown.escape="isModalOpen = false">
     @livewire('layout.header', ['user' => $user])
+        <div id="myButton">Send notifications</div>
         <main class="min-h-screen">
         {{$slot}}
     </main>
@@ -66,6 +67,20 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
                 'username' => $user->username,
             ])
         };
+        document.getElementById('myButton').addEventListener('click', function() {
+  // Check if push notifications are supported and allowed
+  if (navigator.serviceWorker && window.PushManager && window.Notification) {
+    // Request permission to send push notifications
+    navigator.serviceWorker.getRegistration().then(function(registration) {
+      registration.pushManager.subscribe({ userVisibleOnly: true }).then(function(subscription) {
+        console.log('Push notifications are allowed.');
+        //save the push subscription in your database
+      }).catch(function(error) {
+        console.log('Error:', error);
+      });
+    });
+  }
+});
     </script>
 </body>
 

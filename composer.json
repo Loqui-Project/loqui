@@ -10,6 +10,7 @@
         "genealabs/laravel-model-caching": "^11.0",
         "intervention/image": "^3.6",
         "intervention/image-laravel": "^1.2",
+        "kreait/laravel-firebase": "^5.9",
         "laravel/framework": "^11.0",
         "laravel/pulse": "^1.0@beta",
         "laravel/sanctum": "^4.0",
