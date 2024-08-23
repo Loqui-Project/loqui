@@ -136,5 +136,6 @@ if ((new URLSearchParams(window.location.search)).get('page') === 'success') {
 if (navigator.serviceWorker) {
     initServiceWorker();
 }
+document.getElementById('subscribe_btn').addEventListener('click', subscribeToPush);
 
 document.getElementById('test_send_btn').addEventListener('click', testSend);
