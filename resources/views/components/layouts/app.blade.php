@@ -48,7 +48,16 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
 <body class="bg-white dark:bg-black test" x-data="{ 'isModalOpen': false }"  x-on:keydown.escape="isModalOpen = false">
     @livewire('layout.header', ['user' => $user])
     <button id="subscribe_btn" >Subscribe to notifications</button>
+    <div id="add-to-home-screen">
+            For WebPush work you may need to add this website to Home Screen at your iPhone or iPad (window.navigator is
+            not
+            standalone).
+            <img src="images/webpush-add-to-home-screen.jpg" alt="webpush add to some screen">
+        </div>
 
+        <div id="scan-qr-code">Open this page at your iPhone/iPad:
+            <img src="images/qrcode.png" alt="qrCode"><br><br>
+        </div>
 <div id="active_sub"></div>
 <button id="test_send_btn" >Send test push</button>
         <main class="min-h-screen">
