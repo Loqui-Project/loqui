@@ -47,7 +47,10 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
 
 <body class="bg-white dark:bg-black test" x-data="{ 'isModalOpen': false }"  x-on:keydown.escape="isModalOpen = false">
     @livewire('layout.header', ['user' => $user])
-        <div id="myButton">Send notifications</div>
+    <button id="subscribe_btn" onclick="subscribeToPush()">Subscribe to notifications</button>
+
+<div id="active_sub"></div>
+<button id="test_send_btn" >Send test push</button>
         <main class="min-h-screen">
         {{$slot}}
     </main>
