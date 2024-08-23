@@ -1,7 +1,11 @@
 {
     "name": "Loqui",
     "short_name": "Loqui",
-    "start_url": "https://loqui.yanalshoubaki.com",
+    "background_color": "#DE7C00",
+    "display": "standalone",
+    "lang": "en",
+    "orientation": "portrait",
+    "start_url": "/?utm_source=web_app_manifest",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -13,8 +17,5 @@
             "sizes": "512x512",
             "type": "image/png"
         }
-    ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+    ]
 }

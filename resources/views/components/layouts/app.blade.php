@@ -22,8 +22,7 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
 
     <link rel="shortcut icon" href="{{ URL::asset('/images/logo.svg') }}" type="image/x-icon" />
-    <link rel="manifest" href="/manifest.json" />
-
+    <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#000000" />
 
     <meta content="Loqui" property="og:site_name" />
