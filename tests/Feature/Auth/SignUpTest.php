@@ -7,6 +7,11 @@ use App\Models\User;
 use Livewire\Livewire;
 
 describe('Sign Up Tests', function () {
+    it('Has auth/signup page', function () {
+        $response = $this->get(route('auth.sign-up'));
+        $response->assertOk()
+            ->assertSee('Sign up');
+    });
     it('"Name" field required', function () {
         Livewire::test(SignUp::class)
             ->set('username', 'testing')

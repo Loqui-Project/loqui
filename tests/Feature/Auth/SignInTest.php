@@ -12,8 +12,9 @@ describe('Sign In Tests', function () {
         Livewire::test(Home::class)->assertRedirect(SignIn::class);
     });
     it('Has auth/signin page', function () {
-        $this->get(route('auth.sign-in'))
-            ->assertSeeLivewire(SignIn::class);
+        $response = $this->get(route('auth.sign-in'));
+        $response->assertOk()
+            ->assertSee('Sign in');
     });
     it('Email field required', function () {
         Livewire::test(SignIn::class)
