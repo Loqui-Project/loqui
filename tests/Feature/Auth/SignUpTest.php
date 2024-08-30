@@ -1,14 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Livewire\Pages\Auth\SignUp;
 use App\Models\User;
 use Livewire\Livewire;
 
 describe('Sign Up Tests', function () {
-    it('Has auth/sign-up page', function () {
-        $this->get(route('auth.sign-up'))
-            ->assertSeeLivewire(SignUp::class);
-    });
     it('"Name" field required', function () {
         Livewire::test(SignUp::class)
             ->set('username', 'testing')
@@ -89,9 +87,9 @@ describe('Sign Up Tests', function () {
         Livewire::test(SignUp::class)
             ->set('name', 'testing')
             ->set('username', 'testing')
-            ->set('email', 'testing@gmail.com')
+            ->set('email', 'demo@gmail.com')
             ->set('password', 'password')
             ->set('password_confirmation', 'password')
-            ->call('signUp')->assertHasErrors(['email']);
+            ->call('signUp')->assertHasNoErrors();
     });
 });

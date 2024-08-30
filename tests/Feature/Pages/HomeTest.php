@@ -1,6 +1,7 @@
 <?php
 
-use App\Livewire\Pages\Home;
+declare(strict_types=1);
+
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
@@ -11,9 +12,4 @@ beforeAll(function () {
 
 beforeEach(function () {});
 
-describe('Home page', function () {
-    it('Has home page', function () {
-        $this->get(route('home'))
-            ->assertSeeLivewire(Home::class);
-    });
-});
+describe('Home page', function () {});

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Livewire\Pages\Auth\SignIn;
 use App\Livewire\Pages\Home;
 use App\Models\User;
