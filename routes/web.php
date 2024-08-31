@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Livewire\Pages\Auth\SignIn;
 use App\Livewire\Pages\Auth\SignUp;
@@ -35,7 +37,7 @@ Route::prefix('/auth')
             });
         Route::middleware('auth')->group(function () {
             Route::get('/sign-out', function () {
-                auth()->logout();
+                Auth::logout();
 
                 return redirect()->route('auth.sign-in');
             })->name('sign-out');
