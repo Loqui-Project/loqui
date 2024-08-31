@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use Illuminate\Contracts\Validation\Validator;
@@ -9,11 +11,10 @@ trait FailedValidationTrait
     /**
      * Handle a failed validation attempt.
      *
-     * @return void
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator): never
     {
         $exception = $validator->getException();
         throw (new $exception($validator))

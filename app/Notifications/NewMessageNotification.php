@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use App\Http\Resources\MessageResource;
@@ -15,7 +17,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 
-class NewMessageNotification extends Notification implements ShouldBroadcast
+final class NewMessageNotification extends Notification implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, Queueable, SerializesModels;
 

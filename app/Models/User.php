@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Contracts\FollowUserInterface;
@@ -15,13 +17,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 
-class User extends Authenticatable implements CanResetPassword, FilamentUser, FollowUserInterface, MustVerifyEmail
+final class User extends Authenticatable implements CanResetPassword, FilamentUser, FollowUserInterface, MustVerifyEmail
 {
+    /** @use HasFactory<UserFactory> */
     use AuthenticationLoggable, Cachable, HasFactory, HasFollow, Notifiable;
-
-    protected $cachePrefix = 'user:';
-
-    protected $cacheCooldownSeconds = 3600 * 6;
 
     /**
      * The attributes that are mass assignable.
@@ -45,19 +44,15 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser, Fo
      */
     protected $hidden = ['password', 'remember_token'];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    private string $cachePrefix = 'user:';
 
+    private int $cacheCooldownSeconds = 3600 * 6;
+
+    /**
+     * Get the user's messages.
+     *
+     * @return HasMany<Message>
+     */
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class, 'user_id');
@@ -85,6 +80,11 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser, Fo
         );
     }
 
+    /**
+     * Get the user's notification settings.
+     *
+     * @return HasMany<NotificationSettings>
+     */
     public function notificationSettings(): HasMany
     {
         return $this->hasMany(NotificationSettings::class, 'user_id');
@@ -98,5 +98,18 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser, Fo
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@yanalshoubaki.com');
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 }

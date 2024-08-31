@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Models\User;
@@ -37,7 +39,7 @@ trait HasFollow
         return $this->following->contains('id', $user->id);
     }
 
-    public function followUser(User $user, User $currentUser)
+    public function followUser(User $user, User $currentUser): void
     {
         if (! $this->isFollowing($user)) {
             UserFollow::create([

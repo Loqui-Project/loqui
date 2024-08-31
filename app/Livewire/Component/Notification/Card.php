@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Component\Notification;
 
 use App\Models\User;
@@ -7,7 +9,7 @@ use Illuminate\Notifications\DatabaseNotification;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class Card extends Component
+final class Card extends Component
 {
     public $notification;
 
@@ -19,7 +21,7 @@ class Card extends Component
 
     public $url = '';
 
-    public function mount(DatabaseNotification $notification)
+    public function mount(DatabaseNotification $notification): void
     {
         $this->notification = $notification;
         $this->user = User::where('id', $notification->notifiable_id)->first();
@@ -40,12 +42,12 @@ class Card extends Component
     }
 
     #[On('save')]
-    public function refresh()
+    public function refresh(): void
     {
         $this->mount($this->notification);
     }
 
-    public function markAsRead()
+    public function markAsRead(): void
     {
         $this->notification->markAsRead();
         $this->dispatch('save');

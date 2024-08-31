@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages;
 
 use App\Models\User;
@@ -10,7 +12,7 @@ use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
-class Home extends Component
+final class Home extends Component
 {
     use WithoutUrlPagination, WithPagination;
 
@@ -41,11 +43,13 @@ class Home extends Component
             ],
             'messages' => $this->authUser->messages_count,
         ];
+
+        return null;
     }
 
-    public function loadMore()
+    public function loadMore(): void
     {
-        $this->perPage = $this->perPage + 4;
+        $this->perPage += 4;
     }
 
     public function userMessages()

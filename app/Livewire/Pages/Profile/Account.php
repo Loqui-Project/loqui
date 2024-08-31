@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages\Profile;
 
 use App\Models\User;
@@ -10,7 +12,7 @@ use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-class Account extends Component
+final class Account extends Component
 {
     use WithFileUploads;
 
@@ -34,7 +36,7 @@ class Account extends Component
 
     public string $bio = '';
 
-    public function rules()
+    public function rules(): array
     {
         return [
             'photo' => 'nullable|image',
@@ -49,7 +51,7 @@ class Account extends Component
         ];
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->user = Auth::user();
         $this->name = $this->user->name;
@@ -58,13 +60,11 @@ class Account extends Component
         $notificationSettings = $this->user
             ->notificationSettings()
             ->get()
-            ->map(function ($item) {
-                return [
-                    'type' => $item->type,
-                    'key' => $item->key,
-                    'value' => (bool) $item->value,
-                ];
-            });
+            ->map(fn ($item): array => [
+                'type' => $item->type,
+                'key' => $item->key,
+                'value' => (bool) $item->value,
+            ]);
         $this->mail = $notificationSettings
             ->where('type', 'mail')
             ->pluck('value', 'key')
@@ -76,7 +76,7 @@ class Account extends Component
             ->toArray();
     }
 
-    public function updateProfile()
+    public function updateProfile(): void
     {
         $this->validate();
         $this->user->name = $this->name;

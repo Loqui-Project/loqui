@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages\Password;
 
 use App\Models\User;
@@ -12,7 +14,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class Reset extends Component
+final class Reset extends Component
 {
     #[Validate('required|min:6|confirmed')]
     public string $password = '';
@@ -48,9 +50,11 @@ class Reset extends Component
             $user,
             $this->token
         );
-        if ($status == false) {
+        if ($status === false) {
             return redirect()->route('auth.sign-in')->with('message', 'Invalid token')->with('show', true)->with('status', false);
         }
+
+        return null;
     }
 
     public function resetPassword()
@@ -63,7 +67,7 @@ class Reset extends Component
                 'password_confirmation' => $this->password,
                 'token' => $this->token,
             ],
-            function (User $user, string $password) {
+            function (User $user, string $password): void {
                 $user->forceFill([
                     'password' => Hash::make($password),
                 ])->setRememberToken(Str::random(60));
@@ -81,14 +85,15 @@ class Reset extends Component
             $this->password_confirmation = '';
 
             return redirect()->route('auth.sign-in')->with('message', 'Password reset successfully')->with('show', true)->with('status', false);
-        } else {
-            $this->show = true;
-            $this->message = 'Failed to reset password';
-            $this->status = false;
         }
+        $this->show = true;
+        $this->message = 'Failed to reset password';
+        $this->status = false;
 
         $this->password = '';
         $this->password_confirmation = '';
+
+        return null;
     }
 
     #[Layout('components.layouts.guest')]

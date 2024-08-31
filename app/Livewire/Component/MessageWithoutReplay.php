@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Component;
 
 use App\Jobs\NewReplayJob;
@@ -10,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class MessageWithoutReplay extends Component
+final class MessageWithoutReplay extends Component
 {
     public Message $message;
 
@@ -21,23 +23,21 @@ class MessageWithoutReplay extends Component
 
     public User $authUser;
 
-    public function mount(Message $message)
+    public function mount(Message $message): void
     {
         $this->message = $message;
         $this->user = $this->message->sender;
         $this->authUser = Auth::user();
     }
 
-    public function addReplay()
+    public function addReplay(): void
     {
         $this->validate();
         $this->message->replay()->create([
             'text' => $this->replay,
             'user_id' => Auth::id(),
         ]);
-        if ($this->user != null) {
-            NewReplayJob::dispatch($this->user, $this->authUser, $this->message);
-        }
+        NewReplayJob::dispatch($this->user, $this->authUser, $this->message);
         $this->dispatch('add-replay')->to(Inbox::class);
     }
 

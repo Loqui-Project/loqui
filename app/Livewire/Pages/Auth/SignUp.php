@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages\Auth;
 
 use App\Models\User;
@@ -12,7 +14,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class SignUp extends Component
+final class SignUp extends Component
 {
     #[Validate('required|min:3')]
     public string $name;
@@ -47,6 +49,8 @@ class SignUp extends Component
         } catch (Exception $e) {
             $this->addError('email', $e->getMessage());
         }
+
+        return null;
     }
 
     #[Title('Sign up')]

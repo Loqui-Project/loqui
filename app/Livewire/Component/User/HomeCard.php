@@ -1,26 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Component\User;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Livewire\Component;
 
-class HomeCard extends Component
+final class HomeCard extends Component
 {
-    protected $shareData = [];
-
     public User $user;
 
     public Collection $users;
 
     public array $user_data;
 
-    public function mount(User $user, array $userData)
+    private array $shareData = [];
+
+    public function mount(User $user, array $userData): void
     {
         $this->user = $user;
         $this->user_data = $userData;
-        $this->users = $this->getUsersByType();
+        $this->users = $this->user->{$type};
     }
 
     public function getUsersByType($type = 'following'): Collection
@@ -28,9 +30,9 @@ class HomeCard extends Component
         return $this->user->{$type};
     }
 
-    public function activeTab($type = 'following')
+    public function activeTab($type = 'following'): void
     {
-        $this->users = $this->getUsersByType($type);
+        $this->users = $this->user->{$type};
     }
 
     public function render()

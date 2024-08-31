@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages\Auth;
 
 use Illuminate\Support\Facades\Auth;
@@ -8,7 +10,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class SignIn extends Component
+final class SignIn extends Component
 {
     #[Validate('required|min:3|email')]
     public string $email = '';
@@ -22,7 +24,7 @@ class SignIn extends Component
 
     public bool $show = false;
 
-    public function mount()
+    public function mount(): void
     {
         $this->show = session('show') ?? false;
         $this->status = session('status') ?? false;
@@ -36,6 +38,8 @@ class SignIn extends Component
             return redirect()->route('home');
         }
         $this->addError('email', 'Invalid email or password.');
+
+        return null;
     }
 
     #[Layout('components.layouts.guest')]

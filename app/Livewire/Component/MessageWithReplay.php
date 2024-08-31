@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Component;
 
 use App\Jobs\NewLikeJob;
@@ -10,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class MessageWithReplay extends Component
+final class MessageWithReplay extends Component
 {
     public Message $message;
 
@@ -32,7 +34,7 @@ class MessageWithReplay extends Component
 
     public $messageDetails = [];
 
-    public function mount(Message $message, User $user)
+    public function mount(Message $message, User $user): void
     {
         $this->message = $message;
         $this->authUser = Auth::user();
@@ -59,7 +61,7 @@ class MessageWithReplay extends Component
     }
 
     #[On('add-like')]
-    public function refreshLikes()
+    public function refreshLikes(): void
     {
 
         $this->likes = $this->message->likes()->get();
@@ -68,7 +70,7 @@ class MessageWithReplay extends Component
     }
 
     #[On('add-favorite')]
-    public function refreshFavorites()
+    public function refreshFavorites(): void
     {
         $this->favorites = $this->message->favorites()->get();
         $this->favorited = $this->favorites->contains(
@@ -78,7 +80,7 @@ class MessageWithReplay extends Component
         $this->favorites_count = $this->favorites->count();
     }
 
-    public function addLike()
+    public function addLike(): void
     {
 
         if (! $this->authUser->id) {
@@ -88,28 +90,27 @@ class MessageWithReplay extends Component
             );
 
             return;
-        } else {
-            if ($this->liked) {
-                $this->message
-                    ->likes()
-                    ->where('user_id', $this->authUser->id)
-                    ->delete();
-                $this->dispatch('add-like');
-
-                return;
-            }
-            $this->message->likes()->create([
-                'user_id' => $this->authUser->id,
-            ]);
-            if ($this->message->sender != null) {
-                NewLikeJob::dispatch($this->message->sender, $this->authUser, $this->message);
-            }
-            $this->dispatch('add-like');
         }
+        if ($this->liked) {
+            $this->message
+                ->likes()
+                ->where('user_id', $this->authUser->id)
+                ->delete();
+            $this->dispatch('add-like');
+
+            return;
+        }
+        $this->message->likes()->create([
+            'user_id' => $this->authUser->id,
+        ]);
+        if ($this->message->sender !== null) {
+            NewLikeJob::dispatch($this->message->sender, $this->authUser, $this->message);
+        }
+        $this->dispatch('add-like');
 
     }
 
-    public function addFavorite()
+    public function addFavorite(): void
     {
 
         if (! $this->authUser->id) {
@@ -119,21 +120,21 @@ class MessageWithReplay extends Component
             );
 
             return;
-        } else {
-            if ($this->favorited) {
-                $this->message
-                    ->favorites()
-                    ->where('user_id', $this->authUser->id)
-                    ->delete();
-                $this->dispatch('add-favorite');
-
-                return;
-            }
-            $this->message->favorites()->create([
-                'user_id' => $this->authUser->id,
-            ]);
-            $this->dispatch('add-favorite');
         }
+        if ($this->favorited) {
+            $this->message
+                ->favorites()
+                ->where('user_id', $this->authUser->id)
+                ->delete();
+            $this->dispatch('add-favorite');
+
+            return;
+        }
+        $this->message->favorites()->create([
+            'user_id' => $this->authUser->id,
+        ]);
+        $this->dispatch('add-favorite');
+
     }
 
     public function render()

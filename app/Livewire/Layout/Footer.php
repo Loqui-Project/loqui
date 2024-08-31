@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Layout;
 
 use Livewire\Component;
 
-class Footer extends Component
+final class Footer extends Component
 {
     public function render()
     {

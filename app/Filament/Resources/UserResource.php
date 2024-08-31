@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
@@ -16,7 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\URL;
 use Tapp\FilamentAuthenticationLog\RelationManagers\AuthenticationLogsRelationManager;
 
-class UserResource extends Resource
+final class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
@@ -86,6 +88,6 @@ class UserResource extends Resource
 
     public static function getNavigationBadge(): ?string
     {
-        return static::$model::count();
+        return self::$model::count();
     }
 }

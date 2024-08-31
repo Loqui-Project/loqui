@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages\Profile;
 
-class FollowingUsers extends UserProfile {}
+use Livewire\Component;
+
+final class FollowingUsers extends Component {}

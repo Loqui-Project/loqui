@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Component\User;
 
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
 use Livewire\Component;
 
-class SidebarCard extends Component
+final class SidebarCard extends Component
 {
     public User $user;
 
@@ -16,19 +18,15 @@ class SidebarCard extends Component
 
     public bool $isContains = false;
 
-    public function mount(User $user, string $type, ?User $authUser = null)
+    public function mount(User $user, string $type, ?User $authUser = null): void
     {
         $this->user = $user;
         $this->type = $type;
         $this->authUser = $authUser;
-        if ($this->authUser === null) {
-            $this->isContains = false;
-        } else {
-            $this->isContains = $this->authUser->isFollowing($user);
-        }
+        $this->isContains = $this->authUser instanceof User ? $this->authUser->isFollowing($user) : false;
     }
 
-    public function follow($id)
+    public function follow($id): void
     {
         $user = User::find($id);
         if ($this->isContains) {

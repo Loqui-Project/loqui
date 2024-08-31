@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Layout;
 
 use App\Models\User;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class SidePanel extends Component
+final class SidePanel extends Component
 {
     public $users;
 
@@ -14,35 +16,31 @@ class SidePanel extends Component
 
     public string $type = 'following';
 
-    public function mount(User $user)
+    public function mount(User $user): void
     {
         $this->authUser = $user;
         $this->users = $this->showUsers();
     }
 
     #[On('update-users')]
-    public function updateUsers() {}
+    public function updateUsers(): void {}
 
     #[On('showUsers')]
-    public function showUsers($type = 'following')
+    public function showUsers(string $type = 'following')
     {
         $this->type = $type;
         $requestUsername = request('username');
         $authUsername = $this->authUser->username;
         $isSameAuth = false;
-        if ($authUsername == $requestUsername || ! $requestUsername) {
+        if ($authUsername === $requestUsername || ! $requestUsername) {
             $username = $authUsername;
             $isSameAuth = true;
         } else {
             $username = $requestUsername;
         }
 
-        if ($isSameAuth) {
-            $this->users = $this->authUser->{$type};
-        } else {
-            $this->users = User::where('username', $username)
-                ->first()->{$type};
-        }
+        $this->users = $isSameAuth ? $this->authUser->{$type} : User::where('username', $username)
+            ->first()->{$type};
 
         return $this->users;
     }

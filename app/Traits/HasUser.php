@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Models\User;
@@ -9,8 +11,10 @@ trait HasUser
 {
     /**
      * Get the user that owns the model.
+     *
+     * @return BelongsTo<User, User>
      */
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

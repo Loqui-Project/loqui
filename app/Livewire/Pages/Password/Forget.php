@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages\Password;
 
 use Illuminate\Support\Facades\Password;
@@ -8,7 +10,7 @@ use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-class Forget extends Component
+final class Forget extends Component
 {
     #[Validate('required|min:6|email')]
     public string $email = '';
@@ -19,12 +21,12 @@ class Forget extends Component
 
     public bool $show = false;
 
-    public function mount()
+    public function mount(): void
     {
         $this->show = false;
     }
 
-    public function forget()
+    public function forget(): void
     {
         $this->validate();
 

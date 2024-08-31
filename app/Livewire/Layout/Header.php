@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Layout;
 
 use App\Models\User;
 use Livewire\Component;
 
-class Header extends Component
+final class Header extends Component
 {
-    public ?User $user;
+    public ?User $user = null;
 
-    public function mount(User $user)
+    public function mount(User $user): void
     {
         $this->user = $user;
     }

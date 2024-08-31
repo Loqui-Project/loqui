@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Livewire\Component\Notification\DropDown as NotificationDropDown;
@@ -16,18 +18,12 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    public function register(): void
-    {
-        $this->app->register(
-            \Laravel\Telescope\TelescopeServiceProvider::class,
-        );
-        $this->app->register(TelescopeServiceProvider::class);
-    }
+    public function register(): void {}
 
     /**
      * Bootstrap any application services.
@@ -38,20 +34,14 @@ class AppServiceProvider extends ServiceProvider
         Livewire::component('user::home-card', UserHomeCard::class);
         Livewire::component('user::follow-button', FollowButton::class);
         Livewire::component('layout::side-panel', SidePanel::class);
-        Route::bind('user', function (string $value) {
-            return User::where('username', $value)->firstOrFail();
-        });
+        Route::bind('user', fn (string $value) => User::where('username', $value)->firstOrFail());
         Blade::component('layout-guest', Guest::class);
         Blade::component('user-header-card', UserHeaderCard::class);
         Livewire::component(
             'notification::dropdown',
             NotificationDropDown::class,
         );
-        Gate::define('viewPulse', function (User $user) {
-            return str_contains($user->email, '@yanalshoubaki.com');
-        });
-        Livewire::setScriptRoute(function ($handle) {
-            return Route::get('/vendor/livewire/livewire.js', $handle);
-        });
+        Gate::define('viewPulse', fn (User $user): bool => str_contains($user->email, '@yanalshoubaki.com'));
+        Livewire::setScriptRoute(fn ($handle) => Route::get('/vendor/livewire/livewire.js', $handle));
     }
 }

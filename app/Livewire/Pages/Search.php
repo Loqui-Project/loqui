@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages;
 
 use App\Models\User;
@@ -12,7 +14,7 @@ use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
-class Search extends Component
+final class Search extends Component
 {
     use WithoutUrlPagination, WithPagination;
 
@@ -20,9 +22,9 @@ class Search extends Component
 
     public int $perPage = 5;
 
-    public function loadMore()
+    public function loadMore(): void
     {
-        $this->perPage = $this->perPage + 5;
+        $this->perPage += 5;
     }
 
     #[Computed]
@@ -31,21 +33,19 @@ class Search extends Component
         $key = "search:{$this->search}:{$this->perPage}";
         $seconds = now()->addHours(4); // 1 hour...
 
-        return Cache::remember($key, $seconds, function () {
-            return User::whereAny(
-                ['name', 'email', 'username'],
-                'LIKE',
-                "%{$this->search}%",
-            )
-                ->withCount([
-                    'messages' => function ($query) {
-                        $query->whereHas('replay');
-                    },
-                ])
-                ->where('id', '!=', Auth::id())
-                ->orderBy('messages_count', 'desc')
-                ->paginate($this->perPage);
-        });
+        return Cache::remember($key, $seconds, fn () => User::whereAny(
+            ['name', 'email', 'username'],
+            'LIKE',
+            "%{$this->search}%",
+        )
+            ->withCount([
+                'messages' => function ($query): void {
+                    $query->whereHas('replay');
+                },
+            ])
+            ->where('id', '!=', Auth::id())
+            ->orderBy('messages_count', 'desc')
+            ->paginate($this->perPage));
     }
 
     #[Layout('components.layouts.app')]

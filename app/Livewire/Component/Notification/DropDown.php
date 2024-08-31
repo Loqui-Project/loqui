@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Component\Notification;
 
 use App\Models\User;
@@ -9,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Livewire\Component;
 
-class DropDown extends Component
+final class DropDown extends Component
 {
     public Collection $notifications;
 
@@ -21,25 +23,21 @@ class DropDown extends Component
 
     public string $activeTab = 'all';
 
-    public function mount()
+    public function mount(): void
     {
         $this->user = Auth::user();
 
         $notifications = $this->user->notifications();
         $this->notifications = $notifications
-            ->when($this->activeTab != 'all', function ($query) {
-                return $query->where('type', "$this->activeTab");
-            })
+            ->when($this->activeTab !== 'all', fn ($query) => $query->where('type', "$this->activeTab"))
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
         $this->count = $this->user->unreadNotifications()->count();
-        $this->notification_type = array_map(function ($key) {
-            return [
-                'key' => $key,
-                'name' => __($key),
-            ];
-        }, NotificationTypeEnum::values());
+        $this->notification_type = array_map(fn ($key): array => [
+            'key' => $key,
+            'name' => __($key),
+        ], NotificationTypeEnum::values());
     }
 
     public function getListeners()
@@ -49,7 +47,7 @@ class DropDown extends Component
         ];
     }
 
-    public function makeAllRead()
+    public function makeAllRead(): void
     {
         $this->user->notifications()->where('read_at', null)->update([
             'read_at' => Date::now(),
@@ -63,13 +61,11 @@ class DropDown extends Component
         $this->refresh();
     }
 
-    public function refresh()
+    public function refresh(): void
     {
         $this->notifications = $this->user
             ->notifications()
-            ->when($this->activeTab != 'all', function ($query) {
-                return $query->where('type', "$this->activeTab");
-            })
+            ->when($this->activeTab !== 'all', fn ($query) => $query->where('type', "$this->activeTab"))
             ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();

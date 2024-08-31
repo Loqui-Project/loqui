@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Component\User;
 
 use App\Livewire\Layout\SidePanel;
@@ -7,7 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class SearchUserCard extends Component
+final class SearchUserCard extends Component
 {
     public User $user;
 
@@ -15,7 +17,7 @@ class SearchUserCard extends Component
 
     public bool $isFollowing = false;
 
-    public function mount(User $user)
+    public function mount(User $user): void
     {
         $this->user = $user;
 
@@ -23,7 +25,7 @@ class SearchUserCard extends Component
         $this->isFollowing = $this->authUser->isFollowing($user);
     }
 
-    public function follow($id)
+    public function follow($id): void
     {
         $user = User::find($id);
         if ($this->isFollowing) {

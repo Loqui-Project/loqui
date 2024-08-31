@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages\Profile;
 
 use App\Jobs\NewMessageJob;
@@ -9,9 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 
-class UserProfile extends Component
+final class UserProfile extends Component
 {
-    public ?User $user;
+    public ?User $user = null;
 
     public $isModalOpen = false;
 
@@ -25,7 +27,7 @@ class UserProfile extends Component
 
     public string $content = '';
 
-    public function mount(User $user)
+    public function mount(User $user): void
     {
         $this->user = $user;
         $this->authUser = Auth::user();
@@ -42,7 +44,7 @@ class UserProfile extends Component
             ->get();
     }
 
-    public function sendMessage()
+    public function sendMessage(): void
     {
         $this->validate([
             'content' => 'required|min:1',
@@ -50,7 +52,7 @@ class UserProfile extends Component
         $message = $this->user->messages()->create([
             'message' => $this->content,
             'user_id' => $this->user->id,
-            'sender_id' => $this->authUser ? $this->authUser->id : null,
+            'sender_id' => $this->authUser instanceof User ? $this->authUser->id : null,
             'is_anon' => $this->anonymously,
         ]);
         NewMessageJob::dispatch($this->user, $this->authUser, $message);

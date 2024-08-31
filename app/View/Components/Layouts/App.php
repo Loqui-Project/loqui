@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\View\Components\Layouts;
 
 use App\Models\User;
@@ -8,7 +10,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 
-class App extends Component
+final class App extends Component
 {
     public User $user;
 
@@ -17,7 +19,7 @@ class App extends Component
      */
     public function __construct()
     {
-        $this->user = User::where('id', Auth::id())->first() ?? null;
+        $this->user = User::where('id', Auth::id())->first();
     }
 
     /**

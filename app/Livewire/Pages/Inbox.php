@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages;
 
 use App\Models\Message;
@@ -13,7 +15,7 @@ use Livewire\Component;
 use Livewire\WithoutUrlPagination;
 use Livewire\WithPagination;
 
-class Inbox extends Component
+final class Inbox extends Component
 {
     use WithoutUrlPagination, WithPagination;
 
@@ -28,10 +30,12 @@ class Inbox extends Component
             return redirect()->route('auth.sign-in');
         }
         $this->perPage = 4;
+
+        return null;
     }
 
     #[On('add-replay')]
-    public function refreshMessages()
+    public function refreshMessages(): void
     {
         Cache::tags([
             "user:{$this->authUser->id}:messages:without_replay",
@@ -47,13 +51,11 @@ class Inbox extends Component
 
         return Cache::tags([
             "user:{$this->authUser->id}:messages:without_replay",
-        ])->remember($key, $seconds, function () {
-            return Message::where('user_id', $this->authUser->id)
-                ->doesntHave('replay')
-                ->with(['user', 'sender'])
-                ->orderBy('created_at', 'desc')
-                ->paginate($this->perPage);
-        });
+        ])->remember($key, $seconds, fn () => Message::where('user_id', $this->authUser->id)
+            ->doesntHave('replay')
+            ->with(['user', 'sender'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($this->perPage));
     }
 
     #[Computed]
@@ -62,11 +64,9 @@ class Inbox extends Component
         $key = "user:{$this->authUser->id}:messages:without_replay:count";
         $seconds = 3600 * 6; // 1 hour...
 
-        return Cache::remember($key, $seconds, function () {
-            return Message::where('user_id', $this->authUser->id)
-                ->doesntHave('replay')
-                ->count();
-        });
+        return Cache::remember($key, $seconds, fn () => Message::where('user_id', $this->authUser->id)
+            ->doesntHave('replay')
+            ->count());
     }
 
     #[Layout('components.layouts.app')]

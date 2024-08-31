@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Component\User;
 
 use App\Jobs\NewFollowerJob;
@@ -7,9 +9,9 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
-class FollowButton extends Component
+final class FollowButton extends Component
 {
-    public ?User $user;
+    public ?User $user = null;
 
     public $isModalOpen = false;
 
@@ -17,26 +19,22 @@ class FollowButton extends Component
 
     public bool $isFollowing = false;
 
-    public function mount(User $user)
+    public function mount(User $user): void
     {
         $this->user = $user;
         $this->authUser = Auth::user();
-        if ($this->authUser) {
-            $this->isFollowing = $this->authUser->isFollowing($this->user);
-        } else {
-            $this->isFollowing = false;
-        }
+        $this->isFollowing = $this->authUser ? $this->authUser->isFollowing($this->user) : false;
     }
 
-    public function openFollowingSettings()
+    public function openFollowingSettings(): void
     {
         $this->isModalOpen = true;
 
     }
 
-    public function follow()
+    public function follow(): void
     {
-        if (! $this->authUser) {
+        if (! $this->authUser instanceof User) {
             $this->dispatch('not-auth-for-follow');
 
             return;
@@ -47,7 +45,7 @@ class FollowButton extends Component
         $this->isFollowing = true;
     }
 
-    public function unfollow()
+    public function unfollow(): void
     {
         $this->authUser->unfollowUser($this->user, $this->authUser);
         $this->isFollowing = false;

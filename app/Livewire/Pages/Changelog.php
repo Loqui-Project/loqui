@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages;
 
 use Illuminate\Support\Facades\Cache;
@@ -9,22 +11,22 @@ use League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension;
 use League\CommonMark\Extension\DescriptionList\DescriptionListExtension;
 use League\CommonMark\Extension\GithubFlavoredMarkdownExtension;
 use League\CommonMark\Extension\HeadingPermalink\HeadingPermalinkExtension;
-use League\CommonMark\Extension\Mention\Generator\MentionGeneratorInterface;
 use League\CommonMark\Extension\Mention\Mention;
 use League\CommonMark\Extension\Mention\MentionExtension;
 use League\CommonMark\Extension\TaskList\TaskListExtension;
 use League\CommonMark\MarkdownConverter;
-use League\CommonMark\Node\Inline\AbstractInline;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 
-class Changelog extends Component
-{
-    protected $config = [];
+use function sprintf;
 
-    public function mount()
+final class Changelog extends Component
+{
+    private array $config = [];
+
+    public function mount(): void
     {
         $this->config = [
             'heading_permalink' => [
@@ -50,20 +52,6 @@ class Changelog extends Component
                     'pattern' => '[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}(?!\w)',
                     'generator' => 'https://github.com/%s',
                 ],
-                'github_issue' => [
-                    'prefix' => '#',
-                    'pattern' => '\d+',
-                    // Alternatively, if your logic is simple, you can implement an inline anonymous class like this example.
-                    'generator' => new class implements MentionGeneratorInterface
-                    {
-                        public function generateMention(Mention $mention): ?AbstractInline
-                        {
-                            $mention->setUrl(\sprintf('https://github.com/thephpleague/commonmark/issues/%d', $mention->getIdentifier()));
-
-                            return $mention;
-                        }
-                    },
-                ],
 
                 'github_issue' => [
                     'prefix' => '#',
@@ -80,7 +68,7 @@ class Changelog extends Component
                             return;
                         }
 
-                        $mention->setUrl(\sprintf('https://github.com/thephpleague/commonmark/issues/%d', $mention->getIdentifier()));
+                        $mention->setUrl(sprintf('https://github.com/thephpleague/commonmark/issues/%d', $mention->getIdentifier()));
 
                         return $mention;
                     },
