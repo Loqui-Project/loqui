@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -7,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MessageReplay>
  */
-class MessageReplayFactory extends Factory
+final class MessageReplayFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,8 +21,8 @@ class MessageReplayFactory extends Factory
         $message = \App\Models\Message::inRandomOrder()->first();
 
         return [
-            'message_id' => $message->id,
-            'user_id' => $message->user_id,
+            'message_id' => $message?->id,
+            'user_id' => $message?->user_id,
             'text' => fake()->text,
         ];
     }
