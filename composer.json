@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": ["laravel", "framework"],
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
     "license": "MIT",
     "require": {
         "php": "^8.2",
@@ -10,16 +13,13 @@
         "genealabs/laravel-model-caching": "^11.0",
         "intervention/image": "^3.6",
         "intervention/image-laravel": "^1.2",
-        "kreait/laravel-firebase": "^5.9",
         "laravel/framework": "^11.0",
         "laravel/pulse": "^1.0@beta",
         "laravel/sanctum": "^4.0",
         "laravel/socialite": "^5.12",
-        "laravel/telescope": "^5.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.4",
         "predis/predis": "^2.2",
-        "pusher/pusher-php-server": "^7.2",
         "rappasoft/laravel-authentication-log": "^4.0",
         "sentry/sentry": "^4.8",
         "sentry/sentry-laravel": "^4.5",
@@ -30,7 +30,6 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.13",
         "fakerphp/faker": "^1.23",
-        "jn-jairo/laravel-ngrok": "^3.0",
         "larastan/larastan": "^2.0",
         "laravel/pint": "^1.15",
         "laravel/sail": "^1.26",
@@ -39,6 +38,7 @@
         "pestphp/pest": "^2.34",
         "pestphp/pest-plugin-laravel": "^2.4",
         "pestphp/pest-plugin-livewire": "^2.1",
+        "rector/rector": "^1.2",
         "spatie/laravel-ignition": "^2.4"
     },
     "autoload": {
@@ -69,6 +69,21 @@
             "@php artisan key:generate --ansi",
             "@php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "@php artisan migrate --graceful --ansi"
+        ],
+        "lint": "pint",
+        "refactor": "rector",
+        "test:lint": "pint --test",
+        "test:refactor": "rector --dry-run",
+        "test:types": "phpstan analyse",
+        "test:arch": "pest --filter=arch",
+        "test:type-coverage": "pest --type-coverage --min=100",
+        "test:unit": "pest --parallel --coverage --min=100",
+        "test": [
+            "@test:lint",
+            "@test:refactor",
+            "@test:types",
+            "@test:type-coverage",
+            "@test:unit"
         ]
     },
     "extra": {
