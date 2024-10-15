@@ -22,7 +22,7 @@ final class HomeCard extends Component
     {
         $this->user = $user;
         $this->user_data = $userData;
-        $this->users = $this->user->{$type};
+        $this->users = $this->user->following;
     }
 
     public function getUsersByType($type = 'following'): Collection

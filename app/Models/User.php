@@ -15,12 +15,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Laravel\Scout\Searchable;
+use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 
 final class User extends Authenticatable implements CanResetPassword, FilamentUser, FollowUserInterface, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use AuthenticationLoggable, Cachable, HasFactory, HasFollow, Notifiable;
+
+    /** @use HasApiTokens<User> */
+    use HasApiTokens;
+
+    use HasSEO;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -98,6 +107,26 @@ final class User extends Authenticatable implements CanResetPassword, FilamentUs
     public function canAccessPanel(Panel $panel): bool
     {
         return str_ends_with($this->email, '@yanalshoubaki.com');
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray()
+    {
+        return array_merge($this->toArray(), [
+            'id' => $this->getKey(), // this *must* be defined
+        ]);
+    }
+
+    /**
+     * Get the name of the index associated with the model.
+     */
+    public function searchableAs(): string
+    {
+        return 'users';
     }
 
     /**

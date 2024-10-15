@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Livewire\Pages;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
@@ -30,22 +28,10 @@ final class Search extends Component
     #[Computed]
     public function userMessages()
     {
-        $key = "search:{$this->search}:{$this->perPage}";
-        $seconds = now()->addHours(4); // 1 hour...
-
-        return Cache::remember($key, $seconds, fn () => User::whereAny(
-            ['name', 'email', 'username'],
-            'LIKE',
-            "%{$this->search}%",
+        return User::search(
+            $this->search
         )
-            ->withCount([
-                'messages' => function ($query): void {
-                    $query->whereHas('replay');
-                },
-            ])
-            ->where('id', '!=', Auth::id())
-            ->orderBy('messages_count', 'desc')
-            ->paginate($this->perPage));
+            ->paginate($this->perPage);
     }
 
     #[Layout('components.layouts.app')]
