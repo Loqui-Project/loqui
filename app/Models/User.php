@@ -4,31 +4,24 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\FollowUserInterface;
 use App\Traits\HasFollow;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
 use Laravel\Scout\Searchable;
-use RalphJSmit\Laravel\SEO\Support\HasSEO;
 use Rappasoft\LaravelAuthenticationLog\Traits\AuthenticationLoggable;
 
-final class User extends Authenticatable implements CanResetPassword, FilamentUser, FollowUserInterface, MustVerifyEmail
+final class User extends Authenticatable implements CanResetPassword, FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
-    use AuthenticationLoggable, Cachable, HasFactory, HasFollow, Notifiable;
+    use AuthenticationLoggable, HasFactory, HasFollow, Notifiable;
 
-    /** @use HasApiTokens<User> */
-    use HasApiTokens;
-
-    use HasSEO;
     use Searchable;
 
     /**
@@ -53,10 +46,6 @@ final class User extends Authenticatable implements CanResetPassword, FilamentUs
      */
     protected $hidden = ['password', 'remember_token'];
 
-    private string $cachePrefix = 'user:';
-
-    private int $cacheCooldownSeconds = 3600 * 6;
-
     /**
      * Get the user's messages.
      *
@@ -67,7 +56,7 @@ final class User extends Authenticatable implements CanResetPassword, FilamentUs
         return $this->hasMany(Message::class, 'user_id');
     }
 
-    public function favoriteMessages()
+    public function favoriteMessages(): HasManyThrough
     {
         return $this->hasManyThrough(
             Message::class,
