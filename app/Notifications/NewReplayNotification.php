@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Http\Resources\MessageResource;
-use App\Http\Resources\UserResource;
 use App\Models\Message;
 use App\Models\NotificationSettings;
 use App\Models\User;
@@ -97,9 +96,9 @@ final class NewReplayNotification extends Notification implements ShouldBroadcas
     {
         return [
             'type' => 'new-replay',
-            'user' => new UserResource($this->user),
-            'currentUser' => new UserResource($this->currentUser),
-            'message' => new MessageResource($this->message),
+            'user' => $this->user->toArray(),
+            'currentUser' => $this->currentUser->toArray(),
+            'message' => $this->message->toArray(),
             'url' => route('message.show', [
                 'id' => $this->message->id,
             ]),

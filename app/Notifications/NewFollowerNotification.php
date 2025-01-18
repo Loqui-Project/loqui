@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
-use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -13,11 +12,10 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Queue\SerializesModels;
 
 final class NewFollowerNotification extends Notification implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithSockets, Queueable;
 
     /**
      * Create a new notification instance.
@@ -34,6 +32,7 @@ final class NewFollowerNotification extends Notification implements ShouldBroadc
      */
     public function via(object $notifiable): array
     {
+        $notifiable = $notifiable;
         $viaArray = [];
         $userNotificationSettings = $this->user->notificationSettings();
         $browser = $userNotificationSettings
@@ -93,8 +92,6 @@ final class NewFollowerNotification extends Notification implements ShouldBroadc
     public function broadcastWith(): array
     {
         return [
-            'user' => new UserResource($this->user),
-            'currentUser' => new UserResource($this->currentUser),
             'url' => route('profile.user', $this->currentUser->username),
             'title' => "{$this->currentUser->name} started following you.",
         ];
