@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\Auth\SocialAuthController;
 use App\Livewire\Pages\Auth\SignIn;
 use App\Livewire\Pages\Auth\SignUp;
 use App\Livewire\Pages\Changelog;
@@ -23,18 +22,6 @@ Route::prefix('/auth')
             Route::get('/sign-in', SignIn::class)->name('sign-in');
             Route::get('/sign-up', SignUp::class)->name('sign-up');
         });
-        Route::prefix('facebook')
-            ->name('facebook.')
-            ->group(function () {
-                Route::get('auth', [
-                    SocialAuthController::class,
-                    'loginViaFacebook',
-                ])->name('login');
-                Route::get('callback', [
-                    SocialAuthController::class,
-                    'callbackFromFacebook',
-                ])->name('callback');
-            });
         Route::middleware('auth')->group(function () {
             Route::get('/sign-out', function () {
                 Auth::logout();
@@ -44,7 +31,7 @@ Route::prefix('/auth')
         });
     });
 Route::prefix('/@{user}')->group(function () {
-    Route::get('/', Profile\UserProfile::class)->name(
+    Route::get('', Profile\UserProfile::class)->name(
         'profile.user',
     );
     Route::middleware('auth')->get('/following', Profile\FollowingUsers::class)->name('profile.following');
@@ -57,8 +44,13 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/profile')
         ->name('profile.')
         ->group(function () {
-            Route::get('/account', Profile\Account::class)->name('account');
-            Route::get('/sessions', Profile\Sessions::class)->name('sessions');
+            Route::prefix("/settings")->name('settings.')->group(function () {
+                Route::get('/account', Profile\Settings\Account::class)->name('account');
+                Route::get('/sessions', Profile\Settings\Sessions::class)->name('sessions');
+                Route::get('/security', Profile\Settings\Security::class)->name('security');
+                Route::get('/notifications', Profile\Settings\Notification::class)->name('notifications');
+                Route::get('/appearance', Profile\Settings\Appearance::class)->name('appearance');
+            });
             Route::get('/favorites', Profile\Favorite::class)->name(
                 'favorites',
             );
