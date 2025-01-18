@@ -2,140 +2,58 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Pages\Profile;
+namespace App\Livewire\Pages\Profile\Settings;
 
 use App\Models\User;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Masmerise\Toaster\Toastable;
 
 final class Account extends Component
 {
-    use WithFileUploads;
+    use WithFileUploads, Toastable;
 
-    public User $user;
-
-    public $name;
-
-    public $email;
-
-    public $password;
-
-    public $password_confirmation;
-
-    public $username;
+    public ?User $user;
 
     public $photo;
 
-    public array $mail = [];
-
-    public array $browser = [];
-
-    public $bio;
 
     public function rules(): array
     {
         return [
+            'user.username' => 'nullable|min:5|max:30|unique:users,username,'.  $this->user->id,
+            'user.name' => 'required|min:5|max:50',
+            'user.email' => 'required|email|unique:users,email,'.$this->user->id,
+            'user.bio' => 'nullable|min:5|max:255',
             'photo' => 'nullable|image',
-            'username' => 'nullable|min:5|max:30|unique:users,username,'.
-                $this->user->id,
-            'name' => 'required|min:5|max:50',
-            'email' => 'required|email|unique:users,email,'.$this->user->id,
-            'password' => 'nullable|min:8|max:20|confirmed',
-            'mail.*' => 'boolean',
-            'browser.*' => 'boolean',
-            'bio' => 'nullable|min:5|max:255',
         ];
     }
 
     public function mount(): void
     {
         $this->user = Auth::user();
-        $this->name = $this->user->name;
-        $this->email = $this->user->email;
-        $this->username = $this->user->username;
-        $this->bio = $this->user->bio;
-        $notificationSettings = $this->user
-            ->notificationSettings()
-            ->get()
-            ->map(fn ($item): array => [
-                'type' => $item->type,
-                'key' => $item->key,
-                'value' => (bool) $item->value,
-            ]);
-        $this->mail = $notificationSettings
-            ->where('type', 'mail')
-            ->pluck('value', 'key')
-            ->toArray();
-
-        $this->browser = $notificationSettings
-            ->where('type', 'browser')
-            ->pluck('value', 'key')
-            ->toArray();
     }
 
-    public function updateProfile(): void
+    public function update(): void
     {
-        $this->validate();
-        $this->user->name = $this->name;
-        $this->user->email = $this->email;
-        $this->user->username = $this->username;
-        $this->user->bio = $this->bio;
+        try {
+            $this->validate();
         if ($this->photo) {
-            $hashedImageName =
-                'image_'.
-                Carbon::now()->timestamp.
-                '.'.
-                $this->photo->getClientOriginalExtension();
-            $placeHolderImage = $this->photo->storePubliclyAs(
-                'photos',
-                $hashedImageName,
-                [
-                    'disk' => 'public',
-                ],
-            );
-            $this->user->image_url = 'storage/'.$placeHolderImage;
+            $this->user->photo = $this->user->store('users', 'public');
         }
-
-        if ($this->password) {
-            $this->user->password = Hash::make($this->password);
-        }
-
         $this->user->save();
-        foreach ($this->mail as $key => $value) {
-            $this->user->notificationSettings()->updateOrCreate(
-                [
-                    'type' => 'mail',
-                    'key' => $key,
-                ],
-                [
-                    'value' => (bool) $value,
-                ],
-            );
-        }
-        foreach ($this->browser as $key => $value) {
-            $this->user->notificationSettings()->updateOrCreate(
-                [
-                    'type' => 'browser',
-                    'key' => $key,
-                ],
-                [
-                    'value' => (bool) $value,
-                ],
-            );
+        $this->success( 'Profile updated successfully');
+        } catch (\Exception $e) {
+            $this->error( 'Profile updated failed');
         }
     }
-
     #[Title('Account')]
     #[Layout('components.layouts.profile')]
     public function render()
     {
-        return view('livewire.pages.profile.account', [
-            'user' => $this->user,
-        ]);
+        return view('livewire.pages.profile.settings.account');
     }
 }

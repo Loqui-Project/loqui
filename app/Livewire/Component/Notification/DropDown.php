@@ -36,7 +36,7 @@ final class DropDown extends Component
         $this->count = $this->user->unreadNotifications()->count();
         $this->notification_type = array_map(fn ($key): array => [
             'key' => $key,
-            'name' => __($key),
+            'name' => __(key: $key),
         ], NotificationTypeEnum::values());
     }
 

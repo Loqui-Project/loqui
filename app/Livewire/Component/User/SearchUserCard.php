@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Component\User;
 
+use App\Jobs\NewFollowerJob;
 use App\Livewire\Layout\SidePanel;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -20,22 +21,21 @@ final class SearchUserCard extends Component
     public function mount(User $user): void
     {
         $this->user = $user;
-
         $this->authUser = Auth::user();
-        $this->isFollowing = $this->authUser->isFollowing($user);
+        $this->isFollowing = $this->authUser->following()->where('user_id', $this->user->id)->exists();
     }
 
     public function follow($id): void
     {
         $user = User::find($id);
         if ($this->isFollowing) {
-            $this->authUser->unfollowUser($user, $this->authUser);
+            $this->authUser->following()->detach($user->id);
             $this->isFollowing = false;
         } else {
-            $this->authUser->followUser($user, $this->authUser);
+            $this->authUser->following()->attach($user->id);
             $this->isFollowing = true;
         }
-        $this->user = $user;
+        NewFollowerJob::dispatch($user, $this->authUser);
         $this->dispatch('update-users')->to(SidePanel::class);
     }
 

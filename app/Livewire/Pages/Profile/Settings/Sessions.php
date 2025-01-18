@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Livewire\Pages\Profile;
+namespace App\Livewire\Pages\Profile\Settings;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use WhichBrowser\Parser;
@@ -93,9 +94,9 @@ final class Sessions extends Component
     }
 
     #[Title('Sessions')]
-    public function render()
+    #[Layout('components.layouts.profile')]    public function render()
     {
-        return view('livewire.pages.profile.sessions', [
+        return view('livewire.pages.profile.settings.sessions', [
             'sessions' => $this->sessions,
         ]);
     }
