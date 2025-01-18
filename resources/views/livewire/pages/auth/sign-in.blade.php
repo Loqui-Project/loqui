@@ -70,9 +70,6 @@
 
                 </div>
                 <span class="w-full h-[2px] bg-gray-200 mt-4"></span>
-                <div class="w-full flex items-center justify-center mt-4 bg-brand-dark py-2 rounded-md">
-                    <a wire:navigate href="{{ route('auth.facebook.login') }}" class="text-white font-medium">{{__("login via facebook")}}</a>
-                </div>
                 <p class="mt-10 text-center text-sm text-white">
                     {{__("Not a member?")}}
                     <a wire:navigate href="/auth/sign-up" class="font-semibold leading-6 transition-all duration-300 text-brand-light hover:text-brand-main">
