@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -34,7 +35,7 @@ final class Account extends Component
 
     public array $browser = [];
 
-    public string $bio = '';
+    public $bio;
 
     public function rules(): array
     {
@@ -57,6 +58,7 @@ final class Account extends Component
         $this->name = $this->user->name;
         $this->email = $this->user->email;
         $this->username = $this->user->username;
+        $this->bio = $this->user->bio;
         $notificationSettings = $this->user
             ->notificationSettings()
             ->get()
@@ -129,6 +131,7 @@ final class Account extends Component
     }
 
     #[Title('Account')]
+    #[Layout('components.layouts.profile')]
     public function render()
     {
         return view('livewire.pages.profile.account', [
