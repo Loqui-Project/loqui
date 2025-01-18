@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a667073c76dfb1cf5910580ef7ee5fca",
+    "content-hash": "1242095da7d8d3d05fe6251c5b1aa53a",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -14290,16 +14290,16 @@
         },
         {
             "name": "recca0120/laravel-erd",
-            "version": "0.1.2",
+            "version": "0.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/recca0120/laravel-erd.git",
-                "reference": "9344cc50f0efe65cdb64426502a70474f347525b"
+                "reference": "7af56794e44d3d4aad2f0ddf45c090ab489a82ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/recca0120/laravel-erd/zipball/9344cc50f0efe65cdb64426502a70474f347525b",
-                "reference": "9344cc50f0efe65cdb64426502a70474f347525b",
+                "url": "https://api.github.com/repos/recca0120/laravel-erd/zipball/7af56794e44d3d4aad2f0ddf45c090ab489a82ea",
+                "reference": "7af56794e44d3d4aad2f0ddf45c090ab489a82ea",
                 "shasum": ""
             },
             "require": {
@@ -14311,6 +14311,7 @@
                 "php-http/client-common": "^2.7"
             },
             "require-dev": {
+                "awobaz/compoships": "^2.3",
                 "doctrine/dbal": "^3.5",
                 "guzzlehttp/guzzle": "^7.5",
                 "mockery/mockery": "^1.5",
@@ -14346,9 +14347,9 @@
             "description": "Laravel ERD automatically generates Entity-Relationship Diagrams from your Laravel models and displays them using Vuerd.",
             "support": {
                 "issues": "https://github.com/recca0120/laravel-erd/issues",
-                "source": "https://github.com/recca0120/laravel-erd/tree/0.1.2"
+                "source": "https://github.com/recca0120/laravel-erd/tree/0.3.0"
             },
-            "time": "2024-09-05T07:24:02+00:00"
+            "time": "2024-11-04T17:14:01+00:00"
         },
         {
             "name": "rector/rector",
@@ -16101,6 +16102,6 @@
     "platform": {
         "php": "^8.2"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.6.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
 }
