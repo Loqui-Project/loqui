@@ -12,7 +12,7 @@
                     </p>
                 </div>
             </div>
-            <livewire:user::follow-button :user="$user" />
+            {{-- <livewire:user::follow-button :user="$user" /> --}}
         </div>
         <div>
             <form class="w-full" wire:submit="sendMessage">
@@ -49,7 +49,7 @@
     </div>
 
 </div>
-@script
+{{-- @script
 <script>
     $wire.on('not-auth-for-follow', () => {
         window.Swal.fire({
@@ -66,4 +66,4 @@
         })
     });
 </script>
-@endscript
+@endscript --}}

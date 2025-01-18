@@ -1,10 +1,10 @@
-<header x-data="{ openMenu: false }" class="sticky backdrop-blur z-[2] inset-x-0 top-2 m-6 shadow-surface-glass max-laptop:py-4   [@supports(backdrop-filter:blur(15px))]:bg-secondary-main/[3%] shadow-sm rounded-md bg-white/30 dark:bg-brand-dark/30">
+<header x-data="{ openMenu: false }" class="sticky top-0 bg-white z-10 mb-10 border-b border-b-gray-100 shadow shadow-gray-100">
     <div class="container">
         <nav class="flex items-center justify-between laptop:px-8 flex-wrap" aria-label="Main navbar">
             <div class="flex laptop:flex-1">
                 <a wire:navigate href="{{ route('home') }}">
                     <span class="sr-only">Loqui</span>
-                    <img class="h-10 w-10" src={{ URL::asset('images/logo.svg') }} alt="Loqui - Social Media Platform">
+                    <img class="h-10 w-10" src="{{ URL::asset('images/logo.svg') }}" alt="Loqui - Social Media Platform">
                 </a>
             </div>
             @if (Auth::check())

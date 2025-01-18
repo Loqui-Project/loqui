@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
-use App\Http\Resources\MessageResource;
-use App\Http\Resources\UserResource;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -97,9 +95,9 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
     {
         return [
             'type' => 'new-message',
-            'user' => new UserResource($this->user),
-            'currentUser' => new UserResource($this->currentUser),
-            'message' => new MessageResource($this->message),
+            'user' => $this->user->toArray(),
+            'currentUser' => $this->currentUser->toArray(),
+            'message' => $this->message->toArray(),
             'url' => route('message.show', [
                 'id' => $this->message->id,
             ]),

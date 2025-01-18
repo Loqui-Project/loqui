@@ -11,6 +11,8 @@ use App\Livewire\Layout\SidePanel;
 use App\Models\User;
 use App\View\Components\Layouts\App;
 use App\View\Components\Layouts\Guest;
+use App\View\Components\Layouts\Profile;
+use App\View\Components\Profile\Page\Sidebar;
 use App\View\Components\UserHeaderCard;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
@@ -30,7 +32,12 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
         Blade::component('layout-app', App::class);
+        Blade::component('profile', Profile::class);
+
+        Blade::component('profile::side-bar', Sidebar::class);
+
         Livewire::component('user::home-card', UserHomeCard::class);
         Livewire::component('user::follow-button', FollowButton::class);
         Livewire::component('layout::side-panel', SidePanel::class);

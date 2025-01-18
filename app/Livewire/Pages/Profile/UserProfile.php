@@ -29,19 +29,21 @@ final class UserProfile extends Component
 
     public function mount(User $user): void
     {
-        $this->user = $user;
         $this->authUser = Auth::user();
+        $this->user = $user;
         if ($this->authUser) {
             $this->isFollowing = $this->authUser->isFollowing($this->user);
         } else {
             $this->isFollowing = false;
             $this->anonymously = true;
         }
+
         $this->userMessages = $this->user
             ->messages()
             ->whereHas('replay')
             ->latest()
             ->get();
+
     }
 
     public function sendMessage(): void
@@ -62,6 +64,7 @@ final class UserProfile extends Component
     #[Layout('components.layouts.app')]
     public function render()
     {
+
         return view('livewire.pages.profile.user-profile')->title($this->user->username);
     }
 }

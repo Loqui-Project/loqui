@@ -39,8 +39,7 @@ final class FollowButton extends Component
 
             return;
         }
-
-        $this->authUser->followUser($this->user, $this->authUser);
+        $this->authUser->following()->attach($this->user->id);
         NewFollowerJob::dispatch($this->user, $this->authUser);
         $this->isFollowing = true;
     }

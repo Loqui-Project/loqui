@@ -5,54 +5,27 @@ declare(strict_types=1);
 namespace App\Traits;
 
 use App\Models\User;
-use App\Models\UserFollow;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasFollow
 {
-    public function following(): HasManyThrough
+    /**
+     * Get the user's followers.
+     *
+     * @return BelongsToMany<User, covariant $this>
+     */
+    public function followers(): BelongsToMany
     {
-        return $this->hasManyThrough(
-            User::class,
-            UserFollow::class,
-            'follower_id',
-            'id',
-            'id',
-            'following_id',
-        );
+        return $this->belongsToMany(self::class, 'followers', 'user_id', 'follower_id');
     }
 
-    public function followers(): HasManyThrough
+    /**
+     * Get the user's following.
+     *
+     * @return BelongsToMany<User, covariant $this>
+     */
+    public function following(): BelongsToMany
     {
-        return $this->hasManyThrough(
-            User::class,
-            UserFollow::class,
-            'following_id',
-            'id',
-            'id',
-            'follower_id',
-        );
-    }
-
-    public function isFollowing(User $user)
-    {
-        return $this->following->contains('id', $user->id);
-    }
-
-    public function followUser(User $user, User $currentUser): void
-    {
-        if (! $this->isFollowing($user)) {
-            UserFollow::create([
-                'follower_id' => $currentUser->id,
-                'following_id' => $user->id,
-            ]);
-        }
-    }
-
-    public function unfollowUser(User $user, User $currentUser)
-    {
-        return UserFollow::where('follower_id', $currentUser->id)
-            ->where('following_id', $user->id)
-            ->delete();
+        return $this->belongsToMany(self::class, 'followers', 'follower_id', 'user_id');
     }
 }

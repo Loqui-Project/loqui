@@ -28,10 +28,12 @@ final class Search extends Component
     #[Computed]
     public function userMessages()
     {
-        return User::search(
-            $this->search
-        )
-            ->paginate($this->perPage);
+        $users = User::search(
+            $this->search,
+
+        );
+
+        return $users->paginate($this->perPage);
     }
 
     #[Layout('components.layouts.app')]

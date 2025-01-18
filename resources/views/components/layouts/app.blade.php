@@ -5,7 +5,7 @@ $lang = str_replace('_', '-', app()->getLocale());
 $dir = $lang === 'ar' ? 'rtl' : 'ltr';
 @endphp
 <!DOCTYPE html>
-<html lang="{{ $lang }}" dir="{{ $dir }}" class="dark">
+<html lang="{{ $lang }}" dir="{{ $dir }}">
 
 <head>
     <meta charset="UTF-8" />
@@ -28,7 +28,7 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
     <meta content="Loqui" property="og:site_name" />
     <meta property="og:url" content="{{ URL::current() }}" data-rh="true" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{__($title)}} / Loqui</title>
+    <title>{{$title}} / Loqui</title>
     <meta property="og:type" content="profile" data-rh="true" />
     @if ($user)
     <meta property="profile:username" content="{{ $user->username }}" data-rh="true" />
@@ -36,7 +36,7 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
     @else
     <meta property="og:image" content="{{ URL::asset('/images/logo.svg') }}" data-rh="true" />
     @endif
-    <meta property="og:title" content="{{__($title)}} / Loqui" data-rh="true" />
+    <meta property="og:title" content="{{$title}} / Loqui" data-rh="true" />
     <meta property="og:description" content="Send messages anonymously. Connect with others while protecting your identity. Simple, secure messaging." data-rh="true" />
 
     @filamentStyles
@@ -55,6 +55,7 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
     @filamentScripts
 
     @vite('resources/js/app.js')
+    <x-toaster-hub />
     @stack('scripts')
     <script>
         window.Laravel = {
@@ -65,7 +66,7 @@ $dir = $lang === 'ar' ? 'rtl' : 'ltr';
                 'username' => $user->username,
             ])
         };
-       
+
     </script>
 </body>
 

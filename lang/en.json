@@ -1,4 +1,14 @@
 {
     "You have :count messages": "You have :count messages",
-    "Welcome, :name": "Welcome, :name"
+    "Welcome, :name": "Welcome, :name",
+    "new-follower": "Follow",
+    "new-like": "Like",
+    "new-message": "Message",
+    "new-replay": "Replay",
+
+    "profile.settings.account": "Account",
+    "profile.settings.sessions": "Sessions",
+    "profile.settings.security": "Security",
+    "profile.settings.notifications": "Notifications",
+    "profile.settings.appearance": "Appearance"
 }
