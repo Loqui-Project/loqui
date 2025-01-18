@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Traits;
 
 use App\Models\User;
-use App\Models\UserFollow;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasFollow

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Pages\Profile\Settings;
 
 use App\Models\User;
@@ -8,11 +10,14 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Masmerise\Toaster\Toastable;
+use Throwable;
 
-class Notification extends Component
+final class Notification extends Component
 {
     use Toastable;
+
     public ?User $user;
+
     public array $mail = [];
 
     public array $browser = [];
@@ -21,20 +26,20 @@ class Notification extends Component
     {
         $this->user = Auth::user();
         $notificationSettings = $this->user->notificationSettings()->get()->map(
-            fn($item): array => [
-                "type" => $item->type,
-                "key" => $item->key,
-                "value" => (bool) $item->value,
+            fn ($item): array => [
+                'type' => $item->type,
+                'key' => $item->key,
+                'value' => (bool) $item->value,
             ],
         );
         $this->mail = $notificationSettings
-            ->where("type", "mail")
-            ->pluck("value", "key")
+            ->where('type', 'mail')
+            ->pluck('value', 'key')
             ->toArray();
 
         $this->browser = $notificationSettings
-            ->where("type", "browser")
-            ->pluck("value", "key")
+            ->where('type', 'browser')
+            ->pluck('value', 'key')
             ->toArray();
     }
 
@@ -44,35 +49,35 @@ class Notification extends Component
             foreach ($this->mail as $key => $value) {
                 $this->user->notificationSettings()->updateOrCreate(
                     [
-                        "type" => "mail",
-                        "key" => $key,
+                        'type' => 'mail',
+                        'key' => $key,
                     ],
                     [
-                        "value" => (bool) $value,
+                        'value' => (bool) $value,
                     ],
                 );
             }
             foreach ($this->browser as $key => $value) {
                 $this->user->notificationSettings()->updateOrCreate(
                     [
-                        "type" => "browser",
-                        "key" => $key,
+                        'type' => 'browser',
+                        'key' => $key,
                     ],
                     [
-                        "value" => (bool) $value,
+                        'value' => (bool) $value,
                     ],
                 );
             }
-            $this->success("Notification settings updated successfully");
-        } catch (\Throwable $th) {
-            $this->error("Notification settings update failed");
+            $this->success('Notification settings updated successfully');
+        } catch (Throwable $th) {
+            $this->error('Notification settings update failed');
         }
     }
 
-    #[Title("Notification")]
-    #[Layout("components.layouts.profile")]
+    #[Title('Notification')]
+    #[Layout('components.layouts.profile')]
     public function render()
     {
-        return view("livewire.pages.profile.settings.notification");
+        return view('livewire.pages.profile.settings.notification');
     }
 }

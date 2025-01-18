@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Livewire\Layout;
 
 use Livewire\Component;
 
-class Profile extends Component
+final class Profile extends Component
 {
     public function render()
     {

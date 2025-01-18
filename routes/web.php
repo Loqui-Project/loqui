@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::prefix('/profile')
         ->name('profile.')
         ->group(function () {
-            Route::prefix("/settings")->name('settings.')->group(function () {
+            Route::prefix('/settings')->name('settings.')->group(function () {
                 Route::get('/account', Profile\Settings\Account::class)->name('account');
                 Route::get('/sessions', Profile\Settings\Sessions::class)->name('sessions');
                 Route::get('/security', Profile\Settings\Security::class)->name('security');

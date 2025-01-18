@@ -36,8 +36,7 @@ final class AppServiceProvider extends ServiceProvider
         Blade::component('layout-app', App::class);
         Blade::component('profile', Profile::class);
 
-        Blade::component('profile::side-bar',Sidebar::class);
-
+        Blade::component('profile::side-bar', Sidebar::class);
 
         Livewire::component('user::home-card', UserHomeCard::class);
         Livewire::component('user::follow-button', FollowButton::class);

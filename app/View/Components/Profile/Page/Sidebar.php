@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\View\Components\Profile\Page;
 
 use Closure;
@@ -8,9 +10,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Illuminate\View\Component;
 
-class Sidebar extends Component
+final class Sidebar extends Component
 {
-
     public $menuLinks;
 
     /**

@@ -94,7 +94,8 @@ final class Sessions extends Component
     }
 
     #[Title('Sessions')]
-    #[Layout('components.layouts.profile')]    public function render()
+    #[Layout('components.layouts.profile')]
+    public function render()
     {
         return view('livewire.pages.profile.settings.sessions', [
             'sessions' => $this->sessions,

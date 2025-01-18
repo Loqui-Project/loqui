@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Notifications;
 
-use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use App\Models\NotificationSettings;
 use App\Models\User;
