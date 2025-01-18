@@ -54,7 +54,7 @@ services:
   nginx:
     image: nginx:alpine
     container_name: loqui-nginx
-    restart: unless-stopped
+    tty: true
     ports:
       - 80:80
       - 443:443
