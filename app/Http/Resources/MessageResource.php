@@ -21,10 +21,10 @@ class MessageResource extends JsonResource
             'message' => $this->message,
             'is_anon' => $this->is_anon,
             'likes_count' => $this->likes()->count(),
-            'liked' => $this->likes()->where('user_id', $request->user()->id)->exists(),
-            'replays_count' => $this->likes()->count(),
-            'starred' => false,
+            'liked' => $this->likes()->where('user_id', $request->user()?->id)->exists(),
+            'replays_count' => $this->replays()->count(),
             'replays' => MessageReplayResource::collection($this->replays()->latest()->get()),
+            'starred' => false,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

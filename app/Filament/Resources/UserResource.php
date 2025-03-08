@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
@@ -13,8 +14,8 @@ use Filament\Tables;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Filament\Forms;
 use Illuminate\Database\Eloquent\Builder;
+
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
@@ -32,11 +33,9 @@ class UserResource extends Resource
                             ->directory('uploads')
                             ->visibility('public')->avatar()->label('Image'),
                         TextInput::make('name'),
-
                         TextInput::make('username'),
-
                         TextInput::make('email'),
-                        TextInput::make('password')->hiddenOn("edit"),
+                        TextInput::make('password')->hiddenOn('edit'),
                     ]),
 
             ]);
@@ -79,7 +78,7 @@ class UserResource extends Resource
                                 $data['created_until'],
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
-                    })
+                    }),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

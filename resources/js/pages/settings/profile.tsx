@@ -1,4 +1,4 @@
-import { type BreadcrumbItem, type SharedData } from '@/types';
+import { type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
@@ -13,13 +13,6 @@ import { Label } from '@/components/ui/label';
 import SettingsLayout from '@/layouts/settings/layout';
 import UserLayout from '@/layouts/user-layout';
 import { Camera, Loader2, User } from 'lucide-react';
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Profile settings',
-        href: '/settings/profile',
-    },
-];
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const { auth } = usePage<SharedData>().props;
@@ -62,7 +55,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     };
 
     return (
-        <UserLayout user={auth.user}>
+        <UserLayout>
             <Head title="Profile settings" />
 
             <SettingsLayout>
@@ -73,8 +66,8 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         <div className="mb-8 flex flex-col items-center">
                             <div className="relative mb-4">
                                 <Avatar className="h-32 w-32">
-                                    <AvatarImage src={avatar || `/storage/${auth.user.image_url ?? ""}`} alt={auth.user.name} />
-                                        <AvatarFallback>
+                                    <AvatarImage src={avatar || `/storage/${auth.user.image_url ?? ''}`} alt={auth.user.name} />
+                                    <AvatarFallback>
                                         <User className="h-16 w-16" />
                                     </AvatarFallback>
                                 </Avatar>

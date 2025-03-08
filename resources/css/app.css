@@ -35,6 +35,9 @@
     --color-accent: var(--accent);
     --color-accent-foreground: var(--accent-foreground);
 
+    --color-accent-hover: color-mod(var(--accent) lightness(+5%));
+    --color-accent-active: color-mod(var(--accent) lightness(-5%));
+
     --color-destructive: var(--destructive);
     --color-destructive-foreground: var(--destructive-foreground);
 

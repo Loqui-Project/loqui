@@ -67,14 +67,14 @@ export function MessageCard({ message }: MessageCardProps) {
     });
 
     return (
-        <Card key={message.id} className="overflow-hidden">
-            <CardHeader className="flex flex-row items-start gap-3 space-y-0 pb-3">
+        <Card key={message.id} className="gap-y-2 overflow-hidden p-0">
+            <CardHeader className="flex flex-row items-start gap-3 space-y-0 p-4">
                 <UserAvatar className="h-10 w-10" user={message.sender} />
                 <div className="flex-1">
                     <div className="flex items-center justify-between">
                         <div>
-                            <CardTitle className="text-base">{message.sender.name}</CardTitle>
-                            <CardDescription className="text-xs">{message.sender.username}</CardDescription>
+                            <CardTitle className="text-base">{message.sender?.name ?? 'Anonymous'}</CardTitle>
+                            <CardDescription className="text-xs">{`@${message.sender?.username ?? 'Anonymous'}`}</CardDescription>
                         </div>
                         <div className="text-muted-foreground flex items-center text-xs">
                             <Calendar className="mr-1 h-3 w-3" />
@@ -105,13 +105,10 @@ export function MessageCard({ message }: MessageCardProps) {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </CardHeader>
-            <CardContent className="pb-3">
+            <CardContent className="p-4">
                 <p className="mb-3 text-sm">{message.message}</p>
-                {/*{message.image && (*/}
-                {/*    <img src={message.image || "/placeholder.svg"} alt="Post content" className="w-full rounded-md" />*/}
-                {/*)}*/}
             </CardContent>
-            <CardFooter className="flex justify-between pt-0 pb-3">
+            <CardFooter className="flex justify-between p-4">
                 <div className="flex space-x-4">
                     <Button
                         onClick={() => {
@@ -136,7 +133,7 @@ export function MessageCard({ message }: MessageCardProps) {
                     <UserAvatar user={message.sender} className="h-8 w-8" />
                     <div className="flex-1 space-y-2">
                         <Textarea
-                            placeholder={`Reply to ${message.sender.username}...`}
+                            placeholder={`Reply to ${message.sender?.username ?? 'Anonymous'}...`}
                             className="min-h-[80px] w-full"
                             value={replyText}
                             onChange={(e) => setReplyText(e.target.value)}

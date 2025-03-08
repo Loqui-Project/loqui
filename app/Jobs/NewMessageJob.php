@@ -22,7 +22,7 @@ final class NewMessageJob implements ShouldQueue
      */
     public function __construct(
         protected User $user,
-        protected User $currentUser,
+        protected ?User $currentUser,
         public Message $message,
     ) {
         //

@@ -1,23 +1,19 @@
-import UserLayout from "@/layouts/user-layout";
-import {Auth, Message} from "@/types";
-import {MessageCard} from "@/components/message-card";
-
+import { MessageCard } from '@/components/message-card';
+import UserLayout from '@/layouts/user-layout';
+import { Message } from '@/types';
 
 type MessageShowProps = {
-    auth: Auth;
-   message: {
-       data:Message
-   }
+    message: {
+        data: Message;
+    };
 };
 
-export default function MessageShow({auth, message}: MessageShowProps) {
+export default function MessageShow({ message }: MessageShowProps) {
     return (
-        <UserLayout user={auth.user}>
+        <UserLayout>
             <div className="p-10">
-
-            <MessageCard message={message.data}/>
+                <MessageCard message={message.data} />
             </div>
-
         </UserLayout>
-    )
+    );
 }

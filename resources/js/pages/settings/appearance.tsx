@@ -1,19 +1,14 @@
-import {Head, usePage} from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 
 import AppearanceTabs from '@/components/appearance-tabs';
 import HeadingSmall from '@/components/heading-small';
-import {type SharedData} from '@/types';
 
 import SettingsLayout from '@/layouts/settings/layout';
-import UserLayout from "@/layouts/user-layout";
-
-
+import UserLayout from '@/layouts/user-layout';
 
 export default function Appearance() {
-    const { auth } = usePage<SharedData>().props;
-
     return (
-        <UserLayout user={auth.user}>
+        <UserLayout>
             <Head title="Appearance settings" />
 
             <SettingsLayout>

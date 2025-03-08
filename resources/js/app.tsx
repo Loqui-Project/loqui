@@ -1,12 +1,12 @@
-import '../css/app.css';
-import "./echo"
+import { Toaster } from '@/components/ui/sonner';
+import { RequestProvider } from '@/providers/RequestProvider';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { route as routeFn } from 'ziggy-js';
+import '../css/app.css';
+import './echo';
 import { initializeTheme } from './hooks/use-appearance';
-import {RequestProvider} from "@/providers/RequestProvider";
-import { Toaster } from "@/components/ui/sonner"
 
 declare global {
     const route: typeof routeFn;
@@ -20,13 +20,25 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render(<RequestProvider>
-            <App {...props} />
-            <Toaster/>
-        </RequestProvider>);
+        root.render(
+            <RequestProvider>
+                <App {...props} />
+                <Toaster />
+            </RequestProvider>,
+        );
     },
     progress: {
-        color: '#4B5563',
+        // The delay after which the progress bar will appear, in milliseconds...
+        delay: 250,
+
+        // The color of the progress bar...
+        color: '#29d',
+
+        // Whether to include the default NProgress styles...
+        includeCSS: true,
+
+        // Whether the NProgress spinner will be shown...
+        showSpinner: false,
     },
 });
 

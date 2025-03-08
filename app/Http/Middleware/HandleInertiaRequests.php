@@ -35,6 +35,15 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $user = $request->user();
+        $statistics = [];
+        if ($user) {
+            $statistics = [
+                'messages' => $user->messages()->withReplies()->count(),
+                'followers' => $user->followers()->count(),
+                'following' => $user->following()->count(),
+            ];
+        }
 
         return [
             ...parent::share($request),
@@ -42,6 +51,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
+            'statistics' => $statistics,
         ];
     }
 }

@@ -6,25 +6,22 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import UserLayout from '@/layouts/user-layout';
-import { Auth, Message } from '@/types';
+import { Message } from '@/types';
 import { Filter, MessageCircle, Search, Star } from 'lucide-react';
 import { useState } from 'react';
 
 type HomePageProps = {
-    auth: Auth;
     messages: {
         data: Message[];
     };
 };
 
-export default function HomePage({ auth, messages }: HomePageProps) {
+export default function HomePage({ messages }: HomePageProps) {
     const [filter, setFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
 
-
-
     return (
-        <UserLayout title="Home" user={auth.user}>
+        <UserLayout title="Home">
             {/* Messages section */}
             <main className="p-4">
                 <div className="mb-6 flex flex-col items-center justify-between md:flex-row">

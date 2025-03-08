@@ -44,7 +44,7 @@ export interface User {
 export interface Message {
     id: number
     user: User
-    sender: User
+    sender: User | null
     message: string
     is_anon: boolean
     likes_count: number
@@ -79,4 +79,12 @@ export interface Notification {
     read_at: string | null
     created_at: string
     updated_at: string
+}
+
+export interface BrowserNotification {
+    type: string
+    user: User
+    currentUser: User
+    message: Message
+    title: string
 }

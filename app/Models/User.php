@@ -69,4 +69,31 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Message::class, 'user_id');
     }
 
+    /**
+     * Get the user's followers.
+     *
+     * @return HasMany<UserFollower>
+     */
+    public function followers(): HasMany
+    {
+        return $this->hasMany(UserFollow::class, 'user_id');
+    }
+
+    /**
+     * Get the user's following.
+     *
+     * @return HasMany<UserFollower>
+     */
+    public function following(): HasMany
+    {
+        return $this->hasMany(UserFollow::class, 'follower_id');
+    }
+
+    /**
+     * Check if the user is following another user.
+     */
+    public function isFollowing(User $user): bool
+    {
+        return $this->following()->where('user_id', $user->id)->exists();
+    }
 }

@@ -11,17 +11,17 @@ class UserFollow extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'follower_id',
-        'following_id',
     ];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 
     public function follower(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class, 'follower_id');
-    }
-
-    public function following(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(User::class, 'following_id');
     }
 }

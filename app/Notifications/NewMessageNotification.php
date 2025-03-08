@@ -26,7 +26,7 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
      */
     public function __construct(
         public User $user,
-        public User $currentUser,
+        public ?User $currentUser,
         public Message $message,
     ) {
         //
@@ -39,7 +39,7 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
      */
     public function via(object $notifiable): array
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -69,12 +69,18 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
      */
     public function broadcastWith(): array
     {
+
+        $title = $this->currentUser ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
+
         return [
             'type' => NotificationType::NEW_MESSAGE->value,
             'user' => $this->user->toArray(),
-            'currentUser' => $this->currentUser->toArray(),
+            'currentUser' => $this->currentUser ? $this->currentUser->toArray() : [
+                'id' => null,
+                'name' => 'Anonymous',
+            ],
             'message' => $this->message->toArray(),
-            'title' => "{$this->currentUser->name} send you a new message.",
+            'title' => $title,
         ];
     }
 
@@ -85,11 +91,13 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
      */
     public function toArray(object $notifiable): array
     {
+        $title = $this->currentUser ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
+
         return [
-            'current_user_id' => $this->currentUser->id,
+            'current_user_id' => $this->currentUser?->id,
             'message_id' => $this->message->id,
-            'title' => "{$this->currentUser->name} send you a new message.",
-            'url' => route('messages.show', $this->message),
+            'title' => $title,
+            'url' => route('message.show', $this->message),
         ];
     }
 

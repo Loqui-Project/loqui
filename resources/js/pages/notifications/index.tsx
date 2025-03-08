@@ -1,18 +1,19 @@
 import { NotificationsHeader } from '@/components/notifications/notification-header';
+import { NotificationsList } from '@/components/notifications/notifications-list';
 import UserLayout from '@/layouts/user-layout';
-import {Auth, Notification} from '@/types';
+import { Notification } from '@/types';
 import { Button } from '@headlessui/react';
-import {NotificationsList} from "@/components/notifications/notifications-list";
 
 type ListNotificationsPageProps = {
-    auth: Auth;
-    notifications: Notification[];
+    notifications: {
+        data: Notification[];
+    };
     types: {
         label: string;
         value: string;
     }[];
 };
-export default function ListNotificationsPage({ auth, notifications, types }: ListNotificationsPageProps) {
+export default function ListNotificationsPage({ notifications, types }: ListNotificationsPageProps) {
     function handleNotificationTypeFilter(type: string) {
         const url = new URL(window.location.href);
         url.searchParams.set('type', type);
@@ -20,7 +21,7 @@ export default function ListNotificationsPage({ auth, notifications, types }: Li
     }
 
     return (
-        <UserLayout user={auth.user}>
+        <UserLayout>
             <div className="container space-y-6 p-10">
                 <NotificationsHeader />
 
@@ -35,16 +36,11 @@ export default function ListNotificationsPage({ auth, notifications, types }: Li
                         </Button>
                     ))}
                 </div>
-                {
-                    notifications.length === 0 ? (
-                        <div className="text-center text-gray-500">
-                            No notifications found.
-                        </div>
-                    ): (
-                        <NotificationsList  notifications={notifications} />
-
-                    )
-                }
+                {notifications.data.length === 0 ? (
+                    <div className="text-center text-gray-500">No notifications found.</div>
+                ) : (
+                    <NotificationsList notifications={notifications} />
+                )}
             </div>
         </UserLayout>
     );

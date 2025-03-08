@@ -1,28 +1,18 @@
 import InputError from '@/components/input-error';
-import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
-import {type BreadcrumbItem, type SharedData} from '@/types';
 import { Transition } from '@headlessui/react';
-import {Head, useForm, usePage} from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import UserLayout from "@/layouts/user-layout";
-
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Password settings',
-        href: '/settings/password',
-    },
-];
+import UserLayout from '@/layouts/user-layout';
 
 export default function Password() {
     const passwordInput = useRef<HTMLInputElement>(null);
     const currentPasswordInput = useRef<HTMLInputElement>(null);
-    const { auth } = usePage<SharedData>().props;
     const { data, setData, errors, put, reset, processing, recentlySuccessful } = useForm({
         current_password: '',
         password: '',
@@ -50,7 +40,7 @@ export default function Password() {
     };
 
     return (
-        <UserLayout user={auth.user}>
+        <UserLayout>
             <Head title="Profile settings" />
 
             <SettingsLayout>

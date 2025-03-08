@@ -9,10 +9,21 @@ use App\Http\Resources\MessageResource;
 use App\Jobs\NewMessageJob;
 use App\Models\Message;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class MessageController extends Controller
 {
+    public function inbox(Request $request)
+    {
+        $messages = Message::where('user_id', $request->user()->id)->withoutReplies()->get();
+
+        return Inertia::render('message/inbox', [
+            'messages' => MessageResource::collection($messages),
+        ]);
+
+    }
+
     public function show(Message $message)
     {
         return Inertia::render('message/show', [
@@ -57,12 +68,25 @@ class MessageController extends Controller
     public function sendMessage(SendMessageRequest $request)
     {
         try {
-            $message = Message::create([
-                'sender_id' => $request->user()->id,
-                'user_id' => $request->receiver_id,
-                'message' => $request->message,
-                'is_anon' => false,
-            ]);
+            if ($request->user()?->id === $request->receiver_id) {
+                return response()->json(['message' => 'You can not send message to yourself'], 400);
+            } else {
+                if ($request->user()) {
+                    $message = Message::create([
+                        'sender_id' => $request->user()->id,
+                        'user_id' => $request->receiver_id,
+                        'message' => $request->message,
+                        'is_anon' => false,
+                    ]);
+                } else {
+                    $message = Message::create([
+                        'user_id' => $request->receiver_id,
+                        'message' => $request->message,
+                        'is_anon' => true,
+                    ]);
+                }
+            }
+
             $recviedUser = User::findOrFail($request->receiver_id);
             NewMessageJob::dispatch($recviedUser, $request->user(), $message);
 
