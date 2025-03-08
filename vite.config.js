@@ -17,9 +17,5 @@ export default defineConfig({
     ],
     esbuild: {
         jsx: 'automatic',
-    },
-    server: {
-        host: 'loqui.localhost',
-        https: true, 
-    },
+    }
 });

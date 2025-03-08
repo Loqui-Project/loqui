@@ -1,22 +1,19 @@
-import { Head } from '@inertiajs/react';
+import {Head, usePage} from '@inertiajs/react';
 
 import AppearanceTabs from '@/components/appearance-tabs';
 import HeadingSmall from '@/components/heading-small';
-import { type BreadcrumbItem } from '@/types';
+import {type SharedData} from '@/types';
 
-import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
+import UserLayout from "@/layouts/user-layout";
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Appearance settings',
-        href: '/settings/appearance',
-    },
-];
+
 
 export default function Appearance() {
+    const { auth } = usePage<SharedData>().props;
+
     return (
-        <AppLayout breadcrumbs={breadcrumbs}>
+        <UserLayout user={auth.user}>
             <Head title="Appearance settings" />
 
             <SettingsLayout>
@@ -25,6 +22,6 @@ export default function Appearance() {
                     <AppearanceTabs />
                 </div>
             </SettingsLayout>
-        </AppLayout>
+        </UserLayout>
     );
 }

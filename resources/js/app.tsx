@@ -1,10 +1,12 @@
 import '../css/app.css';
-
+import "./echo"
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
 import { route as routeFn } from 'ziggy-js';
 import { initializeTheme } from './hooks/use-appearance';
+import {RequestProvider} from "@/providers/RequestProvider";
+import { Toaster } from "@/components/ui/sonner"
 
 declare global {
     const route: typeof routeFn;
@@ -18,7 +20,10 @@ createInertiaApp({
     setup({ el, App, props }) {
         const root = createRoot(el);
 
-        root.render(<App {...props} />);
+        root.render(<RequestProvider>
+            <App {...props} />
+            <Toaster/>
+        </RequestProvider>);
     },
     progress: {
         color: '#4B5563',

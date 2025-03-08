@@ -32,9 +32,51 @@ export interface User {
     id: number;
     name: string;
     email: string;
-    avatar?: string;
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
-    [key: string]: unknown; // This allows for additional properties...
+    username: string | null;
+    image_url: string | null;
+    status: string;
+    bio: string | null;
+}
+
+export interface Message {
+    id: number
+    user: User
+    sender: User
+    message: string
+    is_anon: boolean
+    likes_count: number
+    liked: boolean
+    replays_count: number
+    starred: boolean
+    replays: MessageReplay[]
+    created_at: string
+    updated_at: string
+}
+
+
+export interface MessageReplay {
+    id: number
+    user: User
+    text: string | null;
+    created_at: string
+    updated_at: string
+}
+
+
+export interface Notification {
+    id: string
+    type: string
+    notifiable_type: string
+    notifiable_id: number
+    data: {
+        user: User
+        message?: Message
+        title: string
+    }
+    read_at: string | null
+    created_at: string
+    updated_at: string
 }
