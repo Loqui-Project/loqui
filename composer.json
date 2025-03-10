@@ -10,6 +10,8 @@
     "license": "MIT",
     "require": {
         "php": "^8.4",
+        "althinect/filament-spatie-roles-permissions": "^2.3",
+        "bezhansalleh/filament-shield": "^3.3",
         "filament/filament": "^3.2",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^12.0",
