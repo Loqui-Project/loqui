@@ -56,6 +56,17 @@ services:
         - 'http://127.0.0.1:7700/health'
       retries: 3
       timeout: 5s
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4_container
+    restart: always
+    ports:
+      - '8888:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: me@yanalshoubaki.com
+      PGADMIN_DEFAULT_PASSWORD: '${DB_PASSWORD:-secret}'
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
 networks:
   loqui:
     driver: bridge
@@ -63,3 +74,4 @@ volumes:
   loqui_dev_db:
   loqui-redis:
   loqui-meilisearch:
+  pgadmin-data:
