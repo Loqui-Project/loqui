@@ -1,9 +1,11 @@
-import { NotificationsHeader } from '@/components/notifications/notification-header';
 import { NotificationsList } from '@/components/notifications/notifications-list';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import UserLayout from '@/layouts/user-layout';
 import { Notification } from '@/types';
-import { Button } from '@headlessui/react';
-
+import clsx from 'clsx';
+import { Filter } from 'lucide-react';
+import { useMemo } from 'react';
 type ListNotificationsPageProps = {
     notifications: {
         data: Notification[];
@@ -20,18 +22,56 @@ export default function ListNotificationsPage({ notifications, types }: ListNoti
         window.location.href = url.toString();
     }
 
-    return (
-        <UserLayout title="Notifications">
-            <div className="container space-y-6 p-10">
-                <NotificationsHeader />
+    const isActiveTab = useMemo(() => {
+        return (tab: string) => {
+            const url = new URL(window.location.href);
 
-                <div className="grid w-full grid-cols-5">
-                    <Button className="col-span-1" onClick={() => handleNotificationTypeFilter('all')}>
+            return {
+                'bg-primary text-white dark:bg-white dark:text-black':
+                    url.searchParams.get('type') === tab || (url.searchParams.get('type') === null && tab === 'all'),
+                'border-transparent': url.searchParams.get('type') !== tab,
+            };
+        };
+    }, []);
+
+    return (
+        <UserLayout
+            title="Notifications"
+            actions={
+                <div className="flex items-center gap-x-2">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild className="block md:hidden">
+                            <Button variant="outline" size="sm">
+                                <Filter />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            {types.map((type) => (
+                                <DropdownMenuItem key={type.value} onClick={() => handleNotificationTypeFilter(type.value)}>
+                                    {type.label}
+                                </DropdownMenuItem>
+                            ))}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                    <Button variant="outline" size="sm">
+                        Mark all as read
+                    </Button>
+                </div>
+            }
+        >
+            <div className="container space-y-6">
+                <div className="hidden w-full gap-x-2 md:flex">
+                    <Button className={clsx(isActiveTab('all'), 'flex-1')} variant="ghost" onClick={() => handleNotificationTypeFilter('all')}>
                         All
                     </Button>
 
                     {types.map((type) => (
-                        <Button className="col-span-1" key={type.value} onClick={() => handleNotificationTypeFilter(type.value)}>
+                        <Button
+                            className={clsx(isActiveTab(type.value), 'flex-1')}
+                            variant="ghost"
+                            key={type.value}
+                            onClick={() => handleNotificationTypeFilter(type.value)}
+                        >
                             {type.label}
                         </Button>
                     ))}

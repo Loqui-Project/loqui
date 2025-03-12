@@ -10,9 +10,10 @@ interface AuthLayoutProps {
     name?: string;
     title?: string;
     description?: string;
+    actions?: React.ReactNode;
 }
 
-export default function UserLayout({ children, title }: AuthLayoutProps) {
+export default function UserLayout({ children, title, actions }: AuthLayoutProps) {
     const {
         props: {
             auth: { user },
@@ -99,7 +100,7 @@ export default function UserLayout({ children, title }: AuthLayoutProps) {
                             </div>
 
                             <nav className="fixed bottom-0 z-10 w-full flex-1 md:relative md:w-auto md:p-4">
-                                <ul className="bg-accent flex flex-row justify-between space-y-2 p-4 md:flex-col md:justify-center md:bg-transparent md:p-0">
+                                <ul className="bg-accent flex flex-row justify-evenly space-y-2 p-4 md:flex-col md:justify-center md:bg-transparent md:p-0">
                                     <li>
                                         <Link href={route('home')}>
                                             <Button
@@ -133,7 +134,7 @@ export default function UserLayout({ children, title }: AuthLayoutProps) {
                                             </Button>
                                         </Link>
                                     </li>
-                                    <li>
+                                    <li className="hidden md:block">
                                         <Button
                                             variant="ghost"
                                             className="hover:bg-accent-foreground hover:text-accent w-full cursor-pointer justify-start transition"
@@ -142,7 +143,7 @@ export default function UserLayout({ children, title }: AuthLayoutProps) {
                                             Starred
                                         </Button>
                                     </li>
-                                    <li>
+                                    <li className="hidden md:block">
                                         <Link href={route('notifications')}>
                                             <Button
                                                 variant="ghost"
@@ -184,18 +185,21 @@ export default function UserLayout({ children, title }: AuthLayoutProps) {
                 )}
                 {/* Main content */}
                 <div className="flex-1">
-                    <main className="p-4">
+                    <main className="p-4 md:p-10">
                         <div className="mb-6">
-                            <div className="mb-6 flex items-center">
-                                {url !== route('home', {}, false) ? (
-                                    <Button variant="ghost" size="icon" asChild className="mr-2">
-                                        <Link href={route('home')}>
-                                            <ChevronLeft className="h-5 w-5" />
-                                        </Link>
-                                    </Button>
-                                ) : null}
+                            <div className="mb-6 flex w-full items-center justify-between">
+                                <div className="flex items-center">
+                                    {url !== route('home', {}, false) ? (
+                                        <Button variant="ghost" size="icon" asChild className="mr-2">
+                                            <Link href={route('home')}>
+                                                <ChevronLeft className="h-5 w-5" />
+                                            </Link>
+                                        </Button>
+                                    ) : null}
 
-                                <h1 className="text-2xl font-bold">{title}</h1>
+                                    <h1 className="text-2xl font-bold">{title}</h1>
+                                </div>
+                                <div>{actions}</div>
                             </div>
                             {children}
                         </div>
