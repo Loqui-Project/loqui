@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { UserAvatar } from '@/components/user-avatar';
 import { Auth, BrowserNotification } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { Bell, House, Inbox, Settings, Star, User } from 'lucide-react';
+import { Bell, ChevronLeft, House, Inbox, Search, Settings, Star, User } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface AuthLayoutProps {
@@ -18,6 +18,7 @@ export default function UserLayout({ children, title }: AuthLayoutProps) {
             auth: { user },
             statistics,
         },
+        url,
     } = usePage<{
         auth: Auth;
         statistics: {
@@ -111,6 +112,17 @@ export default function UserLayout({ children, title }: AuthLayoutProps) {
                                         </Link>
                                     </li>
                                     <li>
+                                        <Link href={route('search.index')}>
+                                            <Button
+                                                variant="ghost"
+                                                className="hover:bg-accent-foreground hover:text-accent w-full cursor-pointer justify-start transition"
+                                            >
+                                                <Search className="mr-2 h-4 w-4" />
+                                                Search
+                                            </Button>
+                                        </Link>
+                                    </li>
+                                    <li>
                                         <Link href={route('inbox')}>
                                             <Button
                                                 variant="ghost"
@@ -172,8 +184,22 @@ export default function UserLayout({ children, title }: AuthLayoutProps) {
                 )}
                 {/* Main content */}
                 <div className="flex-1">
-                    {/* Mobile header */}
-                    {children}
+                    <main className="p-4">
+                        <div className="mb-6">
+                            <div className="mb-6 flex items-center">
+                                {url !== route('home', {}, false) ? (
+                                    <Button variant="ghost" size="icon" asChild className="mr-2">
+                                        <Link href={route('home')}>
+                                            <ChevronLeft className="h-5 w-5" />
+                                        </Link>
+                                    </Button>
+                                ) : null}
+
+                                <h1 className="text-2xl font-bold">{title}</h1>
+                            </div>
+                            {children}
+                        </div>
+                    </main>
                 </div>
             </div>
         </>

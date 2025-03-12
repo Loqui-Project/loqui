@@ -21,7 +21,7 @@ export default function ListNotificationsPage({ notifications, types }: ListNoti
     }
 
     return (
-        <UserLayout>
+        <UserLayout title="Notifications">
             <div className="container space-y-6 p-10">
                 <NotificationsHeader />
 

@@ -10,7 +10,7 @@ type MessageShowProps = {
 
 export default function InboxPage({ messages }: MessageShowProps) {
     return (
-        <UserLayout>
+        <UserLayout title="Inbox">
             <div className="space-y-6 p-10">
                 <h2 className="text-xl font-semibold">Latest messages that you recived </h2>
 

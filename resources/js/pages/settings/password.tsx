@@ -1,7 +1,7 @@
 import InputError from '@/components/input-error';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Transition } from '@headlessui/react';
-import { Head, useForm } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 
 import HeadingSmall from '@/components/heading-small';
@@ -40,9 +40,7 @@ export default function Password() {
     };
 
     return (
-        <UserLayout>
-            <Head title="Profile settings" />
-
+        <UserLayout title="Password">
             <SettingsLayout>
                 <div className="space-y-6">
                     <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />

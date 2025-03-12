@@ -35,56 +35,54 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
-    username: string | null;
+    username: string;
     image_url: string | null;
     status: string;
     bio: string | null;
 }
 
 export interface Message {
-    id: number
-    user: User
-    sender: User | null
-    message: string
-    is_anon: boolean
-    likes_count: number
-    liked: boolean
-    replays_count: number
-    starred: boolean
-    replays: MessageReplay[]
-    created_at: string
-    updated_at: string
+    id: number;
+    user: User;
+    sender: User | null;
+    message: string;
+    is_anon: boolean;
+    likes_count: number;
+    liked: boolean;
+    replays_count: number;
+    starred: boolean;
+    replays: MessageReplay[];
+    created_at: string;
+    updated_at: string;
 }
-
 
 export interface MessageReplay {
-    id: number
-    user: User
+    id: number;
+    user: User;
     text: string | null;
-    created_at: string
-    updated_at: string
+    created_at: string;
+    updated_at: string;
 }
 
-
 export interface Notification {
-    id: string
-    type: string
-    notifiable_type: string
-    notifiable_id: number
+    id: string;
+    type: string;
+    notifiable_type: string;
+    notifiable_id: number;
     data: {
-        user: User
-        message?: Message
-        title: string
-    }
-    read_at: string | null
-    created_at: string
-    updated_at: string
+        user: User;
+        message?: Message;
+        title: string;
+    };
+    read_at: string | null;
+    created_at: string;
+    updated_at: string;
 }
 
 export interface BrowserNotification {
-    type: string
-    user: User
-    currentUser: User
-    message: Message
-    title: string
+    type: string;
+    user: User;
+    currentUser: User;
+    message: Message;
+    title: string;
 }

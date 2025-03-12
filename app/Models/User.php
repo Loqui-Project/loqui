@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Scout\Searchable;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements FilamentUser
@@ -17,6 +18,7 @@ class User extends Authenticatable implements FilamentUser
     use HasFactory, Notifiable;
 
     use HasRoles;
+    use Searchable;
 
     /**
      * The attributes that are mass assignable.
@@ -98,5 +100,35 @@ class User extends Authenticatable implements FilamentUser
     public function isFollowing(User $user): bool
     {
         return $this->following()->where('user_id', $user->id)->exists();
+    }
+
+    /**
+     * Get the value used to index the model.
+     */
+    public function getScoutKey(): mixed
+    {
+        return $this->id;
+    }
+
+    /**
+     * Get the key name used to index the model.
+     */
+    public function getScoutKeyName(): mixed
+    {
+        return 'id';
+    }
+
+    /**
+     * Get the indexable data array for the model.
+     *
+     * @return array<string, mixed>
+     */
+    public function toSearchableArray(): array
+    {
+        $array = $this->toArray();
+
+        // Customize the data array...
+
+        return $array;
     }
 }

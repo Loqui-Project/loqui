@@ -45,7 +45,7 @@ export default function ProfilePage({ user, is_me, messages, is_following }: Pro
         },
     });
     return (
-        <UserLayout title="Home">
+        <UserLayout title={`${user.name} Profile`}>
             {/* Profile content */}
             <main className="p-4">
                 <div className="mb-20 md:mb-6">
