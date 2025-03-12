@@ -41,7 +41,7 @@ class HandleInertiaRequests extends Middleware
             $statistics = [
                 'messages' => $user->messages()->withReplies()->count(),
                 'followers' => $user->followers()->count(),
-                'following' => $user->following()->count(),
+                'following' => $user->followings()->count(),
             ];
         }
 

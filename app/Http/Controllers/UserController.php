@@ -55,4 +55,33 @@ class UserController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
+    public function followers(Request $request, User $user)
+    {
+
+        $query = $request->query('query');
+
+        $followers = User::whereHas('followers', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->where('id', '!=', $user->id)
+            ->where('name', 'like', "%$query%")
+            ->where('username', 'like', "%$query%")
+            ->get();
+
+        return response()->json($followers);
+    }
+
+    public function followings(Request $request, User $user)
+    {
+        $query = $request->query('query');
+
+        $followings = User::whereHas('followers', function ($query) use ($user) {
+            $query->where('follower_id', $user->id);
+        })
+            ->where('name', 'like', "%$query%")
+            ->where('username', 'like', "%$query%")
+            ->get();
+
+        return response()->json($followings);
+    }
 }

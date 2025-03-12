@@ -89,7 +89,7 @@ class User extends Authenticatable implements FilamentUser
      *
      * @return HasMany<UserFollower>
      */
-    public function following(): HasMany
+    public function followings(): HasMany
     {
         return $this->hasMany(UserFollow::class, 'follower_id');
     }
@@ -99,7 +99,7 @@ class User extends Authenticatable implements FilamentUser
      */
     public function isFollowing(User $user): bool
     {
-        return $this->following()->where('user_id', $user->id)->exists();
+        return $this->followings()->where('user_id', $user->id)->exists();
     }
 
     /**

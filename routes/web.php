@@ -25,6 +25,9 @@ Route::middleware(['auth'])->get('/notifications', [\App\Http\Controllers\Notifi
 Route::controller(UserController::class)->prefix('user')->name('user.')->group(function () {
     Route::middleware(['auth'])->post('/follow', 'follow')->name('follow');
     Route::middleware(['auth'])->post('/unfollow', 'unfollow')->name('unfollow');
+    Route::get('/{user:username}/followers', 'followers')->name('followers');
+    Route::get('/{user:username}/followings', 'followings')->name('followings');
+
 });
 
 Route::middleware(['auth'])->controller(SearchController::class)->name('search.')->prefix('search')->group(function () {

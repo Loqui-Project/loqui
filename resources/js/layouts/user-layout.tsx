@@ -1,8 +1,11 @@
+import { UserClient } from '@/clients/user.client';
 import { Button } from '@/components/ui/button';
 import { UserAvatar } from '@/components/user-avatar';
+import { UserFollowModal } from '@/components/user/follow-modal';
 import { Auth, BrowserNotification } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 import { Bell, ChevronLeft, House, Inbox, Search, Settings, Star, User } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 interface AuthLayoutProps {
@@ -14,6 +17,8 @@ interface AuthLayoutProps {
 }
 
 export default function UserLayout({ children, title, actions }: AuthLayoutProps) {
+    const [openFollowerModal, setOpenFollowerModal] = useState(false);
+    const [openFollowingModal, setOpenFollowingModal] = useState(false);
     const {
         props: {
             auth: { user },
@@ -84,14 +89,51 @@ export default function UserLayout({ children, title, actions }: AuthLayoutProps
                                 </div>
 
                                 <div className="mt-6 hidden w-full justify-between md:flex">
-                                    <div className="text-center">
-                                        <p className="font-bold">{statistics.following}</p>
-                                        <p className="text-muted-foreground text-xs">Following</p>
-                                    </div>
-                                    <div className="text-center">
-                                        <p className="font-bold">{statistics.followers}</p>
-                                        <p className="text-muted-foreground text-xs">Followers</p>
-                                    </div>
+                                    <UserFollowModal
+                                        onClose={() => setOpenFollowerModal(false)}
+                                        user={user}
+                                        open={openFollowerModal}
+                                        queryKey="followers"
+                                        queryFn={({ queryKey }) => {
+                                            const [key, userId, query] = queryKey;
+                                            return UserClient.getFollowers(user.username, query as string);
+                                        }}
+                                        triggerComponent={
+                                            <div
+                                                onClick={() => {
+                                                    setOpenFollowerModal(true);
+                                                    setOpenFollowingModal(false);
+                                                }}
+                                                className="cursor-pointer text-center"
+                                            >
+                                                <p className="font-bold">{statistics.following}</p>
+                                                <p className="text-muted-foreground text-xs">Following</p>
+                                            </div>
+                                        }
+                                    />
+                                    <UserFollowModal
+                                        onClose={() => setOpenFollowingModal(false)}
+                                        user={user}
+                                        open={openFollowingModal}
+                                        queryKey="followers"
+                                        queryFn={({ queryKey }) => {
+                                            const [key, userId, query] = queryKey;
+                                            return UserClient.getFollowing(user.username, query as string);
+                                        }}
+                                        triggerComponent={
+                                            <div
+                                                onClick={() => {
+                                                    setOpenFollowingModal(true);
+                                                    setOpenFollowerModal(false);
+                                                }}
+                                                className="cursor-pointer text-center"
+                                            >
+                                                <p className="font-bold">{statistics.followers}</p>
+                                                <p className="text-muted-foreground text-xs">Followers</p>
+                                            </div>
+                                        }
+                                    />
+
                                     <div className="text-center">
                                         <p className="font-bold">{statistics.messages}</p>
                                         <p className="text-muted-foreground text-xs">Messages</p>
