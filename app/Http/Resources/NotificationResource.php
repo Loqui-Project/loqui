@@ -26,7 +26,7 @@ class NotificationResource extends JsonResource
 
     public function newMessageNotification(): array
     {
-        $data = $this->data['data'];
+        $data = $this->data;
         $currentUser = User::find($data['current_user_id']);
         $message = Message::find($data['message_id']);
 
