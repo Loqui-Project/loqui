@@ -43,19 +43,19 @@ export default function LandingPage() {
 
             <main className="flex-1">
                 {/* Hero Section */}
-                <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
+                <section className="relative w-full py-12 md:py-24 lg:py-32 xl:py-48">
                     <div className="container mx-auto px-4 md:px-6">
-                        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 xl:grid-cols-2">
-                            <div className="flex flex-col justify-center space-y-4">
-                                <div className="space-y-2">
+                        <div className="mx-auto flex max-w-8/12 flex-col items-center justify-center gap-y-12">
+                            <div className="flex flex-col justify-center space-y-4 text-center">
+                                <div className="flex flex-col gap-y-4 text-center">
                                     <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                                         Connect with friends in a more meaningful way
                                     </h1>
-                                    <p className="text-muted-foreground max-w-[600px] md:text-xl">
+                                    <p className="text-muted-foreground mx-auto max-w-[600px] text-center md:text-xl">
                                         Share moments, exchange messages, and build relationships on a platform designed for genuine connections.
                                     </p>
                                 </div>
-                                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                                <div className="flex flex-col justify-center gap-2 min-[400px]:flex-row">
                                     <Button size="lg" asChild>
                                         <Link href="/signup">Get Started</Link>
                                     </Button>
@@ -64,13 +64,14 @@ export default function LandingPage() {
                                     </Button>
                                 </div>
                             </div>
-                            <div className="flex items-center justify-center">
-                                <div className="relative aspect-square w-full max-w-[500px] md:aspect-video lg:aspect-square">
-                                    <img src="/placeholder.svg?height=600&width=600" alt="App preview" className="object-contain" />
+                            <div className="mx-auto flex items-center justify-center">
+                                <div className="relative w-full">
+                                    <img src="/images/web-images/loqui-banner.png" alt="Banner" className="object-cover" />
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div className="from-muted/40 absolute bottom-0 -z-10 block h-full w-full bg-gradient-to-t to-transparent"></div>
                 </section>
 
                 {/* Features Section */}
@@ -161,7 +162,7 @@ export default function LandingPage() {
                     <div className="container mx-auto px-4 md:px-6">
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
-                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">How ConnectMe Works</h2>
+                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">How Loqui Works</h2>
                                 <p className="text-muted-foreground max-w-[900px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                                     See how our platform helps you connect with others in a few simple steps.
                                 </p>
@@ -208,8 +209,8 @@ export default function LandingPage() {
                                             </li>
                                         </ul>
                                     </div>
-                                    <div className="bg-muted relative aspect-video overflow-hidden rounded-lg border">
-                                        <img src="/placeholder.svg?height=400&width=600" alt="Messaging interface" className="object-cover" />
+                                    <div className="bg-muted relative overflow-hidden rounded-lg border">
+                                        <img src="/images/web-images/user-profile.png" alt="Messaging interface" className="object-cover" />
                                     </div>
                                 </div>
                             </TabsContent>
@@ -247,8 +248,8 @@ export default function LandingPage() {
                                             </li>
                                         </ul>
                                     </div>
-                                    <div className="bg-muted relative aspect-video overflow-hidden rounded-lg border">
-                                        <img src="/placeholder.svg?height=400&width=600" alt="Social feed interface" className="object-cover" />
+                                    <div className="bg-muted relative overflow-hidden rounded-lg border">
+                                        <img src="/images/web-images/search.png" alt="Social feed interface" className="object-cover" />
                                     </div>
                                 </div>
                             </TabsContent>
@@ -287,7 +288,7 @@ export default function LandingPage() {
                                         </ul>
                                     </div>
                                     <div className="bg-muted relative aspect-video overflow-hidden rounded-lg border">
-                                        <img src="/placeholder.svg?height=400&width=600" alt="Profile interface" className="object-cover" />
+                                        <img src="/images/web-images/settings.png" alt="Profile interface" className="object-cover" />
                                     </div>
                                 </div>
                             </TabsContent>
@@ -300,7 +301,7 @@ export default function LandingPage() {
                     <div className="container mx-auto px-4 md:px-6">
                         <div className="flex flex-col items-center justify-center space-y-4 text-center">
                             <div className="space-y-2">
-                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">See ConnectMe in action</h2>
+                                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">See Loqui in action</h2>
                                 <p className="text-muted-foreground max-w-[900px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                                     Take a look at our intuitive interface designed for seamless communication.
                                 </p>
@@ -308,16 +309,13 @@ export default function LandingPage() {
                         </div>
 
                         <div className="relative mx-auto mt-12 max-w-5xl">
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                                <div className="relative aspect-[4/3] overflow-hidden rounded-lg border shadow-lg md:col-span-2">
-                                    <img src="/placeholder.svg?height=600&width=800" alt="App desktop view" className="object-cover" />
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-12">
+                                <div className="relative aspect-[4/2] overflow-hidden rounded-lg border shadow-lg md:col-span-9">
+                                    <img src="/images/web-images/user-profile.png" alt="App desktop view" className="object-cover" />
                                 </div>
-                                <div className="flex flex-col gap-6">
-                                    <div className="relative aspect-[9/16] overflow-hidden rounded-lg border shadow-lg">
-                                        <img src="/placeholder.svg?height=600&width=337" alt="App mobile view" className="object-cover" />
-                                    </div>
-                                    <div className="relative aspect-square overflow-hidden rounded-lg border shadow-lg">
-                                        <img src="/placeholder.svg?height=400&width=400" alt="App feature detail" className="object-cover" />
+                                <div className="flex flex-col gap-6 md:col-span-3">
+                                    <div className="relative aspect-[8/13] overflow-hidden rounded-lg border shadow-lg">
+                                        <img src="/images/web-images/mobile.png" alt="App mobile view" className="object-cover" />
                                     </div>
                                 </div>
                             </div>
@@ -356,7 +354,7 @@ export default function LandingPage() {
                             <div className="space-y-2">
                                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">What our users say</h2>
                                 <p className="text-muted-foreground max-w-[900px] md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                                    Don't just take our word for it. Here's what people love about ConnectMe.
+                                    Don't just take our word for it. Here's what people love about loqui.
                                 </p>
                             </div>
                         </div>
@@ -383,8 +381,8 @@ export default function LandingPage() {
                                             <Star className="h-5 w-5 fill-current" />
                                         </div>
                                         <p className="text-muted-foreground">
-                                            "ConnectMe has transformed how our team communicates. The interface is intuitive, and the social features
-                                            make work conversations more engaging."
+                                            "Loqui has transformed how our team communicates. The interface is intuitive, and the social features make
+                                            work conversations more engaging."
                                         </p>
                                     </div>
                                 </CardContent>
@@ -410,7 +408,7 @@ export default function LandingPage() {
                                             <Star className="h-5 w-5 fill-current" />
                                         </div>
                                         <p className="text-muted-foreground">
-                                            "I love how ConnectMe combines messaging and social features. It's like having the best parts of different
+                                            "I love how Loqui combines messaging and social features. It's like having the best parts of different
                                             apps all in one place."
                                         </p>
                                     </div>
@@ -437,7 +435,7 @@ export default function LandingPage() {
                                             <Star className="h-5 w-5 fill-current" />
                                         </div>
                                         <p className="text-muted-foreground">
-                                            "ConnectMe has helped me stay in touch with clients in a more personal way. The interface is beautiful and
+                                            "Loqui has helped me stay in touch with clients in a more personal way. The interface is beautiful and
                                             easy to use."
                                         </p>
                                     </div>
@@ -485,8 +483,7 @@ export default function LandingPage() {
             <footer className="w-full border-t py-6 md:py-0">
                 <div className="container mx-auto flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
                     <div className="flex items-center gap-2">
-                        <MessageCircle className="text-primary h-5 w-5" />
-                        <p className="text-sm font-medium">© 2025 ConnectMe. All rights reserved.</p>
+                        <p className="text-sm font-medium">© 2025 Loqui. All rights reserved.</p>
                     </div>
                     <div className="flex gap-4">
                         <Link href="#" className="text-sm font-medium underline-offset-4 hover:underline">

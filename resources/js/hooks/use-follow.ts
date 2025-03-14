@@ -1,25 +1,20 @@
 import { UserClient } from '@/clients/user.client';
 import { User } from '@/types';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
 import { toast } from 'sonner';
 
-export const useUnfollowUser = (user: User) => {
-    const [isFollowing, setIsFollowing] = useState(true);
-
-    const { mutate: unfollowUser, isPending: isUnfollowRequestPending } = useMutation({
-        mutationKey: ['unFollowUser', user.id],
+export const useFollowUser = (user: User) => {
+    const { mutate: followUser, isPending: isFollowRequestPending } = useMutation({
+        mutationKey: ['followUser', user.id],
         mutationFn: async () => {
-            return await UserClient.unfollowUser(user.id);
+            return await UserClient.followUser(user.id);
         },
         onSuccess: () => {
-            setIsFollowing(false);
-            toast.success(`You are now not following ${user.name}`);
+            toast.success(`You are now following ${user.name}`);
         },
     });
     return {
-        isFollowing,
-        unfollowUser,
-        isUnfollowRequestPending,
+        followUser,
+        isFollowRequestPending,
     };
 };

@@ -30,15 +30,11 @@ export interface SharedData {
 
 export interface User {
     id: number;
+    username: string;
     name: string;
     email: string;
-    email_verified_at: string | null;
-    created_at: string;
-    updated_at: string;
-    username: string;
-    image_url: string | null;
-    status: string;
-    bio: string | null;
+    image_url: string;
+    is_following: boolean;
 }
 
 export interface Message {

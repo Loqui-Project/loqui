@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MessageResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\UserFollow;
 use Illuminate\Http\Request;
@@ -68,7 +69,7 @@ class UserController extends Controller
             ->where('username', 'like', "%$query%")
             ->get();
 
-        return response()->json($followers);
+        return response()->json(UserResource::collection($followers));
     }
 
     public function followings(Request $request, User $user)
@@ -82,6 +83,6 @@ class UserController extends Controller
             ->where('username', 'like', "%$query%")
             ->get();
 
-        return response()->json($followings);
+        return response()->json(UserResource::collection($followings));
     }
 }

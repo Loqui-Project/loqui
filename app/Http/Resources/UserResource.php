@@ -14,6 +14,13 @@ class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'name' => $this->name,
+            'email' => $this->email,
+            'image_url' => $this->image_url ? asset('storage/'.$this->image_url) : '/images/default-avatar.png',
+            'is_following' => $this->followers->contains('id', $request->user()->id),
+        ];
     }
 }
