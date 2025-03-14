@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserSocialAuth;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialAuthController extends Controller
@@ -38,7 +40,10 @@ class SocialAuthController extends Controller
             $user = User::create([
                 'name' => $socialUser->name,
                 'email' => $socialUser->email,
+                'username' => $socialUser->email,
+                'password' => Hash::make(Str::random(24).time()),
             ]);
+            $user->assignRole('user');
             UserSocialAuth::create([
                 'user_id' => $user->id,
                 'provider' => $provider,
