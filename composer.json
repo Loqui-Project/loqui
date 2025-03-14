@@ -28,7 +28,6 @@
         "predis/predis": "^2.3",
         "saasykit/filament-oops": "^1.0",
         "sentry/sentry-laravel": "^4.13",
-        "shuvroroy/filament-spatie-laravel-backup": "^2.2",
         "shuvroroy/filament-spatie-laravel-health": "^2.3",
         "socialiteproviders/facebook": "^4.1",
         "socialiteproviders/google": "^4.1",

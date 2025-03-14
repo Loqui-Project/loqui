@@ -19,7 +19,6 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Saasykit\FilamentOops\FilamentOopsPlugin;
-use ShuvroRoy\FilamentSpatieLaravelBackup\FilamentSpatieLaravelBackupPlugin;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -59,7 +58,6 @@ class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 FilamentOopsPlugin::make()->addEnvironment('local', 'Local', '#008000'),  // Add this line
                 FilamentSpatieLaravelHealthPlugin::make(),
-                FilamentSpatieLaravelBackupPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,
