@@ -18,8 +18,12 @@ Route::middleware(['auth'])->get('/inbox', [MessageController::class, 'inbox'])-
 Route::prefix('message')->name('message.')->controller(MessageController::class)->group(function () {
     Route::middleware(['auth'])->post('/like', 'like')->name('like');
     Route::middleware(['auth'])->post('/add-reply', 'addReply')->name('add-reply');
+    Route::middleware(['auth'])->get('/favorites', 'favorites')->name('favorites');
+    Route::middleware(['auth'])->post('/add-to-favorite', 'addToFavorite')->name('addToFavorite');
+
     Route::post('/send', 'sendMessage')->name('send');
     Route::get('/{message:id}', 'show')->name('show');
+
 });
 Route::middleware(['auth'])->get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications');
 Route::controller(UserController::class)->prefix('user')->name('user.')->group(function () {

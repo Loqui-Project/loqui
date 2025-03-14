@@ -30,7 +30,7 @@ class RegisteredUserController extends Controller
     {
 
         $user = User::create($request->validated());
-
+        $user->assignRole('user');
         event(new Registered($user));
 
         Auth::login($user);

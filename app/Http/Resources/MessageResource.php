@@ -24,7 +24,7 @@ class MessageResource extends JsonResource
             'liked' => $this->likes()->where('user_id', $request->user()?->id)->exists(),
             'replays_count' => $this->replays()->count(),
             'replays' => MessageReplayResource::collection($this->replays()->latest()->get()),
-            'starred' => false,
+            'is_favorite' => $this->favorites()->where('user_id', $request->user()?->id)->exists(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

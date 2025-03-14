@@ -50,7 +50,7 @@ export interface Message {
     likes_count: number;
     liked: boolean;
     replays_count: number;
-    starred: boolean;
+    is_favorite: boolean;
     replays: MessageReplay[];
     created_at: string;
     updated_at: string;
@@ -85,4 +85,10 @@ export interface BrowserNotification {
     currentUser: User;
     message: Message;
     title: string;
+}
+
+export interface UserSocialAuth {
+    provider: string;
+    provider_name: string;
+    connected: boolean;
 }

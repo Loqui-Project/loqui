@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\UserStatusEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
 use Filament\Forms;
@@ -36,6 +37,11 @@ class UserResource extends Resource
                         TextInput::make('username'),
                         TextInput::make('email'),
                         TextInput::make('password')->hiddenOn('edit'),
+                        Forms\Components\Select::make('roles')
+                            ->relationship('roles', 'name')
+                            ->multiple()
+                            ->preload()
+                            ->searchable(),
                     ]),
 
             ]);
@@ -50,6 +56,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')->label('Name')->searchable(),
                 Tables\Columns\TextColumn::make('username')->label('Username')->searchable(),
                 Tables\Columns\TextColumn::make('email')->label('Email')->searchable(),
+                Tables\Columns\TextColumn::make('roles.name')->label('Roles')->searchable(),
                 Tables\Columns\TextColumn::make('status')->label('Status')
                     ->badge(),
                 Tables\Columns\TextColumn::make('created_at')->label('Created at'),
@@ -58,11 +65,11 @@ class UserResource extends Resource
             ])
             ->filters([
                 SelectFilter::make('status')
-                    ->options([
-                        'enabled' => 'Enabled',
-                        'disabled' => 'Disabled',
-                    ])
+                    ->options(UserStatusEnum::toArray())
                     ->attribute('status'),
+                SelectFilter::make('role')
+                    ->relationship('roles', 'name')
+                    ->attribute('roles'),
                 Filter::make('created_at')
                     ->form([
                         Forms\Components\DatePicker::make('created_from'),

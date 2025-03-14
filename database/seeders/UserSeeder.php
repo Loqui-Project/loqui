@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Message;
-use App\Models\MessageReplay;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -14,12 +12,11 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'email' => 'admin@example.com',
-            'username' => 'admin',
-            'name' => 'admin',
+        $user = User::factory()->create([
+            'email' => 'me@yanalshoubaki.com',
+            'username' => 'yanalshoubaki',
+            'name' => 'Yanal Shoubaki',
         ]);
-        User::factory()->count(10)->has(Message::factory(), 'messages')->create();
-        User::factory()->count(10)->has(Message::factory()->has(MessageReplay::factory(), 'replay'), 'messages')->create();
+        $user->assignRole('super-admin');
     }
 }

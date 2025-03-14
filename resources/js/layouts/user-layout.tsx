@@ -14,9 +14,10 @@ interface AuthLayoutProps {
     title?: string;
     description?: string;
     actions?: React.ReactNode;
+    pageTitle?: string;
 }
 
-export default function UserLayout({ children, title, actions }: AuthLayoutProps) {
+export default function UserLayout({ children, title, actions, pageTitle = title }: AuthLayoutProps) {
     const [openFollowerModal, setOpenFollowerModal] = useState(false);
     const [openFollowingModal, setOpenFollowingModal] = useState(false);
     const {
@@ -61,7 +62,25 @@ export default function UserLayout({ children, title, actions }: AuthLayoutProps
 
     return (
         <>
-            <Head title={title} />
+            <Head>
+                <meta charSet="utf-8" />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+                <meta name="theme-color" content="#FFFFFF" />
+                <meta name="referrer" content="origin-when-cross-origin" />
+                <meta name="twitter:site" content="@yanalshoubaki" />
+                <meta name="twitter:domain" content="loqui.yanalshoubaki.com" />
+                <meta property="og:url" content={url} />
+                <meta name="twitter:url" content={url} />
+                <meta name="twitter:creator" content={`@${user.username}`} />
+                <meta property="fb:app_id" content={import.meta.env.FACEBOOK_CLIENT_ID} />
+                <title>{pageTitle}</title>
+                <meta name="description" content="Your page description" />
+                <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+                <meta property="og:title" content={pageTitle} />
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={url} />
+                <meta property="og:image" content={user.image_url ? `/storage/${user.image_url}` : '/images/default-avatar.png'} />
+            </Head>
             <div className="bg-background min-h-screen md:flex">
                 {user && (
                     <>
@@ -93,7 +112,7 @@ export default function UserLayout({ children, title, actions }: AuthLayoutProps
                                         onClose={() => setOpenFollowerModal(false)}
                                         user={user}
                                         open={openFollowerModal}
-                                        queryKey="followers"
+                                        queryKey={`followers-${user.id}`}
                                         queryFn={({ queryKey }) => {
                                             const [key, userId, query] = queryKey;
                                             return UserClient.getFollowers(user.username, query as string);
@@ -115,7 +134,7 @@ export default function UserLayout({ children, title, actions }: AuthLayoutProps
                                         onClose={() => setOpenFollowingModal(false)}
                                         user={user}
                                         open={openFollowingModal}
-                                        queryKey="followers"
+                                        queryKey={`followings-${user.id}`}
                                         queryFn={({ queryKey }) => {
                                             const [key, userId, query] = queryKey;
                                             return UserClient.getFollowing(user.username, query as string);
@@ -177,13 +196,15 @@ export default function UserLayout({ children, title, actions }: AuthLayoutProps
                                         </Link>
                                     </li>
                                     <li className="hidden md:block">
-                                        <Button
-                                            variant="ghost"
-                                            className="hover:bg-accent-foreground hover:text-accent w-full cursor-pointer justify-start transition"
-                                        >
-                                            <Star className="mr-2 h-4 w-4" />
-                                            Starred
-                                        </Button>
+                                        <Link href={route('message.favorites')}>
+                                            <Button
+                                                variant="ghost"
+                                                className="hover:bg-accent-foreground hover:text-accent w-full cursor-pointer justify-start transition"
+                                            >
+                                                <Star className="mr-2 h-4 w-4" />
+                                                Favorites
+                                            </Button>
+                                        </Link>
                                     </li>
                                     <li className="hidden md:block">
                                         <Link href={route('notifications')}>

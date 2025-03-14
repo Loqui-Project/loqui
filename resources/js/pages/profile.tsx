@@ -5,6 +5,7 @@ import { MessageCard } from '@/components/message-card';
 import { SendMessage } from '@/components/send-message';
 import { Button } from '@/components/ui/button';
 import { UserAvatar } from '@/components/user-avatar';
+import { useUnfollowUser } from '@/hooks/use-unfollow-user';
 import UserLayout from '@/layouts/user-layout';
 import { Message, User } from '@/types';
 import { useMutation } from '@tanstack/react-query';
@@ -34,67 +35,55 @@ export default function ProfilePage({ user, is_me, messages, is_following }: Pro
         },
     });
 
-    const { mutate: unfollowUser } = useMutation({
-        mutationKey: ['unFollowUser', user.id],
-        mutationFn: async () => {
-            return await UserClient.unfollowUser(user.id);
-        },
-        onSuccess: () => {
-            setIsFollowing(false);
-            toast.success(`You are now not following ${user.name}`);
-        },
-    });
-    return (
-        <UserLayout title={`${user.name} Profile`}>
-            {/* Profile content */}
-            <main className="p-4">
-                <div className="mb-20 md:mb-6">
-                    {!is_me && (
-                        <div className="my-10 flex w-full items-start justify-between">
-                            <div className="flex items-center gap-4">
-                                <UserAvatar user={user} className="h-16 w-16" />
-                                <div>
-                                    <h1 className="text-2xl font-semibold">{user.name}</h1>
-                                    <p className="text-muted-foreground text-sm">
-                                        <span>@</span>
-                                        {user.username}
-                                    </p>
-                                </div>
-                            </div>
-                            <Button
-                                onClick={() => (isFollowing ? unfollowUser() : followUser())}
-                                variant="secondary"
-                                className={clsx('mt-4 transition data-[unfollow=true]:bg-red-500 data-[unfollow=true]:text-white', {
-                                    'bg-primary': isFollowing,
-                                    'hover:bg-primary-dark': isFollowing,
-                                    'text-accent': isFollowing,
-                                    'text-primary': !isFollowing,
-                                    'hover:text-primary-dark': !isFollowing,
-                                })}
-                                onMouseEnter={(e) => {
-                                    e.target.innerText = isFollowing ? 'Unfollow' : 'Follow';
-                                    e.target.dataset.unfollow = isFollowing ? 'true' : 'false';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.target.innerText = isFollowing ? 'Following' : 'Follow';
-                                    e.target.dataset.unfollow = 'false';
-                                }}
-                            >
-                                {is_following ? 'Following' : 'Follow'}
-                            </Button>
-                        </div>
-                    )}
-                    {!is_me && <SendMessage userId={user.id} />}
-                    {/* Feed from followed users */}
-                    <div className="space-y-6">
-                        <h2 className="text-xl font-semibold">Latest from people you follow</h2>
+    const { unfollowUser, isUnfollowRequestPending } = useUnfollowUser(user);
 
-                        {messages.data.map((message) => (
-                            <MessageCard key={message.id} message={message} />
-                        ))}
+    return (
+        <UserLayout title={`${user.name} Profile`} pageTitle={`${user.name} (@${user.username})`}>
+            <section className="mb-20 md:mb-6">
+                {!is_me && (
+                    <div className="my-10 flex w-full items-start justify-between">
+                        <div className="flex items-center gap-4">
+                            <UserAvatar user={user} className="h-16 w-16" />
+                            <div>
+                                <h1 className="text-2xl font-semibold">{user.name}</h1>
+                                <p className="text-muted-foreground text-sm">
+                                    <span>@</span>
+                                    {user.username}
+                                </p>
+                            </div>
+                        </div>
+                        <Button
+                            onClick={() => (isFollowing ? unfollowUser() : followUser())}
+                            variant="secondary"
+                            disabled={isUnfollowRequestPending}
+                            className={clsx('mt-4 transition data-[unfollow=true]:bg-red-500 data-[unfollow=true]:text-white', {
+                                'bg-primary': isFollowing,
+                                'hover:bg-primary-dark': isFollowing,
+                                'text-accent': isFollowing,
+                                'text-primary': !isFollowing,
+                                'hover:text-primary-dark': !isFollowing,
+                            })}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.innerText = isFollowing ? 'Unfollow' : 'Follow';
+                                e.currentTarget.dataset.unfollow = isFollowing ? 'true' : 'false';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.innerText = isFollowing ? 'Following' : 'Follow';
+                                e.currentTarget.dataset.unfollow = 'false';
+                            }}
+                        >
+                            {isFollowing ? 'Following' : 'Follow'}
+                        </Button>
                     </div>
-                </div>
-            </main>
+                )}
+                {!is_me && <SendMessage userId={user.id} />}
+                {/* Feed from followed users */}
+                <section id="messages" className="mt-4 space-y-6">
+                    {messages.data.map((message) => (
+                        <MessageCard key={message.id} message={message} />
+                    ))}
+                </section>
+            </section>
         </UserLayout>
     );
 }

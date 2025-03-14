@@ -62,7 +62,7 @@ class UserController extends Controller
         $query = $request->query('query');
 
         $followers = User::whereHas('followers', function ($query) use ($user) {
-            $query->where('user_id', $user->id);
+            $query->where('follower_id', $user->id);
         })->where('id', '!=', $user->id)
             ->where('name', 'like', "%$query%")
             ->where('username', 'like', "%$query%")
@@ -75,8 +75,8 @@ class UserController extends Controller
     {
         $query = $request->query('query');
 
-        $followings = User::whereHas('followers', function ($query) use ($user) {
-            $query->where('follower_id', $user->id);
+        $followings = User::whereHas('followings', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
         })
             ->where('name', 'like', "%$query%")
             ->where('username', 'like', "%$query%")

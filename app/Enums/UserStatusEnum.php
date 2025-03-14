@@ -10,12 +10,14 @@ enum UserStatusEnum: string implements HasColor, HasIcon, HasLabel
 {
     case ENABLED = 'enabled';
     case DISABLED = 'disabled';
+    case DEACTIVATED = 'deactivated';
 
     public static function toArray(): array
     {
         return [
-            self::ENABLED => 'Enabled',
-            self::DISABLED => 'Disabled',
+            self::ENABLED->value => 'Enabled',
+            self::DISABLED->value => 'Disabled',
+            self::DEACTIVATED->value => 'Deactivated',
         ];
     }
 
@@ -24,6 +26,7 @@ enum UserStatusEnum: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::ENABLED => 'Enabled',
             self::DISABLED => 'Disabled',
+            self::DEACTIVATED => 'Deactivated',
         };
     }
 
@@ -32,6 +35,7 @@ enum UserStatusEnum: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::ENABLED => 'success',
             self::DISABLED => 'warning',
+            self::DEACTIVATED => 'danger',
         };
     }
 
@@ -40,6 +44,7 @@ enum UserStatusEnum: string implements HasColor, HasIcon, HasLabel
         return match ($this) {
             self::ENABLED => 'heroicon-m-pencil',
             self::DISABLED => 'heroicon-m-eye',
+            self::DEACTIVATED => 'heroicon-s-minus-circle',
         };
     }
 }

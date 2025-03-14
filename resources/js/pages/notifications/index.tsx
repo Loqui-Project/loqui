@@ -1,10 +1,11 @@
+import { EmptyResult } from '@/components/empty-result';
 import { NotificationsList } from '@/components/notifications/notifications-list';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import UserLayout from '@/layouts/user-layout';
 import { Notification } from '@/types';
 import clsx from 'clsx';
-import { Filter } from 'lucide-react';
+import { Bell, Filter } from 'lucide-react';
 import { useMemo } from 'react';
 type ListNotificationsPageProps = {
     notifications: {
@@ -77,7 +78,11 @@ export default function ListNotificationsPage({ notifications, types }: ListNoti
                     ))}
                 </div>
                 {notifications.data.length === 0 ? (
-                    <div className="text-center text-gray-500">No notifications found.</div>
+                    <EmptyResult
+                        icon={<Bell className="text-muted-foreground mx-auto h-12 w-12" />}
+                        title="No notifications found"
+                        description="Your notifications will appear here"
+                    />
                 ) : (
                     <NotificationsList notifications={notifications} />
                 )}

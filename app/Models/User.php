@@ -61,7 +61,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return $this->hasRole('super-admin');
     }
 
     /**
@@ -72,6 +72,16 @@ class User extends Authenticatable implements FilamentUser
     public function messages(): HasMany
     {
         return $this->hasMany(Message::class, 'user_id');
+    }
+
+    /**
+     * Get the user's social connections.
+     *
+     * @return HasMany<UserSocialAuth>
+     */
+    public function socialConnections(): HasMany
+    {
+        return $this->hasMany(UserSocialAuth::class, 'user_id');
     }
 
     /**
@@ -130,5 +140,16 @@ class User extends Authenticatable implements FilamentUser
         // Customize the data array...
 
         return $array;
+    }
+
+    public function favouriteMessages()
+    {
+        return $this->hasMany(MessageFavourite::class, 'user_id');
+    }
+
+    public function deactivate(): void
+    {
+        $this->status = UserStatusEnum::DEACTIVATED;
+        $this->save();
     }
 }

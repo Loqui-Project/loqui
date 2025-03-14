@@ -3,13 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Message\AddReplayRequest;
+use App\Http\Requests\Message\AddToFavoriteRequest;
 use App\Http\Requests\Message\LikeMessageRequest;
 use App\Http\Requests\Message\SendMessageRequest;
 use App\Http\Resources\MessageResource;
 use App\Jobs\NewMessageJob;
 use App\Models\Message;
+use App\Models\MessageFavourite;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class MessageController extends Controller
@@ -94,5 +97,26 @@ class MessageController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
+    }
+
+    public function addToFavorite(AddToFavoriteRequest $request)
+    {
+        MessageFavourite::create([
+            'user_id' => Auth::id(),
+            'message_id' => $request->message_id,
+        ]);
+
+        return response()->json(['message' => 'Message saved successfully']);
+    }
+
+    public function favorites(Request $request)
+    {
+        $messages = Message::whereHas('favorites', function ($query) use ($request) {
+            $query->where('user_id', $request->user()->id);
+        })->get();
+
+        return Inertia::render('message/favorites', [
+            'messages' => MessageResource::collection($messages),
+        ]);
     }
 }

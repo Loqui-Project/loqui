@@ -1,6 +1,7 @@
 import { MessagesClient } from '@/clients/messages.client';
 import { Textarea } from '@/components/ui/textarea';
 import { UserAvatar } from '@/components/user-avatar';
+import { useAddToFavorite } from '@/hooks/use-add-to-favorite';
 import { Message } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -66,6 +67,8 @@ export function MessageCard({ message }: MessageCardProps) {
         },
     });
 
+    const { addToFavorite, isFavorite, isFavoriteRequestPending } = useAddToFavorite(message);
+
     return (
         <Card key={message.id} className="gap-y-2 overflow-hidden p-0">
             <CardHeader className="flex flex-row items-start gap-3 space-y-0 p-4">
@@ -90,8 +93,8 @@ export function MessageCard({ message }: MessageCardProps) {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                            <Star className="mr-2 h-4 w-4" />
+                        <DropdownMenuItem onClick={() => addToFavorite()} disabled={isFavoriteRequestPending}>
+                            <Star className={clsx('mr-2 h-4 w-4', isFavorite ? 'text-yellow-500' : 'text-muted-foreground')} />
                             Save
                         </DropdownMenuItem>
                         <DropdownMenuItem>

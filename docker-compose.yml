@@ -11,6 +11,8 @@ services:
       POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
       - loqui_dev_db:/var/lib/postgresql/data
+    networks:
+      - loqui
     healthcheck:
       test:
         - CMD
@@ -65,6 +67,8 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin4_container
     restart: always
+    networks:
+      - loqui
     ports:
       - '8888:80'
     environment:

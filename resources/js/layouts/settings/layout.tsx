@@ -21,6 +21,11 @@ const sidebarNavItems: NavItem[] = [
         url: route('appearance'),
         icon: null,
     },
+    {
+        title: 'Security',
+        url: route('security.edit'),
+        icon: null,
+    },
 ];
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {

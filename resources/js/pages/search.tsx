@@ -1,10 +1,12 @@
 'use client';
 
 import { SearchClient } from '@/clients/search.client';
+import { EmptyResult } from '@/components/empty-result';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { UserAvatar } from '@/components/user-avatar';
+import { UserCard } from '@/components/user/user-card';
 import UserLayout from '@/layouts/user-layout';
 import { User } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -66,8 +68,8 @@ export default function SearchPage() {
                             </div>
 
                             <div className="flex flex-col gap-y-4">
-                                {data!.data.map((person) => (
-                                    <UserResult key={person.id} user={person} />
+                                {data!.data.map((user) => (
+                                    <UserCard key={user.id} user={user} />
                                 ))}
                             </div>
                             {data?.data.length === 0 && (
@@ -79,24 +81,24 @@ export default function SearchPage() {
                             )}
                         </div>
                     ) : (
-                        <div className="py-12 text-center">
-                            <Search className="text-muted-foreground mx-auto h-12 w-12" />
-                            <h3 className="mt-4 text-lg font-medium">No results found</h3>
-                            <p className="text-muted-foreground mt-1 text-sm">We couldn't find anything matching "{searchQuery}"</p>
-                            <Button variant="outline" className="mt-4" onClick={clearSearch}>
-                                Clear search
-                            </Button>
-                        </div>
+                        <EmptyResult
+                            icon={<Search className="text-muted-foreground mx-auto h-12 w-12" />}
+                            title="No results found"
+                            description={`We couldn't find anything matching "${searchQuery}"`}
+                            actions={
+                                <Button variant="outline" className="mt-4" onClick={clearSearch}>
+                                    Clear search
+                                </Button>
+                            }
+                        />
                     )}
                 </div>
             ) : (
-                <div className="space-y-6">
-                    <div className="py-12 text-center">
-                        <Search className="text-muted-foreground mx-auto h-12 w-12" />
-                        <h3 className="mt-4 text-lg font-medium">Search for people</h3>
-                        <p className="text-muted-foreground mt-1 text-sm">Find and connect with people in your network</p>
-                    </div>
-                </div>
+                <EmptyResult
+                    icon={<Search className="text-muted-foreground mx-auto h-12 w-12" />}
+                    title="Search for people"
+                    description="Find and connect with people in your network"
+                />
             )}
         </UserLayout>
     );
@@ -104,7 +106,7 @@ export default function SearchPage() {
 
 function UserResult({ user }: { user: User }) {
     return (
-        <Card className="overflow-hidden">
+        <Card className="overflow-hidden p-0">
             <CardContent className="p-4">
                 <div className="flex items-center gap-3">
                     <UserAvatar user={user} />

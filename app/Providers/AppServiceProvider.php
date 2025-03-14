@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Health\Checks\Checks;
+use Spatie\Health\Facades\Health;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,5 +24,22 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void {}
+    public function boot(): void
+    {
+        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+            $event->extendSocialite('facebook', \SocialiteProviders\Facebook\Provider::class);
+            $event->extendSocialite('google', \SocialiteProviders\Google\Provider::class);
+        });
+
+        Health::checks([
+            Checks\OptimizedAppCheck::new(),
+            Checks\DebugModeCheck::new(),
+            Checks\EnvironmentCheck::new(),
+            Checks\DatabaseCheck::new(),
+            Checks\BackupsCheck::new(),
+            Checks\MeiliSearchCheck::new(),
+            Checks\RedisCheck::new(),
+            Checks\QueueCheck::new(),
+        ]);
+    }
 }
