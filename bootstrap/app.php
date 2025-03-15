@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->trustProxies(['*']);
     })
+    ->withEvents(discover: [
+        __DIR__.'/../app/Listeners',
+    ])
     ->withExceptions(function (Exceptions $exceptions) {
         Integration::handles($exceptions);
     })->create();

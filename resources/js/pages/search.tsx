@@ -3,13 +3,9 @@
 import { SearchClient } from '@/clients/search.client';
 import { EmptyResult } from '@/components/empty-result';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { UserAvatar } from '@/components/user-avatar';
 import { UserCard } from '@/components/user/user-card';
 import UserLayout from '@/layouts/user-layout';
-import { User } from '@/types';
-import { Link } from '@inertiajs/react';
 import { useQuery } from '@tanstack/react-query';
 import { Search, Users, X } from 'lucide-react';
 import { useState } from 'react';
@@ -101,25 +97,5 @@ export default function SearchPage() {
                 />
             )}
         </UserLayout>
-    );
-}
-
-function UserResult({ user }: { user: User }) {
-    return (
-        <Card className="overflow-hidden p-0">
-            <CardContent className="p-4">
-                <div className="flex items-center gap-3">
-                    <UserAvatar user={user} />
-                    <div className="flex-1">
-                        <p className="font-medium">{user.name}</p>
-                        <p className="text-muted-foreground text-xs">@{user.username}</p>
-                        <p className="mt-1 text-sm">{user.bio ?? ''}</p>
-                    </div>
-                    <Link href={route('profile', user.username)}>
-                        <Button size="sm">View profile</Button>
-                    </Link>
-                </div>
-            </CardContent>
-        </Card>
     );
 }

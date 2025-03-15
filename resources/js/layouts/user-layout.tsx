@@ -3,8 +3,8 @@ import { Button } from '@/components/ui/button';
 import { UserAvatar } from '@/components/user-avatar';
 import { UserFollowModal } from '@/components/user/follow-modal';
 import { Auth, BrowserNotification } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { Bell, ChevronLeft, House, Inbox, Search, Settings, Star, User } from 'lucide-react';
+import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Bell, ChevronLeft, House, Inbox, LogOut, Search, Settings, Star, User } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -231,7 +231,7 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                 </ul>
                             </nav>
 
-                            <div className="hidden border-t p-4 md:block">
+                            <div className="hidden flex-col gap-y-2 border-t p-4 md:flex">
                                 <Link
                                     href={route('profile', {
                                         username: user.username,
@@ -242,6 +242,16 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                         View Profile
                                     </Button>
                                 </Link>
+                                <Button
+                                    onClick={() => {
+                                        router.post(route('logout'));
+                                    }}
+                                    variant="destructive"
+                                    className="w-full"
+                                >
+                                    <LogOut className="mr-2 h-4 w-4" />
+                                    Logout
+                                </Button>
                             </div>
                         </div>
                     </>

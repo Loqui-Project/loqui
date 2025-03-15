@@ -127,6 +127,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Redis' => Illuminate\Support\Facades\Redis::class,
+        'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+
     ])->toArray(),
 
 ];
