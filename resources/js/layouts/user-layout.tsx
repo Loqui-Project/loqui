@@ -5,7 +5,7 @@ import { UserFollowModal } from '@/components/user/follow-modal';
 import { Auth, BrowserNotification } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { Bell, ChevronLeft, House, Inbox, LogOut, Search, Settings, Star, User } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 interface AuthLayoutProps {
@@ -22,7 +22,9 @@ export default function UserLayout({ children, title, actions, pageTitle = title
     const [openFollowingModal, setOpenFollowingModal] = useState(false);
     const {
         props: {
-            auth: { user },
+            auth: {
+                user: { data: user },
+            },
             statistics,
         },
         url,
@@ -34,6 +36,15 @@ export default function UserLayout({ children, title, actions, pageTitle = title
             following: number;
         };
     }>();
+
+    const isActiveLink = useMemo(
+        () => (href: string) => {
+            const pathname = new URL(href, window.location.origin).pathname;
+            console.log(pathname, url);
+            return url === pathname || url.includes(pathname);
+        },
+        [url],
+    );
 
     window.Echo.private(`user.${user?.id ?? 'anon'}`).notification((notification: BrowserNotification) => {
         toast.custom(() => (
@@ -86,25 +97,36 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                     <>
                         <div className="bg-muted md:bg-muted/40 sticky top-0 z-10 flex w-full flex-col border-r md:h-screen md:w-64">
                             <div className="flex flex-col items-start justify-start border-b p-6 md:items-center md:justify-center">
-                                <div className="flex w-full flex-row items-center justify-between md:justify-center">
+                                <div className="flex w-full flex-row flex-wrap items-center justify-between gap-y-4 md:justify-center">
                                     <div className="flex flex-row items-center gap-x-4 md:flex-col">
                                         <UserAvatar user={user} className="mb-4 h-10 w-10 md:h-20 md:w-20" />
-                                        <div className="flex flex-col">
+                                        <div className="flex flex-col items-center justify-center">
                                             <h2 className="text-xl font-bold">{user.name}</h2>
                                             <p className="text-muted-foreground text-sm">{`@${user.username}`}</p>
                                         </div>
                                     </div>
-                                    <Link
-                                        href={route('profile', {
-                                            username: user.username,
-                                        })}
-                                        className="block md:hidden"
-                                    >
-                                        <Button className="w-full">
-                                            <User className="mr-2 h-4 w-4" />
-                                            View Profile
+                                    <div className="flex flex-row gap-x-4 md:hidden md:flex-col md:gap-x-0">
+                                        <Link
+                                            href={route('profile', {
+                                                username: user.username,
+                                            })}
+                                            className="block md:hidden"
+                                        >
+                                            <Button className="w-full">
+                                                <User className="mr-2 h-4 w-4" />
+                                                View Profile
+                                            </Button>
+                                        </Link>
+                                        <Button
+                                            onClick={() => {
+                                                router.post(route('logout'));
+                                            }}
+                                            variant="destructive"
+                                            size="icon"
+                                        >
+                                            <LogOut className="h-4 w-4" />
                                         </Button>
-                                    </Link>
+                                    </div>
                                 </div>
 
                                 <div className="mt-6 hidden w-full justify-between md:flex">
@@ -163,68 +185,73 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                             <nav className="fixed bottom-0 z-10 w-full flex-1 md:relative md:w-auto md:p-4">
                                 <ul className="bg-accent flex flex-row justify-evenly space-y-2 p-4 md:flex-col md:justify-center md:bg-transparent md:p-0">
                                     <li>
-                                        <Link href={route('home')}>
+                                        <Link href={route('home')} data-active={isActiveLink(route('home'))} className="group">
                                             <Button
                                                 variant="ghost"
-                                                className="hover:bg-accent-foreground hover:text-accent w-full cursor-pointer justify-start transition"
+                                                className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
                                                 <House className="mr-2 h-4 w-4" />
-                                                Home
+                                                <span className="group-data-[active=true]:block md:block">Home</span>
                                             </Button>
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={route('search.index')}>
+                                        <Link href={route('search.index')} data-active={isActiveLink(route('search.index'))} className="group">
                                             <Button
                                                 variant="ghost"
-                                                className="hover:bg-accent-foreground hover:text-accent w-full cursor-pointer justify-start transition"
+                                                className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
                                                 <Search className="mr-2 h-4 w-4" />
-                                                Search
+                                                <span className="group-data-[active=true]:block md:block">Search</span>
                                             </Button>
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={route('inbox')}>
+                                        <Link href={route('inbox')} data-active={isActiveLink(route('inbox'))} className="group">
                                             <Button
                                                 variant="ghost"
-                                                className="hover:bg-accent-foreground hover:text-accent w-full cursor-pointer justify-start transition"
+                                                className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
                                                 <Inbox className="mr-2 h-4 w-4" />
-                                                Inbox
+                                                <span className="group-data-[active=true]:block md:block">Inbox</span>
                                             </Button>
                                         </Link>
                                     </li>
                                     <li className="hidden md:block">
-                                        <Link href={route('message.favorites')}>
+                                        <Link
+                                            href={route('message.favorites')}
+                                            data-active={isActiveLink(route('message.favorites'))}
+                                            className="group"
+                                        >
                                             <Button
                                                 variant="ghost"
-                                                className="hover:bg-accent-foreground hover:text-accent w-full cursor-pointer justify-start transition"
+                                                className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
                                                 <Star className="mr-2 h-4 w-4" />
-                                                Favorites
+                                                <span className="group-data-[active=true]:block md:block">Favorites</span>
                                             </Button>
                                         </Link>
                                     </li>
                                     <li className="hidden md:block">
-                                        <Link href={route('notifications')}>
+                                        <Link href={route('notifications')} data-active={isActiveLink(route('notifications'))} className="group">
                                             <Button
                                                 variant="ghost"
-                                                className="hover:bg-accent-foreground hover:text-accent w-full cursor-pointer justify-start transition"
+                                                className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
                                                 <Bell className="mr-2 h-4 w-4" />
-                                                Notifications
+
+                                                <span className="group-data-[active=true]:block md:block">Notifications</span>
                                             </Button>
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href={route('profile.edit')}>
+                                        <Link href={route('profile.edit')} data-active={isActiveLink(route('profile.edit'))} className="group">
                                             <Button
                                                 variant="ghost"
-                                                className="hover:bg-accent-foreground hover:text-accent w-full cursor-pointer justify-start transition"
+                                                className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
                                                 <Settings className="mr-2 h-4 w-4" />
-                                                Settings
+                                                <span className="group-data-[active=true]:block md:block">Settings</span>
                                             </Button>
                                         </Link>
                                     </li>

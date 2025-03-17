@@ -44,10 +44,7 @@ export function UserActions() {
             <div>
                 <Dialog>
                     <DialogTrigger asChild>
-                        <Button
-                            variant="destructive"
-                            className="w-full border-yellow-100 bg-yellow-50 text-yellow-600 dark:border-yellow-200/10 dark:bg-yellow-700/10"
-                        >
+                        <Button className="w-full border-yellow-100 bg-yellow-50 text-yellow-600 hover:bg-yellow-600 hover:text-white dark:border-yellow-200/10 dark:bg-yellow-700/10">
                             Deactivate account
                         </Button>
                     </DialogTrigger>

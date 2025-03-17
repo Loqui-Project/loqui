@@ -3,13 +3,11 @@ import { FacebookIcon } from '@/components/icons/facebook.icon';
 import { GoogleIcon } from '@/components/icons/google.icon';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Switch } from '@/components/ui/switch';
 import { UserActions } from '@/components/user/actions.user';
 import SettingsLayout from '@/layouts/settings/layout';
 import UserLayout from '@/layouts/user-layout';
 import { UserSocialAuth } from '@/types';
-import { Link, router } from '@inertiajs/react';
+import { router } from '@inertiajs/react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
@@ -47,48 +45,6 @@ export default function SecurityPage({ socialConnections }: SecurityPageProps) {
         <UserLayout title="Security">
             <SettingsLayout>
                 <div className="space-y-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Account Security</CardTitle>
-                            <CardDescription>Manage your password and authentication methods</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="font-medium">Change Password</p>
-                                    <p className="text-muted-foreground text-sm">Last changed 3 months ago</p>
-                                </div>
-                                <Link href={route('password.edit')}>
-                                    <Button variant="outline">Update</Button>
-                                </Link>
-                            </div>
-                            <Separator />
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="font-medium">Two-Factor Authentication</p>
-                                    <p className="text-muted-foreground text-sm">Add an extra layer of security to your account</p>
-                                </div>
-                                <Switch defaultChecked={true} />
-                            </div>
-                            <Separator />
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="font-medium">Login History</p>
-                                    <p className="text-muted-foreground text-sm">View your recent login activity</p>
-                                </div>
-                                <Button variant="outline">View</Button>
-                            </div>
-                            <Separator />
-                            <div className="flex items-center justify-between">
-                                <div>
-                                    <p className="font-medium">Connected Devices</p>
-                                    <p className="text-muted-foreground text-sm">Manage devices that are logged into your account</p>
-                                </div>
-                                <Button variant="outline">Manage</Button>
-                            </div>
-                        </CardContent>
-                    </Card>
-
                     <Card>
                         <CardHeader>
                             <CardTitle>Social Login</CardTitle>

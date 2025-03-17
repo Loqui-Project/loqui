@@ -19,7 +19,10 @@ class MessageController extends Controller
 {
     public function inbox(Request $request)
     {
-        $messages = Message::where('user_id', $request->user()->id)->withoutReplies()->get();
+        $messages = Message::where('user_id', $request->user()->id)->withoutReplies()->paginate(5);
+        if (request()->wantsJson()) {
+            return MessageResource::collection($messages);
+        }
 
         return Inertia::render('message/inbox', [
             'messages' => MessageResource::collection($messages),

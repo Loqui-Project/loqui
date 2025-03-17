@@ -12,13 +12,15 @@ class HomeController extends Controller
 {
     public function __invoke(Request $request)
     {
-
-        // get messages for users that i follow them
         $followingUsersId = $request->user()->followings()->get()->pluck('user_id')->flatten();
         $messages = Message::whereIn('user_id', [
             ...$followingUsersId,
             $request->user()->id,
-        ])->latest()->get();
+        ])->withReplies()->latest()->paginate();
+
+        if (request()->wantsJson()) {
+            return MessageResource::collection($messages);
+        }
 
         return Inertia::render('home', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,

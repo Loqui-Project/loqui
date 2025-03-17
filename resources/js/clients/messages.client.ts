@@ -1,6 +1,12 @@
 import { client } from '@/lib/client';
+import { DataWithPagination, Message } from '@/types';
 
 export const MessagesClient = {
+    async getMessages(params: Record<string, unknown>) {
+        return await client().get<DataWithPagination<Message>>(route('inbox'), {
+            params,
+        });
+    },
     async likeMessage(messageId: number, like: boolean) {
         return await client().post(route('message.like'), {
             message_id: messageId,

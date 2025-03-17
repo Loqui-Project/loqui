@@ -14,7 +14,11 @@ import UserLayout from '@/layouts/user-layout';
 import { Camera, Loader2, User } from 'lucide-react';
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
-    const { auth } = usePage<SharedData>().props;
+    const {
+        auth: {
+            user: { data: user },
+        },
+    } = usePage<SharedData>().props;
 
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm<{
         name: string;
@@ -22,9 +26,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         username: string | null;
         image: File | null;
     }>({
-        name: auth.user.name,
-        email: auth.user.email,
-        username: auth.user.username,
+        name: user.name,
+        email: user.email,
+        username: user.username,
         image: null,
     });
     const [avatar, setAvatar] = useState<string | null>(null);
@@ -63,7 +67,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                         <div className="mb-8 flex flex-col items-center">
                             <div className="relative mb-4">
                                 <Avatar className="h-32 w-32">
-                                    <AvatarImage src={avatar || `/storage/${auth.user.image_url ?? ''}`} alt={auth.user.name} />
+                                    <AvatarImage src={avatar || user.image_url} alt={user.name} />
                                     <AvatarFallback>
                                         <User className="h-16 w-16" />
                                     </AvatarFallback>
@@ -133,7 +137,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <InputError className="mt-2" message={errors.email} />
                         </div>
 
-                        {mustVerifyEmail && auth.user.email_verified_at === null && (
+                        {mustVerifyEmail && user.email_verified_at === null && (
                             <div>
                                 <p className="text-muted-foreground -mt-4 text-sm">
                                     Your email address is unverified.{' '}

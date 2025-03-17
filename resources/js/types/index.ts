@@ -1,7 +1,9 @@
 import { LucideIcon } from 'lucide-react';
 
 export interface Auth {
-    user: User;
+    user: {
+        data: User;
+    };
 }
 
 export interface BreadcrumbItem {
@@ -20,6 +22,33 @@ export interface NavItem {
     icon?: LucideIcon | null;
     isActive?: boolean;
 }
+type PagerLinks = {
+    first: string;
+    last: string;
+    prev: any;
+    next: string;
+};
+type PagerDataLinks = {
+    url?: string;
+    label: string;
+    active: boolean;
+};
+type PagerData = {
+    current_page: number;
+    from: number;
+    last_page: number;
+    links: PagerDataLinks[];
+    path: string;
+    per_page: number;
+    to: number;
+    total: number;
+};
+
+export interface DataWithPagination<T> {
+    links: PagerLinks;
+    data: T[];
+    meta: PagerData;
+}
 
 export interface SharedData {
     name: string;
@@ -35,6 +64,7 @@ export interface User {
     email: string;
     image_url: string;
     is_following: boolean;
+    email_verified_at: string | null;
 }
 
 export interface Message {

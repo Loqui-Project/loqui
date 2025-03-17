@@ -11,7 +11,7 @@ import { Calendar, Heart, MessageCircle, MoreHorizontal, Send, Star, Trash2 } fr
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
+import { Card, CardContent, CardFooter, CardHeader } from './ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './ui/dropdown-menu';
 
 type MessageCardProps = {
@@ -71,42 +71,46 @@ export function MessageCard({ message }: MessageCardProps) {
 
     return (
         <Card key={message.id} className="gap-y-2 overflow-hidden p-0">
-            <CardHeader className="flex flex-row items-start gap-3 space-y-0 p-4">
-                <UserAvatar className="h-10 w-10" user={message.sender} />
-                <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <CardTitle className="text-base">{message.sender?.name ?? 'Anonymous'}</CardTitle>
-                            <CardDescription className="text-xs">{`@${message.sender?.username ?? 'Anonymous'}`}</CardDescription>
-                        </div>
-                        <div className="text-muted-foreground flex items-center text-xs">
-                            <Calendar className="mr-1 h-3 w-3" />
-                            {formatDistance(new Date(message.created_at), new Date(), { addSuffix: true })}
-                        </div>
+            <CardHeader className="flex w-full flex-row flex-wrap items-start justify-between gap-3 space-y-0 p-4">
+                <div className="flex items-center gap-2">
+                    <UserAvatar className="h-10 w-10" user={message.sender} />
+                    <div>
+                        <h3 className="text-base">{message.sender?.name ?? 'Anonymous'}</h3>
+                        <p className="text-xs">{`@${message.sender?.username ?? 'Anonymous'}`}</p>
                     </div>
                 </div>
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">More options</span>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => addToFavorite()} disabled={isFavoriteRequestPending}>
-                            <Star className={clsx('mr-2 h-4 w-4', isFavorite ? 'text-yellow-500' : 'text-muted-foreground')} />
-                            Save
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                            <MessageCircle className="mr-2 h-4 w-4" />
-                            Reply
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">
-                            <Trash2 className="mr-2 h-4 w-4" />
-                            Hide
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                <div className="flex items-center gap-2">
+                    <div className="flex-1 flex-wrap">
+                        <div className="flex items-center justify-between">
+                            <div className="text-muted-foreground flex items-center text-xs">
+                                <Calendar className="mr-1 h-3 w-3" />
+                                {formatDistance(new Date(message.created_at), new Date(), { addSuffix: true })}
+                            </div>
+                        </div>
+                    </div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon" className="h-8 w-8">
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">More options</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => addToFavorite()} disabled={isFavoriteRequestPending}>
+                                <Star className={clsx('mr-2 h-4 w-4', isFavorite ? 'text-yellow-500' : 'text-muted-foreground')} />
+                                Save
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <MessageCircle className="mr-2 h-4 w-4" />
+                                Reply
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-destructive">
+                                <Trash2 className="mr-2 h-4 w-4" />
+                                Hide
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
             </CardHeader>
             <CardContent className="p-4">
                 <p className="mb-3 text-sm">{message.message}</p>

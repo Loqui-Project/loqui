@@ -9,11 +9,7 @@ type UserAvatarProps = {
 export function UserAvatar({ user, className }: UserAvatarProps) {
     return (
         <Avatar className={className}>
-            <AvatarImage
-                src={user?.image_url ? `/storage/${user.image_url}` : '/images/default-avatar.png'}
-                alt={user?.name ?? 'Anonymous'}
-                loading="lazy"
-            />
+            <AvatarImage src={user?.image_url} alt={user?.name ?? 'Anonymous'} loading="lazy" />
             <AvatarFallback>{user?.name[0] ?? 'Anonymous'}</AvatarFallback>
         </Avatar>
     );
