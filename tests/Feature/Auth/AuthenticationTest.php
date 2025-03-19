@@ -90,4 +90,4 @@ describe('Authentication', function () {
         });
     })->group('Success');
 
-})->group('Authentication')->only();
+})->group('Authentication');
