@@ -50,7 +50,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'name' => config('app.name'),
             'auth' => [
-                'user' => new UserResource($request->user()),
+                'user' => $request->user() ? new UserResource($request->user()) : null,
             ],
             'statistics' => $statistics,
         ];
