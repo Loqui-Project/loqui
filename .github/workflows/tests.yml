@@ -66,8 +66,11 @@ jobs:
       - name: Wait for Database to be ready
         run: npx -y wait-on tcp:5433
 
+      - name: Copy Environment File
+        run: cp .env.testing .env
+
       - name: Generate Application Key
         run: php artisan key:generate
 
       - name: Tests
-        run: ./vendor/bin/pest --coverage --colors
+        run: ./vendor/bin/pest
