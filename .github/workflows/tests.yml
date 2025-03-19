@@ -13,7 +13,20 @@ on:
 jobs:
   ci:
     runs-on: ubuntu-latest
-
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: loqui_user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: loqui_backend
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,20 +38,23 @@ jobs:
           tools: composer:v2
           coverage: xdebug
 
-      - name: Setup Node
+      - uses: pnpm/action-setup@v4
+        name: Install pnpm
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '22'
-          cache: 'npm'
+          node-version: 20
+          cache: 'pnpm'
 
-      - name: Install Node Dependencies
-        run: npm ci
+      - name: Install dependencies
+        run: pnpm install
 
       - name: Build Assets
-        run: npm run build
-
-      - name: Create SQLite Database
-        run: touch database/database.sqlite
+        run: pnpm run build
 
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader
