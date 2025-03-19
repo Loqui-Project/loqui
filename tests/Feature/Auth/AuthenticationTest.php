@@ -5,17 +5,6 @@ use App\Models\User;
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 describe('Authentication', function () {
-    beforeEach(function () {
-        $roles = [
-            ['name' => 'super-admin', 'guard_name' => 'web'],
-            ['name' => 'admin', 'guard_name' => 'web'],
-            ['name' => 'user', 'guard_name' => 'web'],
-        ];
-
-        foreach ($roles as $role) {
-            \Spatie\Permission\Models\Role::create($role);
-        }
-    });
     describe('Validation', function () {
         test('Throw error when email is not provided', function () {
             $response = $this->post('/login', [

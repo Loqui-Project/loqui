@@ -12,5 +12,15 @@
 */
 
 pest()->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)->beforeEach(function () {
+        $roles = [
+            ['name' => 'super-admin', 'guard_name' => 'web'],
+            ['name' => 'admin', 'guard_name' => 'web'],
+            ['name' => 'user', 'guard_name' => 'web'],
+        ];
+
+        foreach ($roles as $role) {
+            \Spatie\Permission\Models\Role::create($role);
+        }
+    })
     ->in('Feature');
