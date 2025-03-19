@@ -27,7 +27,6 @@
         <server name="SESSION_DRIVER" value="array"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
         <server name="DB_HOST" value="localhost"/>
-        <server name="DB_PORT" value="5432"/>
-
+        <server name="DB_PORT" value="5433"/>
     </php>
 </phpunit>
