@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
 import { User } from '@/types';
 
 type UserAvatarProps = {
@@ -8,9 +8,14 @@ type UserAvatarProps = {
 
 export function UserAvatar({ user, className }: UserAvatarProps) {
     return (
-        <Avatar className={className}>
-            <AvatarImage src={user?.image_url} alt={user?.name ?? 'Anonymous'} loading="lazy" />
-            <AvatarFallback>{user?.name[0] ?? 'Anonymous'}</AvatarFallback>
-        </Avatar>
+        <div className="shrink-0">
+            <img
+                fetchPriority="auto"
+                className={cn('rounded-full object-cover', className)}
+                src={user?.image_url}
+                alt={user?.name ?? 'Anonymous'}
+                loading="lazy"
+            />
+        </div>
     );
 }
