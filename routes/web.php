@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return Inertia\Inertia::render('welcome');
-});
+})->name('welcome');
 
 Route::get(
     '/@{user:username}', [UserController::class, 'profile'])->name('profile');
