@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\NotificationType;
-use App\Http\Requests\StoreNotificationRequest;
-use App\Http\Requests\UpdateNotificationRequest;
 use App\Http\Resources\NotificationResource;
-use App\Models\Notification;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -37,50 +34,22 @@ class NotificationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mark all notifications as read.
      */
-    public function create()
+    public function markAllAsRead(Request $request)
     {
-        //
+        $request->user()->unreadNotifications->markAsRead();
+
+        return redirect()->back();
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Mark a specific notification as read.
      */
-    public function store(StoreNotificationRequest $request)
+    public function markAsRead(Request $request, $id)
     {
-        //
-    }
+        $request->user()->notifications()->where('id', $id)->first()->markAsRead();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Notification $notification)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Notification $notification)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateNotificationRequest $request, Notification $notification)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Notification $notification)
-    {
-        //
+        return redirect()->back();
     }
 }

@@ -1,12 +1,15 @@
+import { NotificationClient } from '@/clients/notification.client';
 import { EmptyResult } from '@/components/empty-result';
 import { NotificationsList } from '@/components/notifications/notifications-list';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import UserLayout from '@/layouts/user-layout';
 import { Notification } from '@/types';
+import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Bell, Filter } from 'lucide-react';
 import { useMemo } from 'react';
+import { toast } from 'sonner';
 type ListNotificationsPageProps = {
     notifications: {
         data: Notification[];
@@ -17,6 +20,13 @@ type ListNotificationsPageProps = {
     }[];
 };
 export default function ListNotificationsPage({ notifications, types }: ListNotificationsPageProps) {
+    const { mutate } = useMutation({
+        mutationKey: ['notifications.markAsRead'],
+        mutationFn: () => NotificationClient.markAllAsRead(),
+        onSuccess: () => {
+            toast.success('All notifications marked as read');
+        },
+    });
     function handleNotificationTypeFilter(type: string) {
         const url = new URL(window.location.href);
         url.searchParams.set('type', type);
@@ -47,6 +57,9 @@ export default function ListNotificationsPage({ notifications, types }: ListNoti
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
+                            <DropdownMenuItem key={'all'} onClick={() => handleNotificationTypeFilter('all')}>
+                                All
+                            </DropdownMenuItem>
                             {types.map((type) => (
                                 <DropdownMenuItem key={type.value} onClick={() => handleNotificationTypeFilter(type.value)}>
                                     {type.label}
@@ -54,7 +67,7 @@ export default function ListNotificationsPage({ notifications, types }: ListNoti
                             ))}
                         </DropdownMenuContent>
                     </DropdownMenu>
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" onClick={() => mutate()}>
                         Mark all as read
                     </Button>
                 </div>

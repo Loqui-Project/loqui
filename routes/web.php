@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -25,7 +26,13 @@ Route::prefix('message')->name('message.')->controller(MessageController::class)
     Route::get('/{message:id}', 'show')->name('show');
 
 });
-Route::middleware(['auth'])->get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications');
+
+Route::middleware(['auth'])->controller(NotificationController::class)->name('notifications.')->prefix('notifications')->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('/mark-all-as-read', 'markAllAsRead')->name('markAllAsRead');
+    Route::post('/mark-as-read/{id}', 'markAsRead')->name('markAsRead');
+
+});
 Route::controller(UserController::class)->prefix('user')->name('user.')->group(function () {
     Route::middleware(['auth'])->post('/follow', 'follow')->name('follow');
     Route::middleware(['auth'])->post('/unfollow', 'unfollow')->name('unfollow');
