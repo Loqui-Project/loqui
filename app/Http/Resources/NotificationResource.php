@@ -19,6 +19,8 @@ class NotificationResource extends JsonResource
     {
         return match ($this->type) {
             NotificationType::NEW_MESSAGE->value => $this->newMessageNotification(),
+            NotificationType::NEW_FOLLOWER->value => $this->newFollowerNotification(),
+
             default => [
             ],
         };
@@ -39,6 +41,29 @@ class NotificationResource extends JsonResource
                 'user' => new UserResource($currentUser),
                 'message' => new MessageResource($message),
                 'title' => $data['title'],
+                'url' => $data['url'],
+
+            ],
+            'read_at' => $this->read_at,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+        ];
+    }
+
+    public function newFollowerNotification(): array
+    {
+        $data = $this->data;
+        $currentUser = User::find($data['current_user_id']);
+
+        return [
+            'id' => $this->id,
+            'type' => $this->type,
+            'notifiable_id' => $this->notifiable_id,
+            'notifiable_type' => $this->notifiable_type,
+            'data' => [
+                'user' => new UserResource($currentUser),
+                'title' => $data['title'],
+                'url' => $data['url'],
             ],
             'read_at' => $this->read_at,
             'created_at' => $this->created_at,

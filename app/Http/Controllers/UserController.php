@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\MessageResource;
 use App\Http\Resources\UserResource;
+use App\Jobs\NewFollowJob;
 use App\Models\User;
 use App\Models\UserFollow;
 use Illuminate\Http\Request;
@@ -32,6 +33,8 @@ class UserController extends Controller
                 'user_id' => $request->user_id,
                 'follower_id' => $request->user()->id,
             ]);
+            $user = User::find($request->user_id);
+            NewFollowJob::dispatch($user, $request->user());
 
             return response()->json(['message' => 'Followed successfully']);
 
