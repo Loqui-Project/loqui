@@ -5,13 +5,13 @@ import { FormEventHandler, useState } from 'react';
 
 import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { UserAvatar } from '@/components/user-avatar';
 import SettingsLayout from '@/layouts/settings/layout';
 import UserLayout from '@/layouts/user-layout';
-import { Camera, Loader2, User } from 'lucide-react';
+import { Camera, Loader2 } from 'lucide-react';
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
     const {
@@ -66,12 +66,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                     <form onSubmit={submit} className="space-y-6" encType="multipart/form-data">
                         <div className="mb-8 flex flex-col items-center">
                             <div className="relative mb-4">
-                                <Avatar className="h-32 w-32">
-                                    <AvatarImage src={avatar || user.image_url} alt={user.name} />
-                                    <AvatarFallback>
-                                        <User className="h-16 w-16" />
-                                    </AvatarFallback>
-                                </Avatar>
+                                <UserAvatar user={user} className="size-36" />
                                 <div className="absolute right-0 bottom-0">
                                     <Label htmlFor="avatar-upload" className="cursor-pointer">
                                         <div className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full p-2 transition-colors">

@@ -99,6 +99,7 @@ export interface Notification {
         user: User;
         message?: Message;
         title: string;
+        url: string;
     };
     read_at: string | null;
     created_at: string;
@@ -111,6 +112,7 @@ export interface BrowserNotification {
     currentUser: User;
     message: Message;
     title: string;
+    url: string;
 }
 
 export interface UserSocialAuth {
