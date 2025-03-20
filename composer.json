@@ -32,9 +32,7 @@
         "socialiteproviders/facebook": "^4.1",
         "socialiteproviders/google": "^4.1",
         "tightenco/ziggy": "^2.4",
-        "torann/geoip": "^3.0",
-        "typesense/typesense-php": "^5.0",
-        "workos/workos-php-laravel": "^4.1"
+        "torann/geoip": "^3.0"
     },
     "require-dev": {
         "aschmelyun/fleet": "^1.1",
