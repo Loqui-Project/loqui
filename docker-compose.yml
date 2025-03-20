@@ -3,7 +3,7 @@ services:
     image: 'postgres:17'
     container_name: loqui_dev_postgres_container
     ports:
-      - '${FORWARD_DB_PORT:-5432}:5432'
+      - 5432:5432
     environment:
       PGPASSWORD: '${DB_PASSWORD:-secret}'
       POSTGRES_DB: '${DB_DATABASE}'
@@ -28,27 +28,14 @@ services:
     image: 'postgres:17'
     container_name: loqui_test_postgres_container
     ports:
-      - '${FORWARD_DB_PORT:-5433}:5432'
+      - 5433:5432
     environment:
       PGPASSWORD: '${DB_PASSWORD:-secret}'
       POSTGRES_DB: '${DB_DATABASE}'
       POSTGRES_USER: '${DB_USERNAME}'
       POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
-    volumes:
-      - loqui_dev_db:/var/lib/postgresql/data
     networks:
       - loqui
-    healthcheck:
-      test:
-        - CMD
-        - pg_isready
-        - '-q'
-        - '-d'
-        - '${DB_DATABASE}'
-        - '-U'
-        - '${DB_USERNAME}'
-      retries: 3
-      timeout: 5s
   redis:
     image: 'redis:alpine'
     ports:
