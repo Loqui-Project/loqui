@@ -1,14 +1,17 @@
+import { cn } from '@/lib/utils';
 import AppLogoIcon from './app-logo-icon';
 
-export default function AppLogo() {
+type AppLogoProps = {
+    flexDir?: 'row' | 'col';
+    full?: boolean;
+    className?: string;
+};
+
+export default function AppLogo({ flexDir, full, className }: AppLogoProps) {
     return (
-        <>
-            <div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-md">
-                <AppLogoIcon className="size-10 fill-current text-white dark:text-black" />
-            </div>
-            <div className="ml-1 grid flex-1 text-left text-sm">
-                <span className="mb-0.5 truncate leading-none font-semibold">Loqui</span>
-            </div>
-        </>
+        <div className={cn('flex items-center justify-start gap-4', flexDir === 'col' ? 'flex-col' : 'flex-row', full ? 'w-full' : '', className)}>
+            <AppLogoIcon className="size-11 object-cover text-white dark:text-black" />
+            <h1 className="mb-0.5 truncate text-xl leading-none font-semibold">Loqui</h1>
+        </div>
     );
 }

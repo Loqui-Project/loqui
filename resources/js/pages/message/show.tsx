@@ -10,7 +10,7 @@ type MessageShowProps = {
 
 export default function MessageShow({ message }: MessageShowProps) {
     return (
-        <UserLayout>
+        <UserLayout title={`Message From ${message.data.sender?.name ?? 'Unknown'}`}>
             <div className="p-10">
                 <MessageCard message={message.data} />
             </div>
