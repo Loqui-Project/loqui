@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Enums\NotificationType;
@@ -7,8 +9,12 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Notifications\DatabaseNotification as Notification;
 
-class NotificationResource extends JsonResource
+/**
+ * @mixin Notification
+ */
+final class NotificationResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -26,6 +32,11 @@ class NotificationResource extends JsonResource
         };
     }
 
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
     public function newMessageNotification(): array
     {
         $data = $this->data;
@@ -50,6 +61,11 @@ class NotificationResource extends JsonResource
         ];
     }
 
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
     public function newFollowerNotification(): array
     {
         $data = $this->data;

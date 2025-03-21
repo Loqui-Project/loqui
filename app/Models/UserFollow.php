@@ -1,11 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class UserFollow extends Model
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int $follower_id
+ * @property-read User $user
+ * @property-read User $follower
+ */
+final class UserFollow extends Model
 {
     /** @use HasFactory<\Database\Factories\UserFollowFactory> */
     use HasFactory;
@@ -15,12 +25,22 @@ class UserFollow extends Model
         'follower_id',
     ];
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /**
+     * Get the user that owns the UserFollow
+     *
+     * @return BelongsTo<User, covariant $this>
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function follower(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    /**
+     * Get the user that owns the UserFollow
+     *
+     * @return BelongsTo<User, covariant $this>
+     */
+    public function follower(): BelongsTo
     {
         return $this->belongsTo(User::class, 'follower_id');
     }

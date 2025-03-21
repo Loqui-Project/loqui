@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'mentionable' => [
-        'model' => \App\Models\User::class,
+        'model' => App\Models\User::class,
         'column' => [
             'id' => 'id',
             'display_name' => 'name',

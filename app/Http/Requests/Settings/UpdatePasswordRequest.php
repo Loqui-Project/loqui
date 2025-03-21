@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Message;
+namespace App\Http\Requests\Settings;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Password;
 
-final class LikeMessageRequest extends FormRequest
+final class UpdatePasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +26,8 @@ final class LikeMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'message_id' => ['required', 'exists:messages,id'],
-            'like' => ['required', 'boolean'],
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', Password::defaults(), 'confirmed'],
         ];
     }
 }

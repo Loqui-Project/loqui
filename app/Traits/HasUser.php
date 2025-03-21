@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Models\User;
@@ -10,7 +12,7 @@ trait HasUser
     /**
      * Get the user that owns the model.
      *
-     * @return BelongsTo<User>
+     * @return BelongsTo<User, covariant $this>
      */
     public function user(): BelongsTo
     {

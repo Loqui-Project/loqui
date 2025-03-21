@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Facades\Facade;
 
 return [
@@ -103,7 +105,7 @@ return [
 
     'previous_keys' => [
         ...array_filter(
-            explode(',', env('APP_PREVIOUS_KEYS', ''))
+            explode(',', (string) env('APP_PREVIOUS_KEYS', ''))
         ),
     ],
 
@@ -127,7 +129,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Redis' => Illuminate\Support\Facades\Redis::class,
-        'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
+        'GeoIP' => Torann\GeoIP\Facades\GeoIP::class,
 
     ])->toArray(),
 

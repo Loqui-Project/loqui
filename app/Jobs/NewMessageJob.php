@@ -21,8 +21,8 @@ final class NewMessageJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        protected User $user,
-        protected ?User $currentUser,
+        private User $user,
+        private ?User $currentUser,
         public Message $message,
     ) {
         //

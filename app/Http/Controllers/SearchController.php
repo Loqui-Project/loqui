@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
@@ -7,16 +9,22 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class SearchController extends Controller
+final class SearchController extends Controller
 {
-    public function index(Request $request)
+    /**
+     * Show the search page.
+     */
+    public function index(): \Inertia\Response
     {
         return Inertia::render('search');
     }
 
-    public function search(Request $request)
+    /**
+     * Search for users.
+     */
+    public function search(Request $request): \Illuminate\Http\JsonResponse
     {
-        $query = $request->input('query');
+        $query = type($request->input('query'))->asString();
 
         $users = User::search($query)
             ->get();

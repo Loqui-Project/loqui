@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Event;
@@ -7,7 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use Spatie\Health\Checks\Checks;
 use Spatie\Health\Facades\Health;
 
-class AppServiceProvider extends ServiceProvider
+final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
@@ -30,7 +32,7 @@ class AppServiceProvider extends ServiceProvider
         if ($this->app->environment('production')) {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
-        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event) {
+        Event::listen(function (\SocialiteProviders\Manager\SocialiteWasCalled $event): void {
             $event->extendSocialite('facebook', \SocialiteProviders\Facebook\Provider::class);
             $event->extendSocialite('google', \SocialiteProviders\Google\Provider::class);
         });
