@@ -11,6 +11,8 @@ services:
       POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
     volumes:
       - loqui_dev_db:/var/lib/postgresql/data
+      - ./create_second_db.sh:/docker-entrypoint-initdb.d/create_second_db.sh
+
     networks:
       - loqui
     healthcheck:
@@ -24,18 +26,6 @@ services:
         - '${DB_USERNAME}'
       retries: 3
       timeout: 5s
-  test-db:
-    image: 'postgres:17'
-    container_name: loqui_test_postgres_container
-    ports:
-      - 5433:5432
-    environment:
-      PGPASSWORD: '${DB_PASSWORD:-secret}'
-      POSTGRES_DB: '${DB_DATABASE}'
-      POSTGRES_USER: '${DB_USERNAME}'
-      POSTGRES_PASSWORD: '${DB_PASSWORD:-secret}'
-    networks:
-      - loqui
   redis:
     image: 'redis:alpine'
     ports:
