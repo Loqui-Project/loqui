@@ -39,8 +39,7 @@ class Message extends Model
         return $this->hasMany(MessageReplay::class, 'message_id');
     }
 
-
-    public function likes() :HasMany
+    public function likes(): HasMany
     {
         return $this->hasMany(MessageLike::class, 'message_id');
     }
@@ -49,7 +48,6 @@ class Message extends Model
     {
         return $this->hasMany(MessageFavourite::class, 'message_id');
     }
-
 
     // get only messages without replies
     public function scopeWithoutReplies($query)

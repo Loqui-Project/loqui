@@ -16,7 +16,7 @@ class MessageReplay extends Model
     protected $fillable = [
         'user_id',
         'message_id',
-        'text'
+        'text',
     ];
 
     public function message()

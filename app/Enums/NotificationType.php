@@ -2,8 +2,6 @@
 
 namespace App\Enums;
 
-use function Laravel\Prompts\select;
-
 enum NotificationType: string
 {
     case NEW_MESSAGE = 'new-message';
@@ -13,7 +11,6 @@ enum NotificationType: string
     case NEW_REPLY = 'new-reply';
 
     case NEW_FOLLOWER = 'new-follower';
-
 
     public function getLabel(): ?string
     {
@@ -34,5 +31,4 @@ enum NotificationType: string
             self::NEW_REPLY,
         ];
     }
-
 }
