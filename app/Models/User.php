@@ -87,7 +87,7 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Get the user's followers.
      *
-     * @return HasMany<UserFollower>
+     * @return HasMany<UserFollow>
      */
     public function followers(): HasMany
     {
@@ -97,7 +97,7 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Get the user's following.
      *
-     * @return HasMany<UserFollower>
+     * @return HasMany<UserFollow>
      */
     public function followings(): HasMany
     {
