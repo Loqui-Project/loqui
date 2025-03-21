@@ -19,7 +19,7 @@ class UserController extends Controller
         $messages = $user->messages()->with('user')->withReplies()->latest()->get();
 
         return Inertia::render('profile', [
-            'user' => $user,
+            'user' => new UserResource($user),
             'is_me' => $is_me,
             'messages' => MessageResource::collection($messages),
             'is_following' => $request->user()?->isFollowing($user),

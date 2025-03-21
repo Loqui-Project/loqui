@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\UserStatusEnum;
 use App\Filament\Resources\UserResource\Pages;
 use App\Models\User;
+use Asmit\FilamentMention\Forms\Components\RichMentionEditor;
 use Filament\Forms;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
@@ -35,6 +36,19 @@ class UserResource extends Resource
                             ->visibility('public')->avatar()->label('Image'),
                         TextInput::make('name'),
                         TextInput::make('username'),
+                        RichMentionEditor::make('bio')
+                            ->mentionsItems(function () {
+                                return User::all()->map(function ($user) {
+                                    return [
+                                        'id' => $user->id,
+                                        'username' => $user->username,
+                                        'name' => $user->name,
+                                        'avatar' => $user->image_url,
+                                        'url' => route('profile', $user->username),
+                                    ];
+                                })->toArray();
+                            })
+                            ->lookupKey('username'),
                         TextInput::make('email'),
                         TextInput::make('password')->hiddenOn('edit'),
                         Forms\Components\Select::make('roles')

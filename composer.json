@@ -11,6 +11,7 @@
     "require": {
         "php": "^8.4",
         "althinect/filament-spatie-roles-permissions": "^2.3",
+        "asmit/filament-mention": "^1.0",
         "bezhansalleh/filament-shield": "^3.3",
         "dotswan/filament-laravel-pulse": "^1.1",
         "filament/filament": "^3.2",
