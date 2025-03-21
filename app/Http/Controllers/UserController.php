@@ -23,6 +23,11 @@ class UserController extends Controller
             'is_me' => $is_me,
             'messages' => MessageResource::collection($messages),
             'is_following' => $request->user()?->isFollowing($user),
+            'statistics' => [
+                'messages' => $user->messages()->withReplies()->count(),
+                'followers' => $user->followers()->count(),
+                'following' => $user->followings()->count(),
+            ],
         ]);
     }
 

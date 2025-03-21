@@ -1,9 +1,21 @@
+import { PageProps } from '@inertiajs/core';
 import { LucideIcon } from 'lucide-react';
+
+export interface InertiaPageProps extends PageProps {
+    auth: Auth;
+    url: string;
+    errors: string[];
+    statistics: {
+        messages: number;
+        followers: number;
+        following: number;
+    };
+}
 
 export interface Auth {
     user: {
         data: User;
-    };
+    } | null;
 }
 
 export interface BreadcrumbItem {

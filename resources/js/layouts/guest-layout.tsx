@@ -1,6 +1,6 @@
 import AppLogo from '@/components/app-logo';
 import { UserAvatar } from '@/components/user-avatar';
-import { Auth } from '@/types';
+import { InertiaPageProps } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 interface GuestLayoutProps {
@@ -15,10 +15,7 @@ interface GuestLayoutProps {
 export function GuestLayout({ children, title, pageTitle = title }: GuestLayoutProps) {
     const {
         props: { auth, url },
-    } = usePage<{
-        auth: Auth;
-        url: string;
-    }>();
+    } = usePage<InertiaPageProps>();
     return (
         <>
             <Head>
@@ -56,7 +53,7 @@ export function GuestLayout({ children, title, pageTitle = title }: GuestLayoutP
                             </Link>
                         </nav>
                         <div className="flex items-center gap-4">
-                            {auth.user.data ? (
+                            {auth?.user?.data ? (
                                 <Link href={route('home')} className="flex flex-row items-center gap-x-4">
                                     <UserAvatar user={auth.user.data} />
                                     <div>
