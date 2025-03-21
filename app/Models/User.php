@@ -1,18 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\UserStatusEnum;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Laravel\Scout\Searchable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $username
+ * @property string $image_url
+ * @property UserStatusEnum $status
+ * @property string $bio
+ * @property ?Carbon $email_verified_at
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read Message[] $messages
+ * @property-read UserSocialAuth[] $socialConnections
+ * @property-read UserFollow[] $followers
+ * @property-read UserFollow[] $followings
+ * @property-read MessageFavourite[] $favouriteMessages
+ */
+final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -45,20 +67,6 @@ class User extends Authenticatable implements FilamentUser
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'status' => UserStatusEnum::class,
-        ];
-    }
-
     public function canAccessPanel(Panel $panel): bool
     {
         return $this->hasRole('super-admin');
@@ -67,7 +75,7 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Get the user's messages.
      *
-     * @return HasMany<Message>
+     * @return HasMany<Message, covariant $this>
      */
     public function messages(): HasMany
     {
@@ -77,7 +85,7 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Get the user's social connections.
      *
-     * @return HasMany<UserSocialAuth>
+     * @return HasMany<UserSocialAuth, covariant $this>
      */
     public function socialConnections(): HasMany
     {
@@ -87,7 +95,7 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Get the user's followers.
      *
-     * @return HasMany<UserFollow>
+     * @return HasMany<UserFollow, covariant $this>
      */
     public function followers(): HasMany
     {
@@ -97,7 +105,7 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Get the user's following.
      *
-     * @return HasMany<UserFollow>
+     * @return HasMany<UserFollow, covariant $this>
      */
     public function followings(): HasMany
     {
@@ -105,9 +113,19 @@ class User extends Authenticatable implements FilamentUser
     }
 
     /**
+     * Get the user's favourite messages.
+     *
+     * @return HasMany<MessageFavourite, covariant $this>
+     */
+    public function favouriteMessages()
+    {
+        return $this->hasMany(MessageFavourite::class, 'user_id');
+    }
+
+    /**
      * Check if the user is following another user.
      */
-    public function isFollowing(User $user): bool
+    public function isFollowing(self $user): bool
     {
         return $this->followings()->where('user_id', $user->id)->exists();
     }
@@ -131,25 +149,31 @@ class User extends Authenticatable implements FilamentUser
     /**
      * Get the indexable data array for the model.
      *
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     public function toSearchableArray(): array
     {
-        $array = $this->toArray();
 
-        // Customize the data array...
-
-        return $array;
-    }
-
-    public function favouriteMessages()
-    {
-        return $this->hasMany(MessageFavourite::class, 'user_id');
+        return $this->toArray();
     }
 
     public function deactivate(): void
     {
         $this->status = UserStatusEnum::DEACTIVATED;
         $this->save();
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'status' => UserStatusEnum::class,
+        ];
     }
 }

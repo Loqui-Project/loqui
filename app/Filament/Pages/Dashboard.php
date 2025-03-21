@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Pages;
 
 use Dotswan\FilamentLaravelPulse\Widgets\PulseCache;
@@ -16,13 +18,27 @@ use Filament\Pages\Dashboard as PagesDashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersAction;
 use Filament\Support\Enums\ActionSize;
 
-class Dashboard extends PagesDashboard
+final class Dashboard extends PagesDashboard
 {
     use HasFiltersAction;
 
-    public function getColumns(): int|string|array
+    public function getColumns(): int
     {
         return 12;
+    }
+
+    public function getWidgets(): array
+    {
+        return [
+            PulseServers::class,
+            PulseCache::class,
+            PulseExceptions::class,
+            PulseUsage::class,
+            PulseQueues::class,
+            PulseSlowQueries::class,
+            PulseSlowRequests::class,
+            PulseSlowOutGoingRequests::class,
+        ];
     }
 
     protected function getHeaderActions(): array
@@ -41,20 +57,6 @@ class Dashboard extends PagesDashboard
                 ->size(ActionSize::Small)
                 ->color('gray')
                 ->button(),
-        ];
-    }
-
-    public function getWidgets(): array
-    {
-        return [
-            PulseServers::class,
-            PulseCache::class,
-            PulseExceptions::class,
-            PulseUsage::class,
-            PulseQueues::class,
-            PulseSlowQueries::class,
-            PulseSlowRequests::class,
-            PulseSlowOutGoingRequests::class,
         ];
     }
 }

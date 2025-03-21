@@ -1,13 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\HasUser;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
-class Message extends Model
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int $sender_id
+ * @property string $message
+ * @property bool $is_anon
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read User $user
+ * @property-read ?User $sender
+ * @property-read MessageReplay[] $replays
+ * @property-read MessageLike[] $likes
+ * @property-read MessageFavourite[] $favorites
+ */
+final class Message extends Model
 {
     /** @use HasFactory<\Database\Factories\MessageFactory> */
     use HasFactory;
@@ -26,40 +45,65 @@ class Message extends Model
         'is_anon',
     ];
 
-    public function sender()
+    /**
+     * Get the user that owns the Message
+     *
+     * @return BelongsTo<User, covariant $this>
+     */
+    public function sender(): BelongsTo
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
 
     /**
      * Get the user that owns the MessageCard
+     *
+     * @return HasMany<MessageReplay, covariant $this>
      */
     public function replays(): HasMany
     {
         return $this->hasMany(MessageReplay::class, 'message_id');
     }
 
-
-    public function likes() :HasMany
+    /**
+     * Get likes for the message
+     *
+     * @return HasMany<MessageLike, covariant $this>
+     */
+    public function likes(): HasMany
     {
         return $this->hasMany(MessageLike::class, 'message_id');
     }
 
-    public function favorites()
+    /**
+     * Get favorites for the message
+     *
+     * @return HasMany<MessageFavourite, covariant $this>
+     */
+    public function favorites(): HasMany
     {
         return $this->hasMany(MessageFavourite::class, 'message_id');
     }
 
-
-    // get only messages without replies
-    public function scopeWithoutReplies($query)
-    {
-        return $query->whereDoesntHave('replays');
-    }
-
-    // get only messages with replies
-    public function scopeWithReplies($query)
+    /**
+     * Scope messages with replay.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<static>
+     */
+    public function scopeWithReplies(Builder $query): Builder
     {
         return $query->whereHas('replays');
+    }
+
+    /**
+     * Scope messages with replay.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
+     * @return \Illuminate\Database\Eloquent\Builder<static>
+     */
+    public function scopeWithoutReplies(Builder $query): Builder
+    {
+        return $query->doesntHave('replays');
     }
 }

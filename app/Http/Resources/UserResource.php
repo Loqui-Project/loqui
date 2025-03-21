@@ -1,12 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+/**
+ * @mixin User
+ */
+final class UserResource extends JsonResource
 {
+    public $resource = User::class;
+
     /**
      * Transform the resource into an array.
      *
@@ -22,7 +30,7 @@ class UserResource extends JsonResource
             'bio' => $this->bio,
             'image_url' => $this->image_url ? asset('storage/'.$this->image_url) : '/images/default-avatar.png',
             'email_verified_at' => $this->email_verified_at,
-            'is_following' => $this->followers->contains('id', $request->user()?->id),
+            'is_following' => $this->followers()->get()->contains('id', $request->user()?->id),
         ];
     }
 }

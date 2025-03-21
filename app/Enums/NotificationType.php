@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Enums;
+declare(strict_types=1);
 
-use function Laravel\Prompts\select;
+namespace App\Enums;
 
 enum NotificationType: string
 {
@@ -14,8 +14,7 @@ enum NotificationType: string
 
     case NEW_FOLLOWER = 'new-follower';
 
-
-    public function getLabel(): ?string
+    public function getLabel(): string
     {
         return match ($this) {
             self::NEW_FOLLOWER => 'New Follower',
@@ -24,15 +23,4 @@ enum NotificationType: string
             self::NEW_REPLY => 'New Reply',
         };
     }
-
-    public static function values(): array
-    {
-        return [
-            self::NEW_FOLLOWER,
-            self::NEW_LIKE,
-            self::NEW_MESSAGE,
-            self::NEW_REPLY,
-        ];
-    }
-
 }

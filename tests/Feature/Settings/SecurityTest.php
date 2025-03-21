@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Enums\UserStatusEnum;
 use App\Models\User;
 
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 describe('Security Controller', function () {
 
@@ -28,7 +30,9 @@ describe('Security Controller', function () {
             ]);
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect(route('welcome'));
+            ->assertRedirect(route('welcome', [
+                'message' => 'Your account has been deactivated.',
+            ]));
         $user = User::where('id', $user->id)->first();
         expect($user->status->value)->toBe(UserStatusEnum::DEACTIVATED->value);
 

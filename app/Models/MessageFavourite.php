@@ -1,11 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class MessageFavourite extends Model
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property int $message_id
+ * @property-read User $user
+ * @property-read Message $message
+ */
+final class MessageFavourite extends Model
 {
     /** @use HasFactory<\Database\Factories\MessageFavouriteFactory> */
     use HasFactory;
@@ -15,12 +25,22 @@ class MessageFavourite extends Model
         'message_id',
     ];
 
-    public function message()
+    /**
+     * Get the message that owns the MessageFavourite
+     *
+     * @return BelongsTo<Message, covariant $this>
+     */
+    public function message(): BelongsTo
     {
         return $this->belongsTo(Message::class);
     }
 
-    public function user()
+    /**
+     * Get the user that owns the MessageFavourite
+     *
+     * @return BelongsTo<User, covariant $this>
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

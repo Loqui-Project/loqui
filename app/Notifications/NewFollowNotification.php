@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications;
 
 use App\Enums\NotificationType;
@@ -15,7 +17,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 
-class NewFollowNotification extends Notification implements ShouldBroadcast, ShouldQueue
+final class NewFollowNotification extends Notification implements ShouldBroadcast, ShouldQueue
 {
     use Dispatchable, InteractsWithSockets, Queueable, SerializesModels;
 
@@ -70,9 +72,9 @@ class NewFollowNotification extends Notification implements ShouldBroadcast, Sho
 
         return [
             'type' => NotificationType::NEW_FOLLOWER->value,
-            'user' => $this->user ? new UserResource($this->user) : null,
-            'currentUser' => $this->currentUser ? new UserResource($this->currentUser) : null,
-            'title' => "{$this->currentUser?->name} followed you.",
+            'user' => new UserResource($this->user),
+            'currentUser' => new UserResource($this->currentUser),
+            'title' => "{$this->currentUser->name} followed you.",
             'url' => route('profile', $this->currentUser),
         ];
     }
@@ -86,7 +88,7 @@ class NewFollowNotification extends Notification implements ShouldBroadcast, Sho
     {
 
         return [
-            'current_user_id' => $this->currentUser?->id,
+            'current_user_id' => $this->currentUser->id,
             'title' => "{$this->currentUser->name} followed you.",
             'url' => route('profile', $this->currentUser),
         ];

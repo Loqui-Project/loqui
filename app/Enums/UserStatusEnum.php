@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Enums;
 
 use Filament\Support\Contracts\HasColor;
@@ -12,16 +14,7 @@ enum UserStatusEnum: string implements HasColor, HasIcon, HasLabel
     case DISABLED = 'disabled';
     case DEACTIVATED = 'deactivated';
 
-    public static function toArray(): array
-    {
-        return [
-            self::ENABLED->value => 'Enabled',
-            self::DISABLED->value => 'Disabled',
-            self::DEACTIVATED->value => 'Deactivated',
-        ];
-    }
-
-    public function getLabel(): ?string
+    public function getLabel(): string
     {
         return match ($this) {
             self::ENABLED => 'Enabled',
@@ -30,7 +23,7 @@ enum UserStatusEnum: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getColor(): string|array|null
+    public function getColor(): string
     {
         return match ($this) {
             self::ENABLED => 'success',
@@ -39,7 +32,7 @@ enum UserStatusEnum: string implements HasColor, HasIcon, HasLabel
         };
     }
 
-    public function getIcon(): ?string
+    public function getIcon(): string
     {
         return match ($this) {
             self::ENABLED => 'heroicon-m-pencil',
