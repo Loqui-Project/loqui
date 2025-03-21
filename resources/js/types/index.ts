@@ -62,6 +62,7 @@ export interface User {
     username: string;
     name: string;
     email: string;
+    bio: string;
     image_url: string;
     is_following: boolean;
     email_verified_at: string | null;

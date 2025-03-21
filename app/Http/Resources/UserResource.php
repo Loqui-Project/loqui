@@ -19,6 +19,7 @@ class UserResource extends JsonResource
             'username' => $this->username,
             'name' => $this->name,
             'email' => $this->email,
+            'bio' => $this->bio,
             'image_url' => $this->image_url ? asset('storage/'.$this->image_url) : '/images/default-avatar.png',
             'email_verified_at' => $this->email_verified_at,
             'is_following' => $this->followers->contains('id', $request->user()?->id),
