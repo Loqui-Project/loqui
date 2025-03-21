@@ -99,11 +99,13 @@ export default function ProfilePage({ user: { data: user }, is_me, messages, is_
                         <div className="col-span-10 flex flex-col gap-y-4">
                             <div className="flex items-start gap-x-4">
                                 <h2 className="text-xl font-semibold">{user.username}</h2>
-                                <div>
-                                    <Link href={route('profile.edit')} className="text-accent">
-                                        <Button className="text-sm">Edit Profile</Button>
-                                    </Link>
-                                </div>
+                                {!is_me && (
+                                    <div>
+                                        <Link href={route('profile.edit')} className="text-accent">
+                                            <Button className="text-sm">Edit Profile</Button>
+                                        </Link>
+                                    </div>
+                                )}
                             </div>
                             <div className="flex items-center gap-4">
                                 <p className="flex cursor-pointer flex-row items-center gap-x-2 text-center">
