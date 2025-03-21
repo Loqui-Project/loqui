@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { UserAvatar } from '@/components/user-avatar';
 import { useAppearance } from '@/hooks/use-appearance';
-import { Auth, BrowserNotification } from '@/types';
+import { BrowserNotification, InertiaPageProps } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { DropdownMenuGroup } from '@radix-ui/react-dropdown-menu';
 import { Bell, ChevronLeft, House, Inbox, Menu, Search, Settings, Star } from 'lucide-react';
@@ -28,19 +28,10 @@ export default function UserLayout({ children, title, actions, pageTitle = title
 
     const {
         props: {
-            auth: {
-                user: { data: user },
-            },
+            auth: { user },
         },
         url,
-    } = usePage<{
-        auth: Auth;
-        statistics: {
-            messages: number;
-            followers: number;
-            following: number;
-        };
-    }>();
+    } = usePage<InertiaPageProps>();
 
     const isActiveLink = useMemo(
         () => (href: string) => {
@@ -49,14 +40,15 @@ export default function UserLayout({ children, title, actions, pageTitle = title
         },
         [url],
     );
-
-    window.Echo.private(`user.${user?.id ?? 'anon'}`).notification((notification: BrowserNotification) => {
-        if (notification.type == 'new-message') {
-            toast.custom(() => <NewMessageNotification notification={notification} />);
-        } else if (notification.type == 'new-follower') {
-            toast.custom(() => <NewFollowerNotification notification={notification} />);
-        }
-    });
+    if (user?.data) {
+        window.Echo.private(`user.${user.data?.id ?? 'anon'}`).notification((notification: BrowserNotification) => {
+            if (notification.type == 'new-message') {
+                toast.custom(() => <NewMessageNotification notification={notification} />);
+            } else if (notification.type == 'new-follower') {
+                toast.custom(() => <NewFollowerNotification notification={notification} />);
+            }
+        });
+    }
 
     return (
         <>
@@ -69,7 +61,12 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                 <meta name="twitter:domain" content="loqui.yanalshoubaki.com" />
                 <meta property="og:url" content={url} />
                 <meta name="twitter:url" content={url} />
-                <meta name="twitter:creator" content={`@${user.username}`} />
+                {user?.data && (
+                    <>
+                        <meta name="twitter:creator" content={`@${user.data?.username}`} />
+                        <meta property="og:image" content={user.data.image_url} />
+                    </>
+                )}
                 <meta property="fb:app_id" content={import.meta.env.FACEBOOK_CLIENT_ID} />
                 <title>{pageTitle}</title>
                 <meta name="description" content="Your page description" />
@@ -77,10 +74,9 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                 <meta property="og:title" content={pageTitle} />
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content={url} />
-                <meta property="og:image" content={user.image_url ? `/storage/${user.image_url}` : '/images/default-avatar.png'} />
             </Head>
             <div className="bg-background min-h-screen md:flex">
-                {user && (
+                {user?.data && (
                     <>
                         <div className="bg-muted md:bg-muted/40 sticky top-0 z-10 flex w-full flex-col border-r md:h-screen md:w-64">
                             <div className="flex flex-col items-start justify-start p-6 py-10">
@@ -141,14 +137,14 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                     <li>
                                         <Link
                                             href={route('profile', {
-                                                username: user.username,
+                                                username: user.data.username,
                                             })}
                                         >
                                             <Button
                                                 variant="ghost"
                                                 className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
-                                                <UserAvatar user={user} className="size-6" />
+                                                <UserAvatar user={user.data} className="size-6" />
                                                 <span className="ml-2 hidden md:block md:text-base">Profile</span>
                                             </Button>
                                         </Link>

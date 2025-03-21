@@ -50,47 +50,9 @@ export default function ProfilePage({ user: { data: user }, is_me, messages, is_
     });
 
     const { unfollowUser, isUnfollowRequestPending } = useUnfollowUser(user);
-
     return (
         <UserLayout title={`${user.name} Profile`} pageTitle={`${user.name} (@${user.username})`}>
             <section className="mb-20 md:mb-6">
-                {!is_me && (
-                    <div className="my-10 flex w-full items-start justify-between">
-                        <div className="flex items-center gap-4">
-                            <UserAvatar user={user} className="h-16 w-16" />
-                            <div>
-                                <h1 className="text-2xl font-semibold">{user.name}</h1>
-                                <p className="text-muted-foreground text-sm">
-                                    <span>@</span>
-                                    {user.username}
-                                </p>
-                            </div>
-                        </div>
-                        <Button
-                            onClick={() => (isFollowing ? unfollowUser() : followUser())}
-                            variant="secondary"
-                            disabled={isUnfollowRequestPending}
-                            className={clsx('mt-4 transition data-[unfollow=true]:bg-red-500 data-[unfollow=true]:text-white', {
-                                'bg-primary': isFollowing,
-                                'hover:bg-primary-dark': isFollowing,
-                                'text-accent': isFollowing,
-                                'text-primary': !isFollowing,
-                                'hover:text-primary-dark': !isFollowing,
-                            })}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.innerText = isFollowing ? 'Unfollow' : 'Follow';
-                                e.currentTarget.dataset.unfollow = isFollowing ? 'true' : 'false';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.innerText = isFollowing ? 'Following' : 'Follow';
-                                e.currentTarget.dataset.unfollow = 'false';
-                            }}
-                        >
-                            {isFollowing ? 'Following' : 'Follow'}
-                        </Button>
-                    </div>
-                )}
-                {!is_me && <SendMessage userId={user.id} />}
                 <section id="user-information">
                     <div className="grid grid-cols-12">
                         <div className="col-span-2">
@@ -99,19 +61,42 @@ export default function ProfilePage({ user: { data: user }, is_me, messages, is_
                         <div className="col-span-10 flex flex-col gap-y-4">
                             <div className="flex items-start gap-x-4">
                                 <h2 className="text-xl font-semibold">{user.username}</h2>
-                                {!is_me && (
+                                {is_me ? (
                                     <div>
                                         <Link href={route('profile.edit')} className="text-accent">
                                             <Button className="text-sm">Edit Profile</Button>
                                         </Link>
                                     </div>
+                                ) : (
+                                    <Button
+                                        onClick={() => (isFollowing ? unfollowUser() : followUser())}
+                                        variant="secondary"
+                                        disabled={isUnfollowRequestPending}
+                                        className={clsx('test-sm transition data-[unfollow=true]:bg-red-500 data-[unfollow=true]:text-white', {
+                                            'bg-primary': isFollowing,
+                                            'hover:bg-primary-dark': isFollowing,
+                                            'text-accent': isFollowing,
+                                            'text-primary': !isFollowing,
+                                            'hover:text-primary-dark': !isFollowing,
+                                        })}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.innerText = isFollowing ? 'Unfollow' : 'Follow';
+                                            e.currentTarget.dataset.unfollow = isFollowing ? 'true' : 'false';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.innerText = isFollowing ? 'Following' : 'Follow';
+                                            e.currentTarget.dataset.unfollow = 'false';
+                                        }}
+                                    >
+                                        {isFollowing ? 'Following' : 'Follow'}
+                                    </Button>
                                 )}
                             </div>
                             <div className="flex items-center gap-4">
-                                <p className="flex cursor-pointer flex-row items-center gap-x-2 text-center">
-                                    <p className="text-base font-bold text-black">{statistics.messages}</p>
+                                <div className="flex cursor-pointer flex-row items-center gap-x-2 text-center">
+                                    <p className="text-base font-bold">{statistics.messages ?? 0}</p>
                                     <p className="text-muted-foreground text-base">Messages</p>
-                                </p>
+                                </div>
 
                                 <UserFollowModal
                                     user={user}
@@ -129,7 +114,7 @@ export default function ProfilePage({ user: { data: user }, is_me, messages, is_
                                             }}
                                             className="flex cursor-pointer flex-row items-center gap-x-2 text-center"
                                         >
-                                            <p className="text-base font-bold text-black">{statistics.followers}</p>
+                                            <p className="text-base font-bold">{statistics.followers ?? 0}</p>
                                             <p className="text-muted-foreground text-base">Followers</p>
                                         </div>
                                     }
@@ -150,20 +135,21 @@ export default function ProfilePage({ user: { data: user }, is_me, messages, is_
                                             }}
                                             className="flex cursor-pointer flex-row items-center gap-x-2 text-center"
                                         >
-                                            <p className="text-base font-bold text-black">{statistics.following}</p>
+                                            <p className="text-base font-bold">{statistics.following ?? 0}</p>
                                             <p className="text-muted-foreground text-base">Following</p>
                                         </div>
                                     }
                                 />
                             </div>
                             <div>
-                                <h3 className="text-sm font-bold text-black">{user.name}</h3>
+                                <h3 className="text-sm font-bold">{user.name}</h3>
                                 <p className="prose" dangerouslySetInnerHTML={{ __html: user.bio }} />
                             </div>
                         </div>
                     </div>
                 </section>
                 <Separator className="my-10" />
+                {!is_me && <SendMessage userId={user.id} />}
                 {/* Feed from followed users */}
                 <section id="messages" className="mt-4 space-y-6">
                     {messages.data.length > 0 ? (
