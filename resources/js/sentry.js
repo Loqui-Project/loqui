@@ -1,8 +1,8 @@
-Sentry.init({
-    dsn: process.env.SENTRY_LARAVEL_DSN,
+window.Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DSN,
     integrations: [
-      Sentry.linkedErrorsIntegration({
-        limit: 7,
-      }),
+        window.Sentry.linkedErrorsIntegration({
+            limit: 7,
+        }),
     ],
-  });
+});

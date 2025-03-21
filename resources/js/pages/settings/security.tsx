@@ -41,6 +41,10 @@ export default function SecurityPage({ socialConnections }: SecurityPageProps) {
         },
     });
 
+    function redirectToProvider(provider: string) {
+        window.location.href = route('social.redirect', { provider });
+    }
+
     return (
         <UserLayout title="Security">
             <SettingsLayout>
@@ -63,9 +67,11 @@ export default function SecurityPage({ socialConnections }: SecurityPageProps) {
                                     </div>
                                     <Button
                                         onClick={() => {
-                                            connection.connected
-                                                ? disconnectProvider(provider)
-                                                : (window.location.href = route('social.redirect', { provider }));
+                                            if (connection.connected) {
+                                                disconnectProvider(provider);
+                                            } else {
+                                                redirectToProvider(provider);
+                                            }
                                         }}
                                         size="sm"
                                     >

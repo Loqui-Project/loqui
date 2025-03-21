@@ -117,8 +117,7 @@ export default function ProfilePage({ user: { data: user }, is_me, messages, is_
                                     user={user}
                                     queryKey={`followers-${user.id}`}
                                     queryFn={({ queryKey }) => {
-                                        const [key, userId, query] = queryKey;
-                                        return UserClient.getFollowers(user.username, query as string);
+                                        return UserClient.getFollowers(user.username, queryKey[2] as string);
                                     }}
                                     open={openFollowerModal}
                                     onClose={() => setOpenFollowerModal(false)}
@@ -139,8 +138,7 @@ export default function ProfilePage({ user: { data: user }, is_me, messages, is_
                                     user={user}
                                     queryKey={`followings-${user.id}`}
                                     queryFn={({ queryKey }) => {
-                                        const [key, userId, query] = queryKey;
-                                        return UserClient.getFollowing(user.username, query as string);
+                                        return UserClient.getFollowing(user.username, queryKey[2] as string);
                                     }}
                                     open={openFollowingModal}
                                     onClose={() => setOpenFollowingModal(false)}

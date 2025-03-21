@@ -12,7 +12,7 @@ interface GuestLayoutProps {
     pageTitle?: string;
 }
 
-export function GuestLayout({ children, title, actions, pageTitle = title }: GuestLayoutProps) {
+export function GuestLayout({ children, title, pageTitle = title }: GuestLayoutProps) {
     const {
         props: { auth, url },
     } = usePage<{
@@ -56,12 +56,12 @@ export function GuestLayout({ children, title, actions, pageTitle = title }: Gue
                             </Link>
                         </nav>
                         <div className="flex items-center gap-4">
-                            {auth.user ? (
+                            {auth.user.data ? (
                                 <Link href={route('home')} className="flex flex-row items-center gap-x-4">
-                                    <UserAvatar user={auth.user} />
+                                    <UserAvatar user={auth.user.data} />
                                     <div>
-                                        <h3 className="text-base font-bold">{auth.user.name}</h3>
-                                        <p className="text-muted-foreground text-sm">@{auth.user.username}</p>
+                                        <h3 className="text-base font-bold">{auth.user.data.name}</h3>
+                                        <p className="text-muted-foreground text-sm">@{auth.user.data.username}</p>
                                     </div>
                                 </Link>
                             ) : (

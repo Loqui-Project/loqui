@@ -25,7 +25,7 @@ export interface NavItem {
 type PagerLinks = {
     first: string;
     last: string;
-    prev: any;
+    prev: string;
     next: string;
 };
 type PagerDataLinks = {

@@ -66,7 +66,11 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                     <form onSubmit={submit} className="space-y-6" encType="multipart/form-data">
                         <div className="mb-8 flex flex-col items-center">
                             <div className="relative mb-4">
-                                <UserAvatar user={user} className="size-36" />
+                                {avatar ? (
+                                    <img src={avatar} alt="avatar" className="size-36 rounded-full" />
+                                ) : (
+                                    <UserAvatar user={user} className="size-36" />
+                                )}
                                 <div className="absolute right-0 bottom-0">
                                     <Label htmlFor="avatar-upload" className="cursor-pointer">
                                         <div className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full p-2 transition-colors">
