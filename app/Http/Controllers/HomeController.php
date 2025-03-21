@@ -1,30 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class HomeController extends Controller
+final class HomeController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): \Inertia\Response|\Illuminate\Http\JsonResponse
     {
-        $followingUsersId = $request->user()->followings()->get()->pluck('user_id')->flatten();
+        $user = type($request->user())->as(User::class);
+        $followingUsersId = collect($user->followings()->get())->pluck('user_id')->flatten();
         $messages = Message::whereIn('user_id', [
             ...$followingUsersId,
-            $request->user()->id,
+            $user->id,
         ])->withReplies()->latest()->paginate();
 
         if (request()->wantsJson()) {
-            return MessageResource::collection($messages);
+            return response()->json([
+                'messages' => MessageResource::collection($messages),
+            ]);
         }
 
         return Inertia::render('home', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => $request->session()->get('status'),
             'messages' => MessageResource::collection($messages),
         ]);
     }

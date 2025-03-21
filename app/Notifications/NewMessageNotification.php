@@ -13,7 +13,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 
@@ -43,16 +42,6 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
     }
 
     /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
-    {
-        return (new MailMessage)
-            ->greeting("Hello {$this->user->name}!")
-            ->line("You have a new message from {$this->currentUser->name}.");
-    }
-
-    /**
      * Get the channels the event should broadcast on.
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
@@ -70,12 +59,12 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
     public function broadcastWith(): array
     {
 
-        $title = $this->currentUser ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
+        $title = $this->currentUser !== null ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
 
         return [
             'type' => NotificationType::NEW_MESSAGE->value,
             'user' => $this->user->toArray(),
-            'currentUser' => $this->currentUser ? $this->currentUser->toArray() : [
+            'currentUser' => $this->currentUser !== null ? $this->currentUser->toArray() : [
                 'id' => null,
                 'name' => 'Anonymous',
             ],
@@ -89,12 +78,12 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
      *
      * @return array<string, mixed>
      */
-    public function toArray(object $notifiable): array
+    public function toArray(): array
     {
-        $title = $this->currentUser ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
+        $title = $this->currentUser !== null ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
 
         return [
-            'current_user_id' => $this->currentUser?->id,
+            'current_user_id' => $this->currentUser !== null ? $this->currentUser->id : null,
             'message_id' => $this->message->id,
             'title' => $title,
             'url' => route('message.show', $this->message),

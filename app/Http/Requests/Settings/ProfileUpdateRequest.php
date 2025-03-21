@@ -1,24 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Settings;
 
 use App\Models\User;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
-class ProfileUpdateRequest extends FormRequest
+final class ProfileUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return Auth::user()->id === $this->user()->id;
+        return Auth::check();
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, list<\Illuminate\Contracts\Validation\ValidationRule|string|null>|string>
      */
     public function rules(): array
     {
@@ -30,12 +31,12 @@ class ProfileUpdateRequest extends FormRequest
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
+                Rule::unique(User::class)->ignore($this->user()?->id),
             ],
             'username' => [
                 'string',
                 'max:255',
-                Rule::unique(User::class)->ignore($this->user()->id),
+                Rule::unique(User::class)->ignore($this->user()?->id),
             ],
             'image' => 'image|mimes:jpeg,jpg,png,gif,svg|max:2048',
         ];

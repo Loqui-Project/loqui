@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Widgets;
 
 use App\Enums\UserStatusEnum;
@@ -8,7 +10,7 @@ use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
-class StatsOverviewWidget extends BaseWidget
+final class StatsOverviewWidget extends BaseWidget
 {
     protected function getColumns(): int
     {

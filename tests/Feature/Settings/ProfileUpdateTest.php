@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 describe('Profile Update tests', function () {
 

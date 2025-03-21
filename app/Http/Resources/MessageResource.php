@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MessageResource extends JsonResource
+/**
+ * @mixin \App\Models\Message
+ */
+final class MessageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,7 +22,7 @@ class MessageResource extends JsonResource
         return [
             'id' => $this->id,
             'user' => new UserResource($this->user),
-            'sender' => $this->sender_id != null ? new UserResource($this->sender) : null,
+            'sender' => $this->sender_id !== null ? new UserResource($this->sender) : null,
             'message' => $this->message,
             'is_anon' => $this->is_anon,
             'likes_count' => $this->likes()->count(),

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Message;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules;
 
-final class LikeMessageRequest extends FormRequest
+final class NewPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return Auth::check();
+        return true;
     }
 
     /**
@@ -25,8 +25,9 @@ final class LikeMessageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'message_id' => ['required', 'exists:messages,id'],
-            'like' => ['required', 'boolean'],
+            'token' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
     }
 }

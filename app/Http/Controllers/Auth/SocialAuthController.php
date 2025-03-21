@@ -1,71 +1,85 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserSocialAuth;
+use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
-class SocialAuthController extends Controller
+final class SocialAuthController extends Controller
 {
-    public function redirectToProvider($provider)
+    /**
+     * Redirect the user to the provider authentication page.
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function redirectToProvider(string $provider)
     {
-        $provider = strtolower($provider);
+        $provider = mb_strtolower($provider);
 
         return Socialite::driver($provider)->redirect();
     }
 
-    public function handleProviderCallback($provider)
+    /**
+     * Obtain the user information from provider.
+     */
+    public function handleProviderCallback(string $provider): \Illuminate\Http\RedirectResponse
     {
         $socialUser = Socialite::driver($provider)->user();
 
-        if ($user = User::where('email', $socialUser->email)->first()) {
+        if ($user = User::where('email', $socialUser->getEmail())->first()) {
             Auth::login($user);
             UserSocialAuth::updateOrCreate(
                 [
                     'user_id' => $user->id,
                     'provider' => $provider,
-                    'provider_id' => $socialUser->id,
+                    'provider_id' => $socialUser->getId(),
                 ],
                 [
                     'provider' => $provider,
-                    'provider_id' => $socialUser->id,
+                    'provider_id' => $socialUser->getId(),
                 ]
             );
         } else {
             $user = User::create([
-                'name' => $socialUser->name,
-                'email' => $socialUser->email,
-                'username' => $socialUser->email,
+                'name' => $socialUser->getName(),
+                'email' => $socialUser->getEmail(),
+                'username' => $socialUser->getEmail(),
                 'password' => Hash::make(Str::random(24).time()),
             ]);
             $user->assignRole('user');
             UserSocialAuth::create([
                 'user_id' => $user->id,
                 'provider' => $provider,
-                'provider_id' => $socialUser->id,
+                'provider_id' => $socialUser->getId(),
             ]);
 
             Auth::login($user);
         }
 
-        return redirect()->route('home');
+        return to_route('home');
     }
 
-    public function disconnectProvider($provider)
+    /**
+     * Disconnect provider from user account.
+     */
+    public function disconnectProvider(string $provider): \Illuminate\Http\JsonResponse
     {
         try {
-            $user = Auth::user();
+            $user = type(Auth::user())->as(User::class);
             UserSocialAuth::where('user_id', $user->id)
                 ->where('provider', $provider)
                 ->delete();
 
             return response()->json(['message' => 'Provider disconnected']);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
-class HandleInertiaRequests extends Middleware
+final class HandleInertiaRequests extends Middleware
 {
     /**
      * The root template that's loaded on the first page visit.
@@ -32,7 +34,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/shared-data
      *
-     * @return array<string, mixed>
+     * @return array<mixed>
      */
     public function share(Request $request): array
     {
@@ -46,13 +48,13 @@ class HandleInertiaRequests extends Middleware
             ];
         }
 
-        return [
-            ...parent::share($request),
-            'name' => config('app.name'),
-            'auth' => [
-                'user' => $request->user() ? new UserResource($request->user()) : null,
-            ],
-            'statistics' => $statistics,
-        ];
+        return array_merge(
+            parent::share($request),
+            [
+                'name' => config('app.name'),
+                'auth' => $request->user() ? new UserResource($request->user()) : null,
+                'statistics' => $statistics,
+            ]
+        );
     }
 }
