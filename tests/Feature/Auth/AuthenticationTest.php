@@ -10,7 +10,6 @@ describe('Authentication', function () {
             $response = $this->post('/login', [
                 'password' => 'password',
             ]);
-
             $response->assertSessionHasErrors('email');
         });
         test('Throw error when password is not provided', function () {
