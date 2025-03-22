@@ -4,6 +4,7 @@ import { Link } from '@inertiajs/react';
 import { useMutation } from '@tanstack/react-query';
 import { formatDistance } from 'date-fns';
 import { Check, Heart, MessageCircle, Reply, UserPlus } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -28,24 +29,33 @@ type NotificationCardProps = {
     notification: Notification;
 };
 export function NotificationCard({ notification }: NotificationCardProps) {
+    const [isRead, setIsRead] = useState(!!notification.read_at);
     const { mutate } = useMutation({
         mutationKey: ['notifications.markAsRead'],
         mutationFn: () => NotificationClient.markAsRead(notification.id),
         onSuccess: () => {
-            toast.success('All notifications marked as read');
+            toast.success('Notifications marked as read');
+            setIsRead(true);
         },
     });
     return (
-        <Card key={notification.id} className={`p-4 transition-colors ${!notification.read_at ? 'bg-muted/40 border-l-primary border-l-4' : ''}`}>
+        <Card key={notification.id} className={`p-4 transition-colors ${!isRead ? 'bg-muted/40 border-l-primary border-l-4' : ''}`}>
             <div className="flex items-start gap-4">
                 <UserAvatar className="h-12 w-12 border" user={notification.data.user} />
 
                 <div className="flex-1 space-y-1">
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-2">
-                            <p className="font-medium">{notification.data.user.name}</p>
-                            <p className="text-muted-foreground text-xs">{notification.data.user.username}</p>
-                            {!notification.read_at && (
+                            {notification.data.user ? (
+                                <>
+                                    <p className="font-medium">{notification.data.user.name}</p>
+                                    <p className="text-muted-foreground text-xs">{notification.data.user.username}</p>
+                                </>
+                            ) : (
+                                <p className="font-medium">Anonymous</p>
+                            )}
+
+                            {!isRead && (
                                 <Badge variant="default" className="ml-2">
                                     New
                                 </Badge>
@@ -70,7 +80,7 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                             </Button>
                         </Link>
 
-                        {!notification.read_at && (
+                        {!isRead && (
                             <Button variant="ghost" size="sm" className="h-8 gap-1" onClick={() => mutate()}>
                                 <Check className="h-3.5 w-3.5" />
                                 Mark as read

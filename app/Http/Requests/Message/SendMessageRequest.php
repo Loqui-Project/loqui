@@ -25,7 +25,8 @@ final class SendMessageRequest extends FormRequest
     {
         return [
             'message' => ['required', 'string'],
-            'receiver_id' => ['required', 'exists:users,id'],
+            'receiver_id' => ['required', 'exists:users,id', 'different:user_id'],
+            'is_anon' => ['boolean'],
         ];
     }
 }

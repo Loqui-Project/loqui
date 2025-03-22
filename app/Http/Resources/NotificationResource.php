@@ -46,10 +46,15 @@ final class NotificationResource extends JsonResource
         return [
             'id' => $this->id,
             'type' => $this->type,
-            'notifiable_id' => $this->notifiable_id,
-            'notifiable_type' => $this->notifiable_type,
             'data' => [
-                'user' => new UserResource($currentUser),
+                'user' => $currentUser ? new UserResource($currentUser) : [
+                    'id' => null,
+                    'username' => 'anonymous',
+                    'name' => 'Anonymous',
+                    'image_url' => '/images/default-avatar.png',
+                    'email_verified_at' => null,
+                    'is_following' => false,
+                ],
                 'message' => new MessageResource($message),
                 'title' => $data['title'],
                 'url' => $data['url'],

@@ -110,22 +110,20 @@ final class MessageController extends Controller
     public function sendMessage(SendMessageRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
-            $user = type($request->user())->as(User::class);
-            if ($user->id === $request->receiver_id) {
-                return response()->json(['message' => 'You can not send message to yourself'], 400);
-            }
-            if ($user !== null) {
+            $user = null;
+            if ($request->user() === null) {
+                $message = Message::create([
+                    'user_id' => $request->receiver_id,
+                    'message' => $request->message,
+                    'is_anon' => true,
+                ]);
+            } else {
+                $user = type($request->user())->as(User::class);
                 $message = Message::create([
                     'sender_id' => $user->id,
                     'user_id' => $request->receiver_id,
                     'message' => $request->message,
                     'is_anon' => false,
-                ]);
-            } else {
-                $message = Message::create([
-                    'user_id' => $request->receiver_id,
-                    'message' => $request->message,
-                    'is_anon' => true,
                 ]);
             }
 

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import UserLayout from '@/layouts/user-layout';
 import { Notification } from '@/types';
+import { router } from '@inertiajs/react';
 import { useMutation } from '@tanstack/react-query';
 import clsx from 'clsx';
 import { Bell, Filter } from 'lucide-react';
@@ -23,6 +24,7 @@ export default function ListNotificationsPage({ notifications, types }: ListNoti
         mutationFn: () => NotificationClient.markAllAsRead(),
         onSuccess: () => {
             toast.success('All notifications marked as read');
+            router.reload();
         },
     });
     function handleNotificationTypeFilter(type: string) {

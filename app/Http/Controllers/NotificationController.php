@@ -50,7 +50,7 @@ final class NotificationController extends Controller
     /**
      * Mark a specific notification as read.
      */
-    public function markAsRead(Request $request, int $id): \Illuminate\Http\RedirectResponse
+    public function markAsRead(Request $request, string $id): \Illuminate\Http\RedirectResponse
     {
         $user = type($request->user())->as(User::class);
         $notification = $user->notifications()->where('id', $id)->first();

@@ -21,17 +21,18 @@ final class MessageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
-                Tables\Columns\TextColumn::make('user.name')->label('Received user name')->searchable(),
-                Tables\Columns\TextColumn::make('sender.name')->label('Sender user name')->searchable(),
+                Tables\Columns\TextColumn::make('user.name')->url(
+                    fn ($record) => route('profile', $record->user)
+                )->label('Received user name')->searchable(),
+                Tables\Columns\TextColumn::make('sender.name')->url(
+                    fn ($record) => route('profile', $record->user)
+                )->label('Sender user name')->searchable(),
                 Tables\Columns\TextColumn::make('is_anon')->label('Is Anonymous')
                     ->badge(),
                 Tables\Columns\IconColumn::make('is_anon')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')->label('Created at'),
                 Tables\Columns\TextColumn::make('updated_at')->label('Updated at'),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -20,9 +20,23 @@ final class UserController extends Controller
      */
     public function profile(Request $request, User $user): \Inertia\Response
     {
+        $messages = $user->messages()->with('user')->withReplies()->latest()->get();
+
+        if ($request->user() === null) {
+            return Inertia::render('profile', [
+                'user' => new UserResource($user),
+                'is_me' => false,
+                'messages' => MessageResource::collection($messages),
+                'is_following' => false,
+                'statistics' => [
+                    'messages' => $user->messages()->withReplies()->count(),
+                    'followers' => $user->followers()->count(),
+                    'following' => $user->followings()->count(),
+                ],
+            ]);
+        }
         $authUser = type($request->user())->as(User::class);
         $is_me = $authUser->is($user);
-        $messages = $user->messages()->with('user')->withReplies()->latest()->get();
 
         return Inertia::render('profile', [
             'user' => new UserResource($user),
