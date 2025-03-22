@@ -2,7 +2,7 @@ import { PageProps } from '@inertiajs/core';
 import { LucideIcon } from 'lucide-react';
 
 export interface InertiaPageProps extends PageProps {
-    auth: Auth;
+    auth: User | null;
     url: string;
     errors: string[];
     statistics: {
@@ -10,12 +10,6 @@ export interface InertiaPageProps extends PageProps {
         followers: number;
         following: number;
     };
-}
-
-export interface Auth {
-    user: {
-        data: User;
-    } | null;
 }
 
 export interface BreadcrumbItem {
@@ -60,13 +54,6 @@ export interface DataWithPagination<T> {
     links: PagerLinks;
     data: T[];
     meta: PagerData;
-}
-
-export interface SharedData {
-    name: string;
-    quote: { message: string; author: string };
-    auth: Auth;
-    [key: string]: unknown;
 }
 
 export interface User {

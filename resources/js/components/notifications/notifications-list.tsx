@@ -6,12 +6,10 @@ import { Bell } from 'lucide-react';
 import { NotificationCard } from './notification-card';
 
 type NotificationsListProps = {
-    notifications: {
-        data: Notification[];
-    };
+    notifications: Notification[];
 };
 export function NotificationsList({ notifications }: NotificationsListProps) {
-    if (notifications.data.length === 0) {
+    if (notifications.length === 0) {
         return (
             <Card className="p-8 text-center">
                 <Bell className="text-muted-foreground mx-auto mb-4 h-12 w-12" />
@@ -23,8 +21,8 @@ export function NotificationsList({ notifications }: NotificationsListProps) {
 
     return (
         <div className="space-y-4">
-            {Array.isArray(notifications.data) &&
-                notifications.data.map((notification) => <NotificationCard notification={notification} key={notification.id} />)}
+            {Array.isArray(notifications) &&
+                notifications.map((notification) => <NotificationCard notification={notification} key={notification.id} />)}
         </div>
     );
 }

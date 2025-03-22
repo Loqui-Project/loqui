@@ -1,6 +1,5 @@
-import { type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 
 import HeadingSmall from '@/components/heading-small';
@@ -11,14 +10,11 @@ import { Label } from '@/components/ui/label';
 import { UserAvatar } from '@/components/user-avatar';
 import SettingsLayout from '@/layouts/settings/layout';
 import UserLayout from '@/layouts/user-layout';
+import { InertiaPageProps } from '@/types';
 import { Camera, Loader2 } from 'lucide-react';
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
-    const {
-        auth: {
-            user: { data: user },
-        },
-    } = usePage<SharedData>().props;
+    const { auth } = usePage<InertiaPageProps>().props;
 
     const { data, setData, post, errors, processing, recentlySuccessful } = useForm<{
         name: string;
@@ -26,9 +22,9 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
         username: string | null;
         image: File | null;
     }>({
-        name: user.name,
-        email: user.email,
-        username: user.username,
+        name: auth?.name ?? '',
+        email: auth?.email ?? '',
+        username: auth?.username ?? '',
         image: null,
     });
     const [avatar, setAvatar] = useState<string | null>(null);
@@ -56,6 +52,10 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
             preserveScroll: true,
         });
     };
+    if (!auth) {
+        router.visit(route('login'));
+        return null;
+    }
 
     return (
         <UserLayout title="Profile Settings">
@@ -69,7 +69,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 {avatar ? (
                                     <img src={avatar} alt="avatar" className="size-36 rounded-full" />
                                 ) : (
-                                    <UserAvatar user={user} className="size-36" />
+                                    <UserAvatar user={auth} className="size-36" />
                                 )}
                                 <div className="absolute right-0 bottom-0">
                                     <Label htmlFor="avatar-upload" className="cursor-pointer">
@@ -136,7 +136,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <InputError className="mt-2" message={errors.email} />
                         </div>
 
-                        {mustVerifyEmail && user.email_verified_at === null && (
+                        {mustVerifyEmail && auth.email_verified_at === null && (
                             <div>
                                 <p className="text-muted-foreground -mt-4 text-sm">
                                     Your email address is unverified.{' '}

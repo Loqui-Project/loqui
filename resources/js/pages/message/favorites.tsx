@@ -5,16 +5,14 @@ import { Message } from '@/types';
 import { MessageCircle } from 'lucide-react';
 
 type FavoritesMessagesProps = {
-    messages: {
-        data: Message[];
-    };
+    messages: Message[];
 };
 
 export default function FavoritesMessages({ messages }: FavoritesMessagesProps) {
     return (
         <UserLayout title="Favorites">
-            {messages.data.length > 0 ? (
-                messages.data.map((message) => <MessageCard key={message.id} message={message} />)
+            {messages.length > 0 ? (
+                messages.map((message) => <MessageCard key={message.id} message={message} />)
             ) : (
                 <EmptyResult
                     icon={<MessageCircle className="text-muted-foreground mx-auto h-12 w-12" />}

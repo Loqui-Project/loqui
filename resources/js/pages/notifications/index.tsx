@@ -11,9 +11,7 @@ import { Bell, Filter } from 'lucide-react';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
 type ListNotificationsPageProps = {
-    notifications: {
-        data: Notification[];
-    };
+    notifications: Notification[];
     types: {
         label: string;
         value: string;
@@ -90,7 +88,7 @@ export default function ListNotificationsPage({ notifications, types }: ListNoti
                         </Button>
                     ))}
                 </div>
-                {notifications.data.length === 0 ? (
+                {notifications.length === 0 ? (
                     <EmptyResult
                         icon={<Bell className="text-muted-foreground mx-auto h-12 w-12" />}
                         title="No notifications found"

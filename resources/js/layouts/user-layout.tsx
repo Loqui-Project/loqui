@@ -27,9 +27,7 @@ export default function UserLayout({ children, title, actions, pageTitle = title
     const { appearance, updateAppearance } = useAppearance();
 
     const {
-        props: {
-            auth: { user },
-        },
+        props: { auth },
         url,
     } = usePage<InertiaPageProps>();
 
@@ -40,8 +38,8 @@ export default function UserLayout({ children, title, actions, pageTitle = title
         },
         [url],
     );
-    if (user?.data) {
-        window.Echo.private(`user.${user.data?.id ?? 'anon'}`).notification((notification: BrowserNotification) => {
+    if (auth) {
+        window.Echo.private(`user.${auth?.id ?? 'anon'}`).notification((notification: BrowserNotification) => {
             if (notification.type == 'new-message') {
                 toast.custom(() => <NewMessageNotification notification={notification} />);
             } else if (notification.type == 'new-follower') {
@@ -61,12 +59,10 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                 <meta name="twitter:domain" content="loqui.yanalshoubaki.com" />
                 <meta property="og:url" content={url} />
                 <meta name="twitter:url" content={url} />
-                {user?.data && (
-                    <>
-                        <meta name="twitter:creator" content={`@${user.data?.username}`} />
-                        <meta property="og:image" content={user.data.image_url} />
-                    </>
-                )}
+
+                <meta name="twitter:creator" content={`@${auth?.username}`} />
+                <meta property="og:image" content={auth?.image_url} />
+
                 <meta property="fb:app_id" content={import.meta.env.FACEBOOK_CLIENT_ID} />
                 <title>{pageTitle}</title>
                 <meta name="description" content="Your page description" />
@@ -76,15 +72,15 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                 <meta property="og:url" content={url} />
             </Head>
             <div className="bg-background min-h-screen md:flex">
-                {user?.data && (
+                {auth && (
                     <>
                         <div className="bg-muted md:bg-muted/40 sticky top-0 z-10 flex w-full flex-col border-r md:h-screen md:w-64">
-                            <div className="flex flex-col items-start justify-start p-6 py-10">
+                            <div className="flex flex-col items-start justify-start p-4 md:p-6 md:py-10">
                                 <AppLogo />
                             </div>
 
                             <nav className="fixed bottom-0 z-10 w-full flex-1 md:relative md:w-auto md:p-4">
-                                <ul className="bg-accent flex flex-row justify-between space-y-6 p-4 md:flex-col md:justify-center md:bg-transparent md:p-0">
+                                <ul className="bg-accent flex flex-row justify-between p-4 md:flex-col md:justify-center md:space-y-6 md:bg-transparent md:p-0">
                                     <li>
                                         <Link href={route('home')} data-active={isActiveLink(route('home'))} className="group">
                                             <Button
@@ -137,14 +133,14 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                     <li>
                                         <Link
                                             href={route('profile', {
-                                                username: user.data.username,
+                                                username: auth.username,
                                             })}
                                         >
                                             <Button
                                                 variant="ghost"
                                                 className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
-                                                <UserAvatar user={user.data} className="size-6" />
+                                                <UserAvatar user={auth} className="size-6" />
                                                 <span className="ml-2 hidden md:block md:text-base">Profile</span>
                                             </Button>
                                         </Link>
@@ -216,17 +212,19 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                     <main className="p-4 md:p-10">
                         <div className="mb-6">
                             <div className="mb-6 flex w-full items-center justify-between">
-                                <div className="flex items-center">
-                                    {url !== route('home', {}, false) ? (
-                                        <Button variant="ghost" size="icon" asChild className="mr-2">
-                                            <Link href={route('home')}>
-                                                <ChevronLeft className="h-5 w-5" />
-                                            </Link>
-                                        </Button>
-                                    ) : null}
+                                {!!title && (
+                                    <div className="flex items-center">
+                                        {url !== route('home', {}, false) ? (
+                                            <Button variant="ghost" size="icon" asChild className="mr-2">
+                                                <Link href={route('home')}>
+                                                    <ChevronLeft className="h-5 w-5" />
+                                                </Link>
+                                            </Button>
+                                        ) : null}
 
-                                    <h1 className="text-2xl font-bold">{title}</h1>
-                                </div>
+                                        <h1 className="text-2xl font-bold">{title}</h1>
+                                    </div>
+                                )}
                                 <div>{actions}</div>
                             </div>
                             {children}
