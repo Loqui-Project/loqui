@@ -12,7 +12,7 @@ import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 type SecurityPageProps = {
-    socialConnections: Record<string, UserSocialAuth>;
+    socialConnections: UserSocialAuth[];
 };
 
 function SocialProviderIcon({ provider }: { provider: string }) {
@@ -27,6 +27,7 @@ function SocialProviderIcon({ provider }: { provider: string }) {
 }
 
 export default function SecurityPage({ socialConnections }: SecurityPageProps) {
+    console.log(socialConnections, 'socialConnections');
     const { mutate: disconnectProvider } = useMutation({
         mutationKey: ['disconnect-social'],
         mutationFn: async (provider: string) => {
@@ -55,27 +56,28 @@ export default function SecurityPage({ socialConnections }: SecurityPageProps) {
                             <CardDescription>Manage social media accounts used for login</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
-                            {Object.entries(socialConnections).map(([provider, connection]) => (
-                                <div key={provider} className="flex items-center justify-between">
+                            {socialConnections.map((provider) => (
+                                <div key={provider.provider} className="flex items-center justify-between">
                                     <div className="flex items-center space-x-3">
                                         <div className="flex h-10 w-10 items-center justify-center rounded-full">
-                                            <SocialProviderIcon provider={provider} />
+                                            <SocialProviderIcon provider={provider.provider} />
                                         </div>
                                         <div>
-                                            <p className="font-medium">{connection.provider_name}</p>
+                                            <p className="font-medium">{provider.provider_name}</p>
                                         </div>
                                     </div>
                                     <Button
                                         onClick={() => {
-                                            if (connection.connected) {
-                                                disconnectProvider(provider);
+                                            if (provider.connected) {
+                                                disconnectProvider(provider.provider);
                                             } else {
-                                                redirectToProvider(provider);
+                                                redirectToProvider(provider.provider);
                                             }
                                         }}
+                                        variant={provider.connected ? 'destructive' : 'outline'}
                                         size="sm"
                                     >
-                                        {connection.connected ? 'Disconnect' : 'Connect'}
+                                        {provider.connected ? 'Disconnect' : 'Connect'}
                                     </Button>
                                 </div>
                             ))}

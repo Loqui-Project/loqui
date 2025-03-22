@@ -23,10 +23,10 @@ final class SecurityController extends Controller
         $user = type($request->user())->as(User::class);
         $socialConnections = $user->socialConnections()->get();
 
-        $socialConnections = collect(SocialProvidersEnum::cases())->map(fn ($providerName, $provider): array => [
-            'provider' => $provider,
-            'provider_name' => $providerName,
-            'connected' => $socialConnections->contains('provider', $provider),
+        $socialConnections = collect(SocialProvidersEnum::cases())->map(fn ($provider): array => [
+            'provider' => $provider->value,
+            'provider_name' => $provider->value,
+            'connected' => $socialConnections->contains('provider', $provider->value),
         ]);
 
         return Inertia::render('settings/security', [
