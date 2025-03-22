@@ -18,7 +18,7 @@ export function UserCard({ user }: UserCardProps) {
     return (
         <div className="hover:bg-muted/50 flex items-start rounded-lg p-3 transition-colors">
             <div className="flex w-full items-start justify-between">
-                <div className="flex flex-1 items-center gap-x-4">
+                <div className="flex flex-1 flex-wrap items-center gap-4">
                     <div className="relative">
                         <UserAvatar className="h-12 w-12" user={user} />
                     </div>
