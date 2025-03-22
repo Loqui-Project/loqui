@@ -50,12 +50,12 @@ export default function ProfilePage({ user, is_me, messages, is_following, stati
         <UserLayout pageTitle={`${user.name} (@${user.username})`}>
             <section className="mb-20 md:mb-6">
                 <section id="user-information">
-                    <div className="grid grid-cols-12">
-                        <div className="col-span-2">
+                    <div className="grid grid-cols-12 gap-y-4">
+                        <div className="col-span-12 lg:col-span-2">
                             <UserAvatar user={user} className="size-20 md:size-40" />
                         </div>
                         <div className="col-span-10 flex flex-col gap-y-4">
-                            <div className="flex items-start gap-x-4">
+                            <div className="flex flex-wrap items-start gap-4">
                                 <h2 className="text-xl font-semibold">{user.username}</h2>
                                 {is_me ? (
                                     <div>
