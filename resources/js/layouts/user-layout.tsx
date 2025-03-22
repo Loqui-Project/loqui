@@ -71,6 +71,13 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                 <meta property="og:type" content="website" />
                 <meta property="og:url" content={url} />
             </Head>
+            <div className="w-full border-yellow-100 bg-yellow-50 px-4 py-6 text-center text-yellow-600 dark:border-yellow-200/10 dark:bg-yellow-700/10">
+                This website is still in development, please report any issues you find to{' '}
+                <a href="mailto:me@yanalshoubaki.com" className="underline">
+                    me@yanalshoubaki.com
+                </a>
+            </div>
+
             <div className="bg-background min-h-screen md:flex">
                 {auth && (
                     <>
