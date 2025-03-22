@@ -19,13 +19,9 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 
 type ProfilePageProps = {
-    user: {
-        data: User;
-    };
+    user: User;
     is_me: boolean;
-    messages: {
-        data: Message[];
-    };
+    messages: Message[];
     is_following: boolean;
     statistics: {
         followers: number;
@@ -34,7 +30,7 @@ type ProfilePageProps = {
     };
 };
 
-export default function ProfilePage({ user: { data: user }, is_me, messages, is_following, statistics }: ProfilePageProps) {
+export default function ProfilePage({ user, is_me, messages, is_following, statistics }: ProfilePageProps) {
     const [isFollowing, setIsFollowing] = useState(is_following);
     const [openFollowingModal, setOpenFollowingModal] = useState(false);
     const [openFollowerModal, setOpenFollowerModal] = useState(false);
@@ -51,12 +47,12 @@ export default function ProfilePage({ user: { data: user }, is_me, messages, is_
 
     const { unfollowUser, isUnfollowRequestPending } = useUnfollowUser(user);
     return (
-        <UserLayout title={`${user.name} Profile`} pageTitle={`${user.name} (@${user.username})`}>
+        <UserLayout pageTitle={`${user.name} (@${user.username})`}>
             <section className="mb-20 md:mb-6">
                 <section id="user-information">
                     <div className="grid grid-cols-12">
                         <div className="col-span-2">
-                            <UserAvatar user={user} className="size-40" />
+                            <UserAvatar user={user} className="size-20 md:size-40" />
                         </div>
                         <div className="col-span-10 flex flex-col gap-y-4">
                             <div className="flex items-start gap-x-4">
@@ -152,8 +148,8 @@ export default function ProfilePage({ user: { data: user }, is_me, messages, is_
                 {!is_me && <SendMessage userId={user.id} />}
                 {/* Feed from followed users */}
                 <section id="messages" className="mt-4 space-y-6">
-                    {messages.data.length > 0 ? (
-                        messages.data.map((message) => <MessageCard key={message.id} message={message} />)
+                    {messages.length > 0 ? (
+                        messages.map((message) => <MessageCard key={message.id} message={message} />)
                     ) : (
                         <EmptyResult
                             icon={<MessageCircle className="text-muted-foreground mx-auto h-12 w-12" />}

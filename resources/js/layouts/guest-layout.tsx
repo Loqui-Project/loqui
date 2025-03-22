@@ -53,12 +53,12 @@ export function GuestLayout({ children, title, pageTitle = title }: GuestLayoutP
                             </Link>
                         </nav>
                         <div className="flex items-center gap-4">
-                            {auth?.user?.data ? (
+                            {auth ? (
                                 <Link href={route('home')} className="flex flex-row items-center gap-x-4">
-                                    <UserAvatar user={auth.user.data} />
+                                    <UserAvatar user={auth} />
                                     <div>
-                                        <h3 className="text-base font-bold">{auth.user.data.name}</h3>
-                                        <p className="text-muted-foreground text-sm">@{auth.user.data.username}</p>
+                                        <h3 className="text-base font-bold">{auth.name}</h3>
+                                        <p className="text-muted-foreground text-sm">@{auth.username}</p>
                                     </div>
                                 </Link>
                             ) : (

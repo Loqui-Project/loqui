@@ -86,16 +86,16 @@ final class UserController extends Controller
     public function followers(Request $request, User $user): \Illuminate\Http\JsonResponse
     {
 
-        $query = type($request->query('query'))->asString();
+        $query = type($request->query('query') ?? '')->asString();
 
-        $followers = User::whereHas('followers', function ($query) use ($user): void {
-            $query->where('follower_id', $user->id);
-        })->where('id', '!=', $user->id)
-            ->where('name', 'like', "%$query%")
-            ->where('username', 'like', "%$query%")
-            ->get();
+        $followers = $user->followers()
+            ->with(['user' => function ($queryBuilder) use ($query) {
+                $queryBuilder->where('name', 'like', "%$query%")
+                    ->orWhere('username', 'like', "%$query%");
+            }])
+            ->get()->map(fn ($follow) => new UserResource($follow->follower))->flatten();
 
-        return response()->json(UserResource::collection($followers));
+        return response()->json($followers);
     }
 
     /**
@@ -103,15 +103,15 @@ final class UserController extends Controller
      */
     public function followings(Request $request, User $user): \Illuminate\Http\JsonResponse
     {
-        $query = type($request->query('query'))->asString();
+        $query = type($request->query('query') ?? '')->asString();
 
-        $followings = User::whereHas('followings', function ($query) use ($user): void {
-            $query->where('user_id', $user->id);
-        })
-            ->where('name', 'like', "%$query%")
-            ->where('username', 'like', "%$query%")
-            ->get();
+        $followings = $user->followings()
+            ->with(['user' => function ($queryBuilder) use ($query) {
+                $queryBuilder->where('name', 'like', "%$query%")
+                    ->orWhere('username', 'like', "%$query%");
+            }])
+            ->get()->map(fn ($follow) => new UserResource($follow->user))->flatten();
 
-        return response()->json(UserResource::collection($followings));
+        return response()->json($followings);
     }
 }
