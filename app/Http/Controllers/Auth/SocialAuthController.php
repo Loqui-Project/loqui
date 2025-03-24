@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\SocialProvidersEnum;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserSocialAuth;
@@ -22,6 +23,9 @@ final class SocialAuthController extends Controller
      */
     public function redirectToProvider(string $provider)
     {
+        if (! in_array($provider, array_column(SocialProvidersEnum::cases(), 'value'))) {
+            abort(404);
+        }
         $provider = mb_strtolower($provider);
 
         return Socialite::driver($provider)->redirect();
@@ -32,6 +36,9 @@ final class SocialAuthController extends Controller
      */
     public function handleProviderCallback(string $provider): \Illuminate\Http\RedirectResponse
     {
+        if (! in_array($provider, array_column(SocialProvidersEnum::cases(), 'value'))) {
+            abort(404);
+        }
         $socialUser = Socialite::driver($provider)->user();
 
         if ($user = User::where('email', $socialUser->getEmail())->first()) {
