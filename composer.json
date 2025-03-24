@@ -31,6 +31,7 @@
         "pxlrbt/filament-environment-indicator": "^2.1",
         "sentry/sentry-laravel": "^4.13",
         "shuvroroy/filament-spatie-laravel-health": "^2.3",
+        "silviolleite/laravelpwa": "^2.0",
         "socialiteproviders/facebook": "^4.1",
         "socialiteproviders/google": "^4.1",
         "tightenco/ziggy": "^2.4",
