@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Settings\NotificationController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SecurityController;
 use App\Http\Controllers\Settings\SessionController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->prefix('settings')->group(function () {
+Route::middleware('auth')->prefix('settings')->name('settings.')->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
@@ -31,5 +32,10 @@ Route::middleware('auth')->prefix('settings')->group(function () {
     Route::controller(SessionController::class)->name('sessions.')->prefix('session')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::delete('/{session}', 'destroy')->name('destroy');
+    });
+
+    Route::controller(NotificationController::class)->name('notifications.')->prefix('notifications')->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::post('/', 'update')->name('update');
     });
 });

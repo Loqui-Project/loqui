@@ -132,3 +132,6 @@ export interface Session {
     is_current_device: boolean;
     last_activity: number;
 }
+
+export type NotificationTypes = 'new-message' | 'new-like' | 'new-reply' | 'new-follower';
+export type NotifiactionChannels = 'email' | 'browser' | 'database';
