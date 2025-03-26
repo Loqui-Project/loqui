@@ -14,7 +14,7 @@ describe('Security Controller', function () {
 
         $response = $this
             ->actingAs($user)
-            ->get(route('security.edit'));
+            ->get(route('settings.security.edit'));
 
         $response->assertOk();
     });
@@ -24,8 +24,8 @@ describe('Security Controller', function () {
 
         $response = $this
             ->actingAs($user)
-            ->from(route('security.edit'))
-            ->put(route('security.deactivate'), [
+            ->from(route('settings.security.edit'))
+            ->put(route('settings.security.deactivate'), [
                 'password' => 'password',
             ]);
         $response
@@ -43,7 +43,7 @@ describe('Security Controller', function () {
 
         $response = $this
             ->actingAs($user)
-            ->delete(route('security.destroy'), [
+            ->delete(route('settings.security.destroy'), [
                 'password' => 'password',
             ]);
 
@@ -60,14 +60,14 @@ describe('Security Controller', function () {
 
         $response = $this
             ->actingAs($user)
-            ->from(route('security.edit'))
-            ->delete(route('security.destroy'), [
+            ->from(route('settings.security.edit'))
+            ->delete(route('settings.security.destroy'), [
                 'password' => 'wrong-password',
             ]);
 
         $response
             ->assertSessionHasErrors('password')
-            ->assertRedirect(route('security.edit'));
+            ->assertRedirect(route('settings.security.edit'));
 
         expect($user->fresh())->not->toBeNull();
     });
