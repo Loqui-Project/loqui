@@ -77,7 +77,7 @@ export default function NotificationsPage({ channels, types, userNotificationSet
                                         return (
                                             <div key={channel.value} className="flex justify-center">
                                                 <Switch
-                                                    defaultChecked={data[channel.value][type.value]}
+                                                    defaultChecked={data[channel.value]?.[type.value] ?? false}
                                                     onCheckedChange={() => handleToggle(channel.value, type.value)}
                                                     aria-label={`${channel.label} notifications for ${type.label}`}
                                                 />
