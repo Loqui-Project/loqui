@@ -54,6 +54,7 @@ final class NotificationController extends Controller
      */
     public function update(UpdateNotificationRequest $request): \Illuminate\Http\RedirectResponse
     {
+        /** @var \App\Models\User */
         $user = Auth::user();
 
         $user->notificationSettings()->delete();
