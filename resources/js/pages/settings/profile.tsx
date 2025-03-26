@@ -2,7 +2,6 @@ import { Transition } from '@headlessui/react';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler, useState } from 'react';
 
-import HeadingSmall from '@/components/heading-small';
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -59,15 +58,13 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
 
     return (
         <UserLayout title="Profile Settings">
-            <SettingsLayout>
+            <SettingsLayout title="Profile information" description="Update your name and email address">
                 <div className="space-y-6">
-                    <HeadingSmall title="Profile information" description="Update your name and email address" />
-
                     <form onSubmit={submit} className="space-y-6" encType="multipart/form-data">
                         <div className="mb-8 flex flex-col items-center">
                             <div className="relative mb-4">
                                 {avatar ? (
-                                    <img src={avatar} alt="avatar" className="size-36 rounded-full" />
+                                    <img src={avatar} alt="avatar" className="size-36 rounded-full object-cover" />
                                 ) : (
                                     <UserAvatar user={auth} className="size-36" />
                                 )}

@@ -8,4 +8,5 @@ return [
     App\Providers\PulseServiceProvider::class,
     App\Providers\TelescopeServiceProvider::class,
     Torann\GeoIP\GeoIPServiceProvider::class,
+    Jenssegers\Agent\AgentServiceProvider::class,
 ];

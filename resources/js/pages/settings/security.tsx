@@ -48,7 +48,7 @@ export default function SecurityPage({ socialConnections }: SecurityPageProps) {
 
     return (
         <UserLayout title="Security">
-            <SettingsLayout>
+            <SettingsLayout title="Security" description="Manage your account security settings">
                 <div className="space-y-6">
                     <Card>
                         <CardHeader>

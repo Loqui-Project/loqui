@@ -120,3 +120,15 @@ export interface UserSocialAuth {
     provider_name: string;
     connected: boolean;
 }
+
+export interface Session {
+    id: number;
+    agent: {
+        platform: string;
+        browser: string;
+        device: string;
+    };
+    ip_address: string;
+    is_current_device: boolean;
+    last_activity: number;
+}

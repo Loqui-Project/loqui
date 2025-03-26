@@ -117,9 +117,19 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
      *
      * @return HasMany<MessageFavourite, covariant $this>
      */
-    public function favouriteMessages()
+    public function favouriteMessages(): HasMany
     {
         return $this->hasMany(MessageFavourite::class, 'user_id');
+    }
+
+    /**
+     * Check if the user has favourited a message.
+     *
+     * @return HasMany<Session, covariant $this>
+     */
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class, 'user_id');
     }
 
     /**

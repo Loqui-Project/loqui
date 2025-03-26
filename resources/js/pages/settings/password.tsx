@@ -4,7 +4,6 @@ import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 
-import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -41,10 +40,8 @@ export default function Password() {
 
     return (
         <UserLayout title="Password">
-            <SettingsLayout>
+            <SettingsLayout title="Password" description="Ensure your account is using a long, random password to stay secure">
                 <div className="space-y-6">
-                    <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
-
                     <form onSubmit={updatePassword} className="space-y-6">
                         <div className="grid gap-2">
                             <Label htmlFor="current_password">Current password</Label>
