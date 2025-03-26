@@ -166,8 +166,8 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                             <DropdownMenuContent className="min-w-3xs flex-col gap-y-4">
                                                 <DropdownMenuItem>
                                                     <Link
-                                                        href={route('profile.edit')}
-                                                        data-active={isActiveLink(route('profile.edit'))}
+                                                        href={route('settings.profile.edit')}
+                                                        data-active={isActiveLink(route('settings.profile.edit'))}
                                                         className="group flex items-center gap-x-2"
                                                     >
                                                         <Settings className="size-5" />

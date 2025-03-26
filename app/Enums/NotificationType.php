@@ -23,4 +23,14 @@ enum NotificationType: string
             self::NEW_REPLY => 'New Reply',
         };
     }
+
+    public function getDescription(): string
+    {
+        return match ($this) {
+            self::NEW_FOLLOWER => 'Get notified when someone follows you',
+            self::NEW_LIKE => 'Get notified when someone likes your message',
+            self::NEW_MESSAGE => 'Get notified when someone sends you a message',
+            self::NEW_REPLY => 'Get notified when someone replies to your message',
+        };
+    }
 }

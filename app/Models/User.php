@@ -133,6 +133,16 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     }
 
     /**
+     * Get the user's notification settings.
+     *
+     * @return HasMany<NotificationSetting, covariant $this>
+     */
+    public function notificationSettings(): HasMany
+    {
+        return $this->hasMany(NotificationSetting::class, 'user_id');
+    }
+
+    /**
      * Check if the user is following another user.
      */
     public function isFollowing(self $user): bool

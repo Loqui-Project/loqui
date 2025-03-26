@@ -59,7 +59,7 @@ export default function ProfilePage({ user, is_me, messages, is_following, stati
                                 <h2 className="text-xl font-semibold">{user.username}</h2>
                                 {is_me ? (
                                     <div>
-                                        <Link href={route('profile.edit')} className="text-accent">
+                                        <Link href={route('settings.profile.edit')} className="text-accent">
                                             <Button className="text-sm">Edit Profile</Button>
                                         </Link>
                                     </div>
