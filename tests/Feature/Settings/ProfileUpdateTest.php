@@ -15,7 +15,7 @@ describe('Profile Update tests', function () {
 
         $response = $this
             ->actingAs($user)
-            ->get('/settings/profile');
+            ->get(route('profile.edit'));
 
         $response->assertOk();
     });
@@ -26,14 +26,14 @@ describe('Profile Update tests', function () {
 
         $response = $this
             ->actingAs($user)
-            ->post('/settings/profile', [
+            ->post(route('profile.edit'), [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
                 'image' => $file = UploadedFile::fake()->image('post.jpg'),
             ]);
 
         $response
-            ->assertSessionHasNoErrors()->assertRedirect('/settings/profile');
+            ->assertSessionHasNoErrors()->assertRedirect(route('profile.edit'));
 
         $user->refresh();
 
@@ -47,14 +47,14 @@ describe('Profile Update tests', function () {
 
         $response = $this
             ->actingAs($user)
-            ->post('/settings/profile', [
+            ->post(route('profile.edit'), [
                 'name' => 'Test User',
                 'email' => $user->email,
             ]);
 
         $response
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/settings/profile');
+            ->assertRedirect(route('profile.edit'));
 
         expect($user->refresh()->email_verified_at)->not->toBeNull();
     });

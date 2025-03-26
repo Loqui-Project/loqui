@@ -13,7 +13,7 @@ Route::middleware('auth')->prefix('settings')->group(function () {
 
     Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
         Route::get('/', 'edit')->name('edit');
-        Route::put('/', 'update')->name('update');
+        Route::post('/', 'update')->name('update');
     });
 
     Route::controller(PasswordController::class)->name('password.')->prefix('password')->group(function () {
