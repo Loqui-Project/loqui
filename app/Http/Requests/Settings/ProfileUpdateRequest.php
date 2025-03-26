@@ -21,7 +21,7 @@ final class ProfileUpdateRequest extends FormRequest
      *
      * @return array<string, list<\Illuminate\Contracts\Validation\ValidationRule|string|null>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
             'name' => ['required', 'string', 'max:255'],

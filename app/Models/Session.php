@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Traits\HasUser;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Config;
 
 final class Session extends Model
 {
@@ -35,18 +34,16 @@ final class Session extends Model
     protected $keyType = 'string';
 
     /**
-     * Use parent constructor and set table according to config file
+     * The table associated with the model.
+     *
+     * @var string|null
      */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->table = Config::get('sessions.table', 'sessions');
-    }
+    protected $table = 'sessions';
 
     /**
      * Get Unserialized Payload (base64 decoded too)
      */
-    public function getUnserializedPayloadAttribute(): array
+    public function getUnserializedPayloadAttribute(): mixed
     {
         return unserialize(base64_decode($this->payload));
     }
