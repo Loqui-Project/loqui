@@ -4,6 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
+import { PropsWithChildren } from 'react';
 
 const sidebarNavItems: NavItem[] = [
     {
@@ -17,23 +18,28 @@ const sidebarNavItems: NavItem[] = [
         icon: null,
     },
     {
-        title: 'Appearance',
-        url: route('appearance'),
-        icon: null,
-    },
-    {
         title: 'Security',
         url: route('security.edit'),
         icon: null,
     },
+    {
+        title: 'Session',
+        url: route('sessions.index'),
+        icon: null,
+    },
 ];
 
-export default function SettingsLayout({ children }: { children: React.ReactNode }) {
+type SettingsLayoutProps = PropsWithChildren<{
+    title: string;
+    description: string;
+}>;
+
+export default function SettingsLayout({ children, title, description }: SettingsLayoutProps) {
     const currentPath = window.location.pathname;
 
     return (
         <div className="px-4 py-6">
-            <Heading title="Settings" description="Manage your profile and account settings" />
+            <Heading title={title} description={description} />
 
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
                 <aside className="w-full max-w-xl lg:w-48">

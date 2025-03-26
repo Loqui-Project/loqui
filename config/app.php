@@ -130,7 +130,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         'Redis' => Illuminate\Support\Facades\Redis::class,
         'GeoIP' => Torann\GeoIP\Facades\GeoIP::class,
-
+        'Agent' => Jenssegers\Agent\Facades\Agent::class,
     ])->toArray(),
 
 ];

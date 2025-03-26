@@ -16,7 +16,4 @@ export default defineConfig({
     esbuild: {
         jsx: 'automatic',
     },
-    server: {
-        host: '192.168.1.39',
-    },
 });

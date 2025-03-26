@@ -5,25 +5,31 @@ declare(strict_types=1);
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SecurityController;
+use App\Http\Controllers\Settings\SessionController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->prefix('settings')->group(function () {
     Route::redirect('settings', 'settings/profile');
 
-    Route::get('settings/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::post('settings/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::put('/', 'update')->name('update');
+    });
 
-    Route::get('settings/password', [PasswordController::class, 'edit'])->name('password.edit');
-    Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+    Route::controller(PasswordController::class)->name('password.')->prefix('password')->group(function () {
 
-    Route::get('settings/appearance', function () {
-        return Inertia::render('settings/appearance');
-    })->name('appearance');
+        Route::get('/', 'edit')->name('edit');
+        Route::put('/', 'update')->name('update');
+    });
 
-    Route::controller(SecurityController::class)->name('security.')->prefix('settings')->group(function () {
-        Route::get('security', 'edit')->name('edit');
-        Route::delete('security', 'destroy')->name('destroy');
-        Route::put('security', 'deactivate')->name('deactivate');
+    Route::controller(SecurityController::class)->name('security.')->prefix('security')->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::delete('/', 'destroy')->name('destroy');
+        Route::put('/', 'deactivate')->name('deactivate');
+    });
+
+    Route::controller(SessionController::class)->name('sessions.')->prefix('session')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::delete('/{session}', 'destroy')->name('destroy');
     });
 });
