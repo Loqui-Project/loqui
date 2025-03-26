@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-use Illuminate\Foundation\Inspiring;
-use Illuminate\Support\Facades\Artisan;
+use App\Console\Commands\DeleteNonEmailVerifiedUsersCommand;
+use App\Console\Commands\SendUnreadNotificationEmailsCommand;
+use Illuminate\Support\Facades\Schedule;
 
-Artisan::command('inspire', function () {
-    $this->comment(Inspiring::quote());
-})->purpose('Display an inspiring quote');
+Schedule::command(SendUnreadNotificationEmailsCommand::class)->dailyAt('13:00');
+Schedule::command(SendUnreadNotificationEmailsCommand::class, ['--weekly' => true])->weekly()->mondays()->at('13:00');
+Schedule::command(DeleteNonEmailVerifiedUsersCommand::class)->hourly();
