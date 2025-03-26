@@ -12,6 +12,9 @@ use Jenssegers\Agent\Agent;
 
 final class SessionController extends Controller
 {
+    /**
+     * Show the user's sessions page.
+     */
     public function index(Request $request)
     {
         $user = type($request->user())->as(User::class);
