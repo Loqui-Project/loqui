@@ -12,6 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 final class UserResource extends Resource
 {
@@ -40,7 +41,9 @@ final class UserResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')->label('Created at'),
                 Tables\Columns\TextColumn::make('updated_at')->label('Updated at'),
 
-            ])
+            ])->recordUrl(
+                fn (Model $record): string => route('profile', $record),
+            )
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options(
@@ -73,9 +76,6 @@ final class UserResource extends Resource
                                 fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     }),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -13,8 +13,6 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 final class UserResource extends JsonResource
 {
-    public $resource = User::class;
-
     /**
      * Transform the resource into an array.
      *
@@ -22,6 +20,7 @@ final class UserResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             'id' => $this->id,
             'username' => $this->username,
@@ -30,7 +29,8 @@ final class UserResource extends JsonResource
             'bio' => $this->bio,
             'image_url' => $this->image_url ? asset('storage/'.$this->image_url) : '/images/default-avatar.png',
             'email_verified_at' => $this->email_verified_at,
-            'is_following' => $this->followers()->get()->contains('id', $request->user()?->id),
+            'is_follower' => $this->followers()->get()->contains('follower_id', $request->user()?->id),
+            'is_following' => $this->followings()->get()->contains('follower_id', $request->user()?->id),
         ];
     }
 }

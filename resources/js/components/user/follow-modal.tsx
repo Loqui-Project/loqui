@@ -46,7 +46,7 @@ export function UserFollowModal({
             }}
         >
             <DialogTrigger asChild>{triggerComponent}</DialogTrigger>
-            <DialogContent className="max-w-full md:max-w-[425px]">
+            <DialogContent>
                 <DialogHeader>
                     <DialogTitle>People You Follow</DialogTitle>
                     <DialogDescription>View and manage the people you're following.</DialogDescription>

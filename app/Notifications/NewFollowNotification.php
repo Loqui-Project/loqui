@@ -6,6 +6,7 @@ namespace App\Notifications;
 
 use App\Enums\NotificationType;
 use App\Http\Resources\UserResource;
+use App\Models\NotificationSetting;
 use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -38,7 +39,24 @@ final class NewFollowNotification extends Notification implements ShouldBroadcas
      */
     public function via(object $notifiable): array
     {
-        return ['database', 'broadcast'];
+        $notificationSettings = NotificationSetting::where('user_id', $this->user->id)->get();
+
+        // Check what user wants to be notified about
+        $via = ['database'];
+        if (collect($notificationSettings)->isEmpty()) {
+            return $via;
+        }
+        $notificationSettings = collect($notificationSettings)->groupBy('key');
+        $browserNotification = $notificationSettings->get('browser')->where('type', NotificationType::NEW_FOLLOWER->value)->first()?->value;
+        $emailNotification = $notificationSettings->get('email')->where('type', NotificationType::NEW_FOLLOWER->value)->first()?->value;
+        if ($browserNotification === true) {
+            $via[] = 'broadcast';
+        }
+        if ($emailNotification === true) {
+            $via[] = 'mail';
+        }
+
+        return $via;
     }
 
     /**
@@ -46,10 +64,10 @@ final class NewFollowNotification extends Notification implements ShouldBroadcas
      */
     public function toMail(object $notifiable): MailMessage
     {
-        return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+        return (new MailMessage())
+            ->subject('New Follower')
+            ->line("{$this->currentUser->name} followed you.")
+            ->action('View Profile', route('profile', $this->currentUser));
     }
 
     /**

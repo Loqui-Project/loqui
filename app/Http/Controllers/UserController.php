@@ -103,10 +103,10 @@ final class UserController extends Controller
         $query = type($request->query('query') ?? '')->asString();
 
         $followers = $user->followers()
-            ->with(['user' => function ($queryBuilder) use ($query) {
+            ->withWhereHas('user', function ($queryBuilder) use ($query) {
                 $queryBuilder->where('name', 'like', "%$query%")
                     ->orWhere('username', 'like', "%$query%");
-            }])
+            })
             ->get()->map(fn ($follow) => new UserResource($follow->follower))->flatten();
 
         return response()->json($followers);
@@ -120,11 +120,11 @@ final class UserController extends Controller
         $query = type($request->query('query') ?? '')->asString();
 
         $followings = $user->followings()
-            ->with(['user' => function ($queryBuilder) use ($query) {
+            ->withWhereHas('user', function ($queryBuilder) use ($query) {
                 $queryBuilder->where('name', 'like', "%$query%")
                     ->orWhere('username', 'like', "%$query%");
-            }])
-            ->get()->map(fn ($follow) => new UserResource($follow->user))->flatten();
+            })
+            ->get()->map(fn ($follow) => new UserResource($follow->follower))->flatten();
 
         return response()->json($followings);
     }

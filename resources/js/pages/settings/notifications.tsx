@@ -8,6 +8,7 @@ import { Switch } from '@/components/ui/switch';
 import { NotifiactionChannels, NotificationTypes } from '@/types';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
+import { useMemo } from 'react';
 import { toast } from 'sonner';
 
 type NotificationsPageProps = {
@@ -23,13 +24,40 @@ type NotificationsPageProps = {
     userNotificationSettings: Record<NotifiactionChannels, Record<NotificationTypes, boolean>>;
 };
 export default function NotificationsPage({ channels, types, userNotificationSettings }: NotificationsPageProps) {
-    const { data, setData, post, processing, recentlySuccessful } = useForm(userNotificationSettings);
+    const mergeDefaultSettings = useMemo(() => {
+        const defaultSettings = {
+            email: {
+                'new-message': false,
+                'new-like': false,
+                'new-reply': false,
+                'new-follower': false,
+            },
+            browser: {
+                'new-message': false,
+                'new-like': false,
+                'new-reply': false,
+                'new-follower': false,
+            },
+            database: {
+                'new-message': false,
+                'new-like': false,
+                'new-reply': false,
+                'new-follower': false,
+            },
+        };
+        return {
+            ...defaultSettings,
+            ...userNotificationSettings,
+        };
+    }, [userNotificationSettings]);
+
+    const { data, setData, post, processing, recentlySuccessful } = useForm(mergeDefaultSettings);
     const handleToggle = (channel: NotifiactionChannels, type: NotificationTypes) => {
         setData((prev) => ({
             ...prev,
             [channel]: {
                 ...prev[channel],
-                [type]: !prev[channel][type],
+                [type]: prev[channel]?.[type] ? !prev[channel][type] : true,
             },
         }));
     };

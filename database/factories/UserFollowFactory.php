@@ -18,8 +18,12 @@ final class UserFollowFactory extends Factory
      */
     public function definition(): array
     {
+        $user = \App\Models\User::inRandomOrder()->first();
+        $follower = \App\Models\User::where('id', '!=', $user->id)->inRandomOrder()->first();
+
         return [
-            //
+            'user_id' => $user?->id,
+            'follower_id' => $follower?->id,
         ];
     }
 }

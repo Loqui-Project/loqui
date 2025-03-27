@@ -47,7 +47,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         console.log(data, 'data');
-        post(route('profile.update'), {
+        post(route('settings.profile.update'), {
             preserveScroll: true,
         });
     };

@@ -18,8 +18,12 @@ final class MessageFavouriteFactory extends Factory
      */
     public function definition(): array
     {
+        $user = \App\Models\User::inRandomOrder()->first();
+        $message = \App\Models\Message::inRandomOrder()->first();
+
         return [
-            //
+            'user_id' => $user?->id,
+            'message_id' => $message?->id,
         ];
     }
 }

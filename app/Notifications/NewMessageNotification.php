@@ -6,6 +6,7 @@ namespace App\Notifications;
 
 use App\Enums\NotificationType;
 use App\Models\Message;
+use App\Models\NotificationSetting;
 use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -13,6 +14,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 
@@ -38,7 +40,20 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
      */
     public function via(object $notifiable): array
     {
-        return ['database', 'broadcast'];
+        $notificationSettings = NotificationSetting::where('user_id', $this->user->id)->get()->groupBy('key');
+
+        // Check what user wants to be notified about
+        $browserNotification = $notificationSettings->get('browser')->where('type', NotificationType::NEW_MESSAGE->value)->first()?->value;
+        $emailNotification = $notificationSettings->get('email')->where('type', NotificationType::NEW_MESSAGE->value)->first()?->value;
+        $via = ['database'];
+        if ($browserNotification === true) {
+            $via[] = 'broadcast';
+        }
+        if ($emailNotification === true) {
+            $via[] = 'mail';
+        }
+
+        return $via;
     }
 
     /**
@@ -104,5 +119,22 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
     public function broadcastType(): string
     {
         return NotificationType::NEW_MESSAGE->value;
+    }
+
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): MailMessage
+    {
+        $url = route('message.show', $this->message);
+        $title = $this->currentUser !== null ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
+
+        return (new MailMessage)
+            ->subject($title)
+            ->greeting('Hello!')
+            ->line($title)
+            ->action('View Message', $url)
+            ->line('Thank you for using our application!');
+
     }
 }
