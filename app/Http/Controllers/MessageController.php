@@ -24,16 +24,12 @@ final class MessageController extends Controller
     /**
      * Display messages that without replies for the user.
      */
-    public function inbox(Request $request): \Inertia\Response|\Illuminate\Http\JsonResponse
+    public function inbox(): \Inertia\Response|\Illuminate\Http\JsonResponse
     {
-        $user = type($request->user())->as(User::class);
-
-        $messages = Message::where('user_id', $user->id)->withoutReplies()->paginate(5);
-        if ($request->wantsJson()) {
-            return response()->json([
-                'messages' => MessageResource::collection($messages),
-            ]);
-        }
+        $messages = Message::where('user_id', Auth::id())->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
+            'likes',
+            'replays',
+        ])->withoutReplies()->paginate(5);
 
         return Inertia::render('message/inbox', [
             'messages' => MessageResource::collection($messages),

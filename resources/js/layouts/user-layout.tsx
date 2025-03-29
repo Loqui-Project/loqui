@@ -10,7 +10,7 @@ import { useAppearance } from '@/hooks/use-appearance';
 import { BrowserNotification, InertiaPageProps } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { DropdownMenuGroup } from '@radix-ui/react-dropdown-menu';
-import { Bell, ChevronLeft, House, Inbox, Menu, Search, Settings, Star } from 'lucide-react';
+import { Bell, ChevronLeft, House, Inbox, Menu, Search, Settings, Shield, Star } from 'lucide-react';
 import { useMemo } from 'react';
 import { toast } from 'sonner';
 
@@ -27,7 +27,7 @@ export default function UserLayout({ children, title, actions, pageTitle = title
     const { appearance, updateAppearance } = useAppearance();
 
     const {
-        props: { auth },
+        props: { auth, is_admin },
         url,
     } = usePage<InertiaPageProps>();
 
@@ -95,7 +95,7 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                                 className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
                                                 <House className="size-6" />
-                                                <span className="ml-2 hidden md:block md:text-base">Home</span>
+                                                <span className="hidden md:block md:text-base">Home</span>
                                             </Button>
                                         </Link>
                                     </li>
@@ -106,7 +106,7 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                                 className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
                                                 <Search className="size-6" />
-                                                <span className="ml-2 hidden md:block md:text-base">Search</span>
+                                                <span className="hidden md:block md:text-base">Search</span>
                                             </Button>
                                         </Link>
                                     </li>
@@ -117,7 +117,7 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                                 className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                             >
                                                 <Inbox className="size-6" />
-                                                <span className="ml-2 hidden md:block md:text-base">Inbox</span>
+                                                <span className="hidden md:block md:text-base">Inbox</span>
                                             </Button>
                                         </Link>
                                     </li>
@@ -133,7 +133,7 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                             >
                                                 <Bell className="size-6" />
 
-                                                <span className="ml-2 hidden md:block md:text-base">Notifications</span>
+                                                <span className="hidden md:block md:text-base">Notifications</span>
                                             </Button>
                                         </Link>
                                     </li>
@@ -145,10 +145,10 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                         >
                                             <Button
                                                 variant="ghost"
-                                                className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
+                                                className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent h-auto w-full cursor-pointer justify-start px-3 transition"
                                             >
-                                                <UserAvatar user={auth} className="size-6" />
-                                                <span className="ml-2 hidden md:block md:text-base">Profile</span>
+                                                <UserAvatar user={auth} imageOnly={true} avatarClassname="size-6" />
+                                                <span className="hidden md:block md:text-base">Profile</span>
                                             </Button>
                                         </Link>
                                     </li>
@@ -160,25 +160,37 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                                                     className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                                                 >
                                                     <Menu className="size-6" />
-                                                    <span className="ml-2 hidden md:block md:text-base">More</span>
+                                                    <span className="hidden md:block md:text-base">More</span>
                                                 </Button>
                                             </DropdownMenuTrigger>
                                             <DropdownMenuContent className="min-w-3xs flex-col gap-y-4">
-                                                <DropdownMenuItem>
+                                                {is_admin && (
+                                                    <DropdownMenuItem asChild>
+                                                        <a
+                                                            href={route('filament.admin.pages.dashboard')}
+                                                            className="group flex cursor-pointer items-center gap-x-2"
+                                                            target="_blank"
+                                                        >
+                                                            <Shield className="size-5" />
+                                                            <span>Admin</span>
+                                                        </a>
+                                                    </DropdownMenuItem>
+                                                )}
+                                                <DropdownMenuItem asChild>
                                                     <Link
                                                         href={route('settings.profile.edit')}
                                                         data-active={isActiveLink(route('settings.profile.edit'))}
-                                                        className="group flex items-center gap-x-2"
+                                                        className="group flex cursor-pointer items-center gap-x-2"
                                                     >
                                                         <Settings className="size-5" />
                                                         <span>Settings</span>
                                                     </Link>
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem>
+                                                <DropdownMenuItem asChild>
                                                     <Link
                                                         href={route('message.favorites')}
                                                         data-active={isActiveLink(route('message.favorites'))}
-                                                        className="group flex items-center gap-x-2"
+                                                        className="group flex cursor-pointer items-center gap-x-2"
                                                     >
                                                         <Star className="size-5" />
                                                         <span>Favorites</span>

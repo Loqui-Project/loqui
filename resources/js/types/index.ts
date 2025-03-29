@@ -10,6 +10,7 @@ export interface InertiaPageProps extends PageProps {
         followers: number;
         following: number;
     };
+    is_admin: boolean;
 }
 
 export interface BreadcrumbItem {
@@ -63,6 +64,7 @@ export interface User {
     email: string;
     bio: string;
     image_url: string;
+    is_following_me: boolean;
     is_following: boolean;
     email_verified_at: string | null;
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,10 +15,10 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get(
-    '/@{user:username}', [UserController::class, 'profile'])->name('profile');
+    '/@{user:username}', [UserProfileController::class, 'profile'])->name('profile');
 
-Route::middleware(['auth'])->get('home', HomeController::class)->name('home');
-Route::middleware(['auth'])->get('/inbox', [MessageController::class, 'inbox'])->name('inbox');
+Route::middleware(['auth'])->match(['get', 'post'], 'home', HomeController::class)->name('home');
+Route::middleware(['auth'])->match(['get', 'post'], '/inbox', [MessageController::class, 'inbox'])->name('inbox');
 Route::prefix('message')->name('message.')->controller(MessageController::class)->group(function () {
     Route::middleware(['auth'])->post('/like', 'like')->name('like');
     Route::middleware(['auth'])->post('/add-reply', 'addReply')->name('add-reply');

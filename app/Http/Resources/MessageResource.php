@@ -12,6 +12,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 final class MessageResource extends JsonResource
 {
+    public static $wrap = null;
+
     /**
      * Transform the resource into an array.
      *
@@ -19,19 +21,17 @@ final class MessageResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             'id' => $this->id,
             'user' => new UserResource($this->user),
-            'sender' => $this->sender_id !== null ? new UserResource($this->sender) : null,
+            'sender' => $this->sender_id !== null || $this->is_anon ? new UserResource($this->sender) : null,
             'message' => $this->message,
-            'is_anon' => $this->is_anon,
-            'likes_count' => $this->likes()->count(),
-            'liked' => $this->likes()->where('user_id', $request->user()?->id)->exists(),
-            'replays_count' => $this->replays()->count(),
-            'replays' => MessageReplayResource::collection($this->replays()->latest()->get()),
-            'is_favorite' => $this->favorites()->where('user_id', $request->user()?->id)->exists(),
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'likes_count' => $this->likes_count,
+            'liked' => $this->likes->contains('user_id', $request->user()?->id),
+            'replays_count' => $this->replays_count,
+            'replays' => MessageReplayResource::collection($this->whenLoaded('replays')),
+            'is_favorite' => $this->favorites->contains('user_id', $request->user()?->id),
         ];
     }
 }

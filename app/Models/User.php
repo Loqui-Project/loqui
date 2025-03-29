@@ -9,6 +9,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -30,8 +31,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon $updated_at
  * @property-read Message[] $messages
  * @property-read UserSocialAuth[] $socialConnections
- * @property-read UserFollow[] $followers
- * @property-read UserFollow[] $followings
+ * @property-read Collection<int, User> $following
+ * @property-read Collection<int, User> $followers
  * @property-read MessageFavourite[] $favouriteMessages
  */
 final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
@@ -95,21 +96,21 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     /**
      * Get the user's followers.
      *
-     * @return HasMany<UserFollow, covariant $this>
+     * @return BelongsToMany<User, covariant $this>
      */
-    public function followers(): HasMany
+    public function followers(): BelongsToMany
     {
-        return $this->hasMany(UserFollow::class, 'user_id');
+        return $this->belongsToMany(self::class, 'user_follows', 'user_id', 'follower_id');
     }
 
     /**
      * Get the user's following.
      *
-     * @return HasMany<UserFollow, covariant $this>
+     * @return BelongsToMany<User, covariant $this>
      */
-    public function followings(): HasMany
+    public function following(): BelongsToMany
     {
-        return $this->hasMany(UserFollow::class, 'follower_id');
+        return $this->belongsToMany(self::class, 'user_follows', 'follower_id', 'user_id');
     }
 
     /**
@@ -140,14 +141,6 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     public function notificationSettings(): HasMany
     {
         return $this->hasMany(NotificationSetting::class, 'user_id');
-    }
-
-    /**
-     * Check if the user is following another user.
-     */
-    public function isFollowing(self $user): bool
-    {
-        return $this->followings()->where('user_id', $user->id)->exists();
     }
 
     /**

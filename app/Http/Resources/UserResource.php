@@ -7,6 +7,7 @@ namespace App\Http\Resources;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @mixin User
@@ -29,8 +30,8 @@ final class UserResource extends JsonResource
             'bio' => $this->bio,
             'image_url' => $this->image_url ? asset('storage/'.$this->image_url) : '/images/default-avatar.png',
             'email_verified_at' => $this->email_verified_at,
-            'is_follower' => $this->followers()->get()->contains('follower_id', $request->user()?->id),
-            'is_following' => $this->followings()->get()->contains('follower_id', $request->user()?->id),
+            'is_following_me' => $this->following()->where('user_id', Auth::id())->exists(),
+            'is_following' => $this->followers()->where('follower_id', Auth::id())->exists(),
         ];
     }
 }

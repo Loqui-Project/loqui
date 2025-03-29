@@ -2,8 +2,8 @@ import { client } from '@/lib/client';
 import { DataWithPagination, Message } from '@/types';
 
 export const MessagesClient = {
-    async getMessages(params: Record<string, unknown>) {
-        return await client().get<DataWithPagination<Message>>(route('inbox'), {
+    async getMessages(params: Record<string, unknown>, route: string) {
+        return await client().get<DataWithPagination<Message>>(route, {
             params,
         });
     },

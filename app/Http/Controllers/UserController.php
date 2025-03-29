@@ -4,64 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\MessageResource;
 use App\Http\Resources\UserResource;
 use App\Jobs\NewFollowJob;
 use App\Models\User;
-use App\Models\UserFollow;
 use Exception;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 final class UserController extends Controller
 {
-    /**
-     * Display the user profile.
-     */
-    public function profile(Request $request, User $user): \Inertia\Response
-    {
-        $messages = $user->messages()->with('user')->withReplies()->latest()->get();
-
-        if ($request->user() === null) {
-            return Inertia::render('profile', [
-                'user' => new UserResource($user),
-                'is_me' => false,
-                'messages' => MessageResource::collection($messages),
-                'is_following' => false,
-                'statistics' => [
-                    'messages' => $user->messages()->withReplies()->count(),
-                    'followers' => $user->followers()->count(),
-                    'following' => $user->followings()->count(),
-                ],
-            ]);
-        }
-        $authUser = type($request->user())->as(User::class);
-        $is_me = $authUser->is($user);
-
-        return Inertia::render('profile', [
-            'user' => new UserResource($user),
-            'is_me' => $is_me,
-            'messages' => MessageResource::collection($messages),
-            'is_following' => $request->user()?->isFollowing($user),
-            'statistics' => [
-                'messages' => $user->messages()->withReplies()->count(),
-                'followers' => $user->followers()->count(),
-                'following' => $user->followings()->count(),
-            ],
-        ]);
-    }
-
     /**
      * Follow a user.
      */
     public function follow(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
-            $authUser = type($request->user())->as(User::class);
-            UserFollow::create([
-                'user_id' => $request->user_id,
-                'follower_id' => $authUser->id,
-            ]);
+            $authUser = type(Auth::user())->as(User::class);
+            $authUser->following()->attach($request->user_id);
             $user = type(User::find($request->user_id))->as(User::class);
             NewFollowJob::dispatch($user, $authUser);
 
@@ -80,11 +39,9 @@ final class UserController extends Controller
     public function unfollow(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
-            $user = type($request->user())->as(User::class);
 
-            UserFollow::where('user_id', $request->user_id)
-                ->where('follower_id', $user->id)
-                ->delete();
+            $user = type(Auth::user())->as(User::class);
+            $user->following()->detach($id);
 
             return response()->json(['message' => 'Unfollowed successfully']);
 
@@ -102,12 +59,7 @@ final class UserController extends Controller
 
         $query = type($request->query('query') ?? '')->asString();
 
-        $followers = $user->followers()
-            ->withWhereHas('user', function ($queryBuilder) use ($query) {
-                $queryBuilder->where('name', 'like', "%$query%")
-                    ->orWhere('username', 'like', "%$query%");
-            })
-            ->get()->map(fn ($follow) => new UserResource($follow->follower))->flatten();
+        $followers = $user->followers()->get()->map(fn ($user) => new UserResource($user));
 
         return response()->json($followers);
     }
@@ -117,14 +69,8 @@ final class UserController extends Controller
      */
     public function followings(Request $request, User $user): \Illuminate\Http\JsonResponse
     {
-        $query = type($request->query('query') ?? '')->asString();
 
-        $followings = $user->followings()
-            ->withWhereHas('user', function ($queryBuilder) use ($query) {
-                $queryBuilder->where('name', 'like', "%$query%")
-                    ->orWhere('username', 'like', "%$query%");
-            })
-            ->get()->map(fn ($follow) => new UserResource($follow->follower))->flatten();
+        $followings = $user->following()->get()->map(fn ($user) => new UserResource($user));
 
         return response()->json($followings);
     }

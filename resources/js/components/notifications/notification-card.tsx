@@ -41,20 +41,10 @@ export function NotificationCard({ notification }: NotificationCardProps) {
     return (
         <Card key={notification.id} className={`p-4 transition-colors ${!isRead ? 'bg-muted/40 border-l-primary border-l-4' : ''}`}>
             <div className="flex items-start gap-4">
-                <UserAvatar className="h-12 w-12 border" user={notification.data.user} />
-
                 <div className="flex-1 space-y-1">
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-2">
-                            {notification.data.user ? (
-                                <>
-                                    <p className="font-medium">{notification.data.user.name}</p>
-                                    <p className="text-muted-foreground text-xs">{notification.data.user.username}</p>
-                                </>
-                            ) : (
-                                <p className="font-medium">Anonymous</p>
-                            )}
-
+                            <UserAvatar avatarClassname="h-12 w-12 border" user={notification.data.user} />
                             {!isRead && (
                                 <Badge variant="default" className="ml-2">
                                     New

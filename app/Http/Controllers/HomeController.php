@@ -15,20 +15,20 @@ final class HomeController extends Controller
     public function __invoke(Request $request): \Inertia\Response|\Illuminate\Http\JsonResponse
     {
         $user = type($request->user())->as(User::class);
-        $followingUsersId = collect($user->followings()->get())->pluck('user_id')->flatten();
+        $followingUsersId = $user->following()->pluck('user_id')->toArray();
         $messages = Message::whereIn('user_id', [
             ...$followingUsersId,
             $user->id,
-        ])->withReplies()->latest()->paginate();
-
-        if (request()->wantsJson()) {
-            return response()->json([
-                'messages' => MessageResource::collection($messages),
-            ]);
-        }
+        ])->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
+            'likes',
+            'replays',
+        ])->withReplies()->orderBy(
+            'likes_count',
+            'desc'
+        )->paginate(5);
 
         return Inertia::render('home', [
-            'messages' => MessageResource::collection($messages),
+            'messages' => Inertia::merge(fn () => MessageResource::collection($messages)),
         ]);
     }
 }

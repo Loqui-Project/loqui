@@ -66,7 +66,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                                 {avatar ? (
                                     <img src={avatar} alt="avatar" className="size-36 rounded-full object-cover" />
                                 ) : (
-                                    <UserAvatar user={auth} className="size-36" />
+                                    <UserAvatar user={auth} imageOnly avatarClassname="size-36" />
                                 )}
                                 <div className="absolute right-0 bottom-0">
                                     <Label htmlFor="avatar-upload" className="cursor-pointer">
