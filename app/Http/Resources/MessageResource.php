@@ -32,6 +32,7 @@ final class MessageResource extends JsonResource
             'replays_count' => $this->replays_count,
             'replays' => MessageReplayResource::collection($this->whenLoaded('replays')),
             'is_favorite' => $this->favorites->contains('user_id', $request->user()?->id),
+            'created_at' => $this->created_at,
         ];
     }
 }
