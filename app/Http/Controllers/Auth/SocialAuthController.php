@@ -18,10 +18,8 @@ final class SocialAuthController extends Controller
 {
     /**
      * Redirect the user to the provider authentication page.
-     *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Illuminate\Http\RedirectResponse
      */
-    public function redirectToProvider(string $provider)
+    public function redirectToProvider(string $provider): \Symfony\Component\HttpFoundation\RedirectResponse|\Illuminate\Http\RedirectResponse
     {
         if (! in_array($provider, array_column(SocialProvidersEnum::cases(), 'value'))) {
             abort(404);

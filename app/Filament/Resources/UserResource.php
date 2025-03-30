@@ -60,12 +60,12 @@ final class UserResource extends Resource
                     ->query(fn (Builder $query, array $data) => $query
                         ->when(
                             $data['created_from'],
-                            fn (Builder $query, $date): Builder => $query->where('created_at', '>=', $date),
+                            fn (Builder $query, mixed $date): Builder => $query->where('created_at', '>=', $date),
                         )
                         ->when(
                             $data['created_until'],
 
-                            fn (Builder $query, $date): Builder => $query->where('created_at', '<=', $date),
+                            fn (Builder $query, mixed $date): Builder => $query->where('created_at', '<=', $date),
                         )),
             ])
             ->bulkActions([

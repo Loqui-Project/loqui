@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
+use App\Models\Session;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -18,7 +19,7 @@ final class SessionController extends Controller
     public function index(Request $request): \Inertia\Response
     {
         $user = type($request->user())->as(User::class);
-        $sessions = $user->sessions()->orderBy('last_activity', 'desc')->get()->map(function ($session): array {
+        $sessions = $user->sessions()->orderBy('last_activity', 'desc')->get()->map(function (Session $session): array {
             $agent = new Agent();
             $agent->setUserAgent($session->user_agent);
 

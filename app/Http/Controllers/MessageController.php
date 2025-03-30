@@ -15,6 +15,7 @@ use App\Models\MessageFavourite;
 use App\Models\MessageLike;
 use App\Models\User;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -106,6 +107,7 @@ final class MessageController extends Controller
     public function sendMessage(SendMessageRequest $request): \Illuminate\Http\JsonResponse
     {
         try {
+            /** @var User|null $user */
             $user = null;
             if ($request->user() === null) {
                 $message = Message::create([
@@ -151,7 +153,7 @@ final class MessageController extends Controller
     public function favorites(Request $request): \Inertia\Response
     {
         $user = type($request->user())->as(User::class);
-        $messages = Message::whereHas('favorites', function ($query) use ($user): void {
+        $messages = Message::whereHas('favorites', function (Builder $query) use ($user): void {
             $query->where('user_id', $user->id);
         })->get();
 
