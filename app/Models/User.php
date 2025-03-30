@@ -8,6 +8,7 @@ use App\Enums\UserStatusEnum;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -34,6 +35,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Collection<int, User> $following
  * @property-read Collection<int, User> $followers
  * @property-read MessageFavourite[] $favouriteMessages
+ * @property-read int $followers_count
+ * @property-read int $following_count
  */
 final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {

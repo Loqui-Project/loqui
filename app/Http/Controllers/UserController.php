@@ -41,7 +41,7 @@ final class UserController extends Controller
         try {
 
             $user = type(Auth::user())->as(User::class);
-            $user->following()->detach($id);
+            $user->following()->detach($request->user_id);
 
             return response()->json(['message' => 'Unfollowed successfully']);
 
@@ -57,9 +57,7 @@ final class UserController extends Controller
     public function followers(Request $request, User $user): \Illuminate\Http\JsonResponse
     {
 
-        $query = type($request->query('query') ?? '')->asString();
-
-        $followers = $user->followers()->get()->map(fn ($user) => new UserResource($user));
+        $followers = $user->followers()->get()->map(fn ($user): UserResource => new UserResource($user));
 
         return response()->json($followers);
     }
@@ -70,7 +68,7 @@ final class UserController extends Controller
     public function followings(Request $request, User $user): \Illuminate\Http\JsonResponse
     {
 
-        $followings = $user->following()->get()->map(fn ($user) => new UserResource($user));
+        $followings = $user->following()->get()->map(fn ($user): UserResource => new UserResource($user));
 
         return response()->json($followings);
     }

@@ -8,7 +8,18 @@ use App\Enums\NotificationChannel;
 use App\Enums\NotificationType;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
+/**
+ * @property int $id
+ * @property int $user_id
+ * @property NotificationChannel $key
+ * @property NotificationType $type
+ * @property string $value
+ * @property Carbon $created_at
+ * @property Carbon $updated_at
+ * @property-read User $user
+ */
 final class NotificationSetting extends Model
 {
     use HasUser;

@@ -19,8 +19,5 @@ final class UserSeeder extends Seeder
             'username' => 'yanalshoubaki',
             'name' => 'Yanal Shoubaki',
         ]);
-
-        User::factory(10)->create();
-        User::factory(10)->unverified()->create();
     }
 }

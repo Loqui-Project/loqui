@@ -14,8 +14,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('notification_settings', function (Blueprint $table) {
-            $table->after('key', function ($table) {
+        Schema::table('notification_settings', function (Blueprint $table): void {
+            $table->after('key', function (Blueprint $table): void {
                 $table->enum('type', array_column(NotificationType::cases(), 'value'));
             });
         });

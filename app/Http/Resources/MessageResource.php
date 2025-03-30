@@ -12,7 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 final class MessageResource extends JsonResource
 {
-    public static $wrap = null;
+    public static $wrap;
 
     /**
      * Transform the resource into an array.
@@ -28,10 +28,10 @@ final class MessageResource extends JsonResource
             'sender' => $this->sender_id !== null || $this->is_anon ? new UserResource($this->sender) : null,
             'message' => $this->message,
             'likes_count' => $this->likes_count,
-            'liked' => $this->likes->contains('user_id', $request->user()?->id),
+            'liked' => collect(($this->likes))->contains('user_id', $request->user()?->id),
             'replays_count' => $this->replays_count,
             'replays' => MessageReplayResource::collection($this->whenLoaded('replays')),
-            'is_favorite' => $this->favorites->contains('user_id', $request->user()?->id),
+            'is_favorite' => collect($this->favorites)->contains('user_id', $request->user()?->id),
             'created_at' => $this->created_at,
         ];
     }

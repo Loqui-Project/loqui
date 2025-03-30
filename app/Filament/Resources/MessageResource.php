@@ -22,10 +22,10 @@ final class MessageResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id'),
                 Tables\Columns\TextColumn::make('user.name')->url(
-                    fn ($record) => route('profile', $record->user)
+                    fn (Message $record) => route('profile', $record->user)
                 )->label('Received user name')->searchable(),
                 Tables\Columns\TextColumn::make('sender.name')->url(
-                    fn ($record) => route('profile', $record->user)
+                    fn (Message $record) => route('profile', $record->user)
                 )->label('Sender user name')->searchable(),
                 Tables\Columns\TextColumn::make('is_anon')->label('Is Anonymous')
                     ->badge(),

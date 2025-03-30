@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('notification_settings', function (Blueprint $table) {
+        Schema::create('notification_settings', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->enum('key', array_column(NotificationChannel::cases(), 'value'));

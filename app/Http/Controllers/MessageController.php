@@ -24,7 +24,7 @@ final class MessageController extends Controller
     /**
      * Display messages that without replies for the user.
      */
-    public function inbox(): \Inertia\Response|\Illuminate\Http\JsonResponse
+    public function inbox(): \Inertia\Response
     {
         $messages = Message::where('user_id', Auth::id())->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
             'likes',
@@ -114,7 +114,7 @@ final class MessageController extends Controller
                     'is_anon' => true,
                 ]);
             } else {
-                $user = type($request->user())->as(User::class);
+                $user = $request->user();
                 $message = Message::create([
                     'sender_id' => $user->id,
                     'user_id' => $request->receiver_id,

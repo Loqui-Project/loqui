@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use App\Enums\UserStatusEnum;
 use App\Models\User;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Builder;
@@ -39,6 +40,8 @@ final class DeleteNonEmailVerifiedUsersCommand extends Command
             })
             ->get()
             ->each
-            ->purge();
+            ->update([
+                'status' => UserStatusEnum::DISABLED,
+            ]);
     }
 }

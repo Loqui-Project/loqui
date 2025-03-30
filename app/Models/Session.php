@@ -50,10 +50,8 @@ final class Session extends Model
 
     /**
      * Manually set Payload (base64 encoded / serialized)
-     *
-     * @return void
      */
-    public function setPayload(string $payload)
+    public function setPayload(string $payload): void
     {
         $this->payload = serialize(base64_encode($payload));
         $this->save();

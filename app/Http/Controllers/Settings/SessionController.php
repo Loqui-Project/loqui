@@ -15,10 +15,10 @@ final class SessionController extends Controller
     /**
      * Show the user's sessions page.
      */
-    public function index(Request $request)
+    public function index(Request $request): \Inertia\Response
     {
         $user = type($request->user())->as(User::class);
-        $sessions = $user->sessions()->orderBy('last_activity', 'desc')->get()->map(function ($session) {
+        $sessions = $user->sessions()->orderBy('last_activity', 'desc')->get()->map(function ($session): array {
             $agent = new Agent();
             $agent->setUserAgent($session->user_agent);
 
@@ -40,7 +40,7 @@ final class SessionController extends Controller
         ]);
     }
 
-    public function destroy(Request $request, $session)
+    public function destroy(Request $request, int $session): \Illuminate\Http\RedirectResponse
     {
         $user = type($request->user())->as(User::class);
         $user->sessions()->where('id', $session)->delete();

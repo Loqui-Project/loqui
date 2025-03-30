@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 final class RolesSeeder extends Seeder
@@ -20,7 +21,7 @@ final class RolesSeeder extends Seeder
         ];
 
         foreach ($roles as $role) {
-            \Spatie\Permission\Models\Role::create($role);
+            Role::create($role);
         }
     }
 }

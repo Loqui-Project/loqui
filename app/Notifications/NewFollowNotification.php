@@ -17,6 +17,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection as SupportCollection;
 
 final class NewFollowNotification extends Notification implements ShouldBroadcast, ShouldQueue
 {
@@ -39,16 +40,19 @@ final class NewFollowNotification extends Notification implements ShouldBroadcas
      */
     public function via(object $notifiable): array
     {
-        $notificationSettings = NotificationSetting::where('user_id', $this->user->id)->get();
 
         // Check what user wants to be notified about
         $via = ['database'];
-        if (collect($notificationSettings)->isEmpty()) {
-            return $via;
-        }
-        $notificationSettings = collect($notificationSettings)->groupBy('key');
-        $browserNotification = $notificationSettings->get('browser')->where('type', NotificationType::NEW_FOLLOWER->value)->first()?->value;
-        $emailNotification = $notificationSettings->get('email')->where('type', NotificationType::NEW_FOLLOWER->value)->first()?->value;
+
+        /** @var SupportCollection<string, NotificationSetting> $notificationSettings */
+        $notificationSettings = collect(NotificationSetting::where('user_id', $this->user->id)->where('type', NotificationType::NEW_FOLLOWER->value)->get())->groupBy('key');
+
+        /** @var bool $browserNotification */
+        $browserNotification = $notificationSettings->get('browser', fn () => $this->user->notificationSettings->where('key', 'browser')->first()?->value);
+
+        /** @var bool $emailNotification */
+        $emailNotification = optional($notificationSettings->get('email'), fn () => $this->user->notificationSettings->where('key', 'email')->first()?->value);
+
         if ($browserNotification === true) {
             $via[] = 'broadcast';
         }

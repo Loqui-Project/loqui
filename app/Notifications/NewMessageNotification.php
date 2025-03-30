@@ -17,6 +17,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection as SupportCollection;
 
 final class NewMessageNotification extends Notification implements ShouldBroadcast, ShouldQueue
 {
@@ -40,11 +41,14 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
      */
     public function via(object $notifiable): array
     {
-        $notificationSettings = NotificationSetting::where('user_id', $this->user->id)->get()->groupBy('key');
+        /** @var SupportCollection<string, NotificationSetting> $notificationSettings */
+        $notificationSettings = collect(NotificationSetting::where('user_id', $this->user->id)->where('type', NotificationType::NEW_MESSAGE->value)->get())->groupBy('key');
 
-        // Check what user wants to be notified about
-        $browserNotification = $notificationSettings->get('browser')->where('type', NotificationType::NEW_MESSAGE->value)->first()?->value;
-        $emailNotification = $notificationSettings->get('email')->where('type', NotificationType::NEW_MESSAGE->value)->first()?->value;
+        /** @var bool $browserNotification */
+        $browserNotification = $notificationSettings->get('browser', fn () => $this->user->notificationSettings->where('key', 'browser')->first()?->value);
+        /** @var bool $emailNotification */
+        $emailNotification = optional($notificationSettings->get('email'), fn () => $this->user->notificationSettings->where('key', 'email')->first()?->value);
+
         $via = ['database'];
         if ($browserNotification === true) {
             $via[] = 'broadcast';
@@ -74,12 +78,12 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
     public function broadcastWith(): array
     {
 
-        $title = $this->currentUser !== null ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
+        $title = $this->currentUser instanceof User ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
 
         return [
             'type' => NotificationType::NEW_MESSAGE->value,
             'user' => $this->user->toArray(),
-            'currentUser' => $this->currentUser !== null ? $this->currentUser->toArray() : [
+            'currentUser' => $this->currentUser instanceof User ? $this->currentUser->toArray() : [
                 'id' => null,
                 'name' => 'Anonymous',
             ],
@@ -95,10 +99,10 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
      */
     public function toArray(): array
     {
-        $title = $this->currentUser !== null ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
+        $title = $this->currentUser instanceof User ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
 
         return [
-            'current_user_id' => $this->currentUser !== null ? $this->currentUser->id : null,
+            'current_user_id' => $this->currentUser instanceof User ? $this->currentUser->id : null,
             'message_id' => $this->message->id,
             'title' => $title,
             'url' => route('message.show', $this->message),
@@ -127,7 +131,7 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
     public function toMail(object $notifiable): MailMessage
     {
         $url = route('message.show', $this->message);
-        $title = $this->currentUser !== null ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
+        $title = $this->currentUser instanceof User ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
 
         return (new MailMessage)
             ->subject($title)

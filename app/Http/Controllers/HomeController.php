@@ -12,7 +12,7 @@ use Inertia\Inertia;
 
 final class HomeController extends Controller
 {
-    public function __invoke(Request $request): \Inertia\Response|\Illuminate\Http\JsonResponse
+    public function __invoke(Request $request): \Inertia\Response
     {
         $user = type($request->user())->as(User::class);
         $followingUsersId = $user->following()->pluck('user_id')->toArray();

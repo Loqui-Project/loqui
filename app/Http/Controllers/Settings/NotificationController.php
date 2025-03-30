@@ -8,6 +8,9 @@ use App\Enums\NotificationChannel;
 use App\Enums\NotificationType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\UpdateNotificationRequest;
+use App\Models\NotificationSetting;
+use App\Models\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -18,6 +21,9 @@ final class NotificationController extends Controller
      */
     public function edit(): \Inertia\Response
     {
+
+        $authUser = type(Auth::user())->as(User::class);
+        $authUser->load('notificationSettings');
 
         $types = array_map(fn (NotificationType $type): array => [
             'value' => $type->value,
@@ -31,16 +37,15 @@ final class NotificationController extends Controller
             'description' => $type->getDescription(),
         ], NotificationChannel::cases());
 
-        $userNotificationSettings = Auth::user()->notificationSettings->groupBy('key')->mapWithKeys(function ($settings, $key) {
+        $notificationSettings = collect($authUser->notificationSettings)->groupBy('key');
 
-            return [
-                $key => $settings->mapWithKeys(function ($setting) {
-                    $setting = $setting->only(['type', 'value']);
-
-                    return [$setting['type']->value => $setting['value']];
-                }),
-            ];
-        });
+        $userNotificationSettings = $notificationSettings->mapWithKeys(fn (Collection $settings, string $key) => [
+            /** @var Collection<string, NotificationSettings> $settings */
+            $key => $settings->mapWithKeys(fn (NotificationSetting $setting) => [
+                /** @var NotificationSetting $setting */
+                $setting->type->value => $setting->value,
+            ]),
+        ]);
 
         return Inertia::render('settings/notifications', [
             'types' => $types,
@@ -54,23 +59,28 @@ final class NotificationController extends Controller
      */
     public function update(UpdateNotificationRequest $request): \Illuminate\Http\RedirectResponse
     {
-        /** @var \App\Models\User */
+        /** @var User */
         $user = Auth::user();
 
         $user->notificationSettings()->delete();
-        $data = $request->validated();
+        /** @var Collection<string, array<string, bool>> */
+        $data = collect($request->validated());
 
-        $settings = collect($data)->map(function ($channel, $key) {
-            return collect($channel)->map(function ($value, $type) use ($key) {
-                return [
-                    'key' => $key,
-                    'type' => $type,
-                    'value' => $value,
-                ];
-            });
-        })->flatten(1);
+        $settings = $data->map(fn (array $channel, string $key) => collect($channel)->map(fn (bool $value, string $type): array => [
+            'key' => $key,
+            'type' => $type,
+            'value' => $value,
+        ]))->flatten(1)->toArray();
 
-        $user->notificationSettings()->createMany($settings);
+        foreach ($settings as $setting) {
+            /** @var array<string, string|bool> $setting */
+            NotificationSetting::create([
+                'user_id' => $user->id,
+                'key' => $setting['key'],
+                'type' => $setting['type'],
+                'value' => $setting['value'],
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Notification settings updated.');
     }

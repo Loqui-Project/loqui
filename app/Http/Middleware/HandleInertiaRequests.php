@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -40,25 +41,23 @@ final class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         if (Auth::check() === true) {
-            $user = $request->user()->loadCount([
+            $authUser = type($request->user())->as(User::class);
+            $user = $authUser->loadCount([
                 'messages',
                 'followers',
                 'following',
             ]);
-            $statistics = [];
-            if ($user) {
-                $statistics = [
-                    'messages' => $user->messages_count,
-                    'followers' => $user->followers_count ?? 0,
-                    'following' => $user->followings_count ?? 0,
-                ];
-            }
+            $statistics = [
+                'messages' => $user->messages_count,
+                'followers' => $user->followers_count ?? 0,
+                'following' => $user->following_count ?? 0,
+            ];
 
             return array_merge(
                 parent::share($request),
                 [
                     'name' => config('app.name'),
-                    'auth' => $user ? new UserResource($user) : null,
+                    'auth' => new UserResource($user),
                     'statistics' => $statistics,
                     'is_admin' => $user->hasRole('super-admin') || $user->hasRole('admin'),
                 ]

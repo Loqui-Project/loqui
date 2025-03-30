@@ -57,25 +57,16 @@ final class UserResource extends Resource
                         Forms\Components\DatePicker::make('created_from'),
                         Forms\Components\DatePicker::make('created_until'),
                     ])
-                    ->query(function ($query, $data) {
+                    ->query(fn (Builder $query, array $data) => $query
+                        ->when(
+                            $data['created_from'],
+                            fn (Builder $query, $date): Builder => $query->where('created_at', '>=', $date),
+                        )
+                        ->when(
+                            $data['created_until'],
 
-                        /** @var Builder<User> $query */
-                        $query = $query;
-
-                        /** @var array{created_from: string, created_until: string} $data */
-                        $data = $data;
-
-                        return $query
-                            ->when(
-                                $data['created_from'],
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
-                            )
-                            ->when(
-                                $data['created_until'],
-
-                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
-                            );
-                    }),
+                            fn (Builder $query, $date): Builder => $query->where('created_at', '<=', $date),
+                        )),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
