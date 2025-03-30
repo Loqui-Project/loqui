@@ -14,14 +14,3 @@ if [ $? -ne 0 ]; then
   echo "Tests failed. Commit aborted."
   exit 1
 fi
-
-echo "Running Laravel Pint..."
-composer pint
-if [ $? -ne 0 ]; then
-  echo "Laravel Pint failed."
-  # add the changes to the commit
-    git add .
-    # commit the changes
-    git commit --amend --no-edit
-    # push the changes
-fi
