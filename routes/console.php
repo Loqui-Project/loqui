@@ -7,5 +7,5 @@ use App\Console\Commands\SendUnreadNotificationEmailsCommand;
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command(SendUnreadNotificationEmailsCommand::class)->dailyAt('13:00');
-Schedule::command(SendUnreadNotificationEmailsCommand::class, ['--weekly' => true])->weekly()->mondays()->at('13:00');
 Schedule::command(DeleteNonEmailVerifiedUsersCommand::class)->hourly();
+Schedule::command(\Spatie\Health\Commands\RunHealthChecksCommand::class)->everySixHours();
