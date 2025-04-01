@@ -8,4 +8,4 @@ use Illuminate\Support\Facades\Schedule;
 
 Schedule::command(SendUnreadNotificationEmailsCommand::class)->dailyAt('13:00');
 Schedule::command(DeleteNonEmailVerifiedUsersCommand::class)->hourly();
-Schedule::command(\Spatie\Health\Commands\RunHealthChecksCommand::class)->everySixHours();
+Schedule::command(Spatie\Health\Commands\RunHealthChecksCommand::class)->everySixHours();
