@@ -11,7 +11,7 @@ type MessagesListProps = {
     routeParams?: Record<string, string | number>;
 };
 export function MessagesList({ initialMessages, pageRoute, routeParams }: MessagesListProps) {
-    console.log(initialMessages, "initialMessages");
+    console.log(initialMessages, 'initialMessages');
     const [messages, setMessages] = useState(initialMessages.data);
     const [currentPage, setCurrentPage] = useState(initialMessages.meta.current_page);
     const [lastPage, setLastPage] = useState(initialMessages.meta.last_page);

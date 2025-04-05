@@ -1,18 +1,22 @@
-import { useMemo } from "react";
-import AppLogo from "../app-logo";
-import { useAppearance } from "@/hooks/use-appearance";
-import { InertiaPageProps, User } from "@/types";
-import { Link, usePage } from "@inertiajs/react";
-import { Button } from "../ui/button";
-import { Bell, House, Inbox, Menu, Search, Settings, Shield, Star } from "lucide-react";
-import { UserAvatar } from "../user-avatar";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { Label } from "../ui/label";
-import { Switch } from "../ui/switch";
-import { router } from "@inertiajs/core";
-
-
-
+import { useAppearance } from '@/hooks/use-appearance';
+import { InertiaPageProps } from '@/types';
+import { router } from '@inertiajs/core';
+import { Link, usePage } from '@inertiajs/react';
+import { Bell, House, Inbox, Menu, Search, Settings, Shield, Star } from 'lucide-react';
+import { useMemo } from 'react';
+import AppLogo from '../app-logo';
+import { Button } from '../ui/button';
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuGroup,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
+import { Label } from '../ui/label';
+import { Switch } from '../ui/switch';
+import { UserAvatar } from '../user-avatar';
 
 export function Sidebar() {
     const { appearance, updateAppearance } = useAppearance();
@@ -29,7 +33,6 @@ export function Sidebar() {
         },
         [url],
     );
-
 
     if (user === null) {
         return null;
@@ -72,7 +75,8 @@ export function Sidebar() {
                                 className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                             >
                                 <Inbox className="size-6" />
-                                <span className="hidden md:block md:text-base">Inbox
+                                <span className="hidden md:block md:text-base">
+                                    Inbox
                                     {statistics.inbox > 0 && (
                                         <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
                                             {statistics.inbox}
@@ -83,18 +87,15 @@ export function Sidebar() {
                         </Link>
                     </li>
                     <li>
-                        <Link
-                            href={route('notifications.index')}
-                            data-active={isActiveLink(route('notifications.index'))}
-                            className="group"
-                        >
+                        <Link href={route('notifications.index')} data-active={isActiveLink(route('notifications.index'))} className="group">
                             <Button
                                 variant="ghost"
                                 className="hover:bg-accent-foreground group-data-[active=true]:bg-accent-foreground group-data-[active=true]:text-accent hover:text-accent w-full cursor-pointer justify-start transition"
                             >
                                 <Bell className="size-6" />
 
-                                <span className="hidden md:block md:text-base">Notifications
+                                <span className="hidden md:block md:text-base">
+                                    Notifications
                                     {statistics.notifications > 0 && (
                                         <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
                                             {statistics.notifications}
@@ -190,6 +191,6 @@ export function Sidebar() {
                     </li>
                 </ul>
             </nav>
-        </aside >
-    )
+        </aside>
+    );
 }
