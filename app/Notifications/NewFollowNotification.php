@@ -110,7 +110,12 @@ final class NewFollowNotification extends Notification implements ShouldBroadcas
     {
 
         return [
-            'current_user_id' => $this->currentUser->id,
+            'current_user' => [
+                'id' => $this->currentUser->id,
+                'name' => $this->currentUser->name,
+                'username' => $this->currentUser->username,
+                'image_url' => $this->currentUser->image_url,
+            ],
             'title' => "{$this->currentUser->name} followed you.",
             'url' => route('profile', $this->currentUser),
         ];

@@ -6,9 +6,11 @@ export interface InertiaPageProps extends PageProps {
     url: string;
     errors: string[];
     statistics: {
-        messages: number;
-        followers: number;
-        following: number;
+        messages: number
+        followers: number
+        following: number
+        inbox: number
+        notifications: number
     };
     is_admin: boolean;
 }

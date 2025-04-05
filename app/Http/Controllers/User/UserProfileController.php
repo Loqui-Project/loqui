@@ -24,11 +24,15 @@ final class UserProfileController extends Controller
             'followers',
             'following',
         ]);
+
+        $messages = $user->messages()->with(['user'])->withCount(['likes', 'replays'])->latest()->paginate(5);
+        $user->setRelation('messages', $messages);
+
         if (Auth::check() === false) {
             return Inertia::render('user/public-profile', [
                 'user' => new UserResource($user),
                 'is_me' => false,
-                'messages' => MessageResource::collection($user->messages()->paginate()),
+                'messages' => MessageResource::collection($user->messages),
                 'is_following_me' => false,
                 'is_following' => false,
                 'statistics' => [
@@ -39,10 +43,11 @@ final class UserProfileController extends Controller
             ]);
         }
         if (Auth::id() !== $user->id) {
+
             return Inertia::render('user/public-profile', [
                 'user' => new UserResource($user),
                 'is_me' => false,
-                'messages' => MessageResource::collection($user->messages()->paginate()),
+                'messages' => MessageResource::collection($user->messages),
                 'is_following_me' => $user->following()->where('user_id', Auth::id())->exists(),
                 'is_following' => $user->followers()->where('follower_id', Auth::id())->exists(),
                 'statistics' => [
@@ -56,7 +61,7 @@ final class UserProfileController extends Controller
         return Inertia::render('user/my-profile', [
             'user' => new UserResource($user),
             'is_me' => true,
-            'messages' => MessageResource::collection($user->messages()->paginate()),
+            'messages' => MessageResource::collection($user->messages),
             'is_following_me' => false,
             'statistics' => [
                 'messages' => $user->messages_count,

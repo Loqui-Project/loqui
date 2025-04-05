@@ -43,14 +43,21 @@ final class HandleInertiaRequests extends Middleware
         if (Auth::check() === true) {
             $authUser = type($request->user())->as(User::class);
             $user = $authUser->loadCount([
-                'messages',
+                'messages' => function ($query) {
+                    $query->withReplies();
+                },
                 'followers',
                 'following',
+                'messages as inbox_count' => function ($query) {
+                    $query->withoutReplies();
+                },
             ]);
             $statistics = [
                 'messages' => $user->messages_count,
                 'followers' => $user->followers_count ?? 0,
                 'following' => $user->following_count ?? 0,
+                'inbox' => $user->inbox_count,
+                'notifications' => $user->unreadNotifications()->count(),
             ];
 
             return array_merge(

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Notifications;
 
 use App\Enums\NotificationType;
+use App\Http\Resources\MessageResource;
+use App\Http\Resources\UserResource;
 use App\Models\Message;
 use App\Models\NotificationSetting;
 use App\Models\User;
@@ -82,12 +84,12 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
 
         return [
             'type' => NotificationType::NEW_MESSAGE->value,
-            'user' => $this->user->toArray(),
-            'currentUser' => $this->currentUser instanceof User ? $this->currentUser->toArray() : [
+            'user' => new UserResource($this->user),
+            'currentUser' => $this->currentUser instanceof User ? new UserResource($this->currentUser) : [
                 'id' => null,
                 'name' => 'Anonymous',
             ],
-            'message' => $this->message->toArray(),
+            'message' => new MessageResource($this->message),
             'title' => $title,
         ];
     }
@@ -102,7 +104,12 @@ final class NewMessageNotification extends Notification implements ShouldBroadca
         $title = $this->currentUser instanceof User ? "{$this->currentUser->name} send you a new message." : 'Anonymous send you a new message.';
 
         return [
-            'current_user_id' => $this->currentUser instanceof User ? $this->currentUser->id : null,
+            'current_user' => [
+                'id' => $this->currentUser instanceof User ? $this->currentUser->id : null,
+                'name' => $this->currentUser instanceof User ? $this->currentUser->name : 'Anonymous',
+                'username' => $this->currentUser instanceof User ? $this->currentUser->username : 'anonymous',
+                'image_url' => $this->currentUser instanceof User ? $this->currentUser->image_url : '/images/default-avatar.png',
+            ],
             'message_id' => $this->message->id,
             'title' => $title,
             'url' => route('message.show', $this->message),

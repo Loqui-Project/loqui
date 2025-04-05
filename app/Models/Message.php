@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Traits\HasUser;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -91,7 +92,8 @@ final class Message extends Model
      * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
      * @return \Illuminate\Database\Eloquent\Builder<static>
      */
-    public function scopeWithReplies(Builder $query): Builder
+    #[Scope]
+    public function withReplies(Builder $query): Builder
     {
         return $query->whereHas('replays');
     }
@@ -102,7 +104,8 @@ final class Message extends Model
      * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
      * @return \Illuminate\Database\Eloquent\Builder<static>
      */
-    public function scopeWithoutReplies(Builder $query): Builder
+    #[Scope]
+    public function withoutReplies(Builder $query): Builder
     {
         return $query->doesntHave('replays');
     }

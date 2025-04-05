@@ -15,12 +15,12 @@ export function UserAvatar({ user, className, avatarClassname, imageOnly = false
         <div
             {...(withLink
                 ? {
-                      onClick: () => {
-                          if (user) {
-                              router.visit(route('profile', user.username));
-                          }
-                      },
-                  }
+                    onClick: () => {
+                        if (user) {
+                            router.visit(route('profile', user.username));
+                        }
+                    },
+                }
                 : {})}
             className={cn('flex items-center gap-2', className, {
                 'cursor-pointer': withLink,
@@ -30,7 +30,7 @@ export function UserAvatar({ user, className, avatarClassname, imageOnly = false
                 <img
                     fetchPriority="auto"
                     className={cn('rounded-full object-cover', avatarClassname)}
-                    src={user ? user?.image_url : '/images/default-avatar.png'}
+                    src={user && user.image_url != null ? user?.image_url : '/images/default-avatar.png'}
                     alt={user?.name ?? 'Anonymous'}
                     loading="lazy"
                 />

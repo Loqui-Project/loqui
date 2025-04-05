@@ -148,7 +148,7 @@ export function MessageCard({ message }: MessageCardProps) {
                         </div>
                     </div>
                 </div>
-                {message.replays.length > 0 && (
+                {message?.replays && (
                     <div className="bg-muted/5 px-4 pt-0 pb-2">
                         <div className="space-y-4 pl-8">
                             {message.replays.map((reply) => (

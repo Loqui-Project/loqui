@@ -14,7 +14,7 @@ Route::get('/', function () {
     return Inertia\Inertia::render('welcome');
 })->name('welcome');
 
-Route::get(
+Route::match(['get', 'post'],
     '/@{user:username}', [UserProfileController::class, 'profile'])->name('profile');
 
 Route::middleware(['auth'])->match(['get', 'post'], 'home', HomeController::class)->name('home');
