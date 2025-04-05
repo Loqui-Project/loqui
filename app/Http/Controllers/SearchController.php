@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 final class SearchController extends Controller
@@ -26,8 +27,10 @@ final class SearchController extends Controller
     {
         $query = type($request->input('query'))->asString();
 
-        $users = User::search($query)
-            ->get();
+        $users = Cache::remember("search.users.{$query}", 600, function () use ($query) {
+            return User::search($query)
+                ->get();
+        }, 300);
 
         return response()->json(UserResource::collection($users));
     }

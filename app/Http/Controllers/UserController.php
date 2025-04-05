@@ -10,6 +10,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 final class UserController extends Controller
 {
@@ -57,7 +58,9 @@ final class UserController extends Controller
     public function followers(Request $request, User $user): \Illuminate\Http\JsonResponse
     {
 
-        $followers = $user->followers()->get()->map(fn (User $user): UserResource => new UserResource($user));
+        $followers = Cache::remember("user.{$user->id}.followers", 600, function () use ($user) {
+            return $user->followers()->get()->map(fn (User $user): UserResource => new UserResource($user));
+        }, 300);
 
         return response()->json($followers);
     }
@@ -68,7 +71,9 @@ final class UserController extends Controller
     public function followings(Request $request, User $user): \Illuminate\Http\JsonResponse
     {
 
-        $followings = $user->following()->get()->map(fn (User $user): UserResource => new UserResource($user));
+        $followings = Cache::remember("user.{$user->id}.followings", 600, function () use ($user) {
+            return $user->following()->get()->map(fn (User $user): UserResource => new UserResource($user));
+        }, 300);
 
         return response()->json($followings);
     }

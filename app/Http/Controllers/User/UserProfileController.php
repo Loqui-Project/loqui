@@ -10,6 +10,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 final class UserProfileController extends Controller
@@ -25,7 +26,9 @@ final class UserProfileController extends Controller
             'following',
         ]);
 
-        $messages = $user->messages()->with(['user'])->withCount(['likes', 'replays'])->latest()->paginate(5);
+        $messages = Cache::remember("user.{$user->id}.messages", 600, function () use ($user) {
+            return $user->messages()->with(['user'])->withCount(['likes', 'replays'])->latest()->paginate(5);
+        }, 300);
         $user->setRelation('messages', $messages);
 
         if (Auth::check() === false) {

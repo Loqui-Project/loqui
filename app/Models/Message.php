@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\HasUser;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -29,9 +30,10 @@ use Illuminate\Support\Carbon;
  */
 final class Message extends Model
 {
+    use Cachable;
+
     /** @use HasFactory<\Database\Factories\MessageFactory> */
     use HasFactory;
-
     use HasUser;
 
     /**

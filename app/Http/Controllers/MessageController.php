@@ -18,6 +18,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 final class MessageController extends Controller
@@ -27,10 +28,12 @@ final class MessageController extends Controller
      */
     public function inbox(): \Inertia\Response
     {
-        $messages = Message::where('user_id', Auth::id())->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
-            'likes',
-            'replays',
-        ])->withoutReplies()->paginate(5);
+        $messages = Cache::remember('inbox.messages', 600, function () {
+            return Message::where('user_id', Auth::id())->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
+                'likes',
+                'replays',
+            ])->withoutReplies()->paginate(5);
+        }, 300);
 
         return Inertia::render('message/inbox', [
             'messages' => MessageResource::collection($messages),

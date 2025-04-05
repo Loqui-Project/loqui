@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\UserStatusEnum;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -40,11 +41,17 @@ use Spatie\Permission\Traits\HasRoles;
  */
 final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 {
+    use Cachable;
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     use HasRoles;
     use Searchable;
+
+    protected $cachePrefix = 'user';
+
+    protected $cacheCooldownSeconds = 300; // 5 minutes
 
     /**
      * The attributes that are mass assignable.
@@ -191,5 +198,10 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
             'password' => 'hashed',
             'status' => UserStatusEnum::class,
         ];
+    }
+
+    protected function getCachePrefix()
+    {
+        return $this->cachePrefix;
     }
 }

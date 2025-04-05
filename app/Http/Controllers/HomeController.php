@@ -8,6 +8,7 @@ use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
 
 final class HomeController extends Controller
@@ -16,16 +17,18 @@ final class HomeController extends Controller
     {
         $user = type($request->user())->as(User::class);
         $followingUsersId = $user->following()->pluck('user_id')->toArray();
-        $messages = Message::whereIn('user_id', [
-            ...$followingUsersId,
-            $user->id,
-        ])->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
-            'likes',
-            'replays',
-        ])->withReplies()->orderBy(
-            'likes_count',
-            'desc'
-        )->paginate(5);
+        $messages = Cache::remember('home.messages', 600, function () use ($user, $followingUsersId) {
+            return Message::whereIn('user_id', [
+                ...$followingUsersId,
+                $user->id,
+            ])->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
+                'likes',
+                'replays',
+            ])->withReplies()->orderBy(
+                'likes_count',
+                'desc'
+            )->paginate(5);
+        }, 300);
 
         return Inertia::render('home', [
             'messages' => Inertia::merge(fn () => MessageResource::collection($messages)),
