@@ -1,18 +1,10 @@
-import AppLogo from '@/components/app-logo';
 import { Sidebar } from '@/components/layout/sidebar.layout';
 import { NewFollowerNotification } from '@/components/notifications/new-follower.notification';
 import { NewMessageNotification } from '@/components/notifications/new-message.notification';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { UserAvatar } from '@/components/user-avatar';
-import { useAppearance } from '@/hooks/use-appearance';
 import { BrowserNotification, InertiaPageProps } from '@/types';
-import { Head, Link, router, usePage } from '@inertiajs/react';
-import { DropdownMenuGroup } from '@radix-ui/react-dropdown-menu';
-import { Bell, ChevronLeft, House, Inbox, Menu, Search, Settings, Shield, Star } from 'lucide-react';
-import { useMemo } from 'react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { ChevronLeft } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface AuthLayoutProps {
@@ -25,20 +17,20 @@ interface AuthLayoutProps {
 }
 
 export default function UserLayout({ children, title, actions, pageTitle = title }: AuthLayoutProps) {
-
     const {
         url,
+        props: { auth },
     } = usePage<InertiaPageProps>();
 
-    // if (auth) {
-    //     window.Echo.private(`user.${auth?.id ?? 'anon'}`).notification((notification: BrowserNotification) => {
-    //         if (notification.type == 'new-message') {
-    //             toast.custom(() => <NewMessageNotification notification={notification} />);
-    //         } else if (notification.type == 'new-follower') {
-    //             toast.custom(() => <NewFollowerNotification notification={notification} />);
-    //         }
-    //     });
-    // }
+    if (auth) {
+        window.Echo.private(`user.${auth?.id ?? 'anon'}`).notification((notification: BrowserNotification) => {
+            if (notification.type == 'new-message') {
+                toast.custom(() => <NewMessageNotification notification={notification} />);
+            } else if (notification.type == 'new-follower') {
+                toast.custom(() => <NewFollowerNotification notification={notification} />);
+            }
+        });
+    }
 
     return (
         <>
@@ -49,7 +41,6 @@ export default function UserLayout({ children, title, actions, pageTitle = title
                 <meta name="referrer" content="origin-when-cross-origin" />
                 <meta name="twitter:site" content="@yanalshoubaki" />
                 <meta name="twitter:domain" content="loqui.yanalshoubaki.com" />
-
 
                 <meta property="fb:app_id" content={import.meta.env.FACEBOOK_CLIENT_ID} />
                 <title>{pageTitle}</title>
