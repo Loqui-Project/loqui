@@ -15,12 +15,12 @@ export function UserAvatar({ user, className, avatarClassname, imageOnly = false
         <div
             {...(withLink
                 ? {
-                    onClick: () => {
-                        if (user) {
-                            router.visit(route('profile', user.username));
-                        }
-                    },
-                }
+                      onClick: () => {
+                          if (user) {
+                              router.visit(route('profile', user.username));
+                          }
+                      },
+                  }
                 : {})}
             className={cn('flex items-center gap-2', className, {
                 'cursor-pointer': withLink,
