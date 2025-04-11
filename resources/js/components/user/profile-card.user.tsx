@@ -95,14 +95,14 @@ function AuthUserProfileCard({ statistics, user, is_following_me, is_following }
                         )}
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="flex cursor-pointer flex-row items-center gap-x-2 text-center">
+                        <a href="#messages" className="flex cursor-pointer flex-row items-center gap-x-2 text-center">
                             <p className="text-base font-bold">{statistics.messages ?? 0}</p>
                             <p className="text-muted-foreground text-base">Messages</p>
-                        </div>
+                        </a>
 
                         <UserFollowModal
                             user={user}
-                            queryKey={`followers-${user.id}`}
+                            queryKey={'followers'}
                             queryFn={({ queryKey }) => {
                                 return UserClient.getFollowers(user.username, queryKey[2] as string);
                             }}
@@ -123,7 +123,7 @@ function AuthUserProfileCard({ statistics, user, is_following_me, is_following }
                         />
                         <UserFollowModal
                             user={user}
-                            queryKey={`followings-${user.id}`}
+                            queryKey={'followings'}
                             queryFn={({ queryKey }) => {
                                 return UserClient.getFollowing(user.username, queryKey[2] as string);
                             }}
@@ -178,14 +178,14 @@ function GuestUserProfileCard({ user, statistics }: GuestUserProfileCardProps) {
                         <h2 className="text-xl font-semibold">{user.username}</h2>
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="flex cursor-pointer flex-row items-center gap-x-2 text-center">
+                        <a href="#messages" className="flex cursor-pointer flex-row items-center gap-x-2 text-center">
                             <p className="text-base font-bold">{statistics.messages ?? 0}</p>
                             <p className="text-muted-foreground text-base">Messages</p>
-                        </div>
+                        </a>
 
                         <UserFollowModal
                             user={user}
-                            queryKey={`followers-${user.id}`}
+                            queryKey={`followers`}
                             queryFn={({ queryKey }) => {
                                 return UserClient.getFollowers(user.username, queryKey[2] as string);
                             }}
@@ -206,7 +206,7 @@ function GuestUserProfileCard({ user, statistics }: GuestUserProfileCardProps) {
                         />
                         <UserFollowModal
                             user={user}
-                            queryKey={`followings-${user.id}`}
+                            queryKey={`followings`}
                             queryFn={({ queryKey }) => {
                                 return UserClient.getFollowing(user.username, queryKey[2] as string);
                             }}
@@ -266,14 +266,14 @@ function SelfUserProfileCard({ user, statistics }: SelfUserProfileCardProps) {
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="flex cursor-pointer flex-row items-center gap-x-2 text-center">
+                        <a href="#messages" className="flex cursor-pointer flex-row items-center gap-x-2 text-center">
                             <p className="text-base font-bold">{statistics.messages ?? 0}</p>
                             <p className="text-muted-foreground text-base">Messages</p>
-                        </div>
+                        </a>
 
                         <UserFollowModal
                             user={user}
-                            queryKey={`followers-${user.id}`}
+                            queryKey={`followers`}
                             queryFn={({ queryKey }) => {
                                 return UserClient.getFollowers(user.username, queryKey[2] as string);
                             }}
@@ -294,7 +294,7 @@ function SelfUserProfileCard({ user, statistics }: SelfUserProfileCardProps) {
                         />
                         <UserFollowModal
                             user={user}
-                            queryKey={`followings-${user.id}`}
+                            queryKey={`followings`}
                             queryFn={({ queryKey }) => {
                                 return UserClient.getFollowing(user.username, queryKey[2] as string);
                             }}

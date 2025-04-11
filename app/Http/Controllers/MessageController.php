@@ -101,6 +101,8 @@ final class MessageController extends Controller
                 'user_id' => $user->id,
                 'text' => $request->replay,
             ]);
+            Cache::forget('inbox.messages');
+            Cache::forget('home.messages');
 
             return response()->json(['message' => 'Reply added']);
         } catch (Exception $e) {

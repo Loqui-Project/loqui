@@ -26,6 +26,8 @@ export function UserFollowModal({
         queryFn,
         enabled: open,
     });
+    const modelTitle = queryKey === 'followers' ? 'People Following You' : 'People You Follow';
+    const modelDescription = queryKey === 'followers' ? 'View and manage your followers' : "View and manage the people you're following";
 
     return (
         <Dialog
@@ -39,8 +41,8 @@ export function UserFollowModal({
             <DialogTrigger asChild>{triggerComponent}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>People You Follow</DialogTitle>
-                    <DialogDescription>View and manage the people you're following.</DialogDescription>
+                    <DialogTitle>{modelTitle}</DialogTitle>
+                    <DialogDescription>{modelDescription}</DialogDescription>
                 </DialogHeader>
                 <div>
                     <div className="overflow-y-auto pr-2" style={{ maxHeight: 'calc(80vh - 220px)' }}>
