@@ -34,6 +34,7 @@ final class Message extends Model
 
     /** @use HasFactory<\Database\Factories\MessageFactory> */
     use HasFactory;
+
     use HasUser;
 
     /**
@@ -46,6 +47,7 @@ final class Message extends Model
         'sender_id',
         'message',
         'is_anon',
+        'image_url',
     ];
 
     /**

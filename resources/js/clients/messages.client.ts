@@ -21,12 +21,8 @@ export const MessagesClient = {
         });
     },
 
-    async sendMessage(message: string, receiverId: number, isAnon: boolean) {
-        return await client().post(route('message.send'), {
-            message,
-            receiver_id: receiverId,
-            isAnon,
-        });
+    async sendMessage(body: FormData) {
+        return await client().post(route('message.send'), body);
     },
     async addToFavorite(messageId: number) {
         return await client().post(route('message.addToFavorite'), {

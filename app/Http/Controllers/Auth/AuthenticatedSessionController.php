@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UserStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
@@ -34,6 +35,12 @@ final class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        if ($request->user()->status === UserStatusEnum::DISABLED) {
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+
+            return to_route('login')->with('status', 'Your account is disabled.');
+        }
 
         return redirect()->intended(route('home', absolute: false));
     }

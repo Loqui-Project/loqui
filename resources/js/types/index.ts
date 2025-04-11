@@ -82,6 +82,7 @@ export interface Message {
     replays_count: number;
     is_favorite: boolean;
     replays: MessageReplay[];
+    image_url: string | null;
     created_at: string;
     updated_at: string;
 }

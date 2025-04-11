@@ -6,6 +6,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 
 /**
  * @mixin \App\Models\Message
@@ -31,6 +32,8 @@ final class MessageResource extends JsonResource
             'liked' => collect(($this->likes))->contains('user_id', $request->user()?->id),
             'replays_count' => $this->replays_count,
             'replays' => MessageReplayResource::collection($this->whenLoaded('replays')),
+            'image_url' => URL::asset('storage/'.$this->image_url),
+            'is_anon' => $this->is_anon,
             'is_favorite' => collect($this->favorites)->contains('user_id', $request->user()?->id),
             'created_at' => $this->created_at,
         ];

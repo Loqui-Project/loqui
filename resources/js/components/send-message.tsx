@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Textarea } from '@/components/ui/textarea';
 import { useMutation } from '@tanstack/react-query';
 import { ImageIcon, Send, X } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 
 type SendMessageProps = {
     userId: number;
@@ -12,19 +12,24 @@ type SendMessageProps = {
 
 export function SendMessage({ userId }: SendMessageProps) {
     const [messageText, setMessageText] = useState('');
-    const [selectedImage, setSelectedImage] = useState(null);
-    const [imagePreview, setImagePreview] = useState(null);
-    const fileInputRef = useRef(null);
+    const [selectedImage, setSelectedImage] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
-    const handleImageUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
+    const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files?.length > 0) {
+            const file = e.target.files[0];
+
             setSelectedImage(file);
 
             // Create preview URL
             const reader = new FileReader();
             reader.onloadend = () => {
-                setImagePreview(reader.result);
+                if (reader.result === null) {
+                    return;
+                } else {
+                    setImagePreview(reader.result as string);
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -41,16 +46,22 @@ export function SendMessage({ userId }: SendMessageProps) {
     const { mutate } = useMutation({
         mutationKey: ['sendMessage', userId],
         mutationFn: () => {
-            return MessagesClient.sendMessage(messageText, userId, false);
+            const formData = new FormData();
+            formData.append('message', messageText);
+            if (selectedImage) {
+                formData.append('image', selectedImage);
+            }
+            formData.append('receiver_id', userId.toString());
+            formData.append('isAnon', 'false');
+            return MessagesClient.sendMessage(formData);
+        },
+        onSuccess: () => {
+            setMessageText('');
+            clearImage();
         },
     });
 
     const handleSubmit = () => {
-        // Here you would typically send the message and image to your backend
-        console.log('Submitting message:', messageText);
-        console.log('With image:', selectedImage);
-
-        // Show success notification or update UI as needed
         mutate();
     };
 

@@ -17,6 +17,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
@@ -47,7 +48,10 @@ final class MessageController extends Controller
     public function show(Message $message): \Inertia\Response
     {
         return Inertia::render('message/show', [
-            'message' => new MessageResource($message),
+            'message' => new MessageResource($message->loadCount([
+                'likes',
+                'replays',
+            ])->load(['user', 'likes', 'favorites', 'sender', 'replays.user'])),
         ]);
     }
 
@@ -112,19 +116,29 @@ final class MessageController extends Controller
         try {
             /** @var User|null $user */
             $user = null;
+            $image = $request->file('image');
+            if ($image) {
+                $inputs['image_url'] = type($image)->as(UploadedFile::class)->store('images', 'public');
+                unset($inputs['image']);
+            }
             if ($request->user() === null) {
+                $image = $request->file('image');
+
                 $message = Message::create([
                     'user_id' => $request->receiver_id,
                     'message' => $request->message,
                     'is_anon' => true,
+                    'image_url' => $inputs['image_url'] ?? null,
                 ]);
             } else {
+                $image = $request->file('image');
                 $user = $request->user();
                 $message = Message::create([
                     'sender_id' => $user->id,
                     'user_id' => $request->receiver_id,
                     'message' => $request->message,
                     'is_anon' => false,
+                    'image_url' => $inputs['image_url'] ?? null,
                 ]);
             }
 

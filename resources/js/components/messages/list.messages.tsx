@@ -11,7 +11,6 @@ type MessagesListProps = {
     routeParams?: Record<string, string | number>;
 };
 export function MessagesList({ initialMessages, pageRoute, routeParams }: MessagesListProps) {
-    console.log(initialMessages, 'initialMessages');
     const [messages, setMessages] = useState(initialMessages.data);
     const [currentPage, setCurrentPage] = useState(initialMessages.meta.current_page);
     const [lastPage, setLastPage] = useState(initialMessages.meta.last_page);
@@ -57,9 +56,11 @@ export function MessagesList({ initialMessages, pageRoute, routeParams }: Messag
         <section id="messages" className="space-y-4">
             {messages.length > 0 ? (
                 <div>
-                    <div className="flex flex-col gap-y-4">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         {messages.map((message) => (
-                            <MessageCard key={`message-${message.id}`} message={message} />
+                            <div key={`message-${message.id}`} className="col-span-1">
+                                <MessageCard message={message} />
+                            </div>
                         ))}
                     </div>
                     {currentPage < lastPage && loading && (

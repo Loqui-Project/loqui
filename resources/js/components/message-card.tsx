@@ -8,7 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import { AxiosError, AxiosResponse } from 'axios';
 import { clsx } from 'clsx';
 import { formatDistance } from 'date-fns';
-import { Calendar, Heart, MessageCircle, MoreHorizontal, Send, Star, Trash2 } from 'lucide-react';
+import { Calendar, Heart, MessageCircle, MoreHorizontal, Send, Share, Star, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from './ui/button';
@@ -70,6 +70,19 @@ export function MessageCard({ message }: MessageCardProps) {
 
     const { addToFavorite, isFavorite, isFavoriteRequestPending } = useAddToFavorite(message);
 
+    function shareMessage() {
+        try {
+            navigator.share({
+                title: 'Share Message',
+                text: message.message,
+                url: route('message.show', { message: message.id }),
+            });
+        } catch (error: Error) {
+            console.log(error);
+            toast.error('Sharing not supported on this browser');
+        }
+    }
+
     return (
         <Card key={message.id} className="gap-y-2 overflow-hidden p-0">
             <CardHeader className="flex w-full flex-row flex-wrap items-start justify-between gap-3 space-y-0 p-4">
@@ -109,6 +122,9 @@ export function MessageCard({ message }: MessageCardProps) {
             </CardHeader>
             <CardContent className="p-4">
                 <p className="mb-3 text-sm">{message.message}</p>
+                {message.image_url && (
+                    <img src={message.image_url} alt="Message Image" className="mb-3 max-h-[300px] w-full rounded-md border object-cover" />
+                )}
             </CardContent>
             <CardFooter className="flex justify-between p-4">
                 <div className="flex space-x-4">
@@ -121,11 +137,24 @@ export function MessageCard({ message }: MessageCardProps) {
                         className={clsx('h-8 px-2', isLiked && 'text-red-500')}
                     >
                         <Heart className="mr-1 h-4 w-4" />
-                        <span>{likes}</span>
+                        <span className="text-muted-foreground">{likes}</span>
                     </Button>
                     <Button variant="ghost" size="sm" className="h-8 px-2">
                         <MessageCircle className="mr-1 h-4 w-4" />
-                        <span>{replaysCount}</span>
+                        <span className="text-muted-foreground">{replaysCount}</span>
+                    </Button>
+                </div>
+                <div>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-8 px-2"
+                        onClick={() => {
+                            shareMessage();
+                        }}
+                    >
+                        <Share className="mr-1 h-4 w-4" />
+                        <span className="text-muted-foreground">Share</span>
                     </Button>
                 </div>
             </CardFooter>

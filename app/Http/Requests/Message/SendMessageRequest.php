@@ -27,6 +27,7 @@ final class SendMessageRequest extends FormRequest
             'message' => ['required', 'string'],
             'receiver_id' => ['required', 'exists:users,id', 'different:user_id'],
             'is_anon' => ['boolean'],
+            'image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg'],
         ];
     }
 }
