@@ -23,9 +23,13 @@ export default function MyProfilePage({ user, is_me, messages: initialMessages, 
                 <Separator className="my-10" />
                 {!is_me && <SendMessage userId={user.id} />}
                 {/* Feed from followed users */}
-                <MessagesList initialMessages={initialMessages} pageRoute={'profile'} routeParams={{
-                    username: user.username,
-                }} />
+                <MessagesList
+                    initialMessages={initialMessages}
+                    pageRoute={'profile'}
+                    routeParams={{
+                        username: user.username,
+                    }}
+                />
             </section>
         </UserLayout>
     );
