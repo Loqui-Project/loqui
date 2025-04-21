@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use Spatie\Health\ResultStores\CacheHealthResultStore;
+
 return [
     /*
      * A result store is responsible for saving the results of the checks. The
@@ -9,10 +11,8 @@ return [
      * can use multiple stores at the same time.
      */
     'result_stores' => [
-        Spatie\Health\ResultStores\EloquentHealthResultStore::class => [
-            'connection' => env('HEALTH_DB_CONNECTION', env('DB_CONNECTION')),
-            'model' => Spatie\Health\Models\HealthCheckResultHistoryItem::class,
-            'keep_history_for_days' => 5,
+        CacheHealthResultStore::class => [
+            'store' => 'redis',
         ],
 
         /*
@@ -40,7 +40,7 @@ return [
         'enabled' => true,
 
         'notifications' => [
-            Spatie\Health\Notifications\CheckFailedNotification::class => ['mail'],
+            Spatie\Health\Notifications\CheckFailedNotification::class => ['slack'],
         ],
 
         /*
@@ -59,15 +59,6 @@ return [
         'throttle_notifications_for_minutes' => 60,
         'throttle_notifications_key' => 'health:latestNotificationSentAt:',
 
-        'mail' => [
-            'to' => 'me@yanalshoubaki.com',
-
-            'from' => [
-                'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-                'name' => env('MAIL_FROM_NAME', 'Example'),
-            ],
-        ],
-
         'slack' => [
             'webhook_url' => env('HEALTH_SLACK_WEBHOOK_URL', ''),
 
@@ -80,31 +71,6 @@ return [
 
             'icon' => null,
         ],
-    ],
-
-    /*
-     * You can let Oh Dear monitor the results of all health checks. This way, you'll
-     * get notified of any problems even if your application goes totally down. Via
-     * Oh Dear, you can also have access to more advanced notification options.
-     */
-    'oh_dear_endpoint' => [
-        'enabled' => false,
-
-        /*
-         * When this option is enabled, the checks will run before sending a response.
-         * Otherwise, we'll send the results from the last time the checks have run.
-         */
-        'always_send_fresh_results' => true,
-
-        /*
-         * The secret that is displayed at the Application Health settings at Oh Dear.
-         */
-        'secret' => env('OH_DEAR_HEALTH_CHECK_SECRET'),
-
-        /*
-         * The URL that should be configured in the Application health settings at Oh Dear.
-         */
-        'url' => '/oh-dear-health-check-results',
     ],
 
     /*
