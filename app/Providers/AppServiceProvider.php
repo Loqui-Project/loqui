@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 use Spatie\Health\Checks\Checks;
 use Spatie\Health\Facades\Health;
 
@@ -21,7 +23,7 @@ final class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
-
+        Model::preventLazyLoading();
     }
 
     /**

@@ -10,12 +10,17 @@ use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
+
+
 Route::get('/', function () {
     return Inertia\Inertia::render('welcome');
 })->name('welcome');
 
-Route::match(['get', 'post'],
-    '/@{user:username}', [UserProfileController::class, 'profile'])->name('profile');
+Route::match(
+    ['get', 'post'],
+    '/@{user:username}',
+    [UserProfileController::class, 'profile']
+)->name('profile');
 
 Route::middleware(['auth'])->match(['get', 'post'], 'home', HomeController::class)->name('home');
 Route::middleware(['auth'])->match(['get', 'post'], '/inbox', [MessageController::class, 'inbox'])->name('inbox');
@@ -27,28 +32,25 @@ Route::prefix('message')->name('message.')->controller(MessageController::class)
 
     Route::post('/send', 'sendMessage')->name('send');
     Route::get('/{message:id}', 'show')->name('show');
-
 });
 
 Route::middleware(['auth'])->controller(NotificationController::class)->name('notifications.')->prefix('notifications')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/mark-all-as-read', 'markAllAsRead')->name('markAllAsRead');
     Route::post('/mark-as-read/{id}', 'markAsRead')->name('markAsRead');
-
 });
 Route::controller(UserController::class)->prefix('user')->name('user.')->group(function () {
     Route::middleware(['auth'])->post('/follow', 'follow')->name('follow');
     Route::middleware(['auth'])->post('/unfollow', 'unfollow')->name('unfollow');
     Route::get('/{user:username}/followers', 'followers')->name('followers');
     Route::get('/{user:username}/followings', 'followings')->name('followings');
-
 });
 
 Route::middleware(['auth'])->controller(SearchController::class)->name('search.')->prefix('search')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/data', 'search')->name('data');
-
 });
 
-require __DIR__.'/settings.php';
-require __DIR__.'/auth.php';
+
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';

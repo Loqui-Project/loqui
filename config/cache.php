@@ -40,6 +40,9 @@ return [
             'connection' => env('REDIS_CACHE_CONNECTION', 'cache'),
             'lock_connection' => env('REDIS_CACHE_LOCK_CONNECTION', 'default'),
         ],
+        'none' => [
+            'driver' => 'null',
+        ],
 
     ],
 
@@ -54,6 +57,6 @@ return [
     |
     */
 
-    'prefix' => env('CACHE_PREFIX', Str::slug((string) env('APP_NAME', 'laravel'), '_').'_cache_'),
+    'prefix' => env('CACHE_PREFIX', Str::slug((string) env('APP_NAME', 'laravel'), '_') . '_cache_'),
 
 ];
