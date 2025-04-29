@@ -10,8 +10,6 @@ use App\Http\Controllers\User\UserProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-
-
 Route::get('/', function () {
     return Inertia\Inertia::render('welcome');
 })->name('welcome');
@@ -51,6 +49,5 @@ Route::middleware(['auth'])->controller(SearchController::class)->name('search.'
     Route::get('/data', 'search')->name('data');
 });
 
-
-require __DIR__ . '/settings.php';
-require __DIR__ . '/auth.php';
+require __DIR__.'/settings.php';
+require __DIR__.'/auth.php';

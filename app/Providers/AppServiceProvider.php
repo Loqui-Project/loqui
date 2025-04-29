@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\Passport;
 use Spatie\Health\Checks\Checks;
 use Spatie\Health\Facades\Health;
 
