@@ -32,7 +32,7 @@ final class MessageResource extends JsonResource
             'liked' => collect(($this->likes))->contains('user_id', $request->user()?->id),
             'replays_count' => $this->replays_count,
             'replays' => MessageReplayResource::collection($this->whenLoaded('replays')),
-            'image_url' => $this->image_url ? URL::asset('storage/' . $this->image_url) : null,
+            'image_url' => $this->image_url ? URL::asset('storage/'.$this->image_url) : null,
             'is_anon' => $this->is_anon,
             'is_favorite' => collect($this->favorites)->contains('user_id', $request->user()?->id),
             'created_at' => $this->created_at,

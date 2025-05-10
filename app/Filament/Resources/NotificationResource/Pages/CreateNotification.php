@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources\NotificationResource\Pages;
 
 use App\Filament\Resources\NotificationResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 
-class CreateNotification extends CreateRecord
+final class CreateNotification extends CreateRecord
 {
     protected static string $resource = NotificationResource::class;
 
@@ -17,7 +18,7 @@ class CreateNotification extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
 
-        $notificationType = "SYSTEM";
+        $notificationType = 'SYSTEM';
 
         $data = array_merge($data, [
             'type' => $notificationType,
@@ -27,6 +28,7 @@ class CreateNotification extends CreateRecord
         ]);
         $record = $this->getModel()::create($data);
         $record->save();
+
         return $record;
     }
 }

@@ -61,7 +61,7 @@ final class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 FilamentSpatieLaravelHealthPlugin::make(),
                 EnvironmentIndicatorPlugin::make()
-                    ->color(fn(): ?array => match (app()->environment()) {
+                    ->color(fn (): ?array => match (app()->environment()) {
                         'production' => null,
                         'staging' => Color::Orange,
                         default => Color::Blue,

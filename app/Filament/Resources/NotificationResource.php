@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
-use App\Enums\NotificationType;
 use App\Filament\Resources\NotificationResource\Pages;
-use App\Filament\Resources\NotificationResource\RelationManagers;
 use App\Models\Notification;
 use App\Models\User;
 use Filament\Forms;
@@ -12,10 +12,8 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class NotificationResource extends Resource
+final class NotificationResource extends Resource
 {
     protected static ?string $model = Notification::class;
 
@@ -30,7 +28,7 @@ class NotificationResource extends Resource
                     ->options(User::all()->pluck('name', 'id'))
                     ->searchable(),
                 Forms\Components\RichEditor::make('data')
-                    ->label('Body')
+                    ->label('Body'),
             ]);
     }
 
@@ -45,7 +43,7 @@ class NotificationResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('User')
-                    ->getStateUsing(fn($record) => $record->notifiable->name)
+                    ->getStateUsing(fn ($record) => $record->notifiable->name)
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('read_at')
