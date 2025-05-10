@@ -8,9 +8,10 @@ type UserAvatarProps = {
     avatarClassname?: string;
     imageOnly?: boolean;
     withLink?: boolean;
+    url?: string | null;
 };
 
-export function UserAvatar({ user, className, avatarClassname, imageOnly = false, withLink = true }: UserAvatarProps) {
+export function UserAvatar({ user, url = null, className, avatarClassname, imageOnly = false, withLink = true }: UserAvatarProps) {
     return (
         <div
             {...(withLink
@@ -27,13 +28,17 @@ export function UserAvatar({ user, className, avatarClassname, imageOnly = false
             })}
         >
             <div className="shrink-0">
-                <img
-                    fetchPriority="auto"
-                    className={cn('rounded-full object-cover', avatarClassname)}
-                    src={user && user.image_url != null ? user?.image_url : '/images/default-avatar.png'}
-                    alt={user?.name ?? 'Anonymous'}
-                    loading="lazy"
-                />
+                {user !== null && url === null ? (
+                    <img
+                        fetchPriority="auto"
+                        className={cn('rounded-full object-cover', avatarClassname)}
+                        src={user && user.image_url != null ? user?.image_url : '/images/default-avatar.png'}
+                        alt={user?.name ?? 'Anonymous'}
+                        loading="lazy"
+                    />
+                ) : (
+                    <img fetchPriority="auto" className={cn('rounded-full object-cover', avatarClassname)} src={url!} alt={'System'} loading="lazy" />
+                )}
             </div>
             {imageOnly ? null : (
                 <div>

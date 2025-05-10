@@ -56,7 +56,7 @@ export function MessagesList({ initialMessages, pageRoute, routeParams }: Messag
         <section id="messages" className="space-y-4">
             {messages.length > 0 ? (
                 <div>
-                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                         {messages.map((message) => (
                             <div key={`message-${message.id}`} className="col-span-1">
                                 <MessageCard message={message} />

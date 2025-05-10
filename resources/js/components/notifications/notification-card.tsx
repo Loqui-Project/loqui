@@ -3,7 +3,7 @@ import { Notification } from '@/types';
 import { Link } from '@inertiajs/react';
 import { useMutation } from '@tanstack/react-query';
 import { formatDistance } from 'date-fns';
-import { Check, Heart, MessageCircle, Reply, UserPlus } from 'lucide-react';
+import { Check, Heart, MessageCircle, MonitorCog, Reply, UserPlus } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { Badge } from '../ui/badge';
@@ -21,6 +21,8 @@ function NotificationIcon({ type }: { type: Notification['type'] }) {
             return <Heart className="h-4 w-4 text-red-500" />;
         case 'replay':
             return <Reply className="h-4 w-4 text-purple-500" />;
+        case 'system':
+            return <MonitorCog className="h-4 w-4 text-purple-500" />;
         default:
             return <MessageCircle className="h-4 w-4" />;
     }
@@ -38,13 +40,21 @@ export function NotificationCard({ notification }: NotificationCardProps) {
             setIsRead(true);
         },
     });
+    const isSystem = notification.type === 'system';
     return (
         <Card key={notification.id} className={`p-4 transition-colors ${!isRead ? 'bg-muted/40 border-l-primary border-l-4' : ''}`}>
             <div className="flex items-start gap-4">
                 <div className="flex-1 space-y-1">
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-2">
-                            <UserAvatar avatarClassname="h-12 w-12 border" user={notification.data.user} />
+                            <UserAvatar
+                                avatarClassname="h-12 w-12 border"
+                                {...(isSystem
+                                    ? { url: '/images/logo.svg', user: null }
+                                    : {
+                                          user: notification.data.user,
+                                      })}
+                            />
                             {!isRead && (
                                 <Badge variant="default" className="ml-2">
                                     New
@@ -61,14 +71,21 @@ export function NotificationCard({ notification }: NotificationCardProps) {
                         </div>
                     </div>
 
-                    <p className="text-sm">{notification.data.title}</p>
+                    <p
+                        className="text-sm"
+                        dangerouslySetInnerHTML={{
+                            __html: isSystem ? notification.data.text! : notification.data.title,
+                        }}
+                    />
 
                     <div className="flex items-center justify-between pt-2">
-                        <Link href={notification.data.url}>
-                            <Button variant="link" size="sm" className="text-primary h-auto px-0">
-                                View
-                            </Button>
-                        </Link>
+                        {!isSystem && (
+                            <Link href={notification.data.url}>
+                                <Button variant="link" size="sm" className="text-primary h-auto px-0">
+                                    View
+                                </Button>
+                            </Link>
+                        )}
 
                         {!isRead && (
                             <Button variant="ghost" size="sm" className="h-8 gap-1" onClick={() => mutate()}>

@@ -19,7 +19,7 @@ final class NotificationController extends Controller
     {
         $user = type($request->user())->as(User::class);
         $filterType = $request->get('type');
-        $types = array_map(fn (NotificationType $type): array => [
+        $types = array_map(fn(NotificationType $type): array => [
             'value' => $type->value,
             'label' => $type->getLabel(),
         ], NotificationType::cases());
@@ -28,7 +28,6 @@ final class NotificationController extends Controller
         if ($filterType !== 'all' && $filterType !== null) {
             $notifications = $notifications->where('type', $filterType);
         }
-
         return Inertia::render('notifications/index', [
             'notifications' => NotificationResource::collection($notifications),
             'types' => $types,

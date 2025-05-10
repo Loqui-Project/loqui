@@ -105,6 +105,7 @@ export interface Notification {
         message?: Message;
         title: string;
         url: string;
+        text?: string;
     };
     read_at: string | null;
     created_at: string;

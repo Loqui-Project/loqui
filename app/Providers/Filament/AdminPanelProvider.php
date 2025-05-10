@@ -40,6 +40,7 @@ final class AdminPanelProvider extends PanelProvider
             ->pages([
                 Pages\Dashboard::class,
             ])
+            ->databaseNotifications()
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
                 Widgets\AccountWidget::class,
@@ -60,7 +61,7 @@ final class AdminPanelProvider extends PanelProvider
                 FilamentShieldPlugin::make(),
                 FilamentSpatieLaravelHealthPlugin::make(),
                 EnvironmentIndicatorPlugin::make()
-                    ->color(fn (): ?array => match (app()->environment()) {
+                    ->color(fn(): ?array => match (app()->environment()) {
                         'production' => null,
                         'staging' => Color::Orange,
                         default => Color::Blue,

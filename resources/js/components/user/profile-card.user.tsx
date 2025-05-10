@@ -54,7 +54,7 @@ function AuthUserProfileCard({ statistics, user, is_following_me, is_following }
     return (
         <section id="user-information">
             <div className="grid grid-cols-12 gap-y-4">
-                <div className="col-span-12 lg:col-span-2">
+                <div className="col-span-12 xl:col-span-2">
                     <UserAvatar user={user} imageOnly avatarClassname="size-20 md:size-40" />
                 </div>
                 <div className="col-span-10 flex flex-col gap-y-4">
@@ -170,7 +170,7 @@ function GuestUserProfileCard({ user, statistics }: GuestUserProfileCardProps) {
     return (
         <section id="user-information">
             <div className="grid grid-cols-12 gap-y-4">
-                <div className="col-span-12 lg:col-span-2">
+                <div className="col-span-12 xl:col-span-2">
                     <UserAvatar user={user} imageOnly avatarClassname="size-20 md:size-40" />
                 </div>
                 <div className="col-span-10 flex flex-col gap-y-4">
@@ -253,7 +253,7 @@ function SelfUserProfileCard({ user, statistics }: SelfUserProfileCardProps) {
     return (
         <section id="user-information">
             <div className="grid grid-cols-12 gap-y-4">
-                <div className="col-span-12 lg:col-span-2">
+                <div className="col-span-12 xl:col-span-2">
                     <UserAvatar user={user} imageOnly avatarClassname="size-20 md:size-40" />
                 </div>
                 <div className="col-span-10 flex flex-col gap-y-4">
