@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\HasUser;
+use Database\Factories\UserSocialAuthFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 final class UserSocialAuth extends Model
 {
-    /** @use HasFactory<\Database\Factories\UserSocialAuthFactory> */
+    /** @use HasFactory<UserSocialAuthFactory> */
     use HasFactory;
 
     use HasUser;

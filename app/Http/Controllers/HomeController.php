@@ -10,10 +10,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
+use Inertia\Response;
 
 final class HomeController extends Controller
 {
-    public function __invoke(Request $request): \Inertia\Response
+    public function __invoke(Request $request): \Illuminate\Http\JsonResponse
     {
         $user = type($request->user())->as(User::class);
         $followingUsersId = $user->following()->pluck('user_id')->toArray();
@@ -30,7 +31,7 @@ final class HomeController extends Controller
             )->paginate(5);
         }, 300);
 
-        return Inertia::render('home', [
+        return $this->responseFormatter->responseSuccess("",[
             'messages' => Inertia::merge(fn () => MessageResource::collection($messages)),
         ]);
     }

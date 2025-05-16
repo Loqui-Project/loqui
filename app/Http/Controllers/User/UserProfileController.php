@@ -12,13 +12,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Inertia;
+use Inertia\Response;
 
 final class UserProfileController extends Controller
 {
     /**
      * Display the user profile.
      */
-    public function profile(Request $request, User $user): \Inertia\Response
+    public function profile(Request $request, User $user): \Illuminate\Http\JsonResponse
     {
         $user = $user->loadCount([
             'messages',
@@ -32,7 +33,7 @@ final class UserProfileController extends Controller
         $user->setRelation('messages', $messages);
 
         if (Auth::check() === false) {
-            return Inertia::render('user/public-profile', [
+            return $this->responseFormatter->responseSuccess('user/public-profile', [
                 'user' => new UserResource($user),
                 'is_me' => false,
                 'messages' => MessageResource::collection($user->messages),
@@ -47,7 +48,7 @@ final class UserProfileController extends Controller
         }
         if (Auth::id() !== $user->id) {
 
-            return Inertia::render('user/public-profile', [
+            return $this->responseFormatter->responseSuccess('user/public-profile', [
                 'user' => new UserResource($user),
                 'is_me' => false,
                 'messages' => MessageResource::collection($user->messages),
@@ -61,7 +62,7 @@ final class UserProfileController extends Controller
             ]);
         }
 
-        return Inertia::render('user/my-profile', [
+        return $this->responseFormatter->responseSuccess('user/my-profile', [
             'user' => new UserResource($user),
             'is_me' => true,
             'messages' => MessageResource::collection($user->messages),

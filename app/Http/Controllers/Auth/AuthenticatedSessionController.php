@@ -7,54 +7,61 @@ namespace App\Http\Controllers\Auth;
 use App\Enums\UserStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Resources\UserResource;
+use App\Services\AuthService;
+use App\Services\ResponseFormatter;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use Inertia\Response;
+use Illuminate\Validation\ValidationException;
 
 final class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Show the login page.
-     */
-    public function create(Request $request): Response
-    {
-        return Inertia::render('auth/login', [
-            'canResetPassword' => Route::has('password.request'),
-            'status' => $request->session()->get('status'),
-        ]);
-    }
 
     /**
      * Handle an incoming authentication request.
+     * @throws ValidationException
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request): JsonResponse
     {
-        $request->authenticate();
+        try {
+            $request->authenticate();
 
-        $request->session()->regenerate();
-        if ($request->user()->status === UserStatusEnum::DISABLED) {
-            Auth::guard('web')->logout();
-            $request->session()->invalidate();
+            if ($request->user()->status === UserStatusEnum::DEACTIVATED) {
+                return $this->responseFormatter->responseError('Your account is disabled.', 403);
+            }
 
-            return to_route('login')->with('status', 'Your account is disabled.');
+            $token = $this->authService->getAccessToken([
+                'username' => $request->input('email'),
+                'password' => $request->input('password'),
+            ]);
+
+            return $this->responseFormatter->responseSuccess('Login successful',[
+                'user' => new UserResource($request->user()),
+                'token' => $token,
+            ], 200);
+        } catch (Exception $e) {
+            return $this->responseFormatter->responseError($e->getMessage(),  422);
         }
-
-        return redirect()->intended(route('home', absolute: false));
     }
 
     /**
      * Destroy an authenticated session.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request): JsonResponse
     {
-        Auth::guard('web')->logout();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        try {
+            $request->user()->token()->revoke();
 
-        return redirect('/');
+            return $this->responseFormatter->responseSuccess('Logout successful' ,[
+            ], 200);
+        } catch (Exception $e) {
+            return $this->responseFormatter->responseError([
+                'message' => $e->getMessage(),
+            ], 200);
+        }
     }
 }

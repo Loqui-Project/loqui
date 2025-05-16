@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Message\AddReplayRequest;
 use App\Http\Requests\Message\AddToFavoriteRequest;
+use App\Http\Requests\Message\DeleteMessageRequest;
 use App\Http\Requests\Message\LikeMessageRequest;
 use App\Http\Requests\Message\SendMessageRequest;
 use App\Http\Resources\MessageResource;
@@ -16,18 +17,18 @@ use App\Models\MessageLike;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Inertia\Inertia;
 
 final class MessageController extends Controller
 {
     /**
      * Display messages that without replies for the user.
      */
-    public function inbox(): \Inertia\Response
+    public function inbox(): JsonResponse
     {
         $messages = Cache::remember('inbox.messages', 600, function () {
             return Message::where('user_id', Auth::id())->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
@@ -36,7 +37,7 @@ final class MessageController extends Controller
             ])->withoutReplies()->paginate(5);
         }, 300);
 
-        return Inertia::render('message/inbox', [
+        return $this->responseFormatter->responseSuccess('', [
             'messages' => MessageResource::collection($messages),
         ]);
 
@@ -45,9 +46,9 @@ final class MessageController extends Controller
     /**
      * Display messages that with replies for the user.
      */
-    public function show(Message $message): \Inertia\Response
+    public function show(Message $message): JsonResponse
     {
-        return Inertia::render('message/show', [
+        return $this->responseFormatter->responseSuccess('', [
             'message' => new MessageResource($message->loadCount([
                 'likes',
                 'replays',
@@ -58,7 +59,7 @@ final class MessageController extends Controller
     /**
      * Like or unlike a message.
      */
-    public function like(LikeMessageRequest $request): \Illuminate\Http\JsonResponse
+    public function like(LikeMessageRequest $request): JsonResponse
     {
         try {
             $user = type($request->user())->as(User::class);
@@ -66,32 +67,32 @@ final class MessageController extends Controller
             /** @var ?Message $message */
             $message = Message::where('id', $request->message_id)->first();
             if ($message === null) {
-                return response()->json(['message' => 'Message not found'], 404);
+                return $this->responseFormatter->responseError('Message not found', 404);
             }
             if ($request->like === false) {
                 MessageLike::where('user_id', $user->id)->where('message_id', $message->id)->delete();
 
-                return response()->json(['message' => 'Unliked message successfully']);
+                return $this->responseFormatter->responseSuccess('Unliked message successfully', [], 201);
             }
             $like = MessageLike::where('user_id', $user->id)->where('message_id', $message->id)->first();
             if ($like !== null) {
-                return response()->json(['message' => 'You already liked this message'], 400);
+                return $this->responseFormatter->responseError('Already liked', 400);
             }
             MessageLike::create([
                 'user_id' => $user->id,
                 'message_id' => $message->id,
             ]);
 
-            return response()->json(['message' => 'Liked message successfully']);
+            return $this->responseFormatter->responseSuccess('Liked message successfully', [], 201);
         } catch (Exception) {
-            return response()->json(['message' => 'Failed to like'], 500);
+            return $this->responseFormatter->responseError('Error liking message', 500);
         }
     }
 
     /**
      * Add a reply to a message.
      */
-    public function addReply(AddReplayRequest $request): \Illuminate\Http\JsonResponse
+    public function addReply(AddReplayRequest $request): JsonResponse
     {
         try {
             $user = type($request->user())->as(User::class);
@@ -104,16 +105,16 @@ final class MessageController extends Controller
             Cache::forget('inbox.messages');
             Cache::forget('home.messages');
 
-            return response()->json(['message' => 'Reply added']);
+            return $this->responseFormatter->responseSuccess('Replay added', [], 201);
         } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return $this->responseFormatter->responseError('Error adding reply', 500);
         }
     }
 
     /**
      * Send a message to a user.
      */
-    public function sendMessage(SendMessageRequest $request): \Illuminate\Http\JsonResponse
+    public function sendMessage(SendMessageRequest $request): JsonResponse
     {
         try {
             /** @var User|null $user */
@@ -124,8 +125,6 @@ final class MessageController extends Controller
                 unset($inputs['image']);
             }
             if ($request->user() === null) {
-                $image = $request->file('image');
-
                 $message = Message::create([
                     'user_id' => $request->receiver_id,
                     'message' => $request->message,
@@ -133,7 +132,6 @@ final class MessageController extends Controller
                     'image_url' => $inputs['image_url'] ?? null,
                 ]);
             } else {
-                $image = $request->file('image');
                 $user = $request->user();
                 $message = Message::create([
                     'sender_id' => $user->id,
@@ -147,37 +145,58 @@ final class MessageController extends Controller
             $recviedUser = User::findOrFail($request->receiver_id);
             NewMessageJob::dispatch(type($recviedUser)->as(User::class), $user, $message);
 
-            return response()->json(['message' => 'Message sent successfully']);
+            return $this->responseFormatter->responseSuccess(
+                'Message sent successfully',
+                [],
+                201
+            );
         } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500);
+            return $this->responseFormatter->responseError('Error sending message', 500);
         }
     }
 
     /**
      * Add a message to favorite.
      */
-    public function addToFavorite(AddToFavoriteRequest $request): \Illuminate\Http\JsonResponse
+    public function addToFavorite(AddToFavoriteRequest $request): JsonResponse
     {
         MessageFavourite::create([
             'user_id' => Auth::id(),
             'message_id' => $request->message_id,
         ]);
 
-        return response()->json(['message' => 'Message saved successfully']);
+        return $this->responseFormatter->responseSuccess('Message saved successfully');
     }
 
     /**
      * Display messages that user liked.
      */
-    public function favorites(Request $request): \Inertia\Response
+    public function favorites(Request $request): JsonResponse
     {
         $user = type($request->user())->as(User::class);
         $messages = Message::whereHas('favorites', function (Builder $query) use ($user): void {
             $query->where('user_id', $user->id);
         })->get();
 
-        return Inertia::render('message/favorites', [
-            'messages' => MessageResource::collection($messages),
-        ]);
+        return $this->responseFormatter->responseSuccess('',
+            [
+                'messages' => MessageResource::collection($messages),
+            ]);
+    }
+
+    public function delete(DeleteMessageRequest $request): JsonResponse
+    {
+        try {
+            $user = type($request->user())->as(User::class);
+            $message = type(Message::findOrFail($request->message_id))->as(Message::class);
+
+            $message->delete();
+            Cache::forget('inbox.messages');
+            Cache::forget('home.messages');
+
+            return $this->responseFormatter->responseSuccess('Message deleted', [], 201);
+        } catch (Exception $e) {
+            return $this->responseFormatter->responseError('Error deleting message', 500);
+        }
     }
 }

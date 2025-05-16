@@ -8,6 +8,7 @@ use App\Enums\NotificationType;
 use App\Http\Resources\UserResource;
 use App\Models\NotificationSetting;
 use App\Models\User;
+use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
@@ -77,7 +78,7 @@ final class NewFollowNotification extends Notification implements ShouldBroadcas
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array<int, \Illuminate\Broadcasting\Channel>
+     * @return array<int, Channel>
      */
     public function broadcastOn(): array
     {

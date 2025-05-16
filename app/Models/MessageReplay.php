@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\HasUser;
+use Database\Factories\MessageReplayFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,7 +23,7 @@ use Illuminate\Support\Carbon;
  */
 final class MessageReplay extends Model
 {
-    /** @use HasFactory<\Database\Factories\MessageReplayFactory> */
+    /** @use HasFactory<MessageReplayFactory> */
     use HasFactory;
 
     use HasUser;

@@ -7,8 +7,10 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Models\Session;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 use Jenssegers\Agent\Agent;
 
 final class SessionController extends Controller
@@ -16,7 +18,7 @@ final class SessionController extends Controller
     /**
      * Show the user's sessions page.
      */
-    public function index(Request $request): \Inertia\Response
+    public function index(Request $request): Response
     {
         $user = type($request->user())->as(User::class);
         $sessions = $user->sessions()->orderBy('last_activity', 'desc')->get()->map(function (Session $session): array {
@@ -41,7 +43,7 @@ final class SessionController extends Controller
         ]);
     }
 
-    public function destroy(Request $request, int $session): \Illuminate\Http\RedirectResponse
+    public function destroy(Request $request, int $session): RedirectResponse
     {
         $user = type($request->user())->as(User::class);
         $user->sessions()->where('id', $session)->delete();

@@ -10,16 +10,20 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\UpdateNotificationRequest;
 use App\Models\NotificationSetting;
 use App\Models\User;
+use App\Services\ResponseFormatter;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 final class NotificationController extends Controller
 {
+
+
     /**
      * Show the user's password settings page.
      */
-    public function edit(): \Inertia\Response
+    public function edit(): JsonResponse
     {
 
         $authUser = type(Auth::user())->as(User::class);
@@ -47,17 +51,18 @@ final class NotificationController extends Controller
             ]),
         ]);
 
-        return Inertia::render('settings/notifications', [
+        return $this->responseFormatter->responseSuccess("Notification settings retrieved successfully.", [
             'types' => $types,
             'channels' => $channels,
             'userNotificationSettings' => $userNotificationSettings,
         ]);
+
     }
 
     /**
      * Update the user's notification settings.
      */
-    public function update(UpdateNotificationRequest $request): \Illuminate\Http\RedirectResponse
+    public function update(UpdateNotificationRequest $request): JsonResponse
     {
         /** @var User */
         $user = Auth::user();
@@ -82,6 +87,11 @@ final class NotificationController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Notification settings updated.');
+        return $this->responseFormatter->responseSuccess(
+            'Notification settings updated successfully.',
+            [
+
+            ],
+        );
     }
 }

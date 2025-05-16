@@ -9,6 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UserSocialAuth;
 use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -19,7 +21,7 @@ final class SocialAuthController extends Controller
     /**
      * Redirect the user to the provider authentication page.
      */
-    public function redirectToProvider(string $provider): \Symfony\Component\HttpFoundation\RedirectResponse|\Illuminate\Http\RedirectResponse
+    public function redirectToProvider(string $provider): \Symfony\Component\HttpFoundation\RedirectResponse|RedirectResponse
     {
         if (! in_array($provider, array_column(SocialProvidersEnum::cases(), 'value'))) {
             abort(404);
@@ -32,7 +34,7 @@ final class SocialAuthController extends Controller
     /**
      * Obtain the user information from provider.
      */
-    public function handleProviderCallback(string $provider): \Illuminate\Http\RedirectResponse
+    public function handleProviderCallback(string $provider): RedirectResponse
     {
         if (! in_array($provider, array_column(SocialProvidersEnum::cases(), 'value'))) {
             abort(404);
@@ -75,7 +77,7 @@ final class SocialAuthController extends Controller
     /**
      * Disconnect provider from user account.
      */
-    public function disconnectProvider(string $provider): \Illuminate\Http\JsonResponse
+    public function disconnectProvider(string $provider): JsonResponse
     {
         try {
             $user = type(Auth::user())->as(User::class);

@@ -9,7 +9,7 @@ use App\Http\Controllers\Settings\SecurityController;
 use App\Http\Controllers\Settings\SessionController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth')->prefix('settings')->name('settings.')->group(function () {
+Route::middleware('auth:api')->prefix('settings')->name('settings.')->group(function () {
     Route::redirect('settings', 'settings/profile');
 
     Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
@@ -17,11 +17,7 @@ Route::middleware('auth')->prefix('settings')->name('settings.')->group(function
         Route::post('/', 'update')->name('update');
     });
 
-    Route::controller(PasswordController::class)->name('password.')->prefix('password')->group(function () {
-
-        Route::get('/', 'edit')->name('edit');
-        Route::put('/', 'update')->name('update');
-    });
+    Route::post("/password", PasswordController::class)->name("password");
 
     Route::controller(SecurityController::class)->name('security.')->prefix('security')->group(function () {
         Route::get('/', 'edit')->name('edit');

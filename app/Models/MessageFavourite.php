@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\MessageFavouriteFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 final class MessageFavourite extends Model
 {
-    /** @use HasFactory<\Database\Factories\MessageFavouriteFactory> */
+    /** @use HasFactory<MessageFavouriteFactory> */
     use HasFactory;
 
     protected $fillable = [

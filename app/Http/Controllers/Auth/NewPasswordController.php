@@ -19,23 +19,13 @@ use Inertia\Response;
 
 final class NewPasswordController extends Controller
 {
-    /**
-     * Show the password reset page.
-     */
-    public function create(Request $request): Response
-    {
-        return Inertia::render('auth/reset-password', [
-            'email' => $request->email,
-            'token' => $request->route('token'),
-        ]);
-    }
 
     /**
      * Handle an incoming new password request.
      *
      * @throws ValidationException
      */
-    public function store(NewPasswordRequest $request): RedirectResponse
+    public function __invoke(NewPasswordRequest $request): \Illuminate\Http\JsonResponse
     {
 
         // Here we will attempt to reset the user's password. If it is successful we
@@ -58,7 +48,12 @@ final class NewPasswordController extends Controller
         // redirect them back to where they came from with their error message.
         $status = type($status)->asString();
         if ($status === Password::PasswordReset) {
-            return to_route('login')->with('status', __($status));
+            return $this->responseFormatter->responseSuccess(
+                'Password reset successfully.',
+                [
+                    'status' => __($status),
+                ]
+            );
         }
 
         throw ValidationException::withMessages([

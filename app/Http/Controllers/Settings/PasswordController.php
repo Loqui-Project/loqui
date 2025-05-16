@@ -7,33 +7,24 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\UpdatePasswordRequest;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Hash;
+use App\Services\ResponseFormatter;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rules\Password;
-use Inertia\Inertia;
-use Inertia\Response;
 
 final class PasswordController extends Controller
 {
-    /**
-     * Show the user's password settings page.
-     */
-    public function edit(): Response
-    {
-        return Inertia::render('settings/password');
-    }
 
     /**
      * Update the user's password.
      */
-    public function update(UpdatePasswordRequest $request): RedirectResponse
+    public function __invoke(UpdatePasswordRequest $request): JsonResponse
     {
-        $validated = $request->validated();
-        $user = type($request->user())->as(User::class);
-        $user->update([
-            'password' => Hash::make(type($validated['password'])->asString()),
-        ]);
-
-        return back();
+        try {
+            return $this->responseFormatter->responseSuccess('Password updated successfully', [
+            ]);
+        } catch (Exception $e) {
+            return $this->responseFormatter->responseError($e->getMessage(), 422);
+        }
     }
 }

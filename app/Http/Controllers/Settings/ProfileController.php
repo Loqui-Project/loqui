@@ -7,7 +7,9 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
 use App\Models\User;
+use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
@@ -16,38 +18,38 @@ use Inertia\Response;
 
 final class ProfileController extends Controller
 {
-    /**
-     * Show the user's profile settings page.
-     */
-    public function edit(Request $request): Response
-    {
-        return Inertia::render('settings/profile', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-        ]);
-    }
 
     /**
      * Update the user's profile settings.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function __invoke(ProfileUpdateRequest $request): JsonResponse
     {
-        $user = type($request->user())->as(User::class);
-        $inputs = $request->validated();
-        $image = $request->file('image');
-        if ($image) {
-            $inputs['image_url'] = type($image)->as(UploadedFile::class)->store('images', 'public');
-            unset($inputs['image']);
+        try {
+            $user = type($request->user())->as(User::class);
+            $inputs = $request->validated();
+            $image = $request->file('image');
+            if ($image) {
+                $inputs['image_url'] = type($image)->as(UploadedFile::class)->store('images', 'public');
+                unset($inputs['image']);
+            }
+
+            $user->fill($inputs);
+
+            if ($user->isDirty('email')) {
+                $user->sendEmailVerificationNotification();
+                $user->email_verified_at = null;
+            }
+
+            $user->save();
+
+            return $this->responseFormatter->responseSuccess(
+                'Profile updated successfully.',
+                [
+                    'user' => $user,
+                ]
+            );
+        } catch (Exception $e) {
+                return $this->responseFormatter->responseError($e->getMessage(), 422);
         }
-
-        $user->fill($inputs);
-
-        if ($user->isDirty('email')) {
-            $user->sendEmailVerificationNotification();
-            $user->email_verified_at = null;
-        }
-
-        $user->save();
-
-        return to_route('settings.profile.edit');
     }
 }

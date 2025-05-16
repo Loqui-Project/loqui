@@ -1,0 +1,1660 @@
+{
+	"info": {
+		"_postman_id": "154b62b0-aee2-4f9f-8ef9-c7591e51da91",
+		"name": "loqui-backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9660918"
+	},
+	"item": [
+		{
+			"name": "Auth Requests",
+			"item": [
+				{
+					"name": "Sign In",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"  pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response time is less than 200ms\", function () {\r",
+									"  pm.expect(pm.response.responseTime).to.be.below(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Validate the response schema for status, message, user, and token fields\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"\r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.status).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.message).to.exist.and.to.be.a('string');\r",
+									"    pm.expect(responseData.data).to.exist.and.to.be.an('object');\r",
+									"    pm.expect(responseData.data.user).to.exist.and.to.be.an('object');\r",
+									"    pm.expect(responseData.data.token).to.exist.and.to.be.an('object');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\" : \"test.user@gmail.com\",\r\n  \"password\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/login",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sign In Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-token",
+										"value": "{{Token}}",
+										"description": "Token of app",
+										"type": "text"
+									},
+									{
+										"key": "x-language",
+										"value": "{{Language}}",
+										"description": "Language of app",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\" : \"test@example.com\",\r\n  \"password\" : \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_url}}/auth/sign-in",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"auth",
+										"sign-in"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.2"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.13"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 08 Nov 2024 10:43:01 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Success\",\n    \"data\": {\n        \"token_type\": \"Bearer\",\n        \"expires_in\": 31535999,\n        \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5ZDYzMzQ5MC1jYzJjLTQyY2EtOTIzMi0wMzNhMGI1ZDlkM2QiLCJqdGkiOiJiZDQ0MTUyYjUwNTg3Y2NkYjUzNTcwNjE3YjVmMjQxMTgyOTlmNDYwYmM2MzMxZTgxMjhjOWNjOGJiNjIwYTQyZjdiZWI0NWJmMDBiNWQ2MiIsImlhdCI6MTczMTA2MjU4MC4yOTgyNTksIm5iZiI6MTczMTA2MjU4MC4yOTgyNjMsImV4cCI6MTc2MjU5ODU3OS43NzYxODksInN1YiI6IjEiLCJzY29wZXMiOlsiKiJdfQ.sDF5jITXLdeWAmB9MGm_Pf5CnSlr-ckGip-teGkKqesBMVOA91tBcv7xeu8vWcvBQHBKwNCU9Xly4tDVkLXrIzHeiq29QUUla71qEjCE4o4yIAm2V_tyqiuCVss5K3M_agtqLMVKzBz6m8X6_TSwybYnAJHdStkXWoypsr0wahptQvak2CG0D3N2OEz3IlB865A6PyhW28wqqPQsSree1ekvsWCP_CkbqVulgrNLBhR3noBh7nH6HbnFEXOIyhB-cphakSbsPv4_vKnMhGI6zr44j7fcFewq7WlmcLb6Sw2WmU82bcW-bqtTc6OSmdlF4rlAhbFWcn_mt8jCPKmZQnXrWDkTSVOVVB4ZYSu93KNn8h8ccfLjIdqVJECNAI9vl6Qzr1nXsTXs2Jh51U8aTDumCtvJ8AUwZP8WKHDwYsXxvzFSJ32ytcq5zlAkE9PXVGx2eI0n-Buh61Zvz2rvb2XWN_z9PcZ540y_w6g3KiICBHNKZSAuF6yWNNc0psnLb5gI_F8j3BDmM0SwmcpnMRO-gCoXhGKy7_9Fxq3xcoApDHco9byzmxFs71418qu2-BLHWgJrWbB6SWnai2b6dWZkUnu4x2qZYEETMk5VveiLK2G8N1UaRuSyrBMnhMBYZ-Rjx7TkUwkaIOKgXQoM3nmb-7m9OV_4FqXi_NL5qag\",\n        \"refresh_token\": \"def502001ce0d44a54224eeeda4366f6a5bcbc8ef664b849f92fc6e0221b6997c6ad3f2859a6079b00aa375a7291fd5c167b6b1acb23971538ad5e1211693f4963c4d0693861c5f2a889c1b87ef7186b8f12dd6289510edc5105b21608f179344815a496c9ca9fb79b06bcb83d0b8ee155da2883878070d9f3128f5eeba300e64e92a8f19c8366e7061899675dba5647b26b220d73cfcf11eb9b7df98d57496a1262830a7cc80130df0b3b8bbc616cc47e080478ac8c836701292d7e15cca519a4a70af973d5d5bdf42b4fe4d7c6e6bd363d8298ee07388bceb7e28b7f712b7a1e9de005fe57d3cbe9f8dd44fc1c3ceb6db7117f6bb8afc67329a3bec929549cc9668cbd69e0c724be35bb06d896163690df0faf3c8470e8b912dc852f94604cb9a085c2dc4ac232ddc81fd59801d06e18351bfd07a898034cb9b17ff5dfa314d4f07e5698c12c81cdcb7a5b46b58abc47a605c6b4c8c6efaf5d1588aebf772cafcd6b4599eddd4966bb648bbebbd52faa2729c18e9444e3cba0d1deb94817cda96d31675b22f9\"\n    }\n}"
+						},
+						{
+							"name": "Sign in validation error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-token",
+										"value": "{{Token}}",
+										"description": "Token of app",
+										"type": "text"
+									},
+									{
+										"key": "x-language",
+										"value": "{{Language}}",
+										"description": "Language of app",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\" : \"test@example.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_url}}/auth/sign-in",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"auth",
+										"sign-in"
+									]
+								}
+							},
+							"status": "Unprocessable Content",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.2"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.13"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 08 Nov 2024 10:44:11 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"The password field is required.\",\n    \"errors\": {\n        \"password\": [\n            \"The password field is required.\"\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Sign Up",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"yanal shoubaki\",\r\n    \"username\": \"yanalshoubaki233@gmail.com\",\r\n    \"email\": \"yanalshoubaki233@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"password_confirmation\": \"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/register",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sign Up Validation error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-token",
+										"value": "{{Token}}",
+										"description": "Token of app",
+										"type": "text"
+									},
+									{
+										"key": "x-language",
+										"value": "{{Language}}",
+										"description": "Language of app",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"yanal shoubaki\",\r\n    \"username\": \"yanalshoubaki233\",\r\n    \"email\": \"yanalshoubaki233@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"password_confirmation\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_url}}/auth/sign-up",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"auth",
+										"sign-up"
+									]
+								}
+							},
+							"status": "Unprocessable Content",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.2"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.13"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 08 Nov 2024 10:45:08 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"The email has already been taken. (and 1 more error)\",\n    \"errors\": {\n        \"email\": [\n            \"The email has already been taken.\"\n        ],\n        \"username\": [\n            \"The username has already been taken.\"\n        ]\n    }\n}"
+						},
+						{
+							"name": "Sign up success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-token",
+										"value": "{{Token}}",
+										"description": "Token of app",
+										"type": "text"
+									},
+									{
+										"key": "x-language",
+										"value": "{{Language}}",
+										"description": "Language of app",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"yanal shoubaki\",\r\n    \"username\": \"yanatlshoubaki233\",\r\n    \"email\": \"test1@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"password_confirmation\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_url}}/auth/sign-up",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"auth",
+										"sign-up"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Server",
+									"value": "nginx/1.25.2"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.3.13"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 08 Nov 2024 10:45:34 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"message\": \"Success\",\n    \"data\": {\n        \"token_type\": \"Bearer\",\n        \"expires_in\": 31536000,\n        \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5ZDYzMzQ5MC1jYzJjLTQyY2EtOTIzMi0wMzNhMGI1ZDlkM2QiLCJqdGkiOiI1YzQ5ZDZkY2I3ZTFjZjkyMTRiMmMwMWFjMjE2MDYwODc0YjJmMWFlMzc2OTY5M2NhZDc5Y2VmNmIwNzVkNWNlYmJjYzBlMDI4M2YyZDU0NiIsImlhdCI6MTczMTA2MjczMy45OTY1NjcsIm5iZiI6MTczMTA2MjczMy45OTY1NjksImV4cCI6MTc2MjU5ODczMy45ODM3MSwic3ViIjoiNCIsInNjb3BlcyI6WyIqIl19.K9yySSm-DB6j2Gt1QhNfzrFSwlP4t4xCur9DqLlFAlUiRe0jzlatXduWoAS2tz1_4iE65Pr8BB4fUye5YGu7XQMDh-VEP5STEwuo-7x3wc9QvZ-t-XDc1nWgh1iSSRAOvnz5EScZOfnDhTH0v2uvn0fmDHQIm_xa2cbRiRQwvjlasnc3oayOAnB9JAyhF54a1m4cyjCw1n7Y7D8ttqaLdcTXHCkQemchdgRppzanmDjM4gcXW9ZvTw2iYh0FiENi24ekNmLEB_9_ExN9N_HHR9JLw-cUb08q9M-itwS9iE7_JgjzRnYLVQivlM706jFbGFGSBvTK--iYak4B3QkdTkEIAeRfVcbUhxGdZGYaxWXzPdqw29X20pQQllharkIobH0XORRd4JwqsOgtMVpHEh9mr-cUJ2K83ZYwBHUujVpNrNvJ0y4I2ac2IHnkU5uieOHir8MQlGN5xdibUbEo8qVVXvyVowCR998DzuvvWeEmb6MPWJ5qENG_f1Kp134MsfD9SOMtFs37fIaz3fPWIAdMn3dMZt7vHQt5jj5v_ZqcsGOn60LuA6-a574UKp7foGTDyZvbyb1l9W4Mu_drrLebF3LTATcvL2p2HlSk2mAzZJg66JMFL0dq7Er4Uf1LUF1cCkANVQP0f2frvqqMvx-M__sycwHcPGMI4GE7cUY\",\n        \"refresh_token\": \"def5020005454f674bb2c5cfd7852c1d9c6bfd1ab6892eb1b313883479c1c96f8178f7cf44518c7d97d76f5a9d57382e0213f28b53d133ec0397dcafaa30183bdc51d0c9786858df819f7a172b18a4b2fbb47be229a849961498a87ba09017b8821e52a45b52111652996db21d002b07d4f697bf6b94e3fd0dc45dd9b036533f2ea060630705523a86fb52fd73c9f06b8e4d81d6d90cd0652f38dcd50e2c40a7baddeacf2f5b0484e7c4ed2d1909918a65f6ace6254c0a3624f94ac5968774afd6e47cd6eead74b206f47a26fcce7fb1911ca8716f45ff5e7e4d4956c6e1758e202f88ddf803f2776cf8643bd853777258c2a1b4229f5cc8868a84bfcb323803d6086cc465ec9068ebffa09d03f4425c38060f504e52880e1f67f04e4aa77cee1cf41481b3ef58ba7ff10a01d39683d4990cd72f6f645629ec75255497306bb41290313f90bfc877dae58b960c9b26a35f34e41912b3c46f44c5aac8f5567ff0969880bb75956a04194e48e195e2665260499a28fa5ce002bd72b3fd7c951615435decb26703a5\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Sign Out",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/logout",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sign Out",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Token",
+										"value": "{{Token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/auth/sign-out",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"sign-out"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "192.168.1.88:8000"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Nov 2022 18:10:05 GMT"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 04 Nov 2022 18:10:05 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.0.10"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": null,\n    \"message\": \"lang.auth.logout_success\",\n    \"status\": 1\n}"
+						}
+					]
+				},
+				{
+					"name": "Check Social User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"provider\": \"google\",\r\n    \"token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIzIiwianRpIjoiZGNmNzk1MTA3N2Y4NDViNjIyMTJlZjU4MTFiYzFkZTdkYTFiMjdhZTVmOTE4YjJhMWQ4MDk2NzVmMTQ1ZWU1NGMzMTdlYmU4Nzc0YjQ1YTQiLCJpYXQiOjE2Njc1ODUzODcuMDAxNDE5LCJuYmYiOjE2Njc1ODUzODcuMDAxNDIyLCJleHAiOjE2Njc2MDY5ODYuOTk3MDMsInN1YiI6IjIiLCJzY29wZXMiOltdfQ.2Eb4rCPUVr69y3yz7_O7eR2yrR4g7ig42fMa1woK3NU9fhH_cy44kB9Fuc4y3bbE__swzSVSHmBbRs6v5zMX8aHKTS8huwAkv85R3qi-79LhMDa729VVZVvK3XLksoqV1sBjLPMo7r2aUrMd0trMriWeF7HqwPmPoFRCf1td9DYPxTV-0050jsU0z3wz7ENA0ugcKiYS7FlI3IhfS_YIxwi7decmh1lSh3sn4YlmutVGi6BY5BRBS0ix18jR_q7xM_Y8YCEsB-rmggzV-w4U-AiLd0ZNA41o6NZYPH3B9xMyUjzqk8-TiFdFTJUqByyPxQKJL9OtZ8rmcA0qzQz1SkHDStkzxDxRR7BNBQfmY070DcVVpWguHkNQooWiJMNfaaMj53yFs-US3iFCmR4Z-EMvmzWzyyLL0sh_kgnw5O3XYcK4q0jeJdBN4CbQ18lHL6BxQfd2w0tGTHPdsHqdPHVkbF4BNDsEgsGhPosCFXV9Rv59-oJ6XATzNRWIvFrSQRvZ26oykkJVex-zDMk0a140pIMEr7GEIN-sCxvq03SxyYEAf-i4_LtphtWhkI5rdgWkdyoyAhQg9E5lPk5zGuUlZ1x-eod8MLb7qcj-SB4s3nEnqHyAItnDd8I61sm0j1c3sMLEPrVuCBfihkPVb7N3hu5bLTDaAdo0KbPEBzU\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/social",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"social"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Requests",
+			"item": [
+				{
+					"name": "Follow Requests",
+					"item": [
+						{
+							"name": "Follow user request",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "x-token",
+										"value": "{{Token}}",
+										"description": "Token of app",
+										"type": "text"
+									},
+									{
+										"key": "x-language",
+										"value": "{{Language}}",
+										"description": "Language of app",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"user_id\" : 3\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_url}}/user/follow",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"user",
+										"follow"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user following list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_url}}/user/{{user}}/followings",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"user",
+										"{{user}}",
+										"followings"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user followers list",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_url}}/user/{{user}}/followers",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"user",
+										"{{user}}",
+										"followers"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Get User Info By Username",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/@{{user}}",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"@{{user}}"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Get User Info By Username",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "x-token",
+										"value": "{{Token}}",
+										"description": "Token of app",
+										"type": "text"
+									},
+									{
+										"key": "x-language",
+										"value": "{{Language}}",
+										"description": "Language of app",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/profile/yanalshoubaki",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"profile",
+										"yanalshoubaki"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.15"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 27 Feb 2024 17:58:12 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-RateLimit-Limit",
+									"value": "60"
+								},
+								{
+									"key": "X-RateLimit-Remaining",
+									"value": "59"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"id\": 1,\n        \"username\": \"yanalshoubaki\",\n        \"profile_image\": {\n            \"id\": 1,\n            \"media_path\": \"http://localhost:8000/images/AnonImage.png\"\n        },\n        \"name\": \"Yanal Shoubaki\",\n        \"email\": \"me@yanalshoubaki.com\",\n        \"status\": 1,\n        \"created_at\": \"2024-02-27T16:57:56.000000Z\",\n        \"updated_at\": \"2024-02-27T16:57:56.000000Z\",\n        \"following\": 0,\n        \"followers\": 0,\n        \"messages\": 0\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Message Requests",
+			"item": [
+				{
+					"name": "Get Message Inbox",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/inbox",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"inbox"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add or remove like",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message_id\" : 1,\r\n    \"like\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/message/like",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"message",
+								"like"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add or remove from favourite",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message_id\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/message/add-to-favorite",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"message",
+								"add-to-favorite"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Message",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message_id\" : 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/message",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"message"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add replay to message",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message_id\": 22,\r\n    \"replay\": \"dfsafdsafdsafdsadfas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/messages/replay",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"messages",
+								"replay"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"receiver_id\": 2,\r\n    \"message\": \"Hello\",\r\n    \"is_anon\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/message/send",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"message",
+								"send"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get messages by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{api_url}}/message/1",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"message",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Password Reset",
+			"item": [
+				{
+					"name": "Forget password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"yanalshoubaki233@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/forgot-password",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": \"bed73bf290232046a93c39185c75e898d6198da6a44264269fdc2599419e0ba5\",\r\n    \"email\": \"yanalshoubaki233@gmail.com\",\r\n    \"password\": \"12345678\",\r\n    \"password_confirmation\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/reset-password",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Media Requests",
+			"item": [
+				{
+					"name": "Create new media",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-token",
+								"value": "{{Token}}",
+								"description": "Token of app",
+								"type": "text"
+							},
+							{
+								"key": "x-language",
+								"value": "{{Language}}",
+								"description": "Language of app",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "media",
+									"type": "file",
+									"src": "///wsl.localhost/Ubuntu/var/www/html/loqui/public/images/AnonImage.png"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/media/create-media",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"media",
+								"create-media"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification requests",
+			"item": [
+				{
+					"name": "Get notifications",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/notifications",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"notifications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark all notification as read",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/notifications/mark-all-read",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"notifications",
+								"mark-all-read"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark notification as read",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"notification_id\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/notifications/mark-read",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"notifications",
+								"mark-read"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Mark notification as read",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"notification_id\": \"1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/notifications/mark-read",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"notifications",
+								"mark-read"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Setting Requests",
+			"item": [
+				{
+					"name": "Notification Settings  Requests",
+					"item": [
+						{
+							"name": "Update notification settings request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": {\r\n        \"new-message\": true,\r\n        \"new-like\": true,\r\n        \"new-reply\": true,\r\n        \"new-follower\": true\r\n    },\r\n    \"browser\": {\r\n        \"new-message\": true,\r\n        \"new-like\": true,\r\n        \"new-reply\": true,\r\n        \"new-follower\": true\r\n    },\r\n    \"database\": {\r\n        \"new-message\": false,\r\n        \"new-like\": false,\r\n        \"new-reply\": false,\r\n        \"new-follower\": false\r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_url}}/settings/notifications",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"settings",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get notification settings request",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{api_url}}/settings/notifications",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"settings",
+										"notifications"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Security Settings Requests",
+					"item": [
+						{
+							"name": "Get security settings request",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{api_url}}/settings/security",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"settings",
+										"security"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete user account request",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_url}}/settings/security",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"settings",
+										"security"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Disable user account request",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"password\": \"password\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{api_url}}/settings/security",
+									"host": [
+										"{{api_url}}"
+									],
+									"path": [
+										"settings",
+										"security"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Update password setting request",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"current_password\": \"password\",\r\n    \"password\": \"12345678\",\r\n    \"password_confirmation\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api_url}}/settings/password",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"settings",
+								"password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Test",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"grant_type\": \"password\",\r\n    \"client_id\": \"9b98b172-7834-49b3-bf64-3685282d9a2d\",\r\n    \"client_secret\": \"I43899RMj6v8LwaFCbrcno3PUtHeJ7KYO6ONudGE\",\r\n    \"username\": \"yanalshoubaki233@gmail.com\",\r\n    \"password\": \"password\",\r\n    \"scope\": \"*\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/oauth/token",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search request",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api_url}}/search",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"search"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.headers.add({key: 'Content-Type', value: 'application/json' });\r",
+					"pm.request.headers.add({key: 'Accept', value: 'application/json' });"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api_url",
+			"value": "https://loqui.test/api",
+			"type": "string"
+		},
+		{
+			"key": "app_url",
+			"value": "https://loqui.test/",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5ZWVjYWMwYy04NjFiLTQ4NTktYWI5Ni0xNGM2ODcyNjMxMWIiLCJqdGkiOiJmZTlhYjJkNGUzNzdiNGM4OTQwMzkyYjUxMzA1OTRmOWVmOTFkMmIwOTdkN2VmZGNhYmVhNmI4ZmI5YzVkMDcyNDgyY2M1OGEyNGQ2NGYwMSIsImlhdCI6MTc0NzM5MzM5MS45NzE3ODMsIm5iZiI6MTc0NzM5MzM5MS45NzE3ODcsImV4cCI6MTc3ODkyOTM5MS45NDQ0MjYsInN1YiI6IjEiLCJzY29wZXMiOltdfQ.gJ7FcR8KVrzxOFrlVd0dR4T1jYlFhj-WTs8oIaj5aUaH-h90LbMKbJteIkyV2vgNDyb_KMle4aEFcsGDKwRzCDltloYVKlhsBJSOi_fO41yd7bGTHLD7oTwH9xMzBWOllOYmjyReCoB0jo0ON0v1L7KrEf16BXAVRyRmYnvbBV3ev6RHnJeqz27R2-XQhuI4PMDV3oDQbzRt-4aBBssoBl7NgoZMr1Fh1krEGVqPUPlfGASwfclSoEjWziN1QlbGXTnH4nXTQdGmqUq3lvuvgje0gHDTeQH9M0hfRQK8czXbR7NNB9N5g81LYT0JnZ-mCE2otHDvqK0DWYpaYXaD-JZ7yUk_AkgLnYEGyHYYwN9TYUXcM-Hs07B7rX8EdZPduljPULvlPtE8cWNXT784rgZG_BmSq5qwWPDXjyW7xEFXxh4gejCKMIli2t6FktZAlXE3XQn_1mQrO2mSALFLXeuRPHDIRLESuTHcvitCf7cxRZAjqOQUJfsWd8-Ubue93P7W7fu0eSsc24zUEuAAdoKTQ6eUXjawOvIpMjLdZkRYjEBTfPPjWx0vKIix-hhsP7tTOBP2k5_7Ou4GFutCFtonGBikPLFYSXcxAcMPZwi9-qQvsb_9kUWegdjIMK9bZ42ydpVb9wxhbB9icmOWrjX_JU3OERC2ab7PTI54xr4",
+			"type": "string"
+		},
+		{
+			"key": "user",
+			"value": "test_user",
+			"type": "string"
+		}
+	]
+}

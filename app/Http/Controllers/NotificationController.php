@@ -7,15 +7,18 @@ namespace App\Http\Controllers;
 use App\Enums\NotificationType;
 use App\Http\Resources\NotificationResource;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 final class NotificationController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): \Inertia\Response
+    public function index(Request $request) : JsonResponse
     {
         $user = type($request->user())->as(User::class);
         $filterType = $request->get('type');
@@ -28,7 +31,7 @@ final class NotificationController extends Controller
         if ($filterType !== 'all' && $filterType !== null) {
             $notifications = $notifications->where('type', $filterType);
         }
-        return Inertia::render('notifications/index', [
+        return $this->responseFormatter->responseSuccess('', [
             'notifications' => NotificationResource::collection($notifications),
             'types' => $types,
         ]);
@@ -37,26 +40,48 @@ final class NotificationController extends Controller
     /**
      * Mark all notifications as read.
      */
-    public function markAllAsRead(Request $request): \Illuminate\Http\RedirectResponse
+    public function markAllAsRead(Request $request): JsonResponse
     {
-        $user = type($request->user())->as(User::class);
+        try {
+            $user = type($request->user())->as(User::class);
 
-        $user->unreadNotifications()->update(['read_at' => now()]);
+            $user->unreadNotifications()->update(['read_at' => now()]);
 
-        return redirect()->back();
+            return $this->responseFormatter->responseSuccess(
+                'All notifications marked as read',
+                [
+                ]
+            );
+        } catch (\Exception $e) {
+                return $this->responseFormatter->responseError(
+                    'Error marking notifications as read',
+                    500
+                );
+        }
     }
 
     /**
      * Mark a specific notification as read.
      */
-    public function markAsRead(Request $request, string $id): \Illuminate\Http\RedirectResponse
+    public function markAsRead(Request $request): JsonResponse
     {
-        $user = type($request->user())->as(User::class);
-        $notification = $user->notifications()->where('id', $id)->first();
-        if ($notification !== null) {
-            $notification->markAsRead();
-        }
+        try {
+            $user = type($request->user())->as(User::class);
+            $notification = $user->notifications()->where('id', $request->notification_id)->first();
+            if ($notification !== null) {
+                $notification->markAsRead();
+            }
 
-        return redirect()->back();
+            return $this->responseFormatter->responseSuccess(
+                'Notification marked as read',
+                [
+                ]
+            );
+            } catch (\Exception $e) {
+                return $this->responseFormatter->responseError(
+                    'Error marking notification as read',
+                    500
+                );
+        }
     }
 }

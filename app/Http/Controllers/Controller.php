@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Services\AuthService;
+use App\Services\ResponseFormatter;
+
 abstract class Controller
 {
-    //
+
+    public function __construct(protected ResponseFormatter $responseFormatter, protected  AuthService $authService) {}
+
 }

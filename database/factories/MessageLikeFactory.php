@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Message;
+use App\Models\MessageLike;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MessageLike>
+ * @extends Factory<MessageLike>
  */
 final class MessageLikeFactory extends Factory
 {
@@ -18,8 +21,8 @@ final class MessageLikeFactory extends Factory
      */
     public function definition(): array
     {
-        $user = \App\Models\User::inRandomOrder()->first();
-        $message = \App\Models\Message::inRandomOrder()->first();
+        $user = User::inRandomOrder()->first();
+        $message = Message::inRandomOrder()->first();
 
         return [
             'user_id' => $user?->id,

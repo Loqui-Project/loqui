@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Message;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Message>
+ * @extends Factory<Message>
  */
 final class MessageFactory extends Factory
 {
@@ -18,8 +20,8 @@ final class MessageFactory extends Factory
      */
     public function definition(): array
     {
-        $user = \App\Models\User::inRandomOrder()->first();
-        $sender = \App\Models\User::inRandomOrder()->where('id', '!=', $user?->id)->first();
+        $user = User::inRandomOrder()->first();
+        $sender = User::inRandomOrder()->where('id', '!=', $user?->id)->first();
 
         return [
             'user_id' => $user?->id,

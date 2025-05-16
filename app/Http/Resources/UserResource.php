@@ -30,6 +30,7 @@ final class UserResource extends JsonResource
             'bio' => $this->bio,
             'image_url' => $this->image_url ? asset('storage/'.$this->image_url) : '/images/default-avatar.png',
             'email_verified_at' => $this->email_verified_at,
+            'status'=> $this->status,
             'is_following_me' => $this->whenLoaded('followers', function () {
                 return $this->followers()->where('follower_id', Auth::id())->exists();
             }),
