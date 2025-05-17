@@ -9,8 +9,6 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Inertia\Inertia;
-use Inertia\Response;
 
 final class HomeController extends Controller
 {
@@ -31,8 +29,8 @@ final class HomeController extends Controller
             )->paginate(5);
         }, 300);
 
-        return $this->responseFormatter->responseSuccess("",[
-            'messages' => Inertia::merge(fn () => MessageResource::collection($messages)),
+        return $this->responseFormatter->responseSuccess('', [
+            'messages' => MessageResource::collection($messages),
         ]);
     }
 }
