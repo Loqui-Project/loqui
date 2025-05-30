@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Settings;
 use App\Enums\SocialProvidersEnum;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserSocialAuth;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -88,6 +89,23 @@ final class SecurityController extends Controller
             );
         } catch (Exception $e) {
             return $this->responseFormatter->responseError($e->getMessage(), 422);
+        }
+    }
+
+    /**
+     * Disconnect provider from user account.
+     */
+    public function disconnectProvider(string $provider): JsonResponse
+    {
+        try {
+            $user = type(Auth::user())->as(User::class);
+            UserSocialAuth::where('user_id', $user->id)
+                ->where('provider', $provider)
+                ->delete();
+
+            return response()->json(['message' => 'Provider disconnected']);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }

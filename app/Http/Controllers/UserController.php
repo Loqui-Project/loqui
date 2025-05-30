@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FollowRequest;
+use App\Http\Resources\MessageResource;
 use App\Http\Resources\UserResource;
 use App\Jobs\NewFollowJob;
 use App\Models\User;
@@ -117,6 +118,43 @@ final class UserController extends Controller
             'Followings retrieved successfully',
             [
                 'followings' => $followings,
+            ]
+        );
+    }
+
+    public function getStatistics(Request $request, User $user): JsonResponse
+    {
+        $user->loadCount([
+            'followers',
+            'following',
+            'messages',
+        ]);
+        $statistics = Cache::remember("user.{$user->id}.statistics", 600, function () use ($user) {
+            return [
+                'followers_count' => $user->followers()->count(),
+                'following_count' => $user->following()->count(),
+                'posts_count' => $user->posts()->count(),
+            ];
+        }, 300);
+
+        return $this->responseFormatter->responseSuccess(
+            'User statistics retrieved successfully',
+            [
+                'statistics' => $statistics,
+            ]
+        );
+    }
+
+    public function messages(Request $request, User $user): JsonResponse
+    {
+        $messages = Cache::remember("user.{$user->id}.messages", 600, function () use ($user) {
+            return $user->messages()->with(['user'])->withCount(['likes', 'replays'])->latest()->paginate(5);
+        }, 300);
+
+        return $this->responseFormatter->responseSuccess(
+            'User messages retrieved successfully',
+            [
+                'messages' => MessageResource::collection($messages),
             ]
         );
     }

@@ -28,9 +28,9 @@ final class AuthService
             'grant_type' => 'password',
             'scope' => '',
         ] + $credentials + $client;
-
-        $request = Request::create('oauth/token', 'POST', $request_body, [], [], [
+        $request = Request::create('/oauth/token', 'POST', $request_body, [], [], [
             'HTTP_Accept' => 'application/json',
+            "HTTP_USER_AGENT" => request()->header('User-Agent'),
         ]);
 
         $response = app()->handle($request);

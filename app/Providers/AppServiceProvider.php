@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Listeners\CreateSessionOnTokenCreated;
 use App\Models\Message;
 use App\Policies\MessagePolicy;
 use App\Services\AuthService;
 use App\Services\ResponseFormatter;
+use Carbon\CarbonInterval;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Events\AccessTokenCreated;
 use Laravel\Passport\Passport;
+use Laravel\Sanctum\Events\TokenAuthenticated;
 use SocialiteProviders\Google\Provider;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 use Spatie\Health\Checks\Checks;
@@ -31,7 +35,6 @@ final class AppServiceProvider extends ServiceProvider
             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
             $this->app->register(TelescopeServiceProvider::class);
         }
-        Model::preventLazyLoading();
 
         $this->app->bind(AuthService::class);
         $this->app->bind(ResponseFormatter::class);
@@ -42,6 +45,10 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+        Passport::enablePasswordGrant();
+        Passport::tokensExpireIn(CarbonInterval::hours(2));
+        Passport::refreshTokensExpireIn(CarbonInterval::minutes(30));
 
         JsonResource::withoutWrapping();
 
@@ -64,9 +71,12 @@ final class AppServiceProvider extends ServiceProvider
             Checks\QueueCheck::new(),
         ]);
 
-        Passport::enablePasswordGrant();
 
         Gate::policy(Message::class, MessagePolicy::class);
 
+        Event::listen(
+            TokenAuthenticated::class,
+            CreateSessionOnTokenCreated::class,
+        );
     }
 }

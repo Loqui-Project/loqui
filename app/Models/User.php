@@ -17,9 +17,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Traits\HasAccessToken;
 
 /**
  * @property int $id
@@ -51,7 +53,7 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     use HasRoles;
     use Searchable;
 
-    use HasApiTokens;
+    use HasAccessToken;
 
     protected $cachePrefix = 'user';
 
@@ -144,7 +146,7 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
      */
     public function sessions(): HasMany
     {
-        return $this->hasMany(Session::class, 'user_id');
+        return $this->hasMany(AccessTokenAdditionalInfo::class, 'user_id');
     }
 
     /**
@@ -207,5 +209,27 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     protected function getCachePrefix()
     {
         return $this->cachePrefix;
+    }
+
+    /**
+     * Find the user instance for the given username.
+     *
+     * @param  string  $username
+     * @return \App\Models\User
+     */
+    public function findForPassport($username)
+    {
+        return $this->where('username', $username)->first();
+    }
+
+    /**
+     * Validate the password of the user for the Passport password grant.
+     *
+     * @param  string  $password
+     * @return bool
+     */
+    public function validateForPassportPasswordGrant($password)
+    {
+        return Hash::check($password, $this->password);
     }
 }

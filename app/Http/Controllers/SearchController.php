@@ -18,9 +18,9 @@ final class SearchController extends Controller
     public function __invoke(Request $request): JsonResponse
     {
         $query = $request->input('query');
-        $users = Cache::remember("search.users.{$query}", 600, function () use ($query) {
+        $users = Cache::remember("search.users.{$query}", 600, function () use ($query, $request) {
             return User::search($query)
-                ->get();
+                ->get()->except($request->user()->id);
         }, 300);
 
         return $this->responseFormatter->responseSuccess('', [

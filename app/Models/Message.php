@@ -93,25 +93,19 @@ final class Message extends Model
 
     /**
      * Scope messages with replay.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
-     * @return \Illuminate\Database\Eloquent\Builder<static>
      */
     #[Scope]
-    public function withReplies(Builder $query): Builder
+    public function withReplies(Builder $query): void
     {
-        return $query->whereHas('replays');
+        $query->whereHas('replays');
     }
 
     /**
      * Scope messages with replay.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder<static>  $query
-     * @return \Illuminate\Database\Eloquent\Builder<static>
      */
     #[Scope]
-    public function withoutReplies(Builder $query): Builder
+    public function withoutReplies(Builder $query): void
     {
-        return $query->doesntHave('replays');
+        $query->doesntHave('replays');
     }
 }

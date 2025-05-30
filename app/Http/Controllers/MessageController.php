@@ -30,8 +30,9 @@ final class MessageController extends Controller
      */
     public function inbox(): JsonResponse
     {
-        $messages = Cache::remember('inbox.messages', 600, function () {
-            return Message::where('user_id', Auth::id())->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
+        $userId = Auth::id();
+        $messages = Cache::remember("{$userId}.inbox.messages", 600, function () use($userId) {
+            return Message::where('user_id', $userId)->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
                 'likes',
                 'replays',
             ])->withoutReplies()->paginate(5);
@@ -92,7 +93,7 @@ final class MessageController extends Controller
     /**
      * Add a reply to a message.
      */
-    public function addReply(AddReplayRequest $request): JsonResponse
+    public function addReplay(AddReplayRequest $request): JsonResponse
     {
         try {
             $user = type($request->user())->as(User::class);
@@ -102,8 +103,8 @@ final class MessageController extends Controller
                 'user_id' => $user->id,
                 'text' => $request->replay,
             ]);
-            Cache::forget('inbox.messages');
-            Cache::forget('home.messages');
+            Cache::forget("{$user->id}.inbox.messages");
+            Cache::forget("{$user->id}.home.messages");
 
             return $this->responseFormatter->responseSuccess('Replay added', [], 201);
         } catch (Exception $e) {

@@ -9,8 +9,6 @@ use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Inertia\Inertia;
-use Inertia\Response;
 
 final class HomeController extends Controller
 {
@@ -18,7 +16,7 @@ final class HomeController extends Controller
     {
         $user = type($request->user())->as(User::class);
         $followingUsersId = $user->following()->pluck('user_id')->toArray();
-        $messages = Cache::remember('home.messages', 600, function () use ($user, $followingUsersId) {
+        $messages = Cache::remember("home.{$user->id}.messages", 600, function () use ($user, $followingUsersId) {
             return Message::whereIn('user_id', [
                 ...$followingUsersId,
                 $user->id,
@@ -31,8 +29,8 @@ final class HomeController extends Controller
             )->paginate(5);
         }, 300);
 
-        return $this->responseFormatter->responseSuccess("",[
-            'messages' => Inertia::merge(fn () => MessageResource::collection($messages)),
+        return $this->responseFormatter->responseSuccess('', [
+            'messages' => MessageResource::collection($messages),
         ]);
     }
 }
