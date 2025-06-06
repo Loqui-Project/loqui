@@ -210,26 +210,4 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     {
         return $this->cachePrefix;
     }
-
-    /**
-     * Find the user instance for the given username.
-     *
-     * @param  string  $username
-     * @return \App\Models\User
-     */
-    public function findForPassport($username)
-    {
-        return $this->where('username', $username)->first();
-    }
-
-    /**
-     * Validate the password of the user for the Passport password grant.
-     *
-     * @param  string  $password
-     * @return bool
-     */
-    public function validateForPassportPasswordGrant($password)
-    {
-        return Hash::check($password, $this->password);
-    }
 }

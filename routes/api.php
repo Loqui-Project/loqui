@@ -16,16 +16,15 @@ Route::middleware("auth:sanctum")->get('/user', function () {
     ]);
 })->name('user');
 
-Route::match(
-    ['get', 'post'],
+Route::middleware("auth:sanctum")->get(
     '/user/{user:username}',
     [UserProfileController::class, 'profile']
 )->name('profile');
 
-Route::middleware(['auth:sanctum'])->get( '/home', HomeController::class)->name('home');
+Route::middleware(['auth:sanctum'])->get('/home', HomeController::class)->name('home');
 Route::middleware(['auth:sanctum'])->match(['get', 'post'], '/inbox', [MessageController::class, 'inbox'])->name('inbox');
 Route::prefix('message')->name('message.')->controller(MessageController::class)->group(function () {
-    Route::middleware("auth:sanctum")->group(function (){
+    Route::middleware("auth:sanctum")->group(function () {
         Route::post('/like', 'like')->name('like');
         Route::post('/replay', 'addReplay')->name('add-reply');
         Route::get('/favorites', 'favorites')->name('favorites');
@@ -54,6 +53,6 @@ Route::middleware(['auth:sanctum'])->get('/ping', function () {
 Route::middleware("auth:sanctum")->post("/media/create", [\App\Http\Controllers\MediaController::class, 'create'])
     ->name("media.create");
 
-require __DIR__.'/auth.php';
-require __DIR__.'/settings.php';
-require __DIR__.'/user.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/user.php';

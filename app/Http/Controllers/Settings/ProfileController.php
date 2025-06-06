@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -45,11 +46,11 @@ final class ProfileController extends Controller
             return $this->responseFormatter->responseSuccess(
                 'Profile updated successfully.',
                 [
-                    'user' => $user,
+                    'user' => new UserResource($user),
                 ]
             );
         } catch (Exception $e) {
-                return $this->responseFormatter->responseError($e->getMessage(), 422);
+            return $this->responseFormatter->responseError($e->getMessage(), 422);
         }
     }
 }

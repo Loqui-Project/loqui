@@ -10,12 +10,8 @@ use App\Http\Controllers\Settings\SessionController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->prefix('settings')->name('settings.')->group(function () {
-    Route::redirect('settings', 'settings/profile');
 
-    Route::controller(ProfileController::class)->name('profile.')->prefix('profile')->group(function () {
-        Route::get('/', 'edit')->name('edit');
-        Route::post('/', 'update')->name('update');
-    });
+    Route::post("/profile", ProfileController::class)->name('profile');
 
     Route::post("/password", PasswordController::class)->name("password");
 

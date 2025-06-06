@@ -29,8 +29,7 @@ final class UserProfileController extends Controller
             return $user->messages()->with(['user'])->withCount(['likes', 'replays'])->latest()->paginate(5);
         }, 300);
         $user->setRelation('messages', $messages);
-
-        if (Auth::check() === false) {
+        if ($request->user() === false) {
             return $this->responseFormatter->responseSuccess('user/public-profile', [
                 'user' => new UserResource($user),
                 'is_me' => false,
@@ -71,6 +70,5 @@ final class UserProfileController extends Controller
                 'following' => $user->following_count,
             ],
         ]);
-
     }
 }
