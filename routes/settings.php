@@ -20,7 +20,6 @@ Route::middleware('auth:sanctum')->prefix('settings')->name('settings.')->group(
         Route::delete('/', 'destroy')->name('destroy');
         Route::put('/', 'deactivate')->name('deactivate');
         Route::post('/{provider}/disconnect', 'disconnectProvider')->name('disconnect');
-
     });
 
     Route::controller(SessionController::class)->name('sessions.')->prefix('sessions')->group(function () {
@@ -30,6 +29,6 @@ Route::middleware('auth:sanctum')->prefix('settings')->name('settings.')->group(
 
     Route::controller(NotificationController::class)->name('notifications.')->prefix('notifications')->group(function () {
         Route::get('/', 'edit')->name('edit');
-        Route::delete('/', 'update')->name('update');
+        Route::post('/', 'update')->name('update');
     });
 });

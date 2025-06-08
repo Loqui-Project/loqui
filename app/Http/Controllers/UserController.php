@@ -52,7 +52,10 @@ final class UserController extends Controller
             }
             $authUser->following()->attach($user->id);
             NewFollowJob::dispatch($user, $authUser);
-
+            Cache::forget("user.{$user->id}.followings");
+            Cache::forget("user.{$userToUnfollow->id}.followers");
+            Cache::forget("user.{$user->id}.statistics");
+            Cache::forget("user.{$userToUnfollow->id}.statistics");
             return $this->responseFormatter->responseSuccess(
                 'Followed successfully',
                 [
@@ -101,7 +104,10 @@ final class UserController extends Controller
                 );
             }
             $user->following()->detach($userToUnfollow->id);
-
+            Cache::forget("user.{$user->id}.followings");
+            Cache::forget("user.{$userToUnfollow->id}.followers");
+            Cache::forget("user.{$user->id}.statistics");
+            Cache::forget("user.{$userToUnfollow->id}.statistics");
             return $this->responseFormatter->responseSuccess('Unfollowed successfully', [
                 'user' => new UserResource($user),
             ]);
@@ -130,7 +136,7 @@ final class UserController extends Controller
         return $this->responseFormatter->responseSuccess(
             'Followers retrieved successfully',
             [
-                'followers' => $followers,
+                'users' => $followers,
             ]
         );
     }
@@ -153,7 +159,7 @@ final class UserController extends Controller
         return $this->responseFormatter->responseSuccess(
             'Followings retrieved successfully',
             [
-                'followings' => $followings,
+                'users' => $followings,
             ]
         );
     }

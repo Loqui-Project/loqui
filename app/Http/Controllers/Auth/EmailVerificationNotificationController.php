@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 final class EmailVerificationNotificationController extends Controller
@@ -14,15 +14,22 @@ final class EmailVerificationNotificationController extends Controller
     /**
      * Send a new email verification notification.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): JsonResponse
     {
         $user = type($request->user())->as(User::class);
         if ($user->hasVerifiedEmail()) {
-            return redirect()->intended(route('home', absolute: false));
+            return $this->responseFormatter->responseError(
+                message: 'Your email address is already verified.',
+                code: 400
+            );
         }
 
         $user->sendEmailVerificationNotification();
 
-        return back()->with('status', 'verification-link-sent');
+        return $this->responseFormatter->responseSuccess(
+            message: 'Verification link sent to your email address.',
+            data: [],
+            code: 201
+        );
     }
 }

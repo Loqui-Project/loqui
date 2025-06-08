@@ -24,14 +24,12 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', NewPasswordController::class)
         ->name('password.store');
-
 });
 Route::controller(SocialAuthController::class)->prefix('auth')->name('social.')->group(function () {
     Route::post('/{provider}', 'connect')->name('redirect');
 });
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)
-        ->name('verification.notice');
+    Route::get('/email/is-verified', EmailVerificationPromptController::class);
 
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
         ->middleware(['signed', 'throttle:6,1'])
@@ -46,5 +44,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
 });
-
-

@@ -32,6 +32,8 @@ return [
 
     'env' => env('APP_ENV', 'production'),
 
+    'frontend_url' => env('FRONT_END_URL', 'http://localhost:3000'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Debug Mode

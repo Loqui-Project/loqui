@@ -32,9 +32,7 @@ final class PasswordResetLinkController extends Controller
 
         return $this->responseFormatter->responseSuccess(
             'Password reset link sent successfully.',
-            [
-                'status' => 'Password reset link sent successfully.',
-            ]
+            []
         );
     }
 }

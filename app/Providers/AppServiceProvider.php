@@ -6,10 +6,12 @@ namespace App\Providers;
 
 use App\Listeners\CreateSessionOnTokenCreated;
 use App\Models\Message;
+use App\Models\User;
 use App\Policies\MessagePolicy;
 use App\Services\AuthService;
 use App\Services\ResponseFormatter;
 use Carbon\CarbonInterval;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Event;
@@ -23,6 +25,8 @@ use SocialiteProviders\Google\Provider;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 use Spatie\Health\Checks\Checks;
 use Spatie\Health\Facades\Health;
+use Illuminate\Auth\Notifications\ResetPassword;
+
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -31,10 +35,10 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
-            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-            $this->app->register(TelescopeServiceProvider::class);
-        }
+        // if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+        //     $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+        //     $this->app->register(TelescopeServiceProvider::class);
+        // }
 
         $this->app->bind(AuthService::class);
         $this->app->bind(ResponseFormatter::class);
@@ -45,11 +49,38 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
 
-        Passport::enablePasswordGrant();
-        Passport::tokensExpireIn(CarbonInterval::hours(2));
-        Passport::refreshTokensExpireIn(CarbonInterval::minutes(30));
+            $parsedUrl = parse_url($url);
+            $pathSegments = explode('/', trim($parsedUrl['path'], '/'));
+            if (count($pathSegments) < 3) {
+                throw new \Exception('Invalid URL structure. Expected at least 3 segments.');
+            }
 
+            $id = $pathSegments[2]; // The `id` should be the second segment
+            $hash = $pathSegments[3]; // The `hash` should be the third segment
+
+            parse_str($parsedUrl['query'], $queryParams);
+            if (!isset($queryParams['signature'])) {
+                throw new \Exception('Missing signature parameter in URL.');
+            }
+
+            $frontendUrl = config('app.frontend_url') . '/email/verify?' . http_build_query([
+                'id' => $id,
+                'hash' => $hash,
+                'expires' => $queryParams['expires'],
+                'signature' => $queryParams['signature'],
+            ]);
+            // i need the queries from the url and put them in the front end url
+            return (new \Illuminate\Notifications\Messages\MailMessage)
+                ->line('Please click the button below to verify your email address.')
+                ->action('Verify Email Address',  $frontendUrl)
+                ->line('Thank you for using our application!');
+        });
+
+        ResetPassword::createUrlUsing(function (User $user, string $token) {
+            return config('app.frontend_url') . '/reset-password/' . $token . '?email=' . urlencode($user->getEmailForPasswordReset());
+        });
         JsonResource::withoutWrapping();
 
         if ($this->app->environment('production')) {
@@ -58,6 +89,10 @@ final class AppServiceProvider extends ServiceProvider
         Event::listen(function (SocialiteWasCalled $event): void {
             $event->extendSocialite('facebook', \SocialiteProviders\Facebook\Provider::class);
             $event->extendSocialite('google', Provider::class);
+        });
+
+        Gate::define('viewPulse', function (User $user) {
+            return $user->isAdmin();
         });
 
         Health::checks([
