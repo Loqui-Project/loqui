@@ -7,7 +7,7 @@ trait HasAccessToken
     use \Laravel\Sanctum\HasApiTokens;
 
 
-    public function createAccessToken() {
+    public function createAccessToken(): \Laravel\Sanctum\NewAccessToken {
         $token = $this->createToken("auth_token", ["*"], now()->addDays(1));
 
         $agentInfo = request()->header('User-Agent');

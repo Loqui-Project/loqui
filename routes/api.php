@@ -7,19 +7,13 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\User\UserProfileController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware("auth:sanctum")->get('/user', function () {
-    return response()->json([
-        'isLoggedIn' => true,
-    ]);
+    return response()->json(['isLoggedIn' => true,]);
 })->name('user');
 
-Route::middleware("auth:sanctum")->get(
-    '/user/{user:username}',
-    [UserProfileController::class, 'profile']
-)->name('profile');
+Route::middleware("auth:sanctum")->get('/user/{user:username}', [UserProfileController::class, 'profile'])->name('profile');
 
 Route::middleware(['auth:sanctum'])->get('/home', HomeController::class)->name('home');
 Route::middleware(['auth:sanctum'])->match(['get', 'post'], '/inbox', [MessageController::class, 'inbox'])->name('inbox');
@@ -50,8 +44,6 @@ Route::middleware(['auth:sanctum'])->get('/ping', function () {
     return response()->json(['message' => 'pong']);
 })->name('ping');
 
-Route::middleware("auth:sanctum")->post("/media/create", [\App\Http\Controllers\MediaController::class, 'create'])
-    ->name("media.create");
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/settings.php';

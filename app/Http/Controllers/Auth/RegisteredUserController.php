@@ -32,7 +32,7 @@ final class RegisteredUserController extends Controller
 
             return $this->responseFormatter->responseSuccess('Registered successfully', [], 200);
         } catch (Exception $e) {
-            return $this->responseFormatter->responseError('Register failed', 500);
+            return $this->responseFormatter->responseError($e->getMessage(), 500);
         }
     }
 }

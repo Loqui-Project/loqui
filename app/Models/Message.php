@@ -95,9 +95,9 @@ final class Message extends Model
      * Scope messages with replay.
      */
     #[Scope]
-    public function withReplies(Builder $query): void
+    public function withReplies(Builder $query): Builder
     {
-        $query->whereHas('replays');
+        return $query->whereHas('replays');
     }
 
     /**

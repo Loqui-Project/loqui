@@ -9,6 +9,7 @@ use App\Models\AccessTokenAdditionalInfo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
+use Laravel\Sanctum\PersonalAccessToken;
 
 final class SessionController extends Controller
 {
@@ -20,7 +21,7 @@ final class SessionController extends Controller
         $user = type($request->user())->as(User::class);
 
         $sessions = $user->sessions()->orderBy('last_activity', 'desc')->get()->map(function (AccessTokenAdditionalInfo $session): array {
-            $agent = new Agent();
+            $agent = new Agent;
             $agent->setUserAgent($session->user_agent);
 
             return [
@@ -44,11 +45,18 @@ final class SessionController extends Controller
 
     public function destroy(Request $request): \Illuminate\Http\JsonResponse
     {
+        /* @var User $user */
         $user = type($request->user())->as(User::class);
         $session = $user->sessions()->find($request->session_id);
-        if ($session) {
-           $accessToken =  $user->tokens()->where('id', $session->access_token_id);
-            if ($accessToken) {
+        if ($session !== null) {
+            /* @var AccessTokenAdditionalInfo $session */
+            $session = type($session)->as(AccessTokenAdditionalInfo::class);
+            if ($user->tokens()->where('id', $session->access_token_id)->exists()) {
+                /* @var PersonalAccessToken $accessToken */
+                $accessToken = $user->tokens()->where('id', $session->access_token_id)->first();
+                if ($accessToken === null) {
+                    return $this->responseFormatter->responseError('Access token not found', 404);
+                }
                 $accessToken->delete();
                 $session->delete();
                 return $this->responseFormatter->responseSuccess('Session deleted successfully');

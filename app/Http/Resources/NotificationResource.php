@@ -28,7 +28,7 @@ final class NotificationResource extends JsonResource
                 'id' => $this->id,
                 'type' => "system",
                 'data' => [
-                    'text' => json_decode($this->data, true)[0],
+                    'text' => $this->data
                 ],
                 'read_at' => $this->read_at,
                 'created_at' => $this->created_at,

@@ -30,17 +30,9 @@ final class ConfirmablePasswordController extends Controller
                 'Password confirmed successfully.',
             );
         } catch (Exception $e) {
-            if ($e instanceof ValidationException) {
-                return $this->responseFormatter->responseError(
-                    'Password confirmation failed.',
-                    422,
-                    $e->validator->errors(),
-                );
-            }
-
             return $this->responseFormatter->responseError(
-                'An error occurred while confirming the password.',
-                500,
+                $e->getMessage(),
+                $e->getCode() ?: 500
             );
         }
     }

@@ -5,23 +5,20 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\UserStatusEnum;
+use App\Traits\HasAccessToken;
 use Database\Factories\UserFactory;
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
 use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 use Spatie\Permission\Traits\HasRoles;
-use App\Traits\HasAccessToken;
 
 /**
  * @property int $id
@@ -43,9 +40,10 @@ use App\Traits\HasAccessToken;
  * @property-read int $followers_count
  * @property-read int $following_count
  */
-final class User extends Authenticatable implements FilamentUser, MustVerifyEmail
+final class User extends Authenticatable implements MustVerifyEmail
 {
     use Cachable;
+    use HasAccessToken;
 
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -53,41 +51,19 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     use HasRoles;
     use Searchable;
 
-    use HasAccessToken;
-
-    protected $cachePrefix = 'user';
-
-    protected $cacheCooldownSeconds = 300; // 5 minutes
-
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'username',
-        'image_url',
-        'status',
-        'bio',
-    ];
+    protected $fillable = ['name', 'email', 'password', 'username', 'image_url', 'status', 'bio'];
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return $this->hasRole('super-admin');
-    }
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * Get the user's messages.
@@ -142,7 +118,7 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
     /**
      * Check if the user has favourited a message.
      *
-     * @return HasMany<Session, covariant $this>
+     * @return HasMany<AccessTokenAdditionalInfo, covariant $this>
      */
     public function sessions(): HasMany
     {
@@ -199,15 +175,7 @@ final class User extends Authenticatable implements FilamentUser, MustVerifyEmai
      */
     protected function casts(): array
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'status' => UserStatusEnum::class,
-        ];
+        return ['email_verified_at' => 'datetime', 'password' => 'hashed', 'status' => UserStatusEnum::class];
     }
 
-    protected function getCachePrefix()
-    {
-        return $this->cachePrefix;
-    }
 }

@@ -17,14 +17,19 @@ final class SearchController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        $query = $request->input('query');
-        $users = Cache::remember("search.users.{$query}", 600, function () use ($query, $request) {
-            return User::search($query)
-                ->get()->except($request->user()->id);
-        }, 300);
+        $query = type($request->query->get('query'))->asString();
+        if (empty($query)) {
+            return $this->responseFormatter->responseError('Query cannot be empty', 400);
+        }
 
-        return $this->responseFormatter->responseSuccess('', [
-            'users' => UserResource::collection($users),
-        ]);
+        /* @var User $authUser */
+        $authUser = $request->user();
+        $users = Cache::remember("search.users.{$query}", 600, function () use ($query, $authUser) {
+            return User::search($query)->get()->when($authUser != null, function ($users) use ($authUser) {
+                return $users->filter(fn (User $user) => $user->id !== $authUser?->id);
+            });
+        });
+
+        return $this->responseFormatter->responseSuccess('', ['users' => UserResource::collection($users)]);
     }
 }

@@ -8,9 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 class AccessTokenAdditionalInfo extends Model
 {
+    protected $fillable = ['access_token_id', 'ip_address', 'user_agent', 'last_activity', 'user_id'];
 
     public function isCurrentDevice(): bool
     {
+        if (Auth::user() == null) {
+            return false;
+        }
+
         return $this->access_token_id === Auth::user()->currentAccessToken()->id;
     }
 

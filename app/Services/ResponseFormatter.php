@@ -16,7 +16,7 @@ final class ResponseFormatter
      * @param int $code
      * @return JsonResponse
      */
-    public function responseError(string $message, int $code = 500): JsonResponse
+    public function responseError(string $message,  int $code = 500): JsonResponse
     {
         return Response::json(['status' => 'error', 'message' => $message], $code);
     }

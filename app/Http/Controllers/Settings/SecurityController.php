@@ -10,7 +10,6 @@ use App\Models\User;
 use App\Models\UserSocialAuth;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
@@ -22,10 +21,15 @@ final class SecurityController extends Controller
      */
     public function edit(Request $request): JsonResponse
     {
-        $user = type($request->user())->as(User::class);
+        /* @var User $user */
+        $user = $request->user();
+
+        if ($user === null) {
+            return $this->responseFormatter->responseError('User not found.', 404);
+        }
         $socialConnections = $user->socialConnections()->get();
 
-        $socialConnections = collect(SocialProvidersEnum::cases())->map(fn (SocialProvidersEnum $provider): array => [
+        $socialConnections = collect(SocialProvidersEnum::cases())->map(fn(SocialProvidersEnum $provider): array => [
             'provider' => $provider->value,
             'provider_name' => $provider->value,
             'connected' => $socialConnections->contains('provider', $provider->value),
@@ -50,11 +54,14 @@ final class SecurityController extends Controller
                 'password' => ['required', 'current_password'],
             ]);
 
-            $user = type($request->user())->as(User::class);
+            /* @var User $user */
+            $user = $request->user();
 
-            $request->user()->token()->revoke();
-
-            $user->delete();
+            if ($user === null) {
+                return $this->responseFormatter->responseError('User not found.', 404);
+            }
+            $user->currentAccessToken()->delete();
+            $user->deactivate();
 
             return $this->responseFormatter->responseSuccess(
                 'Account deleted successfully.',
@@ -74,12 +81,10 @@ final class SecurityController extends Controller
                 'password' => ['required', 'current_password'],
             ]);
 
+            /* @var User $user */
             $user = type($request->user())->as(User::class);
-
-            $request->user()->token()->revoke();
-
+            $user->currentAccessToken()->delete();
             $user->deactivate();
-
 
             return $this->responseFormatter->responseSuccess(
                 'Account deactivated successfully.',

@@ -8,6 +8,7 @@ use App\Enums\UserStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Resources\UserResource;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,14 +25,16 @@ final class AuthenticatedSessionController extends Controller
     {
         try {
             $request->authenticate();
-            if ($request->user()->status === UserStatusEnum::DEACTIVATED) {
+            /* @var User $user */
+            $user = $request->user();
+            if ($user === null) {
+                return $this->responseFormatter->responseError('User not found.', 404);
+            }
+            if ($user->status === UserStatusEnum::DEACTIVATED) {
                 return $this->responseFormatter->responseError('Your account is disabled.', 403);
             }
 
-            return $this->responseFormatter->responseSuccess('Login successful', [
-                'user' => new UserResource($request->user()),
-                'access_token' => $request->user()->createAccessToken()->plainTextToken,
-            ], 200);
+            return $this->responseFormatter->responseSuccess('Login successful', ['user' => new UserResource($user), 'access_token' => $user->createAccessToken()->plainTextToken], 200);
         } catch (Exception $e) {
             return $this->responseFormatter->responseError($e->getMessage(), 422);
         }
@@ -44,9 +47,15 @@ final class AuthenticatedSessionController extends Controller
     {
 
         try {
-            $request->user()->currentAccessToken()->delete();
-            return $this->responseFormatter->responseSuccess('Logout successful', [
-            ], 200);
+            /* @var User $user */
+            $user = $request->user();
+            if ($user === null) {
+                return $this->responseFormatter->responseError('User not found.', 404);
+            }
+
+            $user->currentAccessToken()->delete();
+
+            return $this->responseFormatter->responseSuccess('Logout successful', [], 200);
         } catch (Exception $e) {
             return $this->responseFormatter->responseError($e->getMessage(), 500);
         }

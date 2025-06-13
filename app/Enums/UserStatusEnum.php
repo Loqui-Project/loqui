@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use Filament\Support\Contracts\HasColor;
-use Filament\Support\Contracts\HasIcon;
-use Filament\Support\Contracts\HasLabel;
 
-enum UserStatusEnum: string implements HasColor, HasIcon, HasLabel
+enum UserStatusEnum: string
 {
     case ENABLED = 'enabled';
     case DISABLED = 'disabled';

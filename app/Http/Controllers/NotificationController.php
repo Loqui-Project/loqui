@@ -8,7 +8,6 @@ use App\Enums\NotificationType;
 use App\Http\Resources\NotificationResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,9 +17,14 @@ final class NotificationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request) : JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $user = type($request->user())->as(User::class);
+        /* @var User $user */
+        $user = $request->user();
+
+        if ($user === null) {
+            return $this->responseFormatter->responseError('User not found.', 404);
+        }
         $filterType = $request->get('type');
         $types = array_map(fn(NotificationType $type): array => [
             'value' => $type->value,
@@ -53,10 +57,10 @@ final class NotificationController extends Controller
                 ]
             );
         } catch (\Exception $e) {
-                return $this->responseFormatter->responseError(
-                    'Error marking notifications as read',
-                    500
-                );
+            return $this->responseFormatter->responseError(
+                'Error marking notifications as read',
+                500
+            );
         }
     }
 
@@ -77,11 +81,11 @@ final class NotificationController extends Controller
                 [
                 ]
             );
-            } catch (\Exception $e) {
-                return $this->responseFormatter->responseError(
-                    'Error marking notification as read',
-                    500
-                );
+        } catch (\Exception $e) {
+            return $this->responseFormatter->responseError(
+                'Error marking notification as read',
+                500
+            );
         }
     }
 }

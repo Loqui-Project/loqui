@@ -16,7 +16,12 @@ final class EmailVerificationNotificationController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $user = type($request->user())->as(User::class);
+        /* @var User $user */
+        $user = $request->user();
+
+        if ($user === null) {
+            return $this->responseFormatter->responseError('User not found.', 404);
+        }
         if ($user->hasVerifiedEmail()) {
             return $this->responseFormatter->responseError(
                 message: 'Your email address is already verified.',

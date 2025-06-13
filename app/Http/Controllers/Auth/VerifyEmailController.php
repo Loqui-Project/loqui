@@ -9,7 +9,6 @@ use App\Models\User;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 
 final class VerifyEmailController extends Controller
 {
@@ -18,22 +17,20 @@ final class VerifyEmailController extends Controller
      */
     public function __invoke(EmailVerificationRequest $request): JsonResponse
     {
-        $user = type($request->user())->as(User::class);
+        /* @var User $user */
+        $user = $request->user();
+
+        if ($user === null) {
+            return $this->responseFormatter->responseError('User not found.', 404);
+        }
         if ($user->hasVerifiedEmail()) {
-            return $this->responseFormatter->responseError(
-                message: 'Your email address is already verified.',
-                code: 400
-            );
+            return $this->responseFormatter->responseError(message: 'Your email address is already verified.', code: 400);
         }
 
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
 
-        return $this->responseFormatter->responseSuccess(
-            message: 'Email address verified successfully.',
-            data: [],
-            code: 200
-        );
+        return $this->responseFormatter->responseSuccess(message: 'Email address verified successfully.');
     }
 }
