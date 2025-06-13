@@ -75,7 +75,7 @@ final class UserController extends Controller
                 return $this->responseFormatter->responseError('You cannot unfollow yourself', 422);
             }
             $followingExists = $user->following()->where('user_id', $userToUnfollow->id)->exists();
-            if (!$followingExists) {
+            if (! $followingExists) {
                 return $this->responseFormatter->responseError('You are not following this user', 422);
             }
             $user->following()->detach($userToUnfollow->id);
@@ -98,8 +98,9 @@ final class UserController extends Controller
     {
 
         $followings = Cache::remember("user.{$user->id}.followings", 600, function () use ($user) {
-            return $user->following()->get()->map(fn(User $user): UserResource => new UserResource($user));
+            return $user->following()->get()->map(fn (User $user): UserResource => new UserResource($user));
         });
+
         return $this->responseFormatter->responseSuccess('Followings retrieved successfully', ['users' => $followings]);
     }
 
@@ -109,6 +110,7 @@ final class UserController extends Controller
         $statistics = Cache::remember("user.{$user->id}.statistics", 600, function () use ($user) {
             return ['followers_count' => $user->followers()->count(), 'following_count' => $user->following()->count(), 'messages_count' => $user->messages()->count()];
         });
+
         return $this->responseFormatter->responseSuccess('User statistics retrieved successfully', ['statistics' => $statistics]);
     }
 
@@ -118,8 +120,9 @@ final class UserController extends Controller
     public function followers(Request $request, User $user): JsonResponse
     {
         $followers = Cache::remember("user.{$user->id}.followers", 600, function () use ($user) {
-            return $user->followers()->get()->map(fn(User $user): UserResource => new UserResource($user));
+            return $user->followers()->get()->map(fn (User $user): UserResource => new UserResource($user));
         });
+
         return $this->responseFormatter->responseSuccess('Followers retrieved successfully', ['users' => $followers]);
     }
 
@@ -128,6 +131,7 @@ final class UserController extends Controller
         $messages = Cache::remember("user.{$user->id}.messages", 600, function () use ($user) {
             return $user->messages()->with(['user'])->withCount(['likes', 'replays'])->latest()->paginate(5);
         });
+
         return $this->responseFormatter->responseSuccess('User messages retrieved successfully', ['messages' => MessageResource::collection($messages)]);
     }
 }

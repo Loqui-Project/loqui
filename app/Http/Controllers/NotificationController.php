@@ -7,10 +7,9 @@ namespace App\Http\Controllers;
 use App\Enums\NotificationType;
 use App\Http\Resources\NotificationResource;
 use App\Models\User;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
 
 final class NotificationController extends Controller
 {
@@ -26,7 +25,7 @@ final class NotificationController extends Controller
             return $this->responseFormatter->responseError('User not found.', 404);
         }
         $filterType = $request->get('type');
-        $types = array_map(fn(NotificationType $type): array => [
+        $types = array_map(fn (NotificationType $type): array => [
             'value' => $type->value,
             'label' => $type->getLabel(),
         ], NotificationType::cases());
@@ -35,6 +34,7 @@ final class NotificationController extends Controller
         if ($filterType !== 'all' && $filterType !== null) {
             $notifications = $notifications->where('type', $filterType);
         }
+
         return $this->responseFormatter->responseSuccess('', [
             'notifications' => NotificationResource::collection($notifications),
             'types' => $types,
@@ -56,7 +56,7 @@ final class NotificationController extends Controller
                 [
                 ]
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->responseFormatter->responseError(
                 'Error marking notifications as read',
                 500
@@ -81,7 +81,7 @@ final class NotificationController extends Controller
                 [
                 ]
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->responseFormatter->responseError(
                 'Error marking notification as read',
                 500

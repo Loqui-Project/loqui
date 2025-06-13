@@ -59,10 +59,13 @@ final class SessionController extends Controller
                 }
                 $accessToken->delete();
                 $session->delete();
+
                 return $this->responseFormatter->responseSuccess('Session deleted successfully');
             }
+
             return $this->responseFormatter->responseError('Session not found', 404);
         }
+
         return $this->responseFormatter->responseError('Session not found', 404);
     }
 }

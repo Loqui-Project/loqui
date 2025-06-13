@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->prefix('settings')->name('settings.')->group(function () {
 
-    Route::post("/profile", ProfileController::class)->name('profile');
+    Route::post('/profile', ProfileController::class)->name('profile');
 
-    Route::post("/password", PasswordController::class)->name("password");
+    Route::post('/password', PasswordController::class)->name('password');
 
     Route::controller(SecurityController::class)->name('security.')->prefix('security')->group(function () {
         Route::get('/', 'edit')->name('edit');

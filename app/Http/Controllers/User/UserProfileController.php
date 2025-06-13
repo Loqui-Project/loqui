@@ -9,7 +9,6 @@ use App\Http\Resources\MessageResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 final class UserProfileController extends Controller
@@ -24,7 +23,6 @@ final class UserProfileController extends Controller
             'followers',
             'following',
         ]);
-
 
         $messages = Cache::remember("user.{$user->id}.messages", 600, function () use ($user) {
             return $user->messages()->with(['user'])->withCount(['likes', 'replays'])->latest()->paginate(5);

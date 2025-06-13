@@ -7,14 +7,12 @@ namespace App\Http\Controllers\Settings;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\UpdatePasswordRequest;
 use App\Models\User;
-use App\Services\ResponseFormatter;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\Rules\Password;
 
 final class PasswordController extends Controller
 {
-
     /**
      * Update the user's password.
      */

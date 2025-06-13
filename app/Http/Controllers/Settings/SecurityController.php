@@ -12,7 +12,6 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Response;
 
 final class SecurityController extends Controller
 {
@@ -29,7 +28,7 @@ final class SecurityController extends Controller
         }
         $socialConnections = $user->socialConnections()->get();
 
-        $socialConnections = collect(SocialProvidersEnum::cases())->map(fn(SocialProvidersEnum $provider): array => [
+        $socialConnections = collect(SocialProvidersEnum::cases())->map(fn (SocialProvidersEnum $provider): array => [
             'provider' => $provider->value,
             'provider_name' => $provider->value,
             'connected' => $socialConnections->contains('provider', $provider->value),

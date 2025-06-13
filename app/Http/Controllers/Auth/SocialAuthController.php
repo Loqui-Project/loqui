@@ -17,7 +17,6 @@ use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\AbstractProvider;
 
-
 final class SocialAuthController extends Controller
 {
     /**
@@ -25,7 +24,7 @@ final class SocialAuthController extends Controller
      */
     public function connect(Request $request, string $provider): JsonResponse
     {
-        if (!in_array($provider, array_column(SocialProvidersEnum::cases(), 'value'))) {
+        if (! in_array($provider, array_column(SocialProvidersEnum::cases(), 'value'))) {
             return $this->responseFormatter->responseError('Invalid social provider.', 404);
         }
 
@@ -35,21 +34,19 @@ final class SocialAuthController extends Controller
 
         $socialUser = $socialProvider->userFromToken($token);
 
-
         $user = User::where('email', $socialUser->getEmail())->first();
         if ($user !== null) {
-            UserSocialAuth::updateOrCreate(['user_id' => $user->id, 'provider' => $provider, 'provider_id' => $socialUser->getId(),], ['provider' => $provider, 'provider_id' => $socialUser->getId(),]);
+            UserSocialAuth::updateOrCreate(['user_id' => $user->id, 'provider' => $provider, 'provider_id' => $socialUser->getId()], ['provider' => $provider, 'provider_id' => $socialUser->getId()]);
 
         } else {
-            $user = User::create(['name' => $socialUser->getName(), 'email' => $socialUser->getEmail(), 'username' => $socialUser->getEmail(), 'password' => Hash::make(Str::random(24) . time()),]);
+            $user = User::create(['name' => $socialUser->getName(), 'email' => $socialUser->getEmail(), 'username' => $socialUser->getEmail(), 'password' => Hash::make(Str::random(24).time())]);
             $user->assignRole('user');
-            UserSocialAuth::create(['user_id' => $user->id, 'provider' => $provider, 'provider_id' => $socialUser->getId(),]);
+            UserSocialAuth::create(['user_id' => $user->id, 'provider' => $provider, 'provider_id' => $socialUser->getId()]);
         }
         $accessToken = $user->createAccessToken()->plainTextToken;
 
         Auth::login($user);
 
-        return $this->responseFormatter->responseSuccess('Social connection established successfully.', ['user' => new UserResource($user), 'access_token' => $accessToken,]);
+        return $this->responseFormatter->responseSuccess('Social connection established successfully.', ['user' => new UserResource($user), 'access_token' => $accessToken]);
     }
-
 }

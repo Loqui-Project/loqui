@@ -25,7 +25,7 @@ final class SearchController extends Controller
         /* @var User $authUser */
         $authUser = $request->user();
         $users = Cache::remember("search.users.{$query}", 600, function () use ($query, $authUser) {
-            return User::search($query)->get()->when($authUser != null, function ($users) use ($authUser) {
+            return User::search($query)->get()->when($authUser !== null, function ($users) use ($authUser) {
                 return $users->filter(fn (User $user) => $user->id !== $authUser?->id);
             });
         });

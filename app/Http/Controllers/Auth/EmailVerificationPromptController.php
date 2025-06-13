@@ -8,8 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
-use Inertia\Response;
 
 final class EmailVerificationPromptController extends Controller
 {
@@ -27,7 +25,7 @@ final class EmailVerificationPromptController extends Controller
 
         return $user->hasVerifiedEmail()
             ? $this->responseFormatter->responseSuccess('Email verified.', [
-                'is_verified' => true
+                'is_verified' => true,
             ])
             : $this->responseFormatter->responseSuccess(
                 'Please verify your email address.',

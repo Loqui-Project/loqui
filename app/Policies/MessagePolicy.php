@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Message;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Facades\Auth;
 
-class MessagePolicy
+final class MessagePolicy
 {
     /**
      * Determine whether the user can view the model.
@@ -50,5 +51,4 @@ class MessagePolicy
     {
         return false;
     }
-
 }

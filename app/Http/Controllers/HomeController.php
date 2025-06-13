@@ -29,6 +29,7 @@ final class HomeController extends Controller
             $query = Message::query()->whereIn('user_id', [...$followingUsersId, $user->id])->whereHas(
                 'replays',
             )->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount(['likes', 'replays']);
+
             return $query->orderByDesc('likes_count')->paginate(5);
         });
 

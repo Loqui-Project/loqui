@@ -11,12 +11,9 @@ use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\UploadedFile;
-use Inertia\Inertia;
-use Inertia\Response;
 
 final class ProfileController extends Controller
 {
-
     /**
      * Update the user's profile settings.
      */

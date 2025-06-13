@@ -8,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 final class ConfirmablePasswordController extends Controller
 {

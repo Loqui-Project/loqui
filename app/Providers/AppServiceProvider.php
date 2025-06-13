@@ -29,10 +29,10 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-         if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
-             $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
-             $this->app->register(TelescopeServiceProvider::class);
-         }
+        if ($this->app->environment('local') && class_exists(\Laravel\Telescope\TelescopeServiceProvider::class)) {
+            $this->app->register(\Laravel\Telescope\TelescopeServiceProvider::class);
+            $this->app->register(TelescopeServiceProvider::class);
+        }
 
         $this->app->bind(ResponseFormatter::class);
     }
@@ -46,7 +46,7 @@ final class AppServiceProvider extends ServiceProvider
 
             $parsedUrl = type(parse_url($url, PHP_URL_PATH))->asString();
             $queryUrl = type(parse_url($url, PHP_URL_QUERY))->asString();
-            $pathSegments = explode('/', trim($parsedUrl, '/'));
+            $pathSegments = explode('/', mb_trim($parsedUrl, '/'));
             if (count($pathSegments) < 3) {
                 throw new Exception('Invalid URL structure. Expected at least 3 segments.');
             }
@@ -55,18 +55,20 @@ final class AppServiceProvider extends ServiceProvider
             $hash = $pathSegments[3]; // The `hash` should be the third segment
 
             parse_str($queryUrl, $queryParams);
-            if (!isset($queryParams['signature'])) {
+            if (! isset($queryParams['signature'])) {
                 throw new Exception('Missing signature parameter in URL.');
             }
 
-            $frontendUrl = type(config('app.frontend_url'))->asString() . '/email/verify?' . http_build_query(['id' => $id, 'hash' => $hash, 'expires' => $queryParams['expires'], 'signature' => $queryParams['signature']]);
+            $frontendUrl = type(config('app.frontend_url'))->asString().'/email/verify?'.http_build_query(['id' => $id, 'hash' => $hash, 'expires' => $queryParams['expires'], 'signature' => $queryParams['signature']]);
+
             // i need the queries from the url and put them in the front end url
             return (new MailMessage)->line('Please click the button below to verify your email address.')->action('Verify Email Address', $frontendUrl)->line('Thank you for using our application!');
         });
 
         ResetPassword::createUrlUsing(function ($user, $token) {
             $user = type($user)->as(User::class);
-            return type(config('app.frontend_url'))->asString() . '/reset-password/' . $token . '?email=' . urlencode($user->getEmailForPasswordReset());
+
+            return type(config('app.frontend_url'))->asString().'/reset-password/'.$token.'?email='.urlencode($user->getEmailForPasswordReset());
         });
         JsonResource::withoutWrapping();
 

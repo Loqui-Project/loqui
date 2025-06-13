@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Message;
 
 use App\Models\Message;
@@ -7,7 +9,7 @@ use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 
-class DeleteMessageRequest extends FormRequest
+final class DeleteMessageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,6 +22,7 @@ class DeleteMessageRequest extends FormRequest
         if ($user === null) {
             return false;
         }
+
         return $user->can('delete', Message::find($this->message_id));
     }
 

@@ -8,9 +8,5 @@ use App\Services\ResponseFormatter;
 
 abstract class Controller
 {
-
-    public function __construct(protected ResponseFormatter $responseFormatter)
-    {
-    }
-
+    public function __construct(protected ResponseFormatter $responseFormatter) {}
 }
