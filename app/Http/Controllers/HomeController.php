@@ -7,30 +7,32 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MessageResource;
 use App\Models\Message;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
 final class HomeController extends Controller
 {
-    public function __invoke(Request $request): \Illuminate\Http\JsonResponse
+    public function __invoke(Request $request): JsonResponse
     {
-        $user = type($request->user())->as(User::class);
-        $followingUsersId = $user->following()->pluck('user_id')->toArray();
-        $messages = Cache::remember('home.messages', 600, function () use ($user, $followingUsersId) {
-            return Message::whereIn('user_id', [
-                ...$followingUsersId,
-                $user->id,
-            ])->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount([
-                'likes',
-                'replays',
-            ])->withReplies()->orderBy(
-                'likes_count',
-                'desc'
-            )->paginate(5);
-        }, 300);
 
-        return $this->responseFormatter->responseSuccess('', [
-            'messages' => MessageResource::collection($messages),
-        ]);
+        /* @var User $user */
+        $user = $request->user();
+
+        if ($user === null) {
+            return $this->responseFormatter->responseError('User not found.', 404);
+        }
+        $followingUsersId = $user->following()->pluck('user_id')->toArray();
+        $messages = Cache::remember("home.{$user->id}.messages", 600, function () use ($user, $followingUsersId) {
+            /* @var Builder<Message> $query */
+            $query = Message::query()->whereIn('user_id', [...$followingUsersId, $user->id])->whereHas(
+                'replays',
+            )->with(['user', 'likes', 'favorites', 'sender', 'replays.user'])->withCount(['likes', 'replays']);
+
+            return $query->orderByDesc('likes_count')->paginate(5);
+        });
+
+        return $this->responseFormatter->responseSuccess('', ['messages' => MessageResource::collection($messages)]);
     }
 }

@@ -6,41 +6,33 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Http\RedirectResponse;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
-use Inertia\Response;
 
 final class ConfirmablePasswordController extends Controller
 {
     /**
-     * Show the confirm password page.
-     */
-    public function show(): Response
-    {
-        return Inertia::render('auth/confirm-password');
-    }
-
-    /**
      * Confirm the user's password.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): \Illuminate\Http\JsonResponse
     {
-        $user = type($request->user())->as(User::class);
-
-        if (! Auth::guard('web')->validate([
-            'email' => $user->email,
-            'password' => $request->password,
-        ])) {
-            throw ValidationException::withMessages([
-                'password' => __('auth.password'),
+        try {
+            $request->validate([
+                'password' => [
+                    'required',
+                    'string',
+                    'current-password:api',
+                ],
             ]);
+
+            return $this->responseFormatter->responseSuccess(
+                'Password confirmed successfully.',
+            );
+        } catch (Exception $e) {
+            return $this->responseFormatter->responseError(
+                $e->getMessage(),
+                $e->getCode() ?: 500
+            );
         }
-
-        $request->session()->put('auth.password_confirmed_at', time());
-
-        return redirect()->intended(route('home', absolute: false));
     }
 }

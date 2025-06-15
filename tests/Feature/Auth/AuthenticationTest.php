@@ -74,7 +74,7 @@ describe('Authentication', function () {
         });
         test('users can authenticate using the login api', function () {
             $user = User::factory()->create();
-            Passport::actingAs($user, ["*"]);
+            Passport::actingAs($user, ['*']);
             $response = $this->postJson('/api/login', [
                 'email' => $user->email,
                 'password' => 'password',

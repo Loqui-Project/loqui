@@ -7,25 +7,20 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\User\UserProfileController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return Inertia\Inertia::render('welcome');
-})->name('welcome');
+Route::middleware('auth:sanctum')->get('/user', function () {
+    return response()->json(['isLoggedIn' => true]);
+})->name('user');
 
-Route::match(
-    ['get', 'post'],
-    '/@{user:username}',
-    [UserProfileController::class, 'profile']
-)->name('profile');
+Route::middleware('auth:sanctum')->get('/user/{user:username}', [UserProfileController::class, 'profile'])->name('profile');
 
-Route::middleware(['auth:api'])->match(['get', 'post'], 'home', HomeController::class)->name('home');
-Route::middleware(['auth:api'])->match(['get', 'post'], '/inbox', [MessageController::class, 'inbox'])->name('inbox');
+Route::middleware(['auth:sanctum'])->get('/home', HomeController::class)->name('home');
+Route::middleware(['auth:sanctum'])->match(['get', 'post'], '/inbox', [MessageController::class, 'inbox'])->name('inbox');
 Route::prefix('message')->name('message.')->controller(MessageController::class)->group(function () {
-    Route::middleware("auth:api")->group(function (){
+    Route::middleware('auth:sanctum')->group(function () {
         Route::post('/like', 'like')->name('like');
-        Route::post('/add-reply', 'addReply')->name('add-reply');
+        Route::post('/replay', 'addReplay')->name('add-reply');
         Route::get('/favorites', 'favorites')->name('favorites');
         Route::post('/add-to-favorite', 'addToFavorite')->name('addToFavorite');
         Route::delete('/', 'delete')->name('delete-message');
@@ -35,18 +30,18 @@ Route::prefix('message')->name('message.')->controller(MessageController::class)
     Route::get('/{message:id}', 'show')->name('show');
 });
 
-Route::middleware(['auth:api'])->controller(NotificationController::class)->name('notifications.')->prefix('notifications')->group(function () {
+Route::middleware(['auth:sanctum'])->controller(NotificationController::class)->name('notifications.')->prefix('notifications')->group(function () {
     Route::get('/', 'index')->name('index');
     Route::post('/mark-all-read', 'markAllAsRead')->name('markAllAsRead');
     Route::post('/mark-read', 'markAsRead')->name('markAsRead');
 });
-Route::controller(UserController::class)->prefix('user')->name('user.')->group(function () {
-    Route::middleware(['auth:api'])->post('/follow', 'follow')->name('follow');
-    Route::middleware(['auth:api'])->post('/unfollow', 'unfollow')->name('unfollow');
-    Route::get('/{user:username}/followers', 'followers')->name('followers');
-    Route::get('/{user:username}/followings', 'followings')->name('followings');
-});
 
-Route::middleware(['auth:api'])->get("/search", SearchController::class)->name('search');
-require __DIR__.'/settings.php';
+Route::middleware(['auth:sanctum'])->get('/search', SearchController::class)->name('search');
+
+Route::middleware(['auth:sanctum'])->get('/ping', function () {
+    return response()->json(['message' => 'pong']);
+})->name('ping');
+
 require __DIR__.'/auth.php';
+require __DIR__.'/settings.php';
+require __DIR__.'/user.php';

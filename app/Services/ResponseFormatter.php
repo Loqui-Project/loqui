@@ -11,10 +11,6 @@ final class ResponseFormatter
 {
     /**
      * Response error.
-     *
-     * @param string $message
-     * @param int $code
-     * @return JsonResponse
      */
     public function responseError(string $message, int $code = 500): JsonResponse
     {
@@ -23,11 +19,6 @@ final class ResponseFormatter
 
     /**
      * Response success.
-     *
-     * @param string $message
-     * @param mixed $data
-     * @param int $code
-     * @return JsonResponse
      */
     public function responseSuccess(string $message, mixed $data = [], int $code = 200): JsonResponse
     {

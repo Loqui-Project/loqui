@@ -3,6 +3,11 @@ includes:
     - vendor/phpstan/phpstan/conf/bleedingEdge.neon
 
 parameters:
+    editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
+    ignoreErrors:
+        - identifier: method.internalClass
+        - identifier: classConstant.internalClass
+        - identifier: staticMethod.internalClass
     level: max
 
     paths:

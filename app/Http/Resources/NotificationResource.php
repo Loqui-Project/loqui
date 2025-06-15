@@ -24,11 +24,11 @@ final class NotificationResource extends JsonResource
         return match ($this->type) {
             NotificationType::NEW_MESSAGE->value => $this->newMessageNotification(),
             NotificationType::NEW_FOLLOWER->value => $this->newFollowerNotification(),
-            "SYSTEM" => [
+            'SYSTEM' => [
                 'id' => $this->id,
-                'type' => "system",
+                'type' => 'system',
                 'data' => [
-                    'text' => json_decode($this->data, true)[0],
+                    'text' => $this->data,
                 ],
                 'read_at' => $this->read_at,
                 'created_at' => $this->created_at,

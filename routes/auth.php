@@ -24,16 +24,12 @@ Route::middleware('guest')->group(function () {
 
     Route::post('reset-password', NewPasswordController::class)
         ->name('password.store');
-
 });
 Route::controller(SocialAuthController::class)->prefix('auth')->name('social.')->group(function () {
-    Route::get('/{provider}', 'redirectToProvider')->name('redirect');
-    Route::get('/{provider}/callback', 'handleProviderCallback')->name('callback');
-    Route::middleware(['auth'])->post('/{provider}/disconnect', 'disconnectProvider')->name('disconnect');
+    Route::post('/{provider}', 'connect')->name('redirect');
 });
-Route::middleware('auth:api')->group(function () {
-    Route::get('verify-email', EmailVerificationPromptController::class)
-        ->name('verification.notice');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/email/is-verified', EmailVerificationPromptController::class);
 
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
         ->middleware(['signed', 'throttle:6,1'])
@@ -42,9 +38,6 @@ Route::middleware('auth:api')->group(function () {
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
         ->middleware('throttle:6,1')
         ->name('verification.send');
-
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
-        ->name('password.confirm');
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 

@@ -10,16 +10,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\UpdateNotificationRequest;
 use App\Models\NotificationSetting;
 use App\Models\User;
-use App\Services\ResponseFormatter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
 
 final class NotificationController extends Controller
 {
-
-
     /**
      * Show the user's password settings page.
      */
@@ -51,7 +47,7 @@ final class NotificationController extends Controller
             ]),
         ]);
 
-        return $this->responseFormatter->responseSuccess("Notification settings retrieved successfully.", [
+        return $this->responseFormatter->responseSuccess('Notification settings retrieved successfully.', [
             'types' => $types,
             'channels' => $channels,
             'userNotificationSettings' => $userNotificationSettings,

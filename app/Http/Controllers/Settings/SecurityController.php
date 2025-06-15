@@ -7,12 +7,11 @@ namespace App\Http\Controllers\Settings;
 use App\Enums\SocialProvidersEnum;
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserSocialAuth;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Response;
 
 final class SecurityController extends Controller
 {
@@ -21,7 +20,12 @@ final class SecurityController extends Controller
      */
     public function edit(Request $request): JsonResponse
     {
-        $user = type($request->user())->as(User::class);
+        /* @var User $user */
+        $user = $request->user();
+
+        if ($user === null) {
+            return $this->responseFormatter->responseError('User not found.', 404);
+        }
         $socialConnections = $user->socialConnections()->get();
 
         $socialConnections = collect(SocialProvidersEnum::cases())->map(fn (SocialProvidersEnum $provider): array => [
@@ -49,11 +53,14 @@ final class SecurityController extends Controller
                 'password' => ['required', 'current_password'],
             ]);
 
-            $user = type($request->user())->as(User::class);
+            /* @var User $user */
+            $user = $request->user();
 
-            $request->user()->token()->revoke();
-
-            $user->delete();
+            if ($user === null) {
+                return $this->responseFormatter->responseError('User not found.', 404);
+            }
+            $user->currentAccessToken()->delete();
+            $user->deactivate();
 
             return $this->responseFormatter->responseSuccess(
                 'Account deleted successfully.',
@@ -73,12 +80,10 @@ final class SecurityController extends Controller
                 'password' => ['required', 'current_password'],
             ]);
 
+            /* @var User $user */
             $user = type($request->user())->as(User::class);
-
-            $request->user()->token()->revoke();
-
+            $user->currentAccessToken()->delete();
             $user->deactivate();
-
 
             return $this->responseFormatter->responseSuccess(
                 'Account deactivated successfully.',
@@ -88,6 +93,23 @@ final class SecurityController extends Controller
             );
         } catch (Exception $e) {
             return $this->responseFormatter->responseError($e->getMessage(), 422);
+        }
+    }
+
+    /**
+     * Disconnect provider from user account.
+     */
+    public function disconnectProvider(string $provider): JsonResponse
+    {
+        try {
+            $user = type(Auth::user())->as(User::class);
+            UserSocialAuth::where('user_id', $user->id)
+                ->where('provider', $provider)
+                ->delete();
+
+            return response()->json(['message' => 'Provider disconnected']);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 500);
         }
     }
 }

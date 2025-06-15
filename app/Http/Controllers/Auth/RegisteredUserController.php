@@ -6,19 +6,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\RegisterRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
+use Exception;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use Inertia\Inertia;
-use Inertia\Response;
 
 final class RegisteredUserController extends Controller
 {
-
     /**
      * Handle an incoming registration request.
      *
@@ -27,24 +23,16 @@ final class RegisteredUserController extends Controller
     public function __invoke(RegisterRequest $request): JsonResponse
     {
 
-        $user = User::create($request->validated());
-        $user->assignRole('user');
-        event(new Registered($user));
+        try {
+            $user = User::create($request->validated());
+            $user->assignRole('user');
+            event(new Registered($user));
 
-        Auth::login($user);
+            Auth::login($user);
 
-        $token = $this->authService->getAccessToken([
-            'username' => $request->input('email'),
-            'password' => $request->input('password'),
-        ]);
-
-        return $this->responseFormatter->responseSuccess(
-            'Registration successful',
-            [
-                'user' => new UserResource($user),
-                'token' => $token,
-            ],
-            201
-        );
+            return $this->responseFormatter->responseSuccess('Registered successfully', [], 200);
+        } catch (Exception $e) {
+            return $this->responseFormatter->responseError($e->getMessage(), 500);
+        }
     }
 }

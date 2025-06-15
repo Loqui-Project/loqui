@@ -1,0 +1,11 @@
+echo "Formatting staged files..."
+./vendor/bin/pint --no-interaction
+
+echo "Add changes files..."
+git add .
+
+echo "Checking lint on staged files..."
+./vendor/bin/phpstan --no-progress --no-interaction
+
+
+
